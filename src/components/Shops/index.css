@@ -1,0 +1,482 @@
+
+.hero-body-custom{
+    margin-block: 1rem;
+}
+
+.ad-bar-container{
+    height: 100% !important;
+    width: 16.5rem;
+    position: fixed;
+    z-index: 4;
+}
+
+.no-space{
+    margin: 0.75rem 0 !important;
+    padding: 0 !important;
+}
+
+#ad-bar, .ads-body{
+    height: inherit !important;
+    width: inherit !important;
+    background-color: rgb(255,255,255) !important;
+    display: block !important;
+}
+
+.cart-container{
+    height: 100% !important;
+    width: 16.5rem;
+    right: 0.25%;
+    position: fixed;
+    z-index: 4;
+}
+
+#cart, .cart-body{
+    height: inherit !important;
+    width: inherit !important;
+    background-color: rgb(255,255,255) !important;
+    display: block !important;
+}
+
+.self-column{
+    padding: 0.1rem 0 !important;
+    margin-inline: 2.5rem !important;
+}
+.shop-content{
+    margin: 0 auto !important;
+}
+
+.pf-tabs, .wov-tabs, .products-tabs, .services-tabs{
+    height: auto !important;
+    margin: 0 auto !important;
+    width: max-content !important;
+}
+
+.shopbox{
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
+    padding-block: 0.5rem !important;
+}
+
+.searchbar .searchbar-box{
+    margin: 0 auto !important;
+}
+
+.searchbar .control .input {
+    z-index: 0 !important;
+    width: inherit !important;
+}
+
+.searchbar .control .button {
+    z-index: 0 !important;
+}
+
+.fixed-card{
+    position: fixed !important;
+    width: inherit !important;
+    display: flex;
+    z-index: 3 !important;
+    background: none !important;
+    padding: 0.5rem !important;
+}
+
+.self-column .fixed-card{
+    width: 59rem !important;
+}
+
+.reduced-column .fixed-card{
+    width: 46rem !important;
+}
+.reduced-column .sub-content{
+    margin: 0;
+    padding-top: 0;
+    width: 46rem !important;
+}
+
+.plus-tabs{
+    position:fixed !important;
+    width: 13rem;
+    background-color:"white";
+    z-index: 2 !important;
+}
+
+.slogan{
+    background: rgba(236, 228, 228, 0.5);
+    width: fit-content;
+    padding: 1rem;
+    margin: 0 auto;
+}
+
+.lookup-div, .lookup-div .control, .lookup-div .button{
+    z-index: 0 !important;
+}
+
+.frontpage-card {
+    height: 100% !important;
+    position: relative;
+}
+
+.iconBox{
+    padding: 1rem;
+}
+
+.self-column .sub-content{
+    width: 59rem !important;
+}
+
+.sub-container{
+    margin-top: 3rem;
+}
+
+.frontpage-card .card-content{
+    height: 10rem !important;
+    padding: 0.5rem !important;
+}
+
+.reduced-column .card-content{
+    height: 12rem !important;
+    padding: 0.5rem !important;
+}
+
+.checkbox{
+    margin: 0.5rem;
+}
+
+.listing-card, .vehicle-card, .product-card {
+    margin-inline: 5px !important;
+}
+
+.listing-card{
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: stretch !important;
+    justify-content: space-between !important;
+}
+
+.vehicle-card{
+    height: 100% !important;
+}
+.product-card img{
+    height: 12rem !important;
+}
+.self-column .product-card .card-content{
+    height: 7rem !important;
+}
+
+.reduced-column .product-card .card-content{
+    height: 8rem !important;
+}
+
+.listing-card a, .vehicle-card a{
+    color: black;
+}
+
+.listing-card:hover a, .vehicle-card:hover a, .product-card:hover a, .service-card:hover a{
+    color: blue;
+}
+
+.listing-card:hover, .vehicle-card:hover, .product-card:hover, .service-card:hover{
+    border: blue solid 1px;
+}
+
+.item-box .content figure, .list-item figure, .similar-listings figure{
+    margin: 0 !important;
+}
+
+.viewing-controls{
+    padding: 0.25rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.listing-content, .vehicle-content{
+    margin: 0.25rem !important;
+    width: 63rem !important;
+}
+
+.imagesContainer {
+    height: 33rem;
+    width: 31.5rem;
+    position: fixed;
+    padding-inline: 1.75rem !important;
+    margin-inline: 0.5rem !important;
+    cursor: pointer;
+}
+
+.customSlide {
+    height: 20rem !important;
+    margin: 0 auto !important;
+}
+
+.slick-wrapper {
+    margin: auto;
+}
+  
+.slick-slide {
+    text-align: center;
+    position: relative;
+    height: 100% !important;
+    padding-block: 0.25rem !important;
+ 
+}
+
+.slick-slide:focus {
+    outline: none;
+}
+  
+.slick-slide-title {
+    text-transform: capitalize;
+}
+
+.slick-slide-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
+      0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
+}
+
+.thumbnail .slick-slide-image{
+    height:6rem;
+}
+
+.thumbnail-slider-wrap {
+    margin-top: 5px;
+    height: 7rem;
+    padding-inline: 1rem;
+}
+
+.thumbnail-slider-wrap .slick-track .slick-slide {
+    text-align: center;
+}
+
+.thumbnail-slider-wrap .slick-track .slick-slide img {
+    width: 80%;
+}
+
+.similar-listings{
+    padding: 0.5rem !important;
+}
+
+.listing-card .card-content, .vehicle-card .card-content,.product-card .card-content {
+    padding: 0.25rem !important;
+}
+
+.checkbox-options{
+    margin: 1rem !important;
+}
+
+.filter-list{
+    margin-top: 1.5rem;
+}
+
+@media screen and (max-width:1025px) and (min-width:769px){
+    .ad-bar-container{
+        width: 16.5rem;
+    }
+
+    .self-column .fixed-card{
+        width: 50rem !important;
+    }
+    .reduced-column .fixed-card{
+        width: 37rem !important;
+    }
+    
+    .reduced-column .sub-content{
+        width: 37rem !important;
+    }
+
+    .self-column .sub-content{
+        width: 50rem !important;
+    }
+
+    .listing-content, .vehicle-content{
+        margin: 0 !important;
+        width: 50rem !important;
+    }
+
+    .imagesContainer {
+        height: 33rem;
+        width: 23rem;
+        position: fixed;
+    }
+    
+    .frontpage-card .card-content{
+        height: 18rem !important;
+    }
+
+    .reduced-column .card-content{
+        height: 15rem !important;
+    }
+    
+    .self-column{
+        padding: 0.1rem 0 !important;
+        margin-inline: 0rem !important;
+    }
+}
+
+@media screen and (max-width:768px) and (min-width:425px){
+    .cart-container{
+        width: auto !important;
+    }
+
+    .self-column .fixed-card{
+        width: 50rem !important;
+    }
+    
+    .reduced-column .fixed-card{
+        width: 35rem !important;
+    }
+
+    .reduced-column .sub-content{
+        width: 35rem !important;
+    }
+    .self-column .sub-content{
+        width: 50rem !important;
+    }
+
+    .listing-content, .vehicle-content{
+        margin: 0.25rem !important;
+        width: auto !important;
+    }
+
+    .imagesContainer {
+        height: auto;
+        width: auto;
+        position: relative;
+        margin: 0 auto !important;
+    }
+
+    .leftContent, .rightContent{
+        margin: 0 auto !important;
+    }
+    .ad-bar-container{
+        height: 100% !important;
+        width: 16.5rem;
+        position: fixed;
+        z-index:4 !important;
+    }
+
+    .frontpage-card .card-content{
+        height: 10rem !important;
+    }
+    .self-column{
+        padding: 0.1rem 0 !important;
+        margin-inline: 0 !important;
+    }
+    
+}
+@media screen and (max-width:424px){
+
+    .self-column .fixed-card{
+        width: 48.5rem !important;
+    }
+        
+    .reduced-column .fixed-card{
+        width: 35rem !important;
+    }
+
+    .reduced-column .sub-content{
+        width: 35rem !important;
+    }
+    .self-column .sub-content{
+        width: 48.5rem !important;
+    }
+
+    .listing-content, .vehicle-content{
+        margin: 0.25rem !important;
+        width: auto !important;
+    }
+
+    .imagesContainer {
+        height: auto;
+        width: auto;
+        position: relative;
+        margin: 0 auto !important;
+    }
+
+    .frontpage-card .card-content{
+        height: 10rem !important;
+    }
+
+    .self-column{
+        padding: 0 !important;
+        margin-inline: 0 !important;
+    }
+    
+}
+@media screen and (max-width:375px){
+
+    .self-column .fixed-card{
+        width: 23.5rem !important;
+    }
+        
+    .reduced-column .fixed-card{
+        width: 18rem !important;
+    }
+
+    .reduced-column .sub-content{
+        width: 18rem !important;
+    }
+    .self-column .sub-content{
+        width: 23.5rem !important;
+    }
+
+    .listing-content, .vehicle-content{
+        margin: 0.25rem !important;
+        width: auto !important;
+    }
+
+    .imagesContainer {
+        height: auto;
+        width: auto;
+        position: relative;
+    }
+
+    .frontpage-card .card-content{
+        height: 10rem !important;
+    }
+
+    .self-column{
+        padding: 0 !important;
+        margin-inline: 0 !important;
+    }
+    
+}
+
+@media screen and (max-width:320px){
+
+    .self-column .fixed-card{
+        width: 21.75rem !important;
+    }
+        
+    .reduced-column .fixed-card{
+        width: 15rem !important;
+    }
+
+    .reduced-column .sub-content{
+        width: 15rem !important;
+    }
+    .self-column .sub-content{
+        width: 21.75rem !important;
+    }
+
+    .listing-content, .vehicle-content{
+        margin: 0.25rem !important;
+        width: auto !important;
+    }
+
+    .imagesContainer {
+        height: 33rem;
+        width: 20rem;
+        position: relative;
+    }
+
+    .frontpage-card .card-content{
+        height: 10rem !important;
+    }
+    
+    .self-column{
+        padding: 0 !important;
+        margin-inline: 0 !important;
+    }
+}

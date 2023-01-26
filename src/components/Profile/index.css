@@ -1,0 +1,74 @@
+.top-div{
+    height: auto;
+}
+
+.profile-container{
+    margin: 0 auto;
+}
+
+.details-list li{
+    margin: 3rem;
+    display: inline;
+}
+
+.profile-btn{
+    margin:0.25rem;
+}
+
+.profile-title{
+    color:white !important;
+}
+
+.tagline{
+    font-weight: bold !important;
+    font-size: medium !important; 
+    color: royalblue !important;
+    margin: 0.5rem !important;
+}
+
+.profile-box{
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+    url("../../static/chateau.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+.userview-profile-box{
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+    url("../../static/realestate.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+.main-media-video{
+    margin: 0 auto !important;
+}
+
+.react-tabs__tab--selected{
+    background-color: green !important;
+    color: white !important;
+}
+
+@media screen and (min-width:768px){
+    .profile-box{
+        padding: 3rem !important;
+    }
+    
+}
+
+@media screen and (max-width:425px){
+    .main-media-video{
+        width: 100% !important;
+    }
+}
+
+@media screen and (min-width:426px){
+    .main-media-video{
+        width: max-content !important;
+    }
+    
+}

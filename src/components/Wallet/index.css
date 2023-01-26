@@ -1,0 +1,89 @@
+.networth-slide-card{
+    height: 15rem !important;
+    margin-inline: 5px;
+}
+
+.wallet-div .card-content{
+  padding: 0.5rem !important;
+  font-weight: bold !important;
+}
+
+@media screen and (max-width:768px){
+    .tile-column{
+      margin-inline: 3rem !important;
+    }
+  
+    .ReactModal__Content{
+      width: auto !important;
+    }
+  
+    .app-container{
+      background-color:wheat;
+      width: max-content !important;
+    }
+  
+    /*.special-header .tag{
+      font-size: 26px !important;
+    }*/
+  
+  }
+  
+  .ads-heading{
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    padding: 0.25rem;
+  }
+  
+  .no-margin{
+    margin: 0 !important;
+  }
+  
+  .no-padding{
+    padding: 0 !important;
+  }
+  
+  .text-area{
+    white-space: pre-wrap !important;
+  }
+  
+  .is-fullwidth{
+    width: 100% !important;
+  }
+  
+  .reverse-colors{
+    background-color: burlywood !important;
+    color: royalblue !important;
+  }
+  
+  .message-body .container{
+    margin-block: 0 1rem !important ;
+  }
+  
+  .tabs-content .message{
+    width: 50rem !important;
+  }
+
+  @media screen and (min-width:768px){
+    .tabs-content .message{
+      width: 40rem !important;
+    }
+  }
+
+  @media screen and (max-width:768px) and (min-width:425px){
+    .tabs-content .message{
+      width: 40rem !important;
+    }
+  }
+  
+  @media screen and (max-width:424px) and (min-width:375px){
+    .tabs-content .message{
+      width: 15rem !important;
+    }
+  }
+  
+  @media screen and (max-width:374px){
+    .tabs-content .message{
+      width: 15rem !important;
+    }
+}

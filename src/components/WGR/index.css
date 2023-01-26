@@ -1,0 +1,118 @@
+.page-content{
+    margin-top: 3rem;
+}
+.bn-container{
+    height: 100% !important;
+    width: 16rem !important;
+    right: 0.25% !important;
+    position: fixed !important;
+}
+
+#bn, .bn-body{
+    height: inherit !important;
+    width: inherit !important;
+    background-color: rgb(255,255,255) !important;
+    display: block !important;
+}
+
+.iso .wgr-articles{
+    padding: 1rem !important;
+}
+
+.not-iso .wgr-articles{
+    padding: 1.5rem 1rem !important;
+    margin-left: 3%;
+
+}
+
+.bnview .wgr-articles{
+    padding: 1.5rem 1rem !important;
+    margin-right: 3%;
+}
+
+.search-icon{
+    margin-inline: 1rem;
+}
+
+/*
+.react-tabs__tab--selected{
+    background-color: blue;
+    color: white;
+}*/
+
+.wgr-section-names{
+    font-style: italic;
+    font-family: 'Lucida Sans';
+}
+
+.articleSlider{
+    width: 58rem !important;
+    height: auto !important;
+}
+
+.not-iso .articleSlider{
+    width: 40rem !important;
+    height: auto !important;
+}
+
+.article-slide{
+    padding-inline: 5px !important;
+}
+
+.page-header-body  h4{
+    font-style: italic;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.aux-containers{
+    margin-top: 0.25rem;
+}
+
+.horizontal-list{
+    width: 100% !important;
+    overflow: auto !important;
+    display: inline-flex !important;
+}
+
+.horizontal-list li {
+    margin: 0.25rem !important;
+}
+
+@media screen and (max-width: 1024px){
+    .not-iso .wgr-articles{
+        padding: 0.5rem 1rem !important;
+        margin-left: 6%;
+        margin-top: 1rem !important;
+    }
+    
+}
+
+@media screen and (max-width: 770px){
+    .page-content{
+        margin-top: 7rem !important;
+    }
+    .horizontal-list{
+        width: 40rem !important;
+    }
+
+    .articleSlider{
+        width: 40rem !important;
+        height: auto !important;
+    }
+    
+    .not-iso .articleSlider{
+        width: 25rem !important;
+        height: auto !important;
+    }
+}
+
+@media screen and (max-width: 425px){
+    .horizontal-list{
+        width: 25rem !important;
+    }
+}
+
+@media screen and (max-width: 375px){
+    .horizontal-list{
+        width: 18rem !important;
+    }
+}

@@ -1,0 +1,62 @@
+import React, {useState, useEffect} from 'react';
+import withContext from '../../withContext';
+//import Slider from "react-slick";
+import axios from "axios";
+
+import PreeHeader from "./PreeHeader";
+import PreeBody from "./PreeBody";
+import PreeReaction from "./PreeReaction";
+
+const PreeItem = props => {
+
+    const {aPree} = props;
+    
+    const {showComments} = props;
+    const {clickable} = props;
+    const [gotMedia, setGetMedia] = useState(false);
+    const [imgView, setImgView] = useState(null);
+
+    useEffect( ()=> {
+        if (!gotMedia){
+            loadMainMedia();
+        }
+    });
+
+    const loadMainMedia = async() => {
+        //check if cv and dp is available (database check):
+        //if true => set imgView and vidView to files that are in bio folder
+        //if false load a placeholder image and placeholder video
+        const user_id = aPree.user.user_id;
+        //console.log(user_id);
+        const response = await axios.post('/api/get-main-media',{user_id}).then(
+            (response) => {
+                if (response.status === 200){
+                    if (response.data.has_dp === true){
+                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+                    }else{
+                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+                    }
+                    setGetMedia(true);
+                    
+                }
+            }
+        )
+        return true;
+    }
+    return (
+        <div className="hero">
+            <div className="pree-item card">
+                <article>
+                    <div className="message">
+                        <PreeHeader aPree={aPree} imgView={imgView}/>
+                        <PreeBody aPree={aPree} clickable={clickable} />
+                    </div>
+                    
+                </article>  
+                <PreeReaction aPree={aPree} showComments={showComments} clickable={clickable}/>
+            </div>
+            <hr className="h-line" />
+        </div>
+    )
+}
+export default withContext(PreeItem);

@@ -1,0 +1,58 @@
+.trendy-body, .trendy-controls{
+    background-color: tan;
+    height: 25rem;
+}
+
+.trendy-container{
+    width: 100%;
+    height: 100% !important;
+    font-family: 'roboto', sans-serif;
+    padding: 1rem !important;
+    background-color: royalblue !important;
+}
+
+.trendy-box{
+    width: 100%;
+    height: 100%;
+    margin: 0.1rem !important;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 40px 100px rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    overflow-y: auto !important;;
+}
+
+.trendy-title span{
+    background-color: wheat;
+    border-radius: 10px ;
+    padding: 3px;
+}
+
+.trendy-title{
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.trendy-quote{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+}
+
+.description{
+    padding: 1rem;
+}
+
+
+@media screen and (max-width : 425px){
+    .trendy-body{
+        padding: 0 !important;
+    }
+
+    /*.trendy-box{
+        width: 20rem;
+    }*/
+}

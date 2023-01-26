@@ -1,0 +1,14 @@
+.pf-bg-one {
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+      url("../../../static/realestate.jpeg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    margin: 0 !important;
+    height: 20rem;
+}
+
+.houselistContainer .listing-card{
+  background-color: yellow;
+}

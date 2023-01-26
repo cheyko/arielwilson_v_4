@@ -1,0 +1,201 @@
+.custom-nav{
+    background-color:burlywood;
+    height: 100%;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    position: fixed;
+    z-index: 10 !important;
+    box-sizing: border-box !important;
+    display: flex ;
+    flex-direction: column !important;
+    overflow-y: auto;
+    max-height: inherit !important;
+    padding: 0.5rem;
+    margin-inline: 0.5rem;
+}
+
+.navbar{
+    z-index: 6 !important;
+    background-color: royalblue !important;
+    position: fixed !important;
+    padding-inline: 1rem !important;
+    overflow: auto ;
+}
+
+.special-nav .navbar{
+    overflow:initial ;
+}
+
+.navbar .navbar-item, .navbar .navbar-link{
+    color: burlywood !important;
+    font-weight: bold;
+    text-transform: capitalize !important;
+    font-size: medium !important;  
+}
+
+.navbar-burger{
+    color: burlywood !important;
+    margin-right: 1rem !important;
+}
+
+.navbar-brand .navbar-item .subtitle{
+    color: burlywood !important;
+    font-family: fantasy !important;
+    font-weight: bolder !important;
+    font-size: medium  !important;  
+}
+ 
+.navbar-brand{
+    margin-inline: 1rem !important;
+}
+.custom-nav .columns{
+    display: flex !important;
+}
+
+.navbar-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color:#0645AD;
+    margin: 0 auto !important;
+}
+
+.control-btn .is-active{
+    border: 3px crimson solid;
+    background-color:chocolate;
+    width: 100%;
+    /*padding-inline: 5px;*/
+}
+
+.navbar-body .column{
+    padding: 0.25rem !important;
+}
+
+.control-btn .is-not-active{
+    border: none;
+    border-radius: 0;
+    /*margin-inline: 5px ;*/
+}
+
+.usercog-btn{
+    padding: 0.25rem !important;
+    background-color: burlywood !important;
+    color: royalblue !important;
+    cursor: pointer;
+    height: auto !important;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.usercog-btn:hover{
+    background-color: chocolate !important;
+}
+
+.display-pic-box{
+    margin: 1rem !important;
+}
+
+@media screen and (min-width:1050px){
+    .control-btn{
+        border: none;
+        padding: 1.5rem;
+        border-radius: 50%;
+    }
+    .custom-nav{
+        width: auto !important;
+    }
+    .navbar{
+        width: 1020px;
+    }
+ 
+}
+
+@media screen and (max-width:1050px) and (min-width:770px){
+    .control-btn{
+        border: none;
+        padding: 5px;
+        border-radius: 50%;
+    }
+    .custom-nav{
+        padding: 1rem !important;
+        width: auto !important;
+    }
+    .navbar{
+        width: 50rem;
+    }
+  
+}
+  
+@media screen and (max-width:768px){
+    .control-btn{
+        margin: 0;
+        padding: 0;
+        border-radius: 50% !important;
+    }
+
+    .nav-column{
+        display: block !important;
+        position: absolute !important;
+    }
+    
+    .custom-nav{
+        width: 0px; 
+        left: -25px;
+    }
+
+    .nav-container{
+        padding: 1rem !important;
+    }
+    .navbar{    
+        margin-top: 3.5rem !important;
+        width: 50rem !important;
+        
+    }
+    .navbar-menu{
+        padding-inline: 1rem !important;
+    }
+} 
+
+@media screen and (max-width:425px){
+    .custom-nav{
+        width: 0px ;
+        left: -25px;
+    }
+
+    .nav-container{
+        padding: 1rem !important;
+    }
+    .navbar{
+        width: 100% !important;
+    }
+    .navbar-menu{
+        padding-inline: 0.5rem !important;
+    }
+
+    .navbar-burger span{
+        height:3px !important;
+    }
+} 
+
+@media screen and (max-width:375px){
+    .navbar{
+        width: 23.5rem !important;
+         
+    }
+    .navbar-menu{
+        padding-inline: 0.25rem !important;
+    }
+} 
+
+@media screen and (max-width:321px){
+    .navbar{
+        width: 23.5rem !important;
+        
+    }
+    .navbar-menu{
+        padding-inline: 0.25rem !important;
+    }
+    .mobile-menu{
+        padding-right: 0rem !important;
+    }
+} 

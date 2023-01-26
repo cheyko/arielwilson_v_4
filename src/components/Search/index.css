@@ -1,0 +1,67 @@
+.search-page{
+    margin: 0 auto;
+    width: 90%;
+}
+
+.search-menu .column .box{
+    height: 100% !important;
+}
+
+.search-content .slick-wrapper{
+    width: 50rem !important;
+}
+
+.users-thumbnail .slick-slide {
+    margin-inline: 3rem;
+    width: 20rem !important;
+}
+
+.content figure{
+    margin : 0 !important;
+}
+
+.subpage-title:hover{
+    color: blue;
+}
+
+.radio, .checkbox{
+    margin-inline: 1.5rem !important;
+}
+
+.article-subtitle{
+    color: blue;
+}
+
+.article-subcontent{
+    margin-left: 1rem;
+}
+
+.article-paragraph{
+    margin-left: 1rem;
+    text-justify: newspaper;
+    text-indent: 1rem;
+}
+
+.form-card{
+    height: 7.5rem!important;
+}
+
+.custom-margin{
+    margin:0.5rem;
+}
+
+.create-page .image-upload>input {
+    display: none;
+}
+
+.figcaption {
+    background-color: white;
+    position: relative;
+    width: 100%;
+    z-index: 3;
+    opacity: 0.7;
+}
+
+.search-menu .column .card{
+    height: 20rem;
+}

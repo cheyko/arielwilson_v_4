@@ -1,0 +1,22 @@
+.products-bg-one {
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+      url("../../../static/shopping.jpeg");
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-size: cover;
+    margin: 0 !important;
+    height: 20rem;
+}
+
+.productlistContainer .item-box .card-footer{
+  background-color: orange;
+}
+.productlistContainer .item-box .card-content{
+  background-color: orange;
+}
+
+
+.content figure img{
+  display: block !important;
+}

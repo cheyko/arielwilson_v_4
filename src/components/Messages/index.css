@@ -1,0 +1,134 @@
+
+
+#messages-view{
+    padding-inline: 1rem;
+}
+
+
+.message-tabs-container{
+    position: relative;
+    z-index: 3;
+    height: max-content;
+}
+
+.sub-tabs{
+    padding: 0.5rem;
+}
+
+.message-app-container {
+    position: relative !important;
+    border: solid 3px grey !important;
+    border-radius: 10px !important;
+    width:  inherit !important;
+    
+}
+
+.msg-ad-container .message-body{
+    height: 25rem;
+}
+
+#convo-header, #create-message{
+    height: auto;
+    padding-block: 0.25rem;
+    padding-inline: 1rem;
+}
+
+#create-message{
+    border-top: 2px solid black;
+    margin: 0 !important;
+}
+
+#convo{
+    height: 18rem;
+    padding-inline: 5px;
+    border-top: 2px solid black;
+}
+
+#create-message{
+  z-index: 1;
+  background-color: lemonchiffon;
+}
+
+.inside-convo{
+    z-index: 0 !important;
+    height: 18rem !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding-bottom: 3px;
+}
+
+.convo-msgs{
+    padding: 1rem;
+    background-color: lightgray;
+    overflow-y: auto;
+    max-height: inherit !important;
+}
+
+#message-list{
+    z-index: 0 !important;
+}
+
+.messages-div{
+    padding: 1rem !important; 
+}
+
+.textarea{
+    border: 1px solid #ccc;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 1px 6px !important;
+    display: block !important;
+    width: 100% ;
+    overflow: hidden !important;
+    min-height: 5rem !important;
+    resize: vertical !important;
+    line-height: 20px !important;
+}
+
+.textarea[contenteditable]:empty::before {
+    content: "Enter new message";
+    color: gray;
+}
+
+#send-btn:hover{
+    cursor: pointer;
+    color: blue;
+}
+  
+.msg-span-send{
+    padding: 6px !important;
+    width: 75%;
+    float: left;
+    background-color: aquamarine !important;
+}
+
+.msg-span-rcve{
+    padding: 6px !important;
+    width: 75%;
+    float: right;
+    background-color: khaki !important;
+}
+
+.sent-date{
+    float:right;
+    color:red;
+}
+
+.convo-link{
+    color:black;
+}
+
+.convo-link article:hover{
+    border: blue solid 1px !important;
+    padding: 0.5rem !important;
+}
+
+@media screen and (max-width:400px){
+    .sub-tabs{
+        width: 23rem !important;
+        overflow-x: scroll;
+    }
+}
+
+

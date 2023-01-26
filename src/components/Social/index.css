@@ -1,0 +1,29 @@
+#tabs-row-1, #tabs-row-2 {
+    padding : 0.25rem !important;
+}
+
+.social-content{
+    margin: 0 auto;
+}
+
+.social-container .navbar-menu{
+    overflow: hidden !important ;
+    overflow-x: scroll !important ;
+    box-sizing: border-box !important;
+    flex-direction: column !important;
+}
+
+.social-container .navbar-start{
+    justify-content: center !important;
+    margin: 0 auto;
+}
+
+.social-container .buttons .button{
+    width: 7.5rem !important;
+}
+
+@media screen and (max-width:768px){
+    .nav-row{
+        margin: 0.5rem !important;
+    }
+}

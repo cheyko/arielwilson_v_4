@@ -1,0 +1,14 @@
+.bc-bg-one {
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+      url("../../../static/bicklecourt.jpeg");
+    background-position:center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size:cover;
+    margin: 0 auto !important;
+    height: 20rem;
+}
+
+.bicklelistContainer .item-box .box{
+  background-color:crimson;
+}

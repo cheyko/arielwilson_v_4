@@ -1,0 +1,16 @@
+.settings-page{
+    margin: 0 auto;
+    width: 90%;
+}
+
+.settingsOptions li{
+    cursor:pointer !important;
+}
+
+.settingsOptions li:hover{
+    cursor:pointer !important;
+}
+
+.is-active{
+    color:blue;
+}

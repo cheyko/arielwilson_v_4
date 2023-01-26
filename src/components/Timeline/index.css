@@ -1,0 +1,303 @@
+h1 {
+    color: blue;
+}
+
+.timeline-container{
+    padding: 0 !important;
+    overflow-x: auto !important;
+    margin: 0 auto !important;
+}
+
+.exclusive-content{
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
+.live-dps{
+    padding: 1rem;
+}
+
+.a-live{
+    margin: 0 auto !important;
+}
+
+.image-upload>input {
+    display: none;
+}
+
+.media-select{
+    cursor: pointer;
+}
+
+.upload-wrapper{
+    width: max-content !important;
+    margin: 0 auto;
+}
+
+.upload-wrapper .slick-arrow{
+    z-index: 3 !important;
+    background: black !important;
+}
+
+.hero-timeline .message-header{
+    display: block !important;
+}
+
+.pree-item .message{
+    width: 40rem !important;
+    font-size: 14px !important;
+}
+
+.pree-item .message-body{
+    background-color: wheat !important;
+    padding: 0 !important;
+}
+
+.media-caption{
+    background-color: burlywood;
+    padding: 0.5rem 1rem;
+}
+
+.pree-item{
+    margin: 0 auto;
+    border-radius: 0.5rem;
+}
+
+.pree-item .image{
+    height: fit-content !important;
+}
+
+.pree-slider-wrapper{
+    width: auto !important;
+    padding: 1.25rem !important;
+}
+
+.pree-slider-wrapper .image-container{
+    width: auto !important;
+    margin: 0 auto;
+}
+
+.quote-content{
+    text-align: center;
+    margin: 0 auto;
+    background-color: tan;
+    padding: 1rem;
+}
+
+/*.image-container, .audio-container, .video-container, .quote-container{
+    border: solid black 2px;
+}*/
+
+/* return for future attempt at styling different media files */
+.audio-container{
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 80px solid lightblue;
+}
+
+.pree-comments{
+    padding: 1rem;
+    background-color: wheat !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+}
+
+.list-comments{
+    max-height: 40rem !important;
+    overflow-y: auto !important;
+}
+
+.h-line{
+    margin-block: 1rem;
+    border: 1px dashed black;
+}
+
+/* The sticky class is added to the div with JS when it reaches its scroll position */
+.mp-sticky {
+position: fixed !important;
+top: 10% !important;
+z-index: 6 !important;
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) */
+.mp-sticky + .hero {
+padding-top: 60px !important;
+}
+
+/* The sticky class is added to the div with JS when it reaches its scroll position */
+.sp-sticky {
+position: fixed !important;
+top: 10% !important;
+right: 1rem !important;
+z-index: 6 !important;
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) */
+.sp-sticky + .hero {
+padding-top: 60px !important;
+}
+
+#make-pree-btn{
+    visibility: hidden !important;
+}
+
+.mp-sticky #make-pree-btn{
+    visibility: visible !important;
+}
+
+.comment-box{
+    padding:0.5rem !important;
+}
+
+.comment-reactions ul{
+    display: inline !important;
+}
+
+.comment-reactions li{
+    display: inline;
+    margin: 1rem;
+}
+
+.comment-reactions li{
+    list-style:none;
+}
+
+.delete-controls{
+    margin: 0 auto;
+}
+
+.delete-controls li{
+    float: left;
+    margin-inline: 1rem;
+}
+
+.comment-controls .dropdown-menu{
+    min-width: 6rem;
+}
+
+.video-container{
+    width: 100% !important;
+    height: 20rem !important;
+    margin: 0 auto;
+}
+
+#video{
+    width: inherit !important;
+    height: inherit !important;
+}
+
+.post-btn{
+    font-size: 20px !important;
+}
+
+.display-pic{
+    height: 5rem !important;
+    width: 5rem !important;
+}
+
+.special-header .fas{
+    font-size: large !important;
+}
+
+.reactions{
+    padding-block: 0.5rem !important;
+}
+
+@media screen and (max-width:1025px) and (min-width:768px){
+    .timeline-container{
+        width: 45rem !important;
+    }
+}
+
+@media screen and (max-width:768px) and (min-width:425px){
+    .pree-item .message{
+        width: 40rem !important;
+        font-size: 30px !important;
+    }
+    .timeline-container{
+        width: 45rem !important;
+    }
+    .post-btn{
+        font-size: 30px !important;
+    }
+
+    .large-text{
+        font-size: x-large !important;
+        font-weight: bold !important;
+        padding: 1rem !important;
+    }
+
+    .hero-timeline{
+        padding: 0 !important;
+    }
+
+    .hero-container{
+        margin-top: 3.5rem !important;
+    }
+
+    .exclusive-content{
+        margin-top: 4rem;
+    }
+}
+
+@media screen and (max-width:424px) and (min-width:376px){
+    .timeline-container{
+        width: 24rem;
+    }
+
+    .hero-container{
+        margin-top: 3.5rem !important;
+    }
+    .reaction-txt{
+        display: none !important;
+    }
+    .exclusive-content{
+        margin-top: 4rem;
+        padding: 0;
+    }
+    .pree-item .message{
+        width: 23rem !important;
+        font-size: 25px !important;
+    }
+}
+
+@media screen and (max-width:375px){
+    /*.display-pic{
+        height: 10rem !important;
+        width: 10rem !important;
+    }*/
+    .exclusive-content{
+        margin-top: 4rem;
+        padding: 0;
+    }
+
+    .hero-timeline{
+        padding: 0 !important;
+    }
+    .timeline-container{
+        width: 21rem;
+    }
+    .pree-item .message{
+        width: 20rem !important;
+        font-size: 30px !important;
+    }
+
+    .message-header{
+        padding: 0.25rem !important;
+    }
+
+    .reactions{
+        width: 20rem !important;
+    }
+
+    .hero-container{
+        margin-top: 3.5rem !important;
+    }
+    .reaction-txt{
+        display: none !important;
+    }
+}

@@ -1,0 +1,20 @@
+.wov-bg-one {
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+      url("../../../static/carsales.jpeg");
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-attachment: fixed;
+    background-size:cover;
+    margin: 0 !important;
+    height: 20rem;
+}
+
+.featuresList ul{
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
+
+.carlistContainer .vehicle-card{
+  background-color: lightgreen;
+}

@@ -1,0 +1,147 @@
+.auth-div{
+    border: whitesmoke 3px solid;
+}
+
+.welcome-input{
+    width: auto !important;
+}
+
+.not-unique{
+    border: red 2px solid !important;
+}
+
+.is-unique{
+    border: green 2px solid !important;
+}
+
+.auth-div, .features-snippet-div{
+    background-color: lightblue !important;
+}
+
+.mid-container{
+    position: fixed !important;
+    width: 30rem !important;
+    margin: 0 auto !important;
+    z-index: 3;
+    padding: 1rem !important;
+}
+
+.homepage-div{
+    background-color: lightblue;
+}
+
+.homepage-footer{
+    padding-inline: 1rem !important;
+}
+
+.top-section{
+    height: 16rem !important;
+    background-color: burlywood !important;
+    padding-inline: 3rem !important;
+}
+
+.top-section .title {
+    color: royalblue !important;
+}
+.top-section .subtitle{
+    color: crimson !important;
+}
+
+.left-container{
+    display: block;
+}
+.left-container-copy{
+    display: none;
+}
+
+.modal-form{
+    margin-top: 3rem !important;
+}
+
+.modal-heading{
+    text-align: justify !important;
+    text-justify: inter-word !important;
+}
+
+.define{
+    font-weight: bold !important;
+    color: royalblue;
+
+}
+
+.cloud-text{
+    color: royalblue;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+.special-text{
+    color: crimson !important;
+}
+
+@media screen and (min-width:1300px){
+    .mid-container{
+        width: 29rem !important;
+    }
+}
+
+@media screen and (max-width:1300px) and (min-width:1200px){
+    .mid-container{
+        width: 27rem !important;
+    }
+}
+@media screen and (max-width:1200px) and (min-width:1100px){
+    .mid-container{
+        width: 24rem !important;
+    }
+}
+
+@media screen and (max-width:1100px) and (min-width:1024px){
+    .mid-container{
+        width: 21rem !important;
+    }
+}
+
+@media screen and (max-width:1024px) and (min-width:900px){
+
+    .mid-container{
+        width: 20rem !important;
+        margin: 0rem 1rem !important;
+        padding: 1rem !important;
+    }
+}
+
+@media screen and (max-width:900px) and (min-width:800px){
+
+    .mid-container{
+        width: 18rem !important;
+    }
+}
+
+@media screen and (max-width:800px) and (min-width:768px){
+
+    .mid-container{
+        width: 17rem !important;
+    }
+    .top-section{
+        height: 10rem !important;
+    }
+}
+
+@media screen and (max-width:768px){
+    .mid-container{
+        position: relative !important;
+        width: 100% !important;
+    }
+
+    .left-container{
+        display: none;
+    }
+    .left-container-copy{
+        display: block;
+    }
+
+    .top-section{
+        height: 13rem !important;
+    }
+}
