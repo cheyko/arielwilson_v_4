@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
-import { useHistory, Redirect } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 //import Slider from "react-slick";
 import TrendyControls from "./TrendyControls";
 import TrendyHeader from "./TrendyHeader";
@@ -20,7 +20,7 @@ const ViewTrend = props => {
         arrows: true,
     };*/
 
-    let history = useHistory();
+    let navigate = useNavigate();
     const [view, setView] = useState("view");
     const pree_id = props.match.params.id;
     //const [mainmedia, setMainmedia] = useState(null);
@@ -58,7 +58,7 @@ const ViewTrend = props => {
                 <section className="page-header">
                     <div className="container">
                         <div className="container page-header has-text-centered">
-                            <button className="button is-small is-pulled-left is-info" onClick={e => history.goBack() }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                            <button className="button is-small is-pulled-left is-info" onClick={e => navigate(-1) }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                             <div className="is-pulled-right"> 
                                 <div className="dropdown is-right is-hoverable">
                                     <div className="dropdown-trigger">
@@ -96,7 +96,7 @@ const ViewTrend = props => {
                                         <i className="fas fa-camera-retro"></i> 
                                     </b>
                                     {returnHome && (
-                                        <Redirect to="/images" />
+                                        <Navigate to="/images" />
                                     )}
                                 </div>
                             </div>

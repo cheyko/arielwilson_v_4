@@ -6,7 +6,7 @@ import ListingDetail from "./ListingDetail";
 import ListingFeatures from "./ListingFeatures";
 import SimilarListing from "./SimilarListing";
 
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import $ from 'jquery';
 
 const ViewListing = props => {
@@ -36,7 +36,7 @@ const ViewListing = props => {
     //console.log(listing);
     //console.log(thePics);
     
-    let history = useHistory();
+    let navigate = useNavigate();
     
     return (
         <div className="hero">
@@ -46,7 +46,7 @@ const ViewListing = props => {
                     <div className="columns is-multiline">
                         <div className="leftContent column is-half-desktop is-full-mobile">
                             <div className="hero-body viewing-controls">
-                                <button className="button is-fixed" onClick={() => history.goBack()}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                                <button className="button is-fixed" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                             </div>
                             <br />
                             <ListingImageView listing={listing} thePics={thePics}/>

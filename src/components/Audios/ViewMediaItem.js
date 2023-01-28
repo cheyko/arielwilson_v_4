@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
-import { useHistory, Redirect } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 //import Slider from "react-slick";
 import MediaHeader from "./MediaHeader";
 import MediaControls from "./MediaControls";
@@ -22,7 +22,7 @@ const ViewMediaItem = props => {
         arrows: true,
     };*/
 
-    let history = useHistory();
+    let navigate = useNavigate();
     const [view, setView] = useState("view");
     const pree_id = props.match.params.id;
     const [mainmedia, setMainmedia] = useState(null);
@@ -60,7 +60,7 @@ const ViewMediaItem = props => {
                 <section className="page-header">
                     <div className="container">
                         <div className="container page-header has-text-centered">
-                            <button className="button is-small is-pulled-left is-info" onClick={e => history.goBack() }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                            <button className="button is-small is-pulled-left is-info" onClick={e => navigate(-1) }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                             <div className="is-pulled-right"> 
                                 <div className="dropdown is-right is-hoverable">
                                     <div className="dropdown-trigger">
@@ -94,7 +94,7 @@ const ViewMediaItem = props => {
                                 <div className="container is-fullwidth">
                                     <b className="title reaction-btn subpage-title" onClick={e => setReturn(true) }> <i className="fas fa-record-vinyl"></i> BLUEBERRY MD-STEREO ! </b>
                                     {returnHome && (
-                                        <Redirect to="/audios" />
+                                        <Navigate to="/audios" />
                                     )}
                                 </div>
                             </div>

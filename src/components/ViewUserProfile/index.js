@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
 import axios from 'axios';
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import ProfileBio from '../Profile/ProfileBio';
 import ProfileHeader from '../Profile/ProfileHeader';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 const ViewUserProfile = props => {
 
-    let history = useHistory();
+    let navigate = useNavigate();
 
     //let userview = localStorage.getItem("userview");
     const userview_id = props.match.params.id;
@@ -117,14 +117,14 @@ const ViewUserProfile = props => {
     }
 
     return (`${user_id}` === `${userview_id}`) ? (
-        <Redirect to="/profile" />
+        <Navigate to="/profile" />
     ):(  
         <div className="hero">
             <div className="hero-body">
                 
                 <div className="hero-body box userview-profile-box" style={{width:"90%",margin:"0 auto"}}>
                  
-                    <button className="button return-btn is-info" onClick={() => history.goBack()}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                    <button className="button return-btn is-info" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                  
                     <ProfileHeader showDropDown={showDropDown} setShowDropDown={setShowDropDown} isFollower={isFollower} follow={follow} unfollow={unfollow} user={userview} imgView={imgView} vidView={vidView} action="read" />
                     

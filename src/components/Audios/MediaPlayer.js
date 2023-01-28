@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import MediaPlayerList from "./MediaPlayerList";
 import MediaPlayerUpload from "./MediaPlayerUpload";
@@ -31,7 +31,7 @@ const MediaPlayer = props => {
         autoplaySpeed: 1500,
     };
 
-    let history = useHistory();
+    let navigate = useNavigate();
 
     useEffect( () => {
         window.scroll(0,0);
@@ -43,7 +43,7 @@ const MediaPlayer = props => {
                 <section className="page-header">
                     <div className="container">
                         <div className="container page-header has-text-centered">
-                            <button className="button is-small is-pulled-left is-info" onClick={e => view === "main" ? history.goBack() : setView("main") }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                            <button className="button is-small is-pulled-left is-info" onClick={e => view === "main" ? navigate(-1) : setView("main") }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                             <div className="is-pulled-right"> 
                                 <div className="dropdown is-right is-hoverable">
                                     <div className="dropdown-trigger">

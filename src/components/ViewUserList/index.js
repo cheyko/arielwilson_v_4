@@ -3,7 +3,7 @@ import './index.css';
 import withContext from '../../withContext';
 import axios from 'axios';
 import ViewUser from '../ViewUser';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // pass list of ID's as props and have function to get full userlist
 // let id of 0 represent search 
@@ -17,7 +17,7 @@ const ViewUserList = props => {
     const user_id = props.match.params.id;
     const option = props.match.params.action;
     const [viewlist, setViewList] = useState(null);
-    let history = useHistory();
+    let navigate = useNavigate();
 
     if (viewlist === null){
         switch(option){
@@ -69,7 +69,7 @@ const ViewUserList = props => {
     return (
         <div className="hero">
             <div className="hero-body has-text-centered">
-                <button className="button is-pulled-left is-info" onClick={e => history.goBack() }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                <button className="button is-pulled-left is-info" onClick={e => navigate(-1) }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                             
                 <h1 className="title">{option}</h1>
                 <div className="columns is-multiline is-mobile">

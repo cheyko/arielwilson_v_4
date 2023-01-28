@@ -19,7 +19,7 @@ const customStyles = {
     },
     content : {
       width: '35rem',
-      height                : '25rem',
+      height                : '35rem',
       top                   : '55%',
       left                  : '50%',
       right                 : 'auto',

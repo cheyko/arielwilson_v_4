@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import withContext from "../../withContext";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import Login from "./Login";
 import Signup from "./Signup";
@@ -145,7 +145,7 @@ const Homepage = props => {
                         </div>
                     </div>
                     <div className="auth-div column no-padding is-one-third">
-                        <div className="mid-container">
+                        <div className="middle">
                             <div className="container">
                                 <Login />
                                 <hr style={{margin:"0.5rem"}}/>
@@ -175,7 +175,7 @@ const Homepage = props => {
             </div>
         </div>
     ) : (
-            <Redirect to="/" />
+            <Navigate to="/" />
         )
     )
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../../withContext";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import CreatePedia from "./CreatePedia";
 import PagesList from "./PagesList";
@@ -26,7 +26,7 @@ const Preepedia = props => {
         arrows: true,
     };
 
-    let history = useHistory();
+    let navigate = useNavigate();
 
     useEffect( () => {
         window.scroll(0,0);
@@ -38,7 +38,7 @@ const Preepedia = props => {
                 <div className="hero-contain">
                     <div className="container">
                         <div className="has-text-centered">
-                            <button className="button is-small is-pulled-left is-info" onClick={e => view === "home" ? history.goBack() : setView("home") }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                            <button className="button is-small is-pulled-left is-info" onClick={e => view === "home" ? navigate(-1) : setView("home") }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                             <div className="is-pulled-right"> 
                                 <div className="dropdown is-right is-hoverable">
                                     <div className="dropdown-trigger">

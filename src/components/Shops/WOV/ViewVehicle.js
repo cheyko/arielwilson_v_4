@@ -7,7 +7,7 @@ import VehicleDetail from "./VehicleDetail";
 import VehicleFeatures from "./VehicleFeatures";
 import SimilarVehicle from "./SimilarVehicle";
 
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import $ from 'jquery';
 
 const ViewVehicle = props => {
@@ -43,7 +43,7 @@ const ViewVehicle = props => {
     //console.log(Vehicle);
     //console.log(thePics);
     
-    let history = useHistory();
+    let navigate = useNavigate();
     
     return (
         <div className="hero">
@@ -52,7 +52,7 @@ const ViewVehicle = props => {
                     <div className="columns">
                         <div className="leftContent column is-half">
                             <div className="hero-body viewing-controls">
-                                <button className="button is-fixed" onClick={() => history.goBack()}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                                <button className="button is-fixed" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                             </div>
                             <br />
                             <VehicleImageView vehicle={vehicle} thePics={thePics}/>

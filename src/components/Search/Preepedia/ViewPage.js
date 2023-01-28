@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import withContext from "../../../withContext";
-import {useHistory, Link} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import Slider from "react-slick";
 
 const ViewPage = props => {
@@ -15,7 +15,7 @@ const ViewPage = props => {
         arrows: true,
     };
 
-    let history = useHistory();
+    let navigate = useNavigate();
 
     const page_id = props.match.params.id;
     const [pageview, setPageView] = useState(null);
@@ -58,7 +58,7 @@ const ViewPage = props => {
                 <div className="content search-page">
                     <div className="container page-header">
                         <div className="container has-text-centered">
-                            <button className="button is-pulled-left" onClick={e => history.goBack()}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                            <button className="button is-pulled-left" onClick={e => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                             <div className="is-pulled-right"> 
                                 <div className="dropdown is-right is-hoverable">
                                     <div className="dropdown-trigger">

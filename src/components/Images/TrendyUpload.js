@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import withContext from "../../withContext";
 import axios from "axios";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import TrendyControls from "./TrendyControls";
 import TrendyHeader from "./TrendyHeader";
 import TrendyImage from "./TrendyImage";
@@ -154,7 +154,7 @@ const TrendyUpload = props => {
                     if (result.status === 200){
                         setResponseMsg("Exclusive Uploaded");
                         const pree_id = result.data.pree_id;
-                        return <Redirect to={`/view-exclusive/${pree_id}`} />
+                        return <Navigate to={`/view-exclusive/${pree_id}`} />
                     }else{
                         setResponseMsg("Media was not uploaded, please try again. Contact us for suppport if problem persist.");
                     }

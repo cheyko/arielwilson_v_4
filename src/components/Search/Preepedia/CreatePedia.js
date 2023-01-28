@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../../withContext";
 import axios from "axios";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import Slider from "react-slick";
 
 
@@ -345,7 +345,7 @@ const CreatePedia = props => {
                         const page_id = result.data.page_id;
                         //add listing to context 
                         //clearFunc();
-                        return <Redirect to={`/view-page/${page_id}`} />
+                        return <Navigate to={`/view-page/${page_id}`} />
                     }else{
                         setResponseMsg("Page was not saved, please try again. Contact us for suppport if problem persist.");
                     }

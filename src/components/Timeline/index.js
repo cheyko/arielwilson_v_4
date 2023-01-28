@@ -135,7 +135,7 @@ const Timeline = props => {
                         {[0,1,2,3,4,5,6,7,8,9,10,11].map( (item,index) => (
                             <div key={index} className="a-live">
                                 <figure className="display-pic image is-128x128">
-                                    <img className="is-rounded" alt="display" src={process.env.PUBLIC_URL + "/images/test_image.jpg"} />
+                                    <img className="is-rounded" alt="display" src={process.env.PUBLIC_URL + "/images/default-dp.jpeg"} />
                                 </figure>
                             </div>
                         ))}                             

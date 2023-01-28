@@ -5,8 +5,8 @@ import 'react-tabs/style/react-tabs.css';
 
 import DataTable from 'react-data-table-component';
 import 'resize-observer-polyfill/dist/ResizeObserver.global';
-import { TimeGridScheduler, classes } from 'react-weekly-schedule';
-import 'react-weekly-schedule/index.css';
+import { TimeGridScheduler, classes } from 'react-weekly-scheduler';
+import 'react-weekly-scheduler/build/index.css';
 
 const Schedule = props => {
     const columns = [

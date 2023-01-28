@@ -7,7 +7,7 @@ import 'react-tabs/style/react-tabs.css';
 
 //Helpers
 import React, { Component } from "react";
-import { HashRouter, Switch, Route, Link, Redirect, BrowserRouter as Router} from "react-router-dom";
+import { Routes, Route, Navigate, BrowserRouter as Router, Outlet} from "react-router-dom";
 import axios from "axios";
 import Context from "./Context";
 import jwt_decode from 'jwt-decode';
@@ -472,7 +472,7 @@ export default class App extends Component {
     localStorage.removeItem("user-context");
     localStorage.removeItem("ready");
     localStorage.removeItem("welcome");
-    return <Redirect to="/" />;
+    return <Navigate to="/" />;
   }
 
   toggleMenu = e => {
@@ -520,7 +520,7 @@ export default class App extends Component {
           toggleMenu:this.toggleMenu
         }}>
           <Router ref={this.routeRef}>
-             <HashRouter>
+             
               {this.state.ready ? (           
                 <div className="hero main-container">
                   <div className="columns is-mobile is-multiline">
@@ -537,49 +537,50 @@ export default class App extends Component {
                             ( <span className="button reverse-colors"><FontAwesomeIcon icon={faTimes} size="2x" /> </span> )
                           }
                       </div>
-                      <Switch>
-                        <Route exact path="/" component={Timeline} />
-                        <Route exact path="/home" component={Homepage} />
-                        <Route exact path="/profile" component={Profile} />
-                        <Route exact path="/audios" component={Audios} />
-                        <Route exact path="/audios/stereo" component={Audios} />
-                        <Route exact path="/images" component={Images} />
-                        {/*<Route exact path="/follower" component={Follower} />
-                        <Route exact path="/following" component={Following} />*/}
-                        <Route exact path="/quotes" component={Quotes} />
-                        <Route exact path="/settings" component={Settings} />
-                        {/*<Route exact path="/signup" component={Signup} />
-                        <Route exact path="/login" component={Login} />*/}
-                        <Route exact path="/videos" component={Videos} />
-                        <Route exact path="/notifications" component={Notifications} />
-                        <Route exact path="/social" component={Social} />
-                        <Route exact path="/messages/:category/:msgtype/:id" component={Messages} />
-                        <Route exact path="/search" component={Search} />
-                        <Route exact path="/test" component={Test} />
-                        <Route exact path="/wallet" component={Wallet} />
-                        <Route exact path="/activities" component={Activities} />
-                        <Route exact path="/shops" component={Shops} />
-                        <Route exact path="/wgr" component={WGR} />
-                        <Route exact path="/view-pree/:id" component={ViewPree} />
-                        <Route exact path="/view-blueberry/:id" component={ViewMediaItem} />
-                        <Route exact path="/view-trendy/:id" component={ViewTrend} />
-                        <Route exact path="/view-user-profile/:id" component={ViewUserProfile} />
-                        <Route exact path="/view-user-list/:id/:action" component={ViewUserList} />
-                        <Route exact path="/groups/:id/:action" component={Groups} />
-                        <Route exact path="/view-group/:id/" component={ViewGroup} />
-                        <Route exact path="/shops/propfinder" component={PropFinder} />
-                        <Route exact path="/listing-view/:id" component={ViewListing} />
-                        <Route exact path="/vehicle-view/:id" component={ViewVehicle} />
-                        <Route exact path="/product-view/:id" component={ViewProduct} />
-                        <Route exact path="/service-view/:id" component={ViewService} />
-                        <Route exact path="/item-view/:id" component={ViewItem} />
-                        <Route exact path="/preepedia" component={Preepedia} />
-                        <Route exact path="/preepedia/view-page/:id/" component={ViewPage} />
-                        <Route exact path="/specials" component={Specials} />
-                        <Route exact path="/talkie" component={Talkie} />
-                        <Route exact path="/live" component={Live} />
-                        {/*<Route exact path="/welcome" component={Welcome} />*/}
-                      </Switch>
+                      <Routes>
+                        <Route exact path="/" element={<Timeline />}>
+                          <Route exact path="/home" element={<Homepage />} />
+                          <Route exact path="/profile" element={<Profile />} />
+                          <Route exact path="/audios" element={<Audios />} />
+                          <Route exact path="/audios/stereo" element={<Audios />} />
+                          <Route exact path="/images" element={<Images />} />
+                          {/*<Route exact path="/follower" component={Follower} />
+                          <Route exact path="/following" component={Following} />*/}
+                          <Route exact path="/quotes" element={<Quotes />} />
+                          <Route exact path="/settings" element={<Settings />} />
+                          {/*<Route exact path="/signup" component={Signup} />
+                          <Route exact path="/login" component={Login} />*/}
+                          <Route exact path="/videos" element={<Videos />} />
+                          <Route exact path="/notifications" element={<Notifications />} />
+                          <Route exact path="/social" element={<Social />} />
+                          <Route exact path="/messages/:category/:msgtype/:id" element={<Messages />} />
+                          <Route exact path="/search" element={<Search />} />
+                          <Route exact path="/test" element={<Test />} />
+                          <Route exact path="/wallet" element={<Wallet />} />
+                          <Route exact path="/activities" element={<Activities />} />
+                          <Route exact path="/shops" element={<Shops />} />
+                          <Route exact path="/wgr" element={<WGR />} />
+                          <Route exact path="/view-pree/:id" element={<ViewPree />} />
+                          <Route exact path="/view-blueberry/:id" element={<ViewMediaItem />} />
+                          <Route exact path="/view-trendy/:id" element={<ViewTrend />} />
+                          <Route exact path="/view-user-profile/:id" element={<ViewUserProfile />} />
+                          <Route exact path="/view-user-list/:id/:action" element={<ViewUserList />} />
+                          <Route exact path="/groups/:id/:action" element={<Groups />} />
+                          <Route exact path="/view-group/:id/" element={<ViewGroup />} />
+                          <Route exact path="/shops/propfinder" element={<PropFinder />} />
+                          <Route exact path="/listing-view/:id" element={<ViewListing />} />
+                          <Route exact path="/vehicle-view/:id" element={<ViewVehicle />} />
+                          <Route exact path="/product-view/:id" element={<ViewProduct />} />
+                          <Route exact path="/service-view/:id" element={<ViewService />} />
+                          <Route exact path="/item-view/:id" element={<ViewItem />} />
+                          <Route exact path="/preepedia" element={<Preepedia />} />
+                          <Route exact path="/preepedia/view-page/:id/" element={<ViewPage />} />
+                          <Route exact path="/specials" element={<Specials />} />
+                          <Route exact path="/talkie" element={<Talkie />} />
+                          <Route exact path="/live" element={<Live />} />
+                          {/*<Route exact path="/welcome" component={Welcome} />*/}
+                        </Route>
+                      </Routes>
                     </div>
                   </div>
                 </div>
@@ -594,7 +595,7 @@ export default class App extends Component {
                   </div>
                 )                
               )}
-            </HashRouter>
+            
           </Router>
       </Context.Provider>
     )

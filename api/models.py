@@ -86,7 +86,6 @@ class Profile(db.Model):
     closest = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'))
     has_dp = db.Column(db.Boolean)
     has_cv = db.Column(db.Boolean)
-    ranking = db.Column(db.Integer, db.ForeignKey('wg_rankings.ranking_id')) #on production database make nullable false, make default lowest rank
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     ranking = db.Column(db.Integer, db.ForeignKey('wg_rankings.ranking_id'), default=1) #, nullable=False)
 
