@@ -15,94 +15,22 @@ const Layout = props => {
     return(
         <>
         {props.context.ready ? (           
-                <div className="hero">
-                  <div className="columns is-mobile">
-                    <div className="column is-one-quarter nav-container"> 
-                      
-                      <div className="display-div">
-                        <h1 className='title'> W@H GW@@N </h1>
-                        <figure className="image is-128x128">
-                          <img className="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" />
-                        </figure>
+                <div className="hero main-container">
+                  <div className="columns is-mobile is-multiline">
+                    <div className="column nav-column is-one-quarter"> 
+                      <div className="App">
+                        <Navbar />
                       </div>
-                      <br />
-                      <div className='menu-options'>
-                        <div className='columns'>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                        </div>
-                        <div className='columns'>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                        </div>
-                        <div className='columns'>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                        </div>
-                        <div className='columns'>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                        </div>
-                        <div className='columns'>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                          <div className='column control-btn'>
-                            <FontAwesomeIcon icon={faGlobe} size="3x" /><br/>
-                            <b>Option 1</b>
-                          </div>
-                        </div>
-                        
-                      </div>
-                     
                     </div>
-                    <div className="column app-container"> 
-                      app
+                    <div className="column container app-container"> 
+                      <div className={`mobile-menu menu-color reaction-btn ${!props.context.toggle ? "has-text-centered" : "has-text-right"}`} onClick={ e => props.context.toggleMenu(e) }>
+                          {!props.context.toggle ?
+                            ( <span className="button reverse-colors"><b> Main Menu </b> &nbsp; <FontAwesomeIcon icon={faBars} size="2x" /> </span> )
+                            :
+                            ( <span className="button reverse-colors"><FontAwesomeIcon icon={faTimes} size="2x" /> </span> )
+                          }
+                      </div>
+                      {/*<Outlet />*/}
                     </div>
                   </div>
                 </div>
@@ -117,37 +45,6 @@ const Layout = props => {
                   </div>
                 )                
                 )}
-            {/*props.context.ready ? (           
-                <div className="hero main-container">
-                  <div className="columns is-mobile is-multiline">
-                    <div className="column nav-column is-one-quarter"> 
-                      <div className="App">
-                        <Navbar />
-                      </div>
-                    </div>
-                    <div className="column container app-container is-three-quarters"> 
-                      <div className={`mobile-menu menu-color reaction-btn ${!props.context.toggle ? "has-text-centered" : "has-text-right"}`} onClick={ e => props.context.toggleMenu(e) }>
-                          {!props.context.toggle ?
-                            ( <span className="button reverse-colors"><b> Main Menu </b> &nbsp; <FontAwesomeIcon icon={faBars} size="2x" /> </span> )
-                            :
-                            ( <span className="button reverse-colors"><FontAwesomeIcon icon={faTimes} size="2x" /> </span> )
-                          }
-                      </div>
-                      <Outlet />
-                    </div>
-                  </div>
-                </div>
-              ):( 
-                props.context.welcome ? (
-                  <div className="hero">
-                      <Welcome />
-                  </div>
-                ):(
-                  <div className="hero homepage-div">
-                      <Homepage />  
-                  </div>
-                )                
-                )*/}
         </>
     );
 

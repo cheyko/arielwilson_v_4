@@ -1,4 +1,4 @@
-/*.custom-nav{
+.custom-nav{
     background-color:burlywood;
     height: 100%;
     font-size: 13px !important;
@@ -63,7 +63,7 @@
     border: 3px crimson solid;
     background-color:chocolate;
     width: 100%;
-    /*padding-inline: 5px;
+    /*padding-inline: 5px; */
 }
 
 .navbar-body {
@@ -76,7 +76,7 @@
 .control-btn .is-not-active{
     border: none;
     border-radius: 0;
-    /*margin-inline: 5px ;
+    /*margin-inline: 5px ; */
 }
 
 .usercog-btn{
@@ -137,7 +137,7 @@
     }
     .custom-nav{
         padding: 1rem !important;
-        width: 25% !important;
+        width: 30% !important;
     }
     .navbar{
         width: 50rem;
@@ -230,5 +230,5 @@
 
     /*.mobile-menu{
         padding-right: 0rem !important;
-    }
-}*/
+    }*/
+}

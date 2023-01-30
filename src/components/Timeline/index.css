@@ -1,4 +1,4 @@
-/*h1 {
+h1 {
     color: blue;
 }
 
@@ -86,9 +86,9 @@
 
 /*.image-container, .audio-container, .video-container, .quote-container{
     border: solid black 2px;
-}
+}*/
 
-/* return for future attempt at styling different media files 
+/* return for future attempt at styling different media files */
 .audio-container{
     width: 0;
     height: 0;
@@ -116,27 +116,27 @@
     border: 1px dashed black;
 }
 
-/* The sticky class is added to the div with JS when it reaches its scroll position 
+/* The sticky class is added to the div with JS when it reaches its scroll position */
 .mp-sticky {
 position: fixed !important;
 top: 10% !important;
 z-index: 6 !important;
 }
 
-/* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) 
+/* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) */
 .mp-sticky + .hero {
 padding-top: 60px !important;
 }
 
-/* The sticky class is added to the div with JS when it reaches its scroll position 
+/* The sticky class is added to the div with JS when it reaches its scroll position */
 .sp-sticky {
 position: fixed !important;
-/*top: 10vh !important;
+/*top: 10vh !important; */
 right: 3% !important;
 z-index: 6 !important;
 }
 
-/* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) 
+/* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) */
 .sp-sticky + .hero {
 padding-top: 60px !important;
 }
@@ -243,7 +243,7 @@ padding-top: 60px !important;
     }
 
     .sp-sticky {
-        /*top: 10vh !important;
+        /*top: 10vh !important;*/
         right: 20% !important;
 
     }
@@ -280,7 +280,7 @@ padding-top: 60px !important;
     /*.display-pic{
         height: 10rem !important;
         width: 10rem !important;
-    }
+    }*/
     .exclusive-content{
         margin-top: 4rem;
         padding: 0;
@@ -311,4 +311,4 @@ padding-top: 60px !important;
     .reaction-txt{
         display: none !important;
     }
-}*/
+}

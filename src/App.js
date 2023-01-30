@@ -86,9 +86,9 @@ export default class App extends Component {
     let val = window.screen.width;
     let boxWidth;
     if (val < 500){
-       boxWidth = 300;
+       boxWidth = "85%";
     }else{
-        boxWidth = 700;
+        boxWidth = "60%";
     }
     //if User is logged in
     recent = recent ? parseInt(JSON.parse(recent)) : 0;

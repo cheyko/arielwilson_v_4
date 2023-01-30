@@ -1,4 +1,4 @@
-/*.hero-contain{
+.hero-contain{
   padding: 1rem !important;
 }
 
@@ -181,7 +181,7 @@
   cursor: pointer;
 }
 
-/* possibly will have to move app.css 
+/* possibly will have to move app.css */
 .username{
   border-radius: 1rem;
   background-color:royalblue !important;
@@ -210,7 +210,7 @@
 /*.tabs-btn{
   padding: 0.25rem;
   margin: 0.25rem;
-} 
+} */
 
 .tabs-title{
   font-size: small !important;
@@ -293,6 +293,47 @@ ul .is-active{
     color: burlywood !important;
 }
 
+.ads-heading{
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  padding: 0.25rem;
+}
+
+.no-margin{
+  margin: 0 !important;
+}
+
+.no-padding{
+  padding: 0 !important;
+}
+
+.text-area{
+  white-space: pre-wrap !important;
+}
+
+.is-fullwidth{
+  width: 100% !important;
+}
+
+.mobile-menu{
+  background-color: royalblue !important;
+  color: #deb887 !important;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  position: fixed !important;
+  z-index: 6;
+}
+
+.reverse-colors{
+  background-color: burlywood !important;
+  color: royalblue !important;
+}
+
+.message-body .container{
+  margin-block: 0 1rem !important ;
+}
+
 @media screen and (min-width:768px){
   .tile-column{
     margin-inline: 0 !important;
@@ -320,88 +361,24 @@ ul .is-active{
     width: max-content !important;
   }
 
+  .app-container{
+    width: 100% !important;
+    padding: 1rem;
+  }
+
   /*.special-header .tag{
     font-size: 26px !important;
-  }
-}
-
-.ads-heading{
-  background-color: white;
-  color: black;
-  font-weight: bold;
-  padding: 0.25rem;
-}
-
-.no-margin{
-  margin: 0 !important;
-}
-
-.no-padding{
-  padding: 0 !important;
-}
-
-.text-area{
-  white-space: pre-wrap !important;
-}
-
-.is-fullwidth{
-  width: 100% !important;
-}
-
-.mobile-menu{
-  background-color: royalblue !important;
-  color: #deb887 !important;
-  padding: 0.5rem;
-  position: fixed !important;
-  z-index: 6;
-}
-
-.reverse-colors{
-  background-color: burlywood !important;
-  color: royalblue !important;
-}
-
-.message-body .container{
-  margin-block: 0 1rem !important ;
+  }*/
 }
 
 @media screen and (max-width:768px) and (min-width:425px){
-  .app-container{
+  /*.app-container{
     width: 50rem !important;
     padding: 1rem;
-  }
+  }*/
 
   .mobile-menu{
     display: block !important;
-    width: 30rem !important;
-    margin: 0 auto !important;
-    padding-right: 1rem !important;
-  }
-
-  .hero-content{
-    margin-top: 3rem;
-  }
-  .buttons{
-    padding-inline: 1rem !important;
-  }
-
-  .slick-wrapper{
-    max-width: 40rem;
-  }
-
-}
-
-@media screen and (max-width:768px) and (min-width:425px){
-  .app-container{
-    width: 50rem !important;
-    padding: 1rem;
-  }
-
-  .mobile-menu{
-    display: block !important;
-    width: 30rem !important;
-    margin: 0 auto !important;
-    padding-right: 1rem !important;
   }
 
   .hero-content{
@@ -418,19 +395,16 @@ ul .is-active{
 }
 
 @media screen and (max-width:424px) and (min-width:375px){
-  .app-container{
+  /*.app-container{
     width: 27.5rem !important;
     padding: 1rem;
-  }
+  }*/
 
   .pree-item .is-fullwidth{
     width: auto !important;
   }
   .mobile-menu{
     display: block !important;
-    width: 100% !important;
-    margin: 0 auto !important;
-    padding-right: 1.5rem !important;
   }
   .hero-content{
     margin-top: 3rem;
@@ -444,18 +418,17 @@ ul .is-active{
 }
 
 @media screen and (max-width:375px){
-  .app-container{
+  /*.app-container{
     width: 25rem !important;
     padding: 1rem;
-  }
+  }*/
 
   .pree-item .is-fullwidth{
     width: auto !important;
   }
 
   .mobile-menu{
-    width: 100% !important;
-    padding-right: 1.5rem !important;
+    display: block !important;
   }
 
   .hero-content{
@@ -467,12 +440,12 @@ ul .is-active{
 }
 
 @media screen and (max-width:320px){
-  .mobile-menu{
+  /*.mobile-menu{
     width: 100% !important;
-  }
+  }*/
 
   .hero-content{
     margin-top: 3rem;
   }
   
-}*/
+}
