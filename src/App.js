@@ -7,7 +7,7 @@ import 'react-tabs/style/react-tabs.css';
 
 //Helpers
 import React, { Component } from "react";
-import { Routes, Route, Navigate, BrowserRouter as Router, Outlet} from "react-router-dom";
+import { Routes, Route, Navigate, BrowserRouter as Router} from "react-router-dom";
 import axios from "axios";
 import Context from "./Context";
 import jwt_decode from 'jwt-decode';
@@ -15,7 +15,6 @@ import jwt_decode from 'jwt-decode';
 //Components
 import Profile from "./components/Profile";
 import Timeline from "./components/Timeline";
-import Navbar from "./components/Navbar";
 import Notifications from "./components/Notifications";
 import Quotes from "./components/Quotes";
 import Audios from './components/Audios';
@@ -23,7 +22,6 @@ import Messages from './components/Messages';
 import Images from './components/Images';
 import Videos from './components/Videos';
 import Settings from './components/Settings';
-import Homepage from './components/Homepage';
 
 //import Follower from './components/Follower';
 //import Following from './components/Following';
@@ -36,8 +34,6 @@ import Wallet from './components/Wallet';
 import Activities from './components/Activities';
 import Shops from './components/Shops';
 import WGR from './components/WGR';
-
-import Welcome from './components/Homepage/Welcome';
 import ViewUserProfile from './components/ViewUserProfile';
 import ViewUserList from './components/ViewUserList';
 import PropFinder from './components/Shops/PropFinder';
@@ -56,12 +52,11 @@ import ViewMediaItem from './components/Audios/ViewMediaItem';
 import ViewTrend from './components/Images/ViewTrend';
 import ItemView from './components/Shops/BickleCourt/ItemImageView';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import $ from 'jquery';
 import Specials from './components/Specials';
 import Talkie from './components/Talkie';
 import Live from './components/Live';
+import Layout from './components/Layout';
 
 
 export default class App extends Component {
@@ -520,81 +515,51 @@ export default class App extends Component {
           toggleMenu:this.toggleMenu
         }}>
           <Router ref={this.routeRef}>
-             
-              {this.state.ready ? (           
-                <div className="hero main-container">
-                  <div className="columns is-mobile is-multiline">
-                    <div className="column nav-column is-one-quarter"> 
-                      <div className="App">
-                        <Navbar />
-                      </div>
-                    </div>
-                    <div className="column container app-container is-three-quarters"> 
-                      <div className={`mobile-menu menu-color reaction-btn ${!this.state.toggle ? "has-text-centered" : "has-text-right"}`} onClick={ e => this.toggleMenu(e) }>
-                          {!this.state.toggle ?
-                            ( <span className="button reverse-colors"><b> Main Menu </b> &nbsp; <FontAwesomeIcon icon={faBars} size="2x" /> </span> )
-                            :
-                            ( <span className="button reverse-colors"><FontAwesomeIcon icon={faTimes} size="2x" /> </span> )
-                          }
-                      </div>
-                      <Routes>
-                        <Route exact path="/" element={<Timeline />}>
-                          <Route exact path="/home" element={<Homepage />} />
-                          <Route exact path="/profile" element={<Profile />} />
-                          <Route exact path="/audios" element={<Audios />} />
-                          <Route exact path="/audios/stereo" element={<Audios />} />
-                          <Route exact path="/images" element={<Images />} />
-                          {/*<Route exact path="/follower" component={Follower} />
-                          <Route exact path="/following" component={Following} />*/}
-                          <Route exact path="/quotes" element={<Quotes />} />
-                          <Route exact path="/settings" element={<Settings />} />
-                          {/*<Route exact path="/signup" component={Signup} />
-                          <Route exact path="/login" component={Login} />*/}
-                          <Route exact path="/videos" element={<Videos />} />
-                          <Route exact path="/notifications" element={<Notifications />} />
-                          <Route exact path="/social" element={<Social />} />
-                          <Route exact path="/messages/:category/:msgtype/:id" element={<Messages />} />
-                          <Route exact path="/search" element={<Search />} />
-                          <Route exact path="/test" element={<Test />} />
-                          <Route exact path="/wallet" element={<Wallet />} />
-                          <Route exact path="/activities" element={<Activities />} />
-                          <Route exact path="/shops" element={<Shops />} />
-                          <Route exact path="/wgr" element={<WGR />} />
-                          <Route exact path="/view-pree/:id" element={<ViewPree />} />
-                          <Route exact path="/view-blueberry/:id" element={<ViewMediaItem />} />
-                          <Route exact path="/view-trendy/:id" element={<ViewTrend />} />
-                          <Route exact path="/view-user-profile/:id" element={<ViewUserProfile />} />
-                          <Route exact path="/view-user-list/:id/:action" element={<ViewUserList />} />
-                          <Route exact path="/groups/:id/:action" element={<Groups />} />
-                          <Route exact path="/view-group/:id/" element={<ViewGroup />} />
-                          <Route exact path="/shops/propfinder" element={<PropFinder />} />
-                          <Route exact path="/listing-view/:id" element={<ViewListing />} />
-                          <Route exact path="/vehicle-view/:id" element={<ViewVehicle />} />
-                          <Route exact path="/product-view/:id" element={<ViewProduct />} />
-                          <Route exact path="/service-view/:id" element={<ViewService />} />
-                          <Route exact path="/item-view/:id" element={<ViewItem />} />
-                          <Route exact path="/preepedia" element={<Preepedia />} />
-                          <Route exact path="/preepedia/view-page/:id/" element={<ViewPage />} />
-                          <Route exact path="/specials" element={<Specials />} />
-                          <Route exact path="/talkie" element={<Talkie />} />
-                          <Route exact path="/live" element={<Live />} />
-                          {/*<Route exact path="/welcome" component={Welcome} />*/}
-                        </Route>
-                      </Routes>
-                    </div>
-                  </div>
-                </div>
-              ):( 
-                this.state.welcome ? (
-                  <div className="hero">
-                      <Welcome />
-                  </div>
-                ):(
-                  <div className="hero homepage-div">
-                      <Homepage />  
-                  </div>
-                )                
-              )}
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Timeline />} />
+                {/*<Route path="/home" element={<Homepage />} />*/}
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/audios" element={<Audios />} />
+                <Route path="/audios/stereo" element={<Audios />} />
+                <Route path="/images" element={<Images />} />
+                {/*<Route path="/follower" component={Follower} />
+                <Route path="/following" component={Following} />*/}
+                <Route path="/quotes" element={<Quotes />} />
+                <Route path="/settings" element={<Settings />} />
+                {/*<Route path="/signup" component={Signup} />
+                <Route path="/login" component={Login} />*/}
+                <Route path="/videos" element={<Videos />} />
+                <Route path="/notifications" element={<Notifications />} />
+                <Route path="/social" element={<Social />} />
+                <Route path="/messages/:category/:msgtype/:id" element={<Messages />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/test" element={<Test />} />
+                <Route path="/wallet" element={<Wallet />} />
+                <Route path="/activities" element={<Activities />} />
+                <Route path="/shops" element={<Shops />} />
+                <Route path="/wgr" element={<WGR />} />
+                <Route path="/view-pree/:id" element={<ViewPree />} />
+                <Route path="/view-blueberry/:id" element={<ViewMediaItem />} />
+                <Route path="/view-trendy/:id" element={<ViewTrend />} />
+                <Route path="/view-user-profile/:id" element={<ViewUserProfile />} />
+                <Route path="/view-user-list/:id/:action" element={<ViewUserList />} />
+                <Route path="/groups/:id/:action" element={<Groups />} />
+                <Route path="/view-group/:id/" element={<ViewGroup />} />
+                <Route path="/shops/propfinder" element={<PropFinder />} />
+                <Route path="/listing-view/:id" element={<ViewListing />} />
+                <Route path="/vehicle-view/:id" element={<ViewVehicle />} />
+                <Route path="/product-view/:id" element={<ViewProduct />} />
+                <Route path="/service-view/:id" element={<ViewService />} />
+                <Route path="/item-view/:id" element={<ViewItem />} />
+                <Route path="/preepedia" element={<Preepedia />} />
+                <Route path="/preepedia/view-page/:id/" element={<ViewPage />} />
+                <Route path="/specials" element={<Specials />} />
+                <Route path="/talkie" element={<Talkie />} />
+                <Route path="/live" element={<Live />} />
+                {/*<Route path="/welcome" component={Welcome} />*/}
+              </Route>
+            </Routes>
             
           </Router>
       </Context.Provider>

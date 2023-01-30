@@ -1,15 +1,7 @@
-.main-container{
-  background-color:wheat;
-  width: 100% !important;
-}
-
-.hero-contain{
+/*.hero-contain{
   padding: 1rem !important;
 }
 
-.App {
-  text-align: center !important;
-}
 
 .tabs-bg {
   background-color: lemonchiffon !important;
@@ -189,7 +181,7 @@
   cursor: pointer;
 }
 
-/* possibly will have to move app.css */ 
+/* possibly will have to move app.css 
 .username{
   border-radius: 1rem;
   background-color:royalblue !important;
@@ -218,7 +210,7 @@
 /*.tabs-btn{
   padding: 0.25rem;
   margin: 0.25rem;
-} */
+} 
 
 .tabs-title{
   font-size: small !important;
@@ -330,7 +322,7 @@ ul .is-active{
 
   /*.special-header .tag{
     font-size: 26px !important;
-  }*/
+  }
 }
 
 .ads-heading{
@@ -381,7 +373,7 @@ ul .is-active{
 
   .mobile-menu{
     display: block !important;
-    width: inherit !important;
+    width: 30rem !important;
     margin: 0 auto !important;
     padding-right: 1rem !important;
   }
@@ -399,7 +391,33 @@ ul .is-active{
 
 }
 
-@media screen and (max-width:424px) and (min-width:376px){
+@media screen and (max-width:768px) and (min-width:425px){
+  .app-container{
+    width: 50rem !important;
+    padding: 1rem;
+  }
+
+  .mobile-menu{
+    display: block !important;
+    width: 30rem !important;
+    margin: 0 auto !important;
+    padding-right: 1rem !important;
+  }
+
+  .hero-content{
+    margin-top: 3rem;
+  }
+  .buttons{
+    padding-inline: 1rem !important;
+  }
+
+  .slick-wrapper{
+    max-width: 40rem;
+  }
+
+}
+
+@media screen and (max-width:424px) and (min-width:375px){
   .app-container{
     width: 27.5rem !important;
     padding: 1rem;
@@ -436,7 +454,7 @@ ul .is-active{
   }
 
   .mobile-menu{
-    width: 25rem !important;
+    width: 100% !important;
     padding-right: 1.5rem !important;
   }
 
@@ -450,11 +468,11 @@ ul .is-active{
 
 @media screen and (max-width:320px){
   .mobile-menu{
-    width: 23.5rem !important;
+    width: 100% !important;
   }
 
   .hero-content{
     margin-top: 3rem;
   }
   
-}
+}*/

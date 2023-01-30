@@ -1,4 +1,4 @@
-h1 {
+/*h1 {
     color: blue;
 }
 
@@ -86,9 +86,9 @@ h1 {
 
 /*.image-container, .audio-container, .video-container, .quote-container{
     border: solid black 2px;
-}*/
+}
 
-/* return for future attempt at styling different media files */
+/* return for future attempt at styling different media files 
 .audio-container{
     width: 0;
     height: 0;
@@ -116,27 +116,27 @@ h1 {
     border: 1px dashed black;
 }
 
-/* The sticky class is added to the div with JS when it reaches its scroll position */
+/* The sticky class is added to the div with JS when it reaches its scroll position 
 .mp-sticky {
 position: fixed !important;
 top: 10% !important;
 z-index: 6 !important;
 }
 
-/* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) */
+/* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) 
 .mp-sticky + .hero {
 padding-top: 60px !important;
 }
 
-/* The sticky class is added to the div with JS when it reaches its scroll position */
+/* The sticky class is added to the div with JS when it reaches its scroll position 
 .sp-sticky {
 position: fixed !important;
-top: 10% !important;
-right: 1rem !important;
+/*top: 10vh !important;
+right: 3% !important;
 z-index: 6 !important;
 }
 
-/* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) */
+/* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) 
 .sp-sticky + .hero {
 padding-top: 60px !important;
 }
@@ -209,7 +209,7 @@ padding-top: 60px !important;
 
 @media screen and (max-width:1025px) and (min-width:768px){
     .timeline-container{
-        width: 45rem !important;
+        width: auto !important;
     }
 }
 
@@ -219,15 +219,14 @@ padding-top: 60px !important;
         font-size: 30px !important;
     }
     .timeline-container{
-        width: 45rem !important;
+        width: 30rem !important;
     }
     .post-btn{
         font-size: 30px !important;
     }
 
     .large-text{
-        font-size: x-large !important;
-        font-weight: bold !important;
+        font-size: 1rem !important;
         padding: 1rem !important;
     }
 
@@ -242,9 +241,21 @@ padding-top: 60px !important;
     .exclusive-content{
         margin-top: 4rem;
     }
+
+    .sp-sticky {
+        /*top: 10vh !important;
+        right: 20% !important;
+
+    }
 }
 
-@media screen and (max-width:424px) and (min-width:376px){
+@media screen and (max-width:767px) and (min-width:600px){
+    .timeline-container{
+        width: 45rem !important;
+    }
+}
+
+@media screen and (max-width:424px) and (min-width:375px){
     .timeline-container{
         width: 24rem;
     }
@@ -269,7 +280,7 @@ padding-top: 60px !important;
     /*.display-pic{
         height: 10rem !important;
         width: 10rem !important;
-    }*/
+    }
     .exclusive-content{
         margin-top: 4rem;
         padding: 0;
@@ -300,4 +311,4 @@ padding-top: 60px !important;
     .reaction-txt{
         display: none !important;
     }
-}
+}*/

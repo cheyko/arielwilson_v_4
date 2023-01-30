@@ -1,4 +1,4 @@
-.custom-nav{
+/*.custom-nav{
     background-color:burlywood;
     height: 100%;
     font-size: 13px !important;
@@ -11,7 +11,6 @@
     overflow-y: auto;
     max-height: inherit !important;
     padding: 0.5rem;
-    margin-inline: 0.5rem;
 }
 
 .navbar{
@@ -64,9 +63,12 @@
     border: 3px crimson solid;
     background-color:chocolate;
     width: 100%;
-    /*padding-inline: 5px;*/
+    /*padding-inline: 5px;
 }
 
+.navbar-body {
+    margin-inline: 1rem 0;
+}
 .navbar-body .column{
     padding: 0.25rem !important;
 }
@@ -74,7 +76,7 @@
 .control-btn .is-not-active{
     border: none;
     border-radius: 0;
-    /*margin-inline: 5px ;*/
+    /*margin-inline: 5px ;
 }
 
 .usercog-btn{
@@ -102,12 +104,29 @@
         border-radius: 50%;
     }
     .custom-nav{
-        width: auto !important;
+        width: 25% !important;
     }
     .navbar{
         width: 1020px;
     }
+    .control-btn svg{
+        font-size: 4em;
+    }
+    .control-btn b{
+        font-size: 1rem;
+    }
+    
  
+}
+
+@media screen and (min-width:2400px){
+    .control-btn svg{
+        font-size: 5em;
+    }
+
+    .control-btn p, .control-btn b{
+        font-size: 2rem;
+    }
 }
 
 @media screen and (max-width:1050px) and (min-width:770px){
@@ -118,10 +137,16 @@
     }
     .custom-nav{
         padding: 1rem !important;
-        width: auto !important;
+        width: 25% !important;
     }
     .navbar{
         width: 50rem;
+    }
+    .control-btn svg{
+        font-size: 3em;
+    }
+    .control-btn b{
+        font-size: 1rem;
     }
   
 }
@@ -154,6 +179,10 @@
     .navbar-menu{
         padding-inline: 1rem !important;
     }
+
+    .control-btn svg{
+        font-size: 3em;
+    }
 } 
 
 @media screen and (max-width:425px){
@@ -175,6 +204,9 @@
     .navbar-burger span{
         height:3px !important;
     }
+    .control-btn svg{
+        font-size: 3em;
+    }
 } 
 
 @media screen and (max-width:375px){
@@ -195,7 +227,8 @@
     .navbar-menu{
         padding-inline: 0.25rem !important;
     }
-    .mobile-menu{
+
+    /*.mobile-menu{
         padding-right: 0rem !important;
     }
-} 
+}*/

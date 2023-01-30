@@ -128,7 +128,7 @@ const Timeline = props => {
     }
 
     return (
-        <div className="hero">
+        <div className="hero" style={{height:"100vh"}}>
             <div className="container hero-container">
                 <div className="box timeline-container">
                     <div className="columns live-dps is-mobile">    

@@ -1,0 +1,71 @@
+.nav-container, .app-container{
+    height: 100vh;
+}
+
+.nav-container{
+    background-color: aquamarine;
+    padding: 0.75rem 0.25rem 0.75rem 1rem !important;
+    position: fixed;
+    height: 100%;
+    overflow: hidden;
+}
+
+.app-container{
+    background-color: bisque;
+}
+
+.display-div{
+    width: 100%;
+    border: 1px solid black;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.display-div .title{
+    margin: 0 !important;
+}
+
+.display-div .image{
+    margin: 0 auto;
+}
+
+.control-btn{
+    border: 1px solid red;
+    text-align: center;
+}
+
+.menu-options{
+    height: 70%;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+@media screen and (max-width: 1100px) and (min-width: 950px)  {
+    .control-btn svg{
+        font-size: 1em !important;
+    }
+}
+
+@media screen and (max-width : 950px) and (min-width: 545px)  {
+    .menu-options .columns:not(.is-desktop) {
+        display: block;
+    }
+}
+
+@media screen and (max-width :545px)  {
+    .nav-container{
+        display : none !important;
+    }
+}
+/*.main-container{
+    background-color:wheat;
+    width: 100% !important;
+}
+
+.App {
+    text-align: center !important;
+  }
+
+.app-container{
+    height: 100vh;
+}*/

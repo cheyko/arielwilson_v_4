@@ -204,7 +204,7 @@ const Navbar = props => {
                                         props.context.toggleMenu(e);
                                     }} >
                                     <div className={settingsbtn ? "is-active" : "is-not-active"}> 
-                                        <FontAwesomeIcon icon={faCog} size="2x" /> 
+                                        <FontAwesomeIcon icon={faCog}  /> 
                                         <p> Settings </p>
                                     </div>
                                 </Link>
@@ -220,7 +220,7 @@ const Navbar = props => {
                                     <div className={messagebtn ? "is-active" : "is-not-active"}> 
                                         <FontAwesomeIcon icon={faPaperPlane} size="1x" /> 
                                             {" "}<span className="badge-length">0</span><br/>
-                                        <b style={{fontWeight:"bold",fontSize:"large"}}> W@H <br/> GW@@N</b> 
+                                        <b> W@H <br/> GW@@N</b> 
 
                                     </div>
                                         
@@ -234,7 +234,7 @@ const Navbar = props => {
                                         props.context.toggleMenu(e);
                                     }} to="/search"> 
                                     <div className={searchbtn ? "is-active" : "is-not-active"}> 
-                                    <FontAwesomeIcon icon={faSearch} size="2x" /> 
+                                    <FontAwesomeIcon icon={faSearch}  /> 
                                     <p> Search </p> 
                                     </div>
                                     
@@ -272,7 +272,7 @@ const Navbar = props => {
                                         activate('timeline'); 
                                         props.context.toggleMenu(e);
                                     }} to="/">
-                                    <div className={timelinebtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faClipboardList} size="2x"/> <p>Timeline</p> </div>
+                                    <div className={timelinebtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faClipboardList} /> <p>Timeline</p> </div>
                                     {" "}
                                 </Link>
                             </div>
@@ -283,7 +283,7 @@ const Navbar = props => {
                                         activate('profile');
                                         props.context.toggleMenu(e); 
                                     }} to="/profile"> 
-                                    <div className={profilebtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faIdCard} size="2x" /> <p>Profile</p> </div>
+                                    <div className={profilebtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faIdCard}  /> <p>Profile</p> </div>
                                     {" "}
                                     
                                 </Link>
@@ -298,7 +298,7 @@ const Navbar = props => {
                                     <div className={false ? "is-active" : "is-not-active"}> 
 
                                         <div className="icon-badge">  
-                                            <FontAwesomeIcon icon={faVideo} size="2x" /> 
+                                            <FontAwesomeIcon icon={faVideo}  /> 
                                             {" "}<span className="badge-length">0</span>
                                         </div> 
                                         <p> Live </p>
@@ -314,7 +314,7 @@ const Navbar = props => {
                                         activate('wgr') 
                                         props.context.toggleMenu(e);
                                     }} to="/wgr">
-                                    <div className={wgrbtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faGlobe} size="2x" /> 
+                                    <div className={wgrbtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faGlobe}  /> 
                                         <p> Reports </p>
                                     </div>
                                     
@@ -326,7 +326,7 @@ const Navbar = props => {
                                         activate('si') 
                                         props.context.toggleMenu(e);
                                     }} to={`/social`}>
-                                    <div className={sibtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faBookOpen} size="2x" /> 
+                                    <div className={sibtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faBookOpen}  /> 
                                         
                                         <p> Social </p>
                                     </div>
@@ -340,7 +340,7 @@ const Navbar = props => {
                                         activate('activities') 
                                         props.context.toggleMenu(e);
                                     }} to="/activities"> 
-                                    <div className={activitiesbtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faCalendarAlt} size="2x" /> 
+                                    <div className={activitiesbtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faCalendarAlt}  /> 
                                         {" "}<span className="badge-length">0</span>
                                         <p>Activities</p>
                                     </div>
@@ -357,7 +357,7 @@ const Navbar = props => {
                                             props.context.toggleMenu(e);
                                         }} to="/images">
                                         <div className={imagesbtn ? "is-active" : "is-not-active"}> 
-                                            <FontAwesomeIcon icon={faImages} size="2x" />
+                                            <FontAwesomeIcon icon={faImages}  />
                                             <p>Magazine</p>
                                         </div>
                                         
@@ -369,7 +369,7 @@ const Navbar = props => {
                                         activate('audios'); 
                                         props.context.toggleMenu(e);
                                     }} to="/audios"> 
-                                    <div className={audiosbtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faPlayCircle} size="2x" /> 
+                                    <div className={audiosbtn ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faPlayCircle}  /> 
                                         <p> AV </p> 
                                     </div>   
                                 </Link>  
@@ -381,7 +381,7 @@ const Navbar = props => {
                                         props.context.toggleMenu(e);
                                     }} to="/wallet">
                                     <div className={walletbtn ? "is-active" : "is-not-active"}> 
-                                        <FontAwesomeIcon icon={faWallet} size="2x" /> 
+                                        <FontAwesomeIcon icon={faWallet}  /> 
                                         {" "}<span className="badge-length">0</span>
                                         <p> {gender === "male" ?  "BillFold" : "Purse" }</p> 
                                     </div>
@@ -398,7 +398,7 @@ const Navbar = props => {
                                         activate('Talkie'); 
                                         props.context.toggleMenu(e);
                                     }} to="/talkie">
-                                    <div className={false ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faPhone} size="2x" />
+                                    <div className={false ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faPhone}  />
                                         <p> Talkie </p> 
                                     </div>
                                     
@@ -410,7 +410,7 @@ const Navbar = props => {
                                         activate('specials')
                                         props.context.toggleMenu(e);
                                     }} to="/specials">
-                                    <div className={false ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faLandmark} size="2x" /> 
+                                    <div className={false ? "is-active" : "is-not-active"}> <FontAwesomeIcon icon={faLandmark}  /> 
                                         <p>Specials</p> 
                                     </div>
                                     
@@ -423,7 +423,7 @@ const Navbar = props => {
                                         props.context.toggleMenu(e);
                                     }} to="/shops"> 
                                     <div className={shopsbtn ? "is-active" : "is-not-active"}> 
-                                    <FontAwesomeIcon icon={faStore} size="2x" /> <span className="badge-length">0</span>
+                                    <FontAwesomeIcon icon={faStore}  /> <span className="badge-length">0</span>
                                         <p>Market</p>
                                     </div>
                                     

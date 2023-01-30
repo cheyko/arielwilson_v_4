@@ -125,7 +125,7 @@ const AddPree = props => {
     }
 
     return (
-        <div className="hero">
+        <div className="hero-contain">
             <div className="card">
                 <div className="container" style={{padding:"1rem"}}>  
                     <div className="columns is-mobile">                                 
