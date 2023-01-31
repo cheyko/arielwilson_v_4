@@ -3,14 +3,14 @@ import './index.css';
 import withContext from "../../withContext";
 import axios from 'axios';
 import $ from 'jquery';
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 const Messages = props => {
 
     const user_id = props.context.user ? props.context.user.id : 0;
-    const param_id = props.match.params.id;
-    const catergory = props.match.params.category;
-    const msgtype = props.match.params.msgtype;
+    let {id} = useParams();
+    let {catergory} = useParams();
+    let {msgtype} = useParams();
 
     const [userview, setUserview] = useState("");
     const [convo, setConvo] = useState([]);
@@ -27,7 +27,7 @@ const Messages = props => {
         console.log("Testing");
         let interval = null;
         let convoMsgs = null;
-        const userview_id = param_id;
+        const userview_id = id;
 
         if (userview_id !== '0'){
             if (userview === ""){
@@ -73,7 +73,7 @@ const Messages = props => {
         }else{
             props.context.getMessages(user_id);
         }
-    },[count, userview, param_id, convo, setConvo]);
+    },[count, userview, id, convo, setConvo]);
     
     const getLastMsg = (person) => {
         const result = allmessages.filter((msg) => msg.sender_id === person.user_id || msg.receiver_id === person.user_id);
@@ -144,7 +144,7 @@ const Messages = props => {
         e.preventDefault();
         var theMsg = document.getElementById("new-message").textContent;
         var theDate = getDateTime();
-        const userview_id = param_id;
+        const userview_id = id;
 
         console.log(theMsg);
         const createMsg = axios.post('/api/create-message',{user_id,userview_id,theMsg,theDate}).then(
@@ -308,7 +308,7 @@ const Messages = props => {
                                         <br />
                                         <div id="message-app" className="msg-section">
                                             <div className="message-app-container">
-                                                {param_id > 0 ? 
+                                                {id > 0 ? 
                                                 (<>
                                                     <div id="convo-header">
                                                         <div className="media">
@@ -689,7 +689,7 @@ const Messages = props => {
                     
                     <div id="message-app" className="msg-section column">
                         <div className="message-app-container">
-                            {param_id > 0 ? 
+                            {id > 0 ? 
                             (<>
                                 <div id="convo-header">
                                     <div className="media">

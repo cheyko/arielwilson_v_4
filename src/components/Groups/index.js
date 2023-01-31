@@ -1,12 +1,13 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import withContext from "../../withContext";
 import CreateGroup from "./CreateGroup";
 import GroupsList from "./GroupsList";
 
 const Groups = props => {
 
-    const user_id = props.match.params.id;
-    const option = props.match.params.action;
+    let {id} = useParams();
+    let {action} = useParams();
 
     return (
         <div className="hero">
@@ -35,7 +36,7 @@ const Groups = props => {
                     </div>
                 </div>
                 <div className="groups-list">
-                    <GroupsList option={option} user_id={user_id}/>
+                    <GroupsList option={action} user_id={id}/>
                 </div>
             </div>
         </div>

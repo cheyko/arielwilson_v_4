@@ -6,7 +6,7 @@ import ItemDetail from "./ItemDetail";
 import ItemFeatures from "./ItemFeatures";
 import SimilarItem from "./SimilarItem";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import $ from 'jquery';
 
 
@@ -19,8 +19,8 @@ const ViewItem = props => {
 
     let item = localStorage.getItem("item");
     let thePics = localStorage.getItem("thePics");
-    const theID = props.match.params.id;
-    const result = props.context.getItem(theID);
+    let {id} = useParams();
+    const result = props.context.getItem(id);
     
     item = (result === null) ? JSON.parse(item) : result;
     thePics = (result === null) ? JSON.parse(thePics) : props.context.getTargetPhotos(item.item_id, "item");

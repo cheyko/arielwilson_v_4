@@ -7,7 +7,7 @@ import VehicleDetail from "./VehicleDetail";
 import VehicleFeatures from "./VehicleFeatures";
 import SimilarVehicle from "./SimilarVehicle";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import $ from 'jquery';
 
 const ViewVehicle = props => {
@@ -19,8 +19,8 @@ const ViewVehicle = props => {
 
     let vehicle = localStorage.getItem("vehicle");
     let thePics = localStorage.getItem("thePics");
-    const theID = props.match.params.id;
-    const result = props.context.getVehicle(theID);
+    let {id} = useParams();
+    const result = props.context.getVehicle(id);
     
     vehicle = (result === null) ? JSON.parse(vehicle) : result;
     thePics =  (result === null) ? JSON.parse(thePics) : props.context.getTargetPhotos(vehicle.vehicle_id, "vehicle");

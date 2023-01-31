@@ -51,27 +51,13 @@ const Signup = props => {
     const [check, setCheck] = useState(null);
     //const [] = useState();
 
-    useEffect( () => {
+    /*useEffect( () => {
         if (email !== ""){
-            axios.post('/api/check-email', {email}).then( response => {
-                if (response.status === 200){
-                    console.log("2");
-                    setCheck(true);
-                    setError("Email available.");
-                    return true;
-                    
-                }else{
-                    console.log("3");
-                    setCheck(false);
-                    setError("Email already registered.");
-                    return false;
-                }
-            }).catch(error => {
-                console.log(error)
-            });
+            
         }
 
     },[firstname,check,lastname,email,gender,password,phonenumber,re_password,error]);
+    */
 
     const [modalIsOpen, setModalOpen] = useState(false);
 
@@ -108,8 +94,31 @@ const Signup = props => {
         setError("");
     }
 
-    const checkEmail = (email) => {
+    const checkEmail = (val) => {
         console.log("1");
+        var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (val.match(regex)){
+            axios.post('/api/check-email', {val}).then( response => {
+                if (response.status === 200){
+                    console.log("2");
+                    setCheck(true);
+                    setError("Email available.");
+                    return true;
+                    
+                }else{
+                    console.log("3");
+                    setCheck(false);
+                    setError("Email already registered.");
+                    return false;
+                }
+            }).catch(error => {
+                console.log(error)
+            });
+        }else{
+            setError("Please enter a valid email address : (exmaple@domain.com)");
+            setCheck(false);
+            return false;
+        }
 
     }
 
@@ -120,13 +129,17 @@ const Signup = props => {
         if (!firstname || !lastname || !gender || !email || !password || !phonenumber || !re_password){
             setError("Fill all Fields !");
             setCheck(false);
+            return false;
         }
 
         if (password !== re_password){
             setError("Passwords Do not match.");
             setCheck(false);
+            return false;
         }
  
+        checkEmail(email);
+
         if (check === true){
             console.log("5");
             props.context.signUp(firstname,lastname,gender,email,password,phonenumber).then(
@@ -217,7 +230,7 @@ const Signup = props => {
                                     <label className="label">Phone Number: </label>
                                     <input
                                     className="input"
-                                    type="tel"
+                                    type="number"
                                     name="phonenumber"
                                     value={phonenumber}
                                     onChange={e => handleChange(e)}

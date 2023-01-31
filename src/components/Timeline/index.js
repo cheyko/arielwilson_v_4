@@ -3,7 +3,7 @@ import withContext from "../../withContext";
 import AddPree from "./AddPree";
 import PreeItem from "./PreeItem";
 import "./index.css";
-import axios from "axios";
+import axios, { all } from "axios";
 import TimelineExclusive from "./TimelineExclusive";
 
 const Timeline = props => {
@@ -13,7 +13,7 @@ const Timeline = props => {
     });*/
 
     const loadPrees = props.context.prees ? props.context.prees : [];
-    console.log(loadPrees);
+    //console.log(loadPrees);
     const [showDropDown, setShowDropDown] = useState(false);
     const [allPrees, renderPrees] = useState(loadPrees);
     const [filterText, setFilterText] = useState("all");
@@ -27,11 +27,17 @@ const Timeline = props => {
         window.addEventListener('scroll', e => handleScroll(e));
         if (!gotMedia){
             loadMainMedia();
+        } 
+        
+        if(allPrees.length === 0){
+            document.getElementById("app-container").style.height = "100vh";
+        }else{
+            document.getElementById("app-container").style.height = "auto";
         }
 
         //sortPrees();
         //get reactions to prees --> getlist of prees ids from from allPrees = (param) ?
-    });
+    },[allPrees]);
 
     const loadMainMedia = async() => {
         //check if cv and dp is available (database check):
@@ -128,8 +134,8 @@ const Timeline = props => {
     }
 
     return (
-        <div className="hero" style={{height:"100vh"}}>
-            <div className="container hero-container">
+        <div id="timeline-div" className="hero">
+            <div className="hero-container">
                 <div className="box timeline-container">
                     <div className="columns live-dps is-mobile">    
                         {[0,1,2,3,4,5,6,7,8,9,10,11].map( (item,index) => (
@@ -139,7 +145,7 @@ const Timeline = props => {
                                 </figure>
                             </div>
                         ))}                             
-                    </div> 
+                    </div>
                 </div>
 
                 <br />
@@ -147,7 +153,7 @@ const Timeline = props => {
                 <div className="timeline-container">
                     <AddPree imgView={imgView} renderPrees={renderPrees} preetype={"individual"}/>
                 </div>
-                
+
                 <div id="make-pree" className="hero">
                     <button id="make-pree-btn" onClick={gototop} className="button is-pulled-right">
                         <span className="large-text"> Y Pree </span>
@@ -156,12 +162,15 @@ const Timeline = props => {
                         </span>
                     </button>
                 </div>
-
+            </div>
+            
+            <div className="timeline-box">
+            
                 <hr className="h-line" />
 
                 <span> Checkboxes </span>
                 
-                <div id="filter-prees" className={`dropdown sp-sticky is-right is-pulled-right ${showDropDown ? "is-active" : ""}`} >
+                <div id="filter-prees" className={`dropdown is-right is-pulled-right ${showDropDown ? "is-active" : ""}`} >
                     <div className="dropdown-trigger">
                         <button id="filter-pree-btn"  onClick={ e => setShowDropDown(!showDropDown)} className="button" aria-haspopup="true" aria-controls="dropdown-menu">
                             <span className="large-text"> Filter </span>
@@ -191,34 +200,33 @@ const Timeline = props => {
                         </div>
                     </div>
                 </div>
-            
-                <br /><br />
-
-                <div className="timeline-container">
-                    {allPrees && allPrees.length > 0 ? (
-                        allPrees.map((aPree, index) => (
-                            <div key={index}>
-                                {aPree.pree_type !== 'exclusive' ? (
-                                    <PreeItem
-                                        aPree={aPree}
-                                        key={index}
-                                        showComments={false}
-                                        clickable={"expand"}
-                                    />
-                                ):(
-                                    <TimelineExclusive aPree={aPree} key={index}  />
-                                )}
-                            </div>
-                        )) 
-                    ) : (
-                        <div className="container">
-                            <span className="is-size-3 has-text-grey-light" style={{color:"blue"}}>
-                                Follow Figures and see 'WAH REALLY A GWAAN'
-                            </span>
-                        </div>
-                    )}
-                </div>
+                
             </div>
+            <div>
+                {allPrees && allPrees.length > 0 ? (
+                    allPrees.map((aPree, index) => (
+                        <div key={index}>
+                            {aPree.pree_type !== 'exclusive' ? (
+                                <PreeItem
+                                    aPree={aPree}
+                                    key={index}
+                                    showComments={false}
+                                    clickable={"expand"}
+                                />
+                            ):(
+                                <TimelineExclusive aPree={aPree} key={index}  />
+                            )}
+                        </div>
+                    )) 
+                ) : (
+                    <div className="container">
+                        <span className="is-size-3" style={{color:"blue"}}>
+                            Follow Figures, Make Prees and see 'WAH REALLY A GWAAN'
+                        </span>
+                    </div>
+                )}
+            </div>
+            
         </div>
     )
 }

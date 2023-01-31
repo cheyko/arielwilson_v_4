@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
 import axios from 'axios';
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 import ProfileBio from '../Profile/ProfileBio';
 import ProfileHeader from '../Profile/ProfileHeader';
@@ -15,7 +15,7 @@ const ViewUserProfile = props => {
     let navigate = useNavigate();
 
     //let userview = localStorage.getItem("userview");
-    const userview_id = props.match.params.id;
+    let {id} = useParams();
 
     const [userview, setUserview] = useState(null);
     const [showDropDown, setShowDropDown] = useState(false);
@@ -34,7 +34,7 @@ const ViewUserProfile = props => {
         }
 
         if (!userview){
-            const result = props.context.getUserView(userview_id).then(
+            const result = props.context.getUserView(id).then(
                 (result) => {
                     if (!result){
                         console.log("there was an error when search for my details");
@@ -46,7 +46,7 @@ const ViewUserProfile = props => {
         }
 
         if (!isFollower){
-            const response = axios.post('/api/is-follower',{user_id,userview_id}).then(
+            const response = axios.post('/api/is-follower',{user_id,id}).then(
                 (response) => {
                     if (response.status !== 200){
                         console.log('I need a better error messaging system');
@@ -90,7 +90,7 @@ const ViewUserProfile = props => {
     
     const follow = () => {
         console.log("follow function");
-        const dofollow = axios.post('/api/add-follower',{user_id,userview_id}).then(
+        const dofollow = axios.post('/api/add-follower',{user_id,id}).then(
             (dofollow) => {
                 if (dofollow.status !== 200){
                     console.log('User was followed successful.');
@@ -104,7 +104,7 @@ const ViewUserProfile = props => {
 
     const unfollow = () => {
         console.log("unfollow function");
-        const unfollow = axios.put('/api/un-follow',{user_id,userview_id}).then(
+        const unfollow = axios.put('/api/un-follow',{user_id,id}).then(
             (unfollow) => {
                 if (unfollow.status !== 200){
                     throw new Error('User was unfollowed succesfully.');
@@ -116,7 +116,7 @@ const ViewUserProfile = props => {
         //isFollower(false);
     }
 
-    return (`${user_id}` === `${userview_id}`) ? (
+    return (`${user_id}` === `${id}`) ? (
         <Navigate to="/profile" />
     ):(  
         <div className="hero">

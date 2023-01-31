@@ -97,7 +97,29 @@
     margin: 1rem !important;
 }
 
-@media screen and (min-width:1050px){
+@media screen and (max-width: 1200px) and (min-width:1000px){
+    .control-btn{
+        border: none;
+        padding: 0px;
+        border-radius: 50%;
+    }
+    .custom-nav{
+        width: 25% !important;
+    }
+    .navbar{
+        width: 1020px;
+    }
+    .control-btn svg{
+        font-size: 2em;
+    }
+    .control-btn b{
+        font-size: 1rem;
+    }
+    
+ 
+}
+
+@media screen and (min-width:1200px){
     .control-btn{
         border: none;
         padding: 1.5rem;
@@ -129,15 +151,19 @@
     }
 }
 
-@media screen and (max-width:1050px) and (min-width:770px){
+@media screen and (max-width:1000px) and (min-width:770px){
     .control-btn{
         border: none;
         padding: 5px;
         border-radius: 50%;
     }
-    .custom-nav{
+    /*.custom-nav{
         padding: 1rem !important;
         width: 30% !important;
+    }*/
+    .custom-nav{
+        width: 0px; 
+        left: -25px;
     }
     .navbar{
         width: 50rem;

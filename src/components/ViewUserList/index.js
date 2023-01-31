@@ -3,29 +3,29 @@ import './index.css';
 import withContext from '../../withContext';
 import axios from 'axios';
 import ViewUser from '../ViewUser';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // pass list of ID's as props and have function to get full userlist
 // let id of 0 represent search 
-// action options = [search, followers, following]
+// action actions = [search, followers, following]
 // route = /view-user-list/:id/:action
 // example = /view-user-list/0/search ... /view-user-list/3/followers
 // add back arrow in the future. 
 
 const ViewUserList = props => {
 
-    const user_id = props.match.params.id;
-    const option = props.match.params.action;
+    let {id} = useParams();
+    let {action} = useParams();
     const [viewlist, setViewList] = useState(null);
     let navigate = useNavigate();
 
     if (viewlist === null){
-        switch(option){
+        switch(action){
             case 'search':
                 setViewList(props.context.userlist);
                 break;
             case 'followers':
-                const result1 = axios.post('/api/get-followers',{user_id}).then(
+                const result1 = axios.post('/api/get-followers',{id}).then(
                     (result1) => {
                         if (result1.status !== 200){
                             console.log('List of Followers were not sent from server.');
@@ -36,7 +36,7 @@ const ViewUserList = props => {
                 )
                 break;
             case 'following':
-                const result2 = axios.post('/api/get-followings',{user_id}).then(
+                const result2 = axios.post('/api/get-followings',{id}).then(
                     (result2) => {
                         if (result2.status !== 200){
                             throw new Error('List of Followings were not sent from server.');
@@ -47,7 +47,7 @@ const ViewUserList = props => {
                 )
                 break;
             case 'fraternity':
-                const result3 = axios.post('/api/get-fraternity',{user_id}).then(
+                const result3 = axios.post('/api/get-fraternity',{id}).then(
                     (result3) => {
                         if (result3.status !== 200){
                             throw new Error('List of Fraternity were not sent from server.');
@@ -71,7 +71,7 @@ const ViewUserList = props => {
             <div className="hero-body has-text-centered">
                 <button className="button is-pulled-left is-info" onClick={e => navigate(-1) }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                             
-                <h1 className="title">{option}</h1>
+                <h1 className="title">{action}</h1>
                 <div className="columns is-multiline is-mobile">
                     { viewlist && viewlist.length > 0 ? (
                         viewlist.map((aUser, index) => (

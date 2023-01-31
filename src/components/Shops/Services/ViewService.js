@@ -6,7 +6,7 @@ import ServiceDetail from "./ServiceDetail";
 import ServiceFeatures from "./ServiceFeatures";
 import SimilarService from "./SimilarService";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import $ from 'jquery';
 
 
@@ -19,8 +19,8 @@ const ViewService = props => {
 
     let service = localStorage.getItem("service");
     let thePics = localStorage.getItem("thePics");
-    const theID = props.match.params.id;
-    const result = props.context.getService(theID);
+    let {id} = useParams();
+    const result = props.context.getService(id);
     
     service = (result === null) ? JSON.parse(service) : result;
     thePics =  (result === null) ? JSON.parse(thePics) : props.context.getTargetPhotos(service.service_id, "service");

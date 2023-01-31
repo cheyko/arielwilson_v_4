@@ -40,7 +40,7 @@
 .top-section .title {
     color: royalblue !important;
 }
-.top-section .subtitle{
+.top-section .subtitle, .smallHelper{
     color: crimson !important;
 }
 

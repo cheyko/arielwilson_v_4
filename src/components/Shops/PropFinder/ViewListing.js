@@ -6,7 +6,7 @@ import ListingDetail from "./ListingDetail";
 import ListingFeatures from "./ListingFeatures";
 import SimilarListing from "./SimilarListing";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import $ from 'jquery';
 
 const ViewListing = props => {
@@ -18,8 +18,8 @@ const ViewListing = props => {
 
     let listing = localStorage.getItem("listing");
     let thePics = localStorage.getItem("thePics");
-    const theID = props.match.params.id;
-    const result = props.context.getListing(theID);
+    let {id} = useParams();
+    const result = props.context.getListing(id);
     
     listing = (result === null) ? JSON.parse(listing) : result;
     thePics =  (result === null) ? JSON.parse(thePics) : props.context.getTargetPhotos(listing.listing_id, "listing");

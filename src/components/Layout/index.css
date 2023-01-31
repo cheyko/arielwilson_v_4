@@ -7,6 +7,26 @@
     text-align: center !important;
   }
 
-.app-container{
+/*.app-container{
     height: 100vh;
+}*/
+
+.app-container{
+    background-color:wheat;
+    width: max-content !important;
+  }
+  
+
+@media screen and (max-width:1000px) and (min-width:770px){
+    #nav-column{
+        width: 0 !important;
+        position:absolute;
+        left: -25px !important;
+    }
+}
+
+@media screen and (min-width:1000px){
+    .nav-column{
+        width: 25% !important;
+    }
 }

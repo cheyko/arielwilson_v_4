@@ -50,7 +50,7 @@ import Preepedia from './components/Search/Preepedia';
 import ViewPage from './components/Search/Preepedia/ViewPage';
 import ViewMediaItem from './components/Audios/ViewMediaItem';
 import ViewTrend from './components/Images/ViewTrend';
-import ItemView from './components/Shops/BickleCourt/ItemImageView';
+//import ItemView from './components/Shops/BickleCourt/ItemImageView';
 
 import $ from 'jquery';
 import Specials from './components/Specials';
@@ -114,34 +114,36 @@ export default class App extends Component {
       case 'vehicle':
         const { vehicles } = this.state;
         const vehicle = vehicles ? vehicles.find(vehicle => vehicle.vehicle_id.toString() === theID.toString()) : null;
-        for (var x=0; x<parseInt(vehicle.numOfPics); x++){
-          let url = process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/" + x;
+        for (var y=0; y<parseInt(vehicle.numOfPics); y++){
+          let url = process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/" + y;
           targetPhotos.push(url);
         }
         break;
       case 'product':
           const { products } = this.state;
           const product = products ? products.find(product => product.product_id.toString() === theID.toString()) : null;
-          for (var x=0; x<parseInt(product.numOfPics); x++){
-            let url = process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/" + x;
+          for (var z=0; z<parseInt(product.numOfPics); z++){
+            let url = process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/" + z;
             targetPhotos.push(url);
           }
           break;
       case 'service':
         const { services } = this.state;
         const service = services ? services.find(service => service.service_id.toString() === theID.toString()) : null;
-        for (var x=0; x<parseInt(service.numOfPics); x++){
-          let url = process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/" + x;
+        for (var i=0; i<parseInt(service.numOfPics); i++){
+          let url = process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/" + i;
           targetPhotos.push(url);
         }
         break;
       case 'item':
         const { items } = this.state;
         const item = items ? items.find(item => item.item_id.toString() === theID.toString()) : null;
-        for (var x=0; x<parseInt(item.numOfPics); x++){
-          let url = process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/" + x;
+        for (var j=0; j<parseInt(item.numOfPics); j++){
+          let url = process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/" + j;
           targetPhotos.push(url);
         }
+        break;
+      default:
         break;
     }
     return targetPhotos;
@@ -212,13 +214,13 @@ export default class App extends Component {
         
       if (messages.status === 200){
         const allmessages = messages.data.messages;
-        const correspondents = allmessages ? [...new Set(allmessages.map((unique)=> unique.sender_id === user_id && unique.receiver_id || unique.sender_id ))] : [];
+        const correspondents = allmessages ? [...new Set(allmessages.map((unique)=> ((unique.sender_id === user_id) && unique.receiver_id) || unique.sender_id ))] : [];
         //console.log(correspondents);
         var i = 0, len = correspondents.length;
         let viewlist = new Set();
-        let y;
+        //let y;
         while (i < len) {
-            y = this.getUserView(correspondents[len-1-i]).then(
+          this.getUserView(correspondents[len-1-i]).then(
                 (y) => {
                     if (!y){
                         throw new Error("There was an error while searching for this user.");

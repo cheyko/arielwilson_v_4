@@ -1,7 +1,7 @@
 import React from "react";
 import withContext from "../../withContext";
 import PreeItem from "./PreeItem";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ViewPree = props => {
 
@@ -10,8 +10,8 @@ const ViewPree = props => {
     let navigate = useNavigate();
 
     //const user_id = props.context.user ? props.context.user.id : 0;
-    const param_id = props.match.params.id;
-    const aPree = props.context.getPree(param_id);
+    let {id} = useParams();
+    const aPree = props.context.getPree(id);
     
     return (
         <div className="hero">

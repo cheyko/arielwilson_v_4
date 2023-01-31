@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 //import Slider from "react-slick";
 import MediaHeader from "./MediaHeader";
 import MediaControls from "./MediaControls";
@@ -24,14 +24,14 @@ const ViewMediaItem = props => {
 
     let navigate = useNavigate();
     const [view, setView] = useState("view");
-    const pree_id = props.match.params.id;
+    let {id} = useParams();
     const [mainmedia, setMainmedia] = useState(null);
     //const [details, setDetails] = useState(null);
     const [mediatype, setMediaType] = useState("");
     const [url, setUrl] = useState("");
     const [options, setOptions] = useState(null); //details such as playback and unlock_fee, etc.
     const [operation, setOperation] = useState("view"); 
-    const aPree = props.context.getPree(pree_id);
+    const aPree = props.context.getPree(id);
     const [commentscount, setCommentsCount] = useState(aPree.comments); 
     const [returnHome, setReturn] = useState(false);
 
@@ -104,7 +104,7 @@ const ViewMediaItem = props => {
                 <div className="page-body">
                     <article className="message is-link">
                         <div className="message-header">
-                            <MediaHeader operation={operation} commentscount={commentscount} details={{"pree_id":aPree.pree_id,"theDate":aPree.date_added.split(" "), "genre":aPree.attachment.genre, "playback":aPree.attachment.playback, "approvals": aPree.approvals, "disapprovals": aPree.disapprovals, "views" : aPree.attachment.views}} />
+                            <MediaHeader operation={operation} commentscount={commentscount} details={{"id":aPree.id,"theDate":aPree.date_added.split(" "), "genre":aPree.attachment.genre, "playback":aPree.attachment.playback, "approvals": aPree.approvals, "disapprovals": aPree.disapprovals, "views" : aPree.attachment.views}} />
                         </div>
                         <div className="message-body no-padding">
                             <div className="container">

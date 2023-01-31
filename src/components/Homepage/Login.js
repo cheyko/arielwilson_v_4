@@ -7,6 +7,9 @@ const Login = props => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    const [emailHelp, setEmailHelp] = useState("");
+    const [passwordHelp, setPasswordHelp] = useState("");
+
     const login = (e) => {
         setError("");
         e.preventDefault();
@@ -21,10 +24,24 @@ const Login = props => {
     }
 
     function handleChange(e){
+        var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
         if(e.target.name === "email"){
-            setEmail(e.target.value);
+            if (e.target.value.match(regex)){
+                setEmail(e.target.value);
+                setEmailHelp("");
+            }else{
+                setEmailHelp("Enter a valid email address : (example@domain.com)");
+            }
+            
         }else if(e.target.name === "password"){
-            setPassword(e.target.value);
+            if(e.target.value !== ""){
+                setPassword(e.target.value);
+                setPasswordHelp("");
+            }else{
+                setPasswordHelp("Password needed");
+            }
+            
         }
         setError("");
     }
@@ -43,6 +60,7 @@ const Login = props => {
                             name="email"
                             onChange={e => handleChange(e)}
                             />
+                            <small className="smallHelper">{emailHelp}</small>
                         </div>
                         
                         <div className="field">
@@ -54,6 +72,7 @@ const Login = props => {
                             name="password"
                             onChange={e => handleChange(e)}
                             />
+                            <small className="smallHelper">{passwordHelp}</small>
                         </div>
                         {error && (
                             <div className="has-text-danger">{error}</div>
