@@ -244,7 +244,7 @@ const Navbar = props => {
                     </div>
                     <div className="username tag" style={{fontSize:"large",fontWeight:"bold"}}> 
                         <span> {uname} </span>&nbsp;
-                        <span> (ranking) </span>&nbsp;
+                        <span> (rank) </span>&nbsp;
                         <span> <UserCog /> </span>&nbsp;
                     </div>
                 </div>

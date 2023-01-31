@@ -28,9 +28,11 @@ const ProfileHeader = props => {
                                 <input id="file-input-video" name="video-upload" single type="file" onChange={e => props.handleUpload(e)}/>
                             </div> 
                         }
-                        <video className="the-vid" width="640" height="480" controls>
+                        {/*<video className="the-vid" width="640" height="480" controls>
                             <source src={props.vidView} type="video/mp4"/>
-                        </video>
+                    </video>*/}
+                        <iframe className="the-vid" width="640" height="480" src={props.vidView}>
+                        </iframe>
                     </div>
                 </div>
                 <br />
@@ -87,16 +89,16 @@ const ProfileHeader = props => {
                         <div className="column" style={{padding:"0px"}}>
                             {!props.showEdit ?
                             (
-                                <button onClick={ e => props.setShowEdit(!props.showEdit)} className={`button is-link is-pulled-right is-rounded ${props.showEdit ? "is-outlined" : ""}`}> 
+                                <button onClick={ e => props.setShowEdit(!props.showEdit)} className={`button is-link is-pulled-right is-rounded`}> 
                                     Edit Media 
                                 </button>
                             ):(
                                 <div>
-                                    <button onClick={ e => props.setShowEdit(!props.showEdit)} className={`profile-btn button is-link is-pulled-right ${props.showEdit ? "is-outlined" : ""}`}> 
+                                    <button onClick={ e => props.setShowEdit(!props.showEdit)} className={`profile-btn button is-link is-pulled-right`}> 
                                         Cancel
                                     </button> 
                                     
-                                    <button onClick={ e => props.saveUpload(e)} className={`profile-btn button is-link is-pulled-right ${props.showEdit ? "is-outlined" : ""}`}> 
+                                    <button onClick={ e => props.saveUpload(e)} className={`profile-btn button is-link is-pulled-right`}> 
                                         Save
                                     </button>
                                 </div>

@@ -195,7 +195,8 @@ def main_media():
             cover_folder = app.config['UPLOAD_FOLDER'] + "bio/cover"
             #cover_folder = "../build/images/bio/cover"
             video_upload = request.files['cover']
-            video_upload.save(os.path.join(cover_folder, user_id)) 
+            file_name = user_id + ".mp4"
+            video_upload.save(os.path.join(cover_folder, file_name)) 
         db.session.commit()
         return jsonify({"msg":"Main media of user updated."}), 200
     return jsonify({"msg":"There was an error somewhere."}), 400

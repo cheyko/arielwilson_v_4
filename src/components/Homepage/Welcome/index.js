@@ -128,7 +128,7 @@ const Welcome = props => {
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_cv === true){
-                        setVidView(process.env.PUBLIC_URL + "/images/bio/cover/" + user_id);
+                        setVidView(process.env.PUBLIC_URL + "/images/bio/cover/" + user_id +".mp4");
                     }else{
                         setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
                     }
