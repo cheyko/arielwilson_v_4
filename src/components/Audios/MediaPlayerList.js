@@ -1,4 +1,4 @@
-import React,{ useState, useEffect} from "react";
+import React,{ useState, useEffect, useCallback, useMemo} from "react";
 import withContext from "../../withContext";
 import axios from "axios";
 import MediaItem from "./MediaItem";
@@ -8,15 +8,15 @@ const MediaPlayerList = props => {
     const [loadlist, setLoadList] = useState(null);
     const [viewlist, setViewList] = useState(null);
 
-    const audio_categories = ["Recording", "Music","Podcast","Audiobook","Speech","Interview"];
-    const music_genres = ["Alternative", "Dancehall", "Hip-Hop", "Rap", "R&B", "Reggae", "Rock", "World"];
+    const audio_categories = useMemo(() =>{ return ["Recording", "Music","Podcast","Audiobook","Speech","Interview"] }, []);
+    const music_genres = useMemo(() =>{ return ["Alternative", "Afro-Beats","Dancehall", "Hip-Hop", "Rap", "R&B", "Reggae", "Rock", "World"] }, []);
     //const genres = ["Alternative", "Dancehall", "Hip-Hop", "Rap", "R&B", "Reggae", "Rock", "World"];
-    const options = ["Free","Stream","Purchase","Contingency","Follower", "Frat", "Rank"];
+    const options = useMemo(() => {return ["Free","Stream","Purchase","Contingency","Follower", "Frat", "Rank"]},[]);
 
-    const video_categories = ["Recording", "Music Video", "Film", "Short Film"];
+    const video_categories = useMemo(() => {return ["Recording", "Music Video", "Film", "Short Film"]},[]);
 
-    const all_genres = ["Action", "Comedy", "Horror", "Romance", "Thriller", "Western"];
-    const recording_genres = ["Normal", " Highlight", "Historical", "Information", "Review", "News", "Sports", "Political", "Business"];
+    const all_genres = useMemo(() => {return ["Action", "Comedy", "Horror", "Romance", "Thriller", "Western"]},[]);
+    const recording_genres = useMemo( () => {return ["Normal", " Highlight", "Historical", "Information", "Review", "News", "Sports", "Political", "Business"]},[]);
 
     const [filter, setFilter] = useState(true);
     const [section, setSection] = useState("all");
@@ -28,19 +28,8 @@ const MediaPlayerList = props => {
     const [categorieslist, setViewCategories] = useState([]);
     const [genreslist, setViewGenres] = useState([]);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if (viewlist === null){
-            getExclusives();
-        }
-        if (filter){
-            filterList();
-        }
-
-    }, [searchval, genre, playback, section, category,filter, viewlist]);
-
     const getExclusives = () => {
-        const result = axios.get('/api/exclusive').then(
+        axios.get('/api/exclusive').then(
             (result) => {
                 if (result.status !== 200){
                     throw new Error('List of Followings were not sent from server.');
@@ -52,8 +41,60 @@ const MediaPlayerList = props => {
             }
         )
     }
+     const filterList = useCallback(
+        () => {
+            let result = loadlist;
+            setViewCategories([]);
+            setViewGenres([]);
+            if (section && section !== "all"){
+                if (section === "stereo"){
+                    result = result.filter(exclusive => exclusive.attachment.stereo === true);
+                    setViewCategories(audio_categories);
+                }else{
+                    result = result.filter(exclusive => exclusive.attachment.md === true);
+                    setViewCategories(video_categories);
+                }
+            }
+            if(category && category !== "all"){
+                result = result.filter(exclusive => exclusive.attachment.category === category);
+                
+                if(category === "Music" || category === "Music Video"){
+                    setViewGenres(music_genres);
+                }
+                else if (category === "Audiobook" || category === "Film" || category === "Short Film"){
+                    setViewGenres(all_genres);
+                }
+                else{
+                    setViewGenres(recording_genres);
+                }
+            }
+            if (searchval && searchval !== ""){
+                result = result.filter(exclusive => exclusive.attachment.title.replace(/ /g,'').toLowerCase().includes(searchval.replace(/ /g,'').toLowerCase())
+                || exclusive.attachment.artistname.replace(/ /g,'').toLowerCase().includes(searchval.replace(/ /g,'').toLowerCase()));         
+            }
+            if (genre && genre !== "all"){
+                result = result.filter(exclusive => exclusive.attachment.genre === genre);
+            }    
+            if (playback && playback !== "all"){
+                result = result.filter(exclusive => exclusive.attachment.playback === playback);
+            }
+            setViewList(result); 
+            setFilter(false);
+        },
+        [section, category, searchval, genre, playback, all_genres, audio_categories, loadlist, music_genres, recording_genres, video_categories],
+      );
 
-    const filterList = () => {
+      useEffect(() => {
+        window.scrollTo(0, 0);
+        if (viewlist === null){
+            getExclusives();
+        }
+        if (filter){
+            filterList();
+        }
+
+    }, [searchval, genre, playback, section, category,filter, viewlist,loadlist, filterList]);
+    /*const filterList = () => {
         let result = loadlist;
         setViewCategories([]);
         setViewGenres([]);
@@ -91,7 +132,7 @@ const MediaPlayerList = props => {
         }
         setViewList(result); 
         setFilter(false);
-    }
+    }*/
 
     return (
         <div className="hero">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import './index.css';
 import withContext from '../../withContext';
 import axios from 'axios';
@@ -22,28 +22,9 @@ const GroupsList = props => {
     const [name, setName] = useState("");
     const [category, setCategory] = useState("");
     const [view, setView] = useState(option);
-    
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if (viewlist === null){
-            switch(view){
-                case 'another':
-                case 'your':
-                    getYourGroups();
-                    break;
-                case 'all':
-                    getAllGroups();
-                    break;
-                default:
-                    break;
-            }
-        }
-        filterList();
 
-    }, [name, category]);
-
-    const getYourGroups = () => {
-        const result1 = axios.post('/api/get-groups',{user_id}).then(
+    const getYourGroups = useCallback( () => {
+        axios.post('/api/get-groups',{user_id}).then(
             (result1) => {
                 if (result1.status !== 200){
                     console.log('List of Followers were not sent from server.');
@@ -52,10 +33,10 @@ const GroupsList = props => {
                 }
             }
         )
-    }
+    },[user_id]);
 
     const getAllGroups = () => {
-        const result2 = axios.get('/api/get-groups').then(
+        axios.get('/api/get-groups').then(
             (result2) => {
                 if (result2.status !== 200){
                     throw new Error('List of Followings were not sent from server.');
@@ -73,29 +54,50 @@ const GroupsList = props => {
         }
     }
 
-    const filterList = () => {
+    const filterList = useCallback( () => {
         let result;
-        if(name === "" && category === "all"){
-            if(view === "all"){
-                getAllGroups();
-            }else{
-                getYourGroups();
+        if (filter){
+            if(name === "" && category === "all"){
+                if(view === "all"){
+                    getAllGroups();
+                }else{
+                    getYourGroups();
+                }
             }
-        }
-        if (name !== ""){
-            result = viewlist.filter(group => group.name.replace(/ /g,'').toLowerCase().includes(name.replace(/ /g,'').toLowerCase()));   
-            setViewList(result);          
-        }
-        if (category && category !== "all"){
-            result = viewlist.filter(group => group.category === category);
-            setViewList(result); 
-        }    
+            if (name !== ""){
+                result = viewlist.filter(group => group.name.replace(/ /g,'').toLowerCase().includes(name.replace(/ /g,'').toLowerCase()));   
+                setViewList(result);          
+            }
+            if (category && category !== "all"){
+                result = viewlist.filter(group => group.category === category);
+                setViewList(result); 
+            }  
+        }  
           
         //setOffset(0);
         setFilter(false);
-    }
+    },[name, category,filter, getYourGroups, viewlist, view]);
 
-    console.log(viewlist);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if (viewlist === null){
+            switch(view){
+                case 'another':
+                case 'your':
+                    getYourGroups();
+                    break;
+                case 'all':
+                    getAllGroups();
+                    break;
+                default:
+                    break;
+            }
+        }
+        filterList();
+
+    }, [viewlist, view, filterList, getYourGroups]);
+
+    //console.log(viewlist);
     return (
         <div className="hero">
             <div className="hero-body has-text-centered">

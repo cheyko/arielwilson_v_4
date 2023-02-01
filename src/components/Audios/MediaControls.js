@@ -19,7 +19,7 @@ const MediaControls = props => {
         if(operation === "view"){
             const pree_id = details.pree_id;
 
-            const getComments = axios.post("/api/get-comments", {pree_id}).then(
+            axios.post("/api/get-comments", {pree_id}).then(
                 (getComments) => {
                     if (getComments.status === 200){
                         setComments(getComments.data.comments);
@@ -36,7 +36,7 @@ const MediaControls = props => {
     const sendComment = (e) => {
         const user_id = props.context.user.id;
         const pree_id = details.pree_id;
-        const send = axios.post("/api/handle-comments", {user_id, pree_id, comment}).then(
+        axios.post("/api/handle-comments", {user_id, pree_id, comment}).then(
             (send) => {
                 if (send.status === 200){
                     //console.log(send.data.comment);

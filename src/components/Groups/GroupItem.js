@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import './index.css'
 import axios from 'axios';
 import withContext from '../../withContext';
@@ -15,12 +15,12 @@ const GroupItem = props => {
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
 
-    const loadMainMedia = async() => {
+    const loadMainMedia = useCallback( async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
 
-        const response = await axios.post('/api/get-group-media',{group_id}).then(
+        await axios.post('/api/get-group-media',{group_id}).then(
             (response) => {
                 if (response.status !== 200){
                     throw new Error("Response Status was not ok.")
@@ -36,7 +36,7 @@ const GroupItem = props => {
         );
 
         return true;
-    }
+    },[group_id]);
     
     useEffect( () => {
         // call function is-follower
@@ -55,7 +55,7 @@ const GroupItem = props => {
         if (!gotMedia){
             loadMainMedia();
         }
-    },[inGroup,gotMedia, user_id, group_id]); 
+    },[inGroup,gotMedia, user_id, group_id, loadMainMedia]); 
 
 
 
