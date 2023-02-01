@@ -209,7 +209,7 @@ padding-top: 60px !important;
     padding-block: 0.5rem !important;
 }
 
-@media screen and (max-width:1025px) and (min-width:768px){
+@media screen and (max-width:1300px) and (min-width:768px){
     .timeline-container{
         width: 35rem !important;
     }

@@ -116,7 +116,7 @@ const Social = props => {
                 </div>
             
             </nav>
-            <div className="page-content">
+            <div className="social-page-content">
                 <div className="hero-contain">
                     <br />
                     <div className="social-content">

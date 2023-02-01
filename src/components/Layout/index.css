@@ -30,3 +30,9 @@
         width: 25% !important;
     }
 }
+
+@media screen and (max-width:1300px) and (min-width:768px){
+    .app-container{
+        width: 35rem !important;
+    }
+}

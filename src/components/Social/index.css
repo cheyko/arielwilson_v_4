@@ -22,7 +22,11 @@
     width: 7.5rem !important;
 }
 
-@media screen and (max-width:768px){
+.social-page-content{
+    margin-top: 4rem !important;
+}
+
+@media screen and (max-width:1000px){
     .nav-row{
         margin: 0.5rem !important;
     }

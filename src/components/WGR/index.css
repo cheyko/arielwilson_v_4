@@ -86,7 +86,7 @@
     
 }
 
-@media screen and (max-width: 770px){
+@media screen and (max-width: 1000px){
     .page-content{
         margin-top: 7rem !important;
     }

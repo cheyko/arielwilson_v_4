@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import withContext from "../../withContext";
 import {Link} from "react-router-dom";
 import Lightbox from 'react-image-lightbox';
@@ -15,6 +15,8 @@ const ProfileHeader = props => {
 
     const [openImage, setOpen] = useState(false);
 
+    
+
     return(
         <>
             <div className="top-div hero-contain">  
@@ -28,11 +30,12 @@ const ProfileHeader = props => {
                                 <input id="file-input-video" name="video-upload" single type="file" onChange={e => props.handleUpload(e)}/>
                             </div> 
                         }
-                        {/*<video className="the-vid" width="640" height="480" controls>
-                            <source src={props.vidView} type="video/mp4"/>
-                    </video>*/}
-                        <iframe className="the-vid" width="640" height="480" src={props.vidView}>
-                        </iframe>
+                       {props.vidView ? 
+                        <video className="the-vid" width="640" height="480" controls>
+                            <source src={props.vidView} type="video/mp4" /> 
+                    </video> : <span></span>}
+                        {/*<iframe className="the-vid" width="640" height="480" src={props.vidView} allow="" sandbox>
+                        </iframe>*/}
                     </div>
                 </div>
                 <br />
