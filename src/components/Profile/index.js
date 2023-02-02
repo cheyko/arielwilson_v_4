@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import withContext from "../../withContext";
 import axios from 'axios';
 import './index.css';
@@ -26,32 +26,13 @@ const Profile = props => {
     const [display, setDisplay] = useState(null);
     const [responseMsg, setResponseMsg] = useState("");
 
-    useEffect(() => {
-        window.scroll(0,0);
-        if (!imgView && !vidView){
-            loadMainMedia();
-        }
-
-        if (!myView){
-            const result = props.context.getMyView().then(
-                (result) => {
-                    if (!result){
-                        console.log("there was an error when search for my details");
-                    }else{
-                        setMyView(result);
-                    }
-                }
-            );
-        }
-    },[myView,imgView,vidView]);
-
-    const loadMainMedia = async() => {
+    const loadMainMedia = useCallback( async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
         const user_id = props.context.user ? props.context.user.id : 0;
 
-        const response = await axios.post('/api/get-main-media',{user_id}).then(
+        await axios.post('/api/get-main-media',{user_id}).then(
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_cv === true){
@@ -70,7 +51,27 @@ const Profile = props => {
             }
         )
         return true;
-    }
+    },[props.context]);
+
+    useEffect(() => {
+        window.scroll(0,0);
+        //console.log(vidView);
+        if (!imgView && !vidView){
+            loadMainMedia();
+        }
+
+        if (!myView){
+            props.context.getMyView().then(
+                (result) => {
+                    if (!result){
+                        console.log("there was an error when search for my details");
+                    }else{
+                        setMyView(result);
+                    }
+                }
+            );
+        }
+    },[myView,imgView,vidView, props.context, loadMainMedia]);
 
     const handleUpload = (e) => {
         const upload = [e.target.files];
@@ -93,6 +94,12 @@ const Profile = props => {
         }
         //in the future render a modal and display the newly uploaded file with an ok btn then
         // set imgView and/or vidView to newly uploaded files 
+    }
+
+    const cancelUpload = async (e) => {
+        e.preventDefault();
+        setShowEdit(false);
+        loadMainMedia();
     }
 
     const saveUpload = async (e) => {
@@ -150,7 +157,7 @@ const Profile = props => {
         <div className="hero hero-container">
             <div className="card profile-box">
                 
-                <ProfileHeader showEdit={showEdit} setShowEdit={setShowEdit} handleUpload={handleUpload} saveUpload={saveUpload} showDropDown={showDropDown} setShowDropDown={setShowDropDown} user={myView} imgView={imgView} vidView={vidView} action="read-write"  />
+                <ProfileHeader showEdit={showEdit} setShowEdit={setShowEdit} handleUpload={handleUpload} saveUpload={saveUpload} cancelUpload={cancelUpload} showDropDown={showDropDown} setShowDropDown={setShowDropDown} user={myView} imgView={imgView} vidView={vidView} action="read-write"  />
                 
                 <Tabs>
                     <div className="card has-text-centered has-text-weight-bold">

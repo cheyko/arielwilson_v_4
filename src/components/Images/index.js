@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback, useMemo} from "react";
 import withContext from "../../withContext";
 import PreeItem from "../Timeline/PreeItem";
 import TilePreeItem from "../HelperComponents/TilePreeItem";
@@ -8,19 +8,13 @@ import $ from 'jquery';
 
 const Images = props => {
 
-    const loadImages = props.context.prees ? props.context.prees.filter(pree => (pree.is_media === true && pree.attachment.has_image === true) || pree.is_media === false) : [];
+    const loadImages = useMemo(() => props.context.prees ? props.context.prees.filter(pree => (pree.is_media === true && pree.attachment.has_image === true) || pree.is_media === false) : [],[props.context.prees]);
     const [images, renderImages] = useState([]);
     const [section, setSection] = useState("all");
-    const [showDropDown, setShowDropDown] = useState(false);
-    const [showMore, setShowMore] = useState(false);
+    //const [showDropDown, setShowDropDown] = useState(false);
+    //const [showMore, setShowMore] = useState(false);
 
-    useEffect( () => {
-        if (section === "all" || section === "yours"){
-            showImages();
-        }
-    },[section]);
-
-    const showImages = () => {
+    const showImages = useCallback( () => {
         let results;
         switch(section){
             case "all":
@@ -38,7 +32,13 @@ const Images = props => {
             default:
                 break;
         }
-    }
+    },[loadImages, props.context.user.id,section]);
+
+    useEffect( () => {
+        if (section === "all" || section === "yours"){
+            showImages();
+        }
+    },[section, showImages]);
 
     const toggleMenu = (e) => {
         e.preventDefault();
@@ -50,43 +50,43 @@ const Images = props => {
         <div className="hero">
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
-                    <a className="navbar-item">
+                    <span className="navbar-item">
                         <h1 className="subtitle"><b>MAGAZINE</b></h1>
-                    </a>
+                    </span>
 
-                    <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
+                    <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
                     
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <small>sections</small>
-                    </a>
+                    </span>
                 </div>
 
                 <div id="navbarBasicExample" className="navbar-menu">
                     <div className="navbar-start">
                         <div className="buttons">
-                            <a className={`navbar-item button ${section === "all" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("all"); toggleMenu(e);}}>
+                            <span className={`navbar-item button ${section === "all" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("all"); toggleMenu(e);}}>
                                 <i className="fas fa-images" aria-hidden="true"></i> &nbsp;<strong>ALL</strong>
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${section === "yours" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("yours");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${section === "yours" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("yours");toggleMenu(e);}}>
                                 <i className="fas fa-user" aria-hidden="true"></i> &nbsp;<strong>YOURS</strong>
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${section === "tagged" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("tagged");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${section === "tagged" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("tagged");toggleMenu(e);}}>
                                 <i className="fas fa-at" aria-hidden="true"></i> &nbsp;<strong>TAGGED</strong>
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${section === "favourites" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("favourites");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${section === "favourites" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("favourites");toggleMenu(e);}}>
                                 <i className="fab fa-gratipay" aria-hidden="true"></i> &nbsp;<strong>FAVOURITES</strong> 
-                            </a>
+                            </span>
                             
-                            <a onClick={ e => { setSection("wg-influence"); toggleMenu(e);}} className={`navbar-item button ${section === "wg-influence" ? "is-active" : "is-not-active"}`}>
+                            <span onClick={ e => { setSection("wg-influence"); toggleMenu(e);}} className={`navbar-item button ${section === "wg-influence" ? "is-active" : "is-not-active"}`}>
                                 <i className="fas fa-scroll" aria-hidden="true"></i> 
                                 &nbsp;<strong>TRENDY</strong>&nbsp;
                                 <i className="fas fa-camera-retro" aria-hidden="true"></i> 
-                            </a>
+                            </span>
                         </div>
                     </div>
                 </div>

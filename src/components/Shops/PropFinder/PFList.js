@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import withContext from '../../../withContext';
 import PFLItem from "./PFLItem";
 import ReactPaginate from 'react-paginate';
@@ -27,18 +27,6 @@ const PFList = props => {
     const [fromVal, setFromVal] = useState(0);
     const [toVal, setToVal ] = useState(1000000000);
     const val = PFView === "PFBuy" ? "Sale" : (PFView === "PFRent" ? "Rent" : "all");
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if (!filter){
-            setMarket(val);
-        }else{
-            let pfview = market === "Sale" ? "PFBuy" : (market === "Rent" ? "PFRent" : "all"); 
-            props.setPFView(pfview);
-        }
-        filterList();
-
-    }, [location, market, typeOf, beds, baths, sortOrder, toVal, fromVal, PFView]);
     
     const handlePageClick = (e) => {
         setOffset(e.selected * perPage);
@@ -58,7 +46,7 @@ const PFList = props => {
         }    
     }
 
-    const filterList = () => {
+    const filterList = useCallback(() => {
         let result = fullList;
         if (location !== ""){
             result = result.filter(listing => listing.title.replace(/ /g,'').toLowerCase().includes(location.replace(/ /g,'').toLowerCase())
@@ -93,8 +81,21 @@ const PFList = props => {
         setListings(result);
         setOffset(0);
         setFilter(false);
-    }
+    },[location, typeOf, beds, baths, sortOrder, toVal, fromVal, market, fullList]);
     
+    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if (!filter){
+            setMarket(val);
+        }else{
+            let pfview = market === "Sale" ? "PFBuy" : (market === "Rent" ? "PFRent" : "all"); 
+            props.setPFView(pfview);
+        }
+        filterList();
+
+    }, [val, market, filter, props, filterList]);
+
     slice = listings.slice(offset, offset + perPage); 
 
     return (

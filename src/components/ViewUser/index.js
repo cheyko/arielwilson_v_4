@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import './index.css'
 import axios from 'axios';
 import withContext from '../../withContext';
@@ -15,10 +15,31 @@ const ViewUser = props => {
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
 
+    const loadMainMedia = useCallback(async() => {
+        //check if cv and dp is available (database check):
+        //if true => set imgView and vidView to files that are in bio folder
+        //if false load a placeholder image and placeholder video
+        const user_id = userview_id;
+        //console.log(user_id);
+        await axios.post('/api/get-main-media',{user_id}).then(
+            (response) => {
+                if (response.status === 200){
+                    if (response.data.has_dp === true){
+                        setImgView(process.env.PUBLIC_URL + "/bio/display/" + user_id);
+                    }else{
+                        setImgView(process.env.PUBLIC_URL + "/bio/display/default.jpeg");
+                    }
+                    
+                }
+            }
+        )
+        return true;
+    },[userview_id]);
+
     useEffect( () => {
         // call function is-follower
         if (!isFollower){
-            const result = axios.post('/api/is-follower',{user_id,userview_id}).then(
+            axios.post('/api/is-follower',{user_id,userview_id}).then(
                 (result) => {
                     if (result.status !== 200){
                         console.log('I need a better error messaging system');
@@ -32,32 +53,11 @@ const ViewUser = props => {
         if (!gotMedia){
             loadMainMedia();
         }
-    }); 
-
-    const loadMainMedia = async() => {
-        //check if cv and dp is available (database check):
-        //if true => set imgView and vidView to files that are in bio folder
-        //if false load a placeholder image and placeholder video
-        const user_id = userview_id;
-        console.log(user_id);
-        const response = await axios.post('/api/get-main-media',{user_id}).then(
-            (response) => {
-                if (response.status === 200){
-                    if (response.data.has_dp === true){
-                        setImgView(process.env.PUBLIC_URL + "/bio/display/" + user_id);
-                    }else{
-                        setImgView(process.env.PUBLIC_URL + "/bio/display/default.jpeg");
-                    }
-                    
-                }
-            }
-        )
-        return true;
-    }
+    },[gotMedia, isFollower, user_id, userview_id, loadMainMedia]); 
 
     const follow = () => {
         console.log("follow function");
-        const dofollow = axios.post('/api/add-follower',{user_id,userview_id}).then(
+        axios.post('/api/add-follower',{user_id,userview_id}).then(
             (dofollow) => {
                 if (dofollow.status !== 200){
                     console.log('User was followed successful.');
@@ -71,7 +71,7 @@ const ViewUser = props => {
 
     const unfollow = () => {
         console.log("unfollow function");
-        const unfollow = axios.put('/api/un-follow',{user_id,userview_id}).then(
+        axios.put('/api/un-follow',{user_id,userview_id}).then(
             (unfollow) => {
                 if (unfollow.status !== 200){
                     console.log('User was unfollowed succesfully.');

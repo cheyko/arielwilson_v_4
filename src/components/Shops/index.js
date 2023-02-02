@@ -4,9 +4,9 @@ import './index.css';
 import $ from 'jquery';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faReceipt } from '@fortawesome/free-solid-svg-icons';
-import { faAd } from '@fortawesome/free-solid-svg-icons';
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+//import { faReceipt } from '@fortawesome/free-solid-svg-icons';
+//import { faAd } from '@fortawesome/free-solid-svg-icons';
 
 import Products from "./Products";
 import Services from "./Services";
@@ -25,8 +25,8 @@ const Shops = props => {
     
     const [shopView, setShopView] = useState("");
 
-    const [showDropDown, setShowDropDown] = useState(false);
-    const [showMore, setShowMore] = useState(false);
+    //const [showDropDown, setShowDropDown] = useState(false);
+    //const [showMore, setShowMore] = useState(false);
 
     useEffect( () => {
         window.scrollTo(0, 0);
@@ -104,57 +104,57 @@ const Shops = props => {
             <div className="card">
                 <nav className="navbar" role="navigation" aria-label="main navigation">
                     <div className="navbar-brand">
-                        <a className="navbar-item">
+                        <span className="navbar-item">
                             <h1 onClick={e => setShopView('grandmarket')} className="subtitle"><i className="fas fa-bullhorn" aria-hidden="true"></i>&nbsp;<small>MARKET</small></h1>
-                        </a>
+                        </span>
 
-                        <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
+                        <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>
                             <small>sections</small>
-                        </a>
+                        </span>
                     </div>
 
                     <div id="navbarBasicExample" className="navbar-menu">
                         <div className="navbar-start">
                             <div className="buttons">
-                                <a className={`navbar-item button ${shopView === "enterprise" ? "is-active" : "is-not-active"}`} onClick={e => { setShopView("enterprise"); toggleMenu(e);}}>
+                                <span className={`navbar-item button ${shopView === "enterprise" ? "is-active" : "is-not-active"}`} onClick={e => { setShopView("enterprise"); toggleMenu(e);}}>
                                     <i className="fas fa-shopping-cart" aria-hidden="true"></i> 
                                     &nbsp;<small>ENTERPRISE</small>
-                                </a>
+                                </span>
 
-                                <a className={`navbar-item button ${shopView === "bickle" ? "is-active" : "is-not-active"}`} onClick={e => { setShopView("bickle"); toggleMenu(e);}}>
+                                <span className={`navbar-item button ${shopView === "bickle" ? "is-active" : "is-not-active"}`} onClick={e => { setShopView("bickle"); toggleMenu(e);}}>
                                     <i className="fas fa-utensils" aria-hidden="true"></i> 
                                     &nbsp;<small>BICKLE COURT</small>
-                                </a>
+                                </span>
 
-                                <a className={`navbar-item button ${shopView === "worksite" ? "is-active" : "is-not-active"}`} onClick={e => { setShopView("worksite"); toggleMenu(e);}}>
+                                <span className={`navbar-item button ${shopView === "worksite" ? "is-active" : "is-not-active"}`} onClick={e => { setShopView("worksite"); toggleMenu(e);}}>
                                     <i className="fas fa-toolbox" aria-hidden="true"></i> 
                                     &nbsp;<small>WORKSITE</small>
-                                </a>
+                                </span>
 
-                                <a className={`navbar-item button ${shopView === "propfinder" ? "is-active" : "is-not-active"}`} onClick={e => { setShopView("propfinder"); toggleMenu(e);}}>
+                                <span className={`navbar-item button ${shopView === "propfinder" ? "is-active" : "is-not-active"}`} onClick={e => { setShopView("propfinder"); toggleMenu(e);}}>
                                     <i className="fas fa-sign" aria-hidden="true"></i> 
                                     &nbsp;<small>PROP-FINDER </small>
-                                </a>
+                                </span>
 
-                                <a className={`navbar-item button ${shopView === "wov" ? "is-active" : "is-not-active"}`} onClick={e => { setShopView("wov"); toggleMenu(e);}}>
+                                <span className={`navbar-item button ${shopView === "wov" ? "is-active" : "is-not-active"}`} onClick={e => { setShopView("wov"); toggleMenu(e);}}>
                                     <i className="fas fa-car" aria-hidden="true"></i> 
                                     &nbsp;<small>W.O.V</small>
-                                </a>
+                                </span>
                             </div>
                         </div>
                         <div className="navbar-end">
                             <div className="navbar-item">
                                 <div className="buttons">
 
-                                    <a onClick={ e => {  toggleAds(e); toggleMenu(e);}} className="button is-small is-light">
+                                    <span onClick={ e => {  toggleAds(e); toggleMenu(e);}} className="button is-small is-light">
                                     <i className="fas fa-rss" aria-hidden="true"></i> &nbsp; Ads
-                                    </a>
-                                    <a onClick={ e => {toggleCart(e); toggleMenu(e);}} className="button is-small is-primary">
+                                    </span>
+                                    <span onClick={ e => {toggleCart(e); toggleMenu(e);}} className="button is-small is-primary">
                                         <i className="fas fa-receipt" aria-hidden="true"></i> &nbsp; <strong> Invoice </strong>
-                                    </a>
+                                    </span>
                                 </div>
                             </div>
                         </div>

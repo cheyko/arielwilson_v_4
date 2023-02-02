@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import withContext from '../../../withContext';
 import "./index.css";
 import ServiceItem from "./ServiceItem";
@@ -14,22 +14,15 @@ const ServicesList = props => {
     const [offset, setOffset] = useState(0);
 
     const categories = ["Beauty & Grooming", "Clothing","Construction","Creative", "Electronics","Entertainment","Food & Beverages", "General", "Heath & Wellness", "Household", "Industrial", "I.T", "Landscaping", "Legal", "Medical",  "Religious", "Sports" ];
-    const deliverables = ["Appointment", "Application", "Booking", "Content", "Consultation", "Design", "Evaluation","File","Product", "Repair", "Representation"];
+    //const deliverables = ["Appointment", "Application", "Booking", "Content", "Consultation", "Design", "Evaluation","File","Product", "Repair", "Representation"];
 
     const [searchval, setSearchVal] = useState("");
     const [category, setCategory] = useState("All");
-    const [level, setLevel] = useState("All");
+    //const [level, setLevel] = useState("All");
     const [filter, setFilter] = useState(false);
     const [sortOrder, setSortOrder] = useState("");
     const [fromVal, setFromVal] = useState(0);
     const [toVal, setToVal ] = useState(1000000000);
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if(filter){
-            filterList();
-        }
-    }, [filter]);
 
     const handlePageClick = (e) => {
         setOffset(e.selected * perPage);
@@ -48,7 +41,7 @@ const ServicesList = props => {
         }    
     }
 
-    const filterList = () => {
+    const filterList = useCallback(() => {
         let result = fullList;
         if (searchval && searchval !== ""){
             result = result.filter(product => product.name.replace(/ /g,'').toLowerCase().includes(searchval.replace(/ /g,'').toLowerCase())
@@ -74,8 +67,15 @@ const ServicesList = props => {
         setServices(result);
         setOffset(0);
         setFilter(false);
-    }
+    },[fullList, searchval, category, fromVal, toVal, sortOrder]);
     
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if(filter){
+            filterList();
+        }
+    }, [filter, filterList]);
+
     slice = services.slice(offset, offset + perPage); 
 
     return (

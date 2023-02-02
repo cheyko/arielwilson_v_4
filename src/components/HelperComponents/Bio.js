@@ -51,7 +51,7 @@ const Bio = props => {
     const loadBio = async () => {
         props.setResponseMsg("");
         const user_id = props.context.user.id;
-        const result = await axios.post('/api/get-bio',{user_id}).then(
+        await axios.post('/api/get-bio',{user_id}).then(
             (result) => {
                 if (result.status !== 200){
                     props.setResponseMsg("Bio information was not loaded, please refresh page and try again. Contact us for suppport if problem persist.");
@@ -74,7 +74,7 @@ const Bio = props => {
         const user_id = props.context.user_id;
         
         if (props.func === 'create'){
-            const result1 = await axios.post('/api/bio',{user_id,dob,tagline,description,location}).then(
+            await axios.post('/api/bio',{user_id,dob,tagline,description,location}).then(
                 (result1) => {
                     if (result1.status === 200){
                         //change some bool to true to display the next button
@@ -89,7 +89,7 @@ const Bio = props => {
                 }
             );
         }else if (props.func === 'edit'){
-            const result2 = await axios.put('/api/bio',{user_id,uname,dob,tagline,description,location}).then(
+            await axios.put('/api/bio',{user_id,uname,dob,tagline,description,location}).then(
                 (result2) => {
                     if (result2.status === 200){
                         props.setResponseMsg("Bio information was updated.");

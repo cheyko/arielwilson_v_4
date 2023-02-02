@@ -10,7 +10,7 @@ const Trendy = props => {
 
     const [view, setView] = useState("main");
 
-    const accessLevel = props.context.user.accessLevel;
+    //const accessLevel = props.context.user.accessLevel;
 
     var placeholders = [
         {id : 0 , text : "test 0"},

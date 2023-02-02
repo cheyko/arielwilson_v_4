@@ -28,7 +28,7 @@ const PreeItem = props => {
         //if false load a placeholder image and placeholder video
         const user_id = aPree.user.user_id;
         //console.log(user_id);
-        const response = await axios.post('/api/get-main-media',{user_id}).then(
+        await axios.post('/api/get-main-media',{user_id}).then(
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_dp === true){
@@ -55,7 +55,7 @@ const PreeItem = props => {
                 </article>  
                 <PreeReaction aPree={aPree} showComments={showComments} clickable={clickable}/>
             </div>
-            <hr className="h-line" />
+            <br/>
         </div>
     )
 }

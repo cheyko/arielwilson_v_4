@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import withContext from '../../../withContext';
 import "./index.css";
 import ProductItem from "./ProductItem";
@@ -14,7 +14,7 @@ const ProductsList = props => {
     const [offset, setOffset] = useState(0);
 
     const categories = ["Art", "Applications & Software", "Automobiles",  "Baby", "Books", "Beauty & Cosmetics", "Electronics", "Fashion", "Food & Beverages", "Furniture" ,"Health", "Household", "Kitchen", "Industrial", "Outdoors", "Scientific", "Sports", "Tools", "Toys", "Travel"];
-    const types = ["Devices", "Packages", "Containers", "Items", "Foods", "Consumables", "Wearables", "Disposables"]
+    //const types = ["Devices", "Packages", "Containers", "Items", "Foods", "Consumables", "Wearables", "Disposables"]
     const consumerBrands = ["Alberta","Aunt Jemina","Grace","Kellog","Lasco","Walkerswood","Nestle","National","Holiday", "Pilsbury","Excelsior", "Hershey", "Uncle Ben", "Reeces", "M&M", "Planters", "Oreo", "Campbell's","Heinz", "Dove", "Fritto lay", "Nature Valley", "Starbust", "Haagen-Dadz","Ben and Jerry", "Hostess", "Canbury", "Ferero Rocher", "DiGiornio"];
     const beverageBrands = ["Coca-Cola","Pepsi","Red-bull","Smirnoff","Red Stripe", "Corona", "BudWeiser"]
     //const specialBrands = ["Tesla", ""];
@@ -38,13 +38,6 @@ const ProductsList = props => {
     const [fromVal, setFromVal] = useState(0);
     const [toVal, setToVal ] = useState(1000000000);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if(filter){
-            filterList();
-        }
-    }, [filter]);
-
     const handlePageClick = (e) => {
         setOffset(e.selected * perPage);
         window.scrollTo(0, 0);
@@ -64,7 +57,7 @@ const ProductsList = props => {
         }    
     }
 
-    const filterList = () => {
+    const filterList = useCallback( () => {
         let result = fullList;
         if (searchval && searchval !== ""){
             result = result.filter(product => product.name.replace(/ /g,'').toLowerCase().includes(searchval.replace(/ /g,'').toLowerCase())
@@ -99,7 +92,14 @@ const ProductsList = props => {
         setProducts(result);
         setOffset(0);
         setFilter(false);
-    }
+    },[brand, category, color, condition, fromVal, fullList, searchval, sortOrder, toVal]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if(filter){
+            filterList();
+        }
+    }, [filter, filterList]);
     
     slice = products.slice(offset, offset + perPage); 
 

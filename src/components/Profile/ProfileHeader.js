@@ -15,7 +15,7 @@ const ProfileHeader = props => {
 
     const [openImage, setOpen] = useState(false);
 
-    
+    //const videoUrl = props.vidView;
 
     return(
         <>
@@ -27,11 +27,11 @@ const ProfileHeader = props => {
                                 <label htmlFor="file-input-video">
                                     <span className="cv-video-icon is-pulled-right"> <FontAwesomeIcon icon={faVideo} size="2x" /> </span> 
                                 </label>
-                                <input id="file-input-video" name="video-upload" single type="file" onChange={e => props.handleUpload(e)}/>
+                                <input id="file-input-video" name="video-upload" single="true" type="file" onChange={e => props.handleUpload(e)}/>
                             </div> 
                         }
                        {props.vidView ? 
-                        <video className="the-vid" width="640" height="480" controls>
+                        <video key={props.vidView} className="the-vid" width="640" height="480" controls>
                             <source src={props.vidView} type="video/mp4" /> 
                     </video> : <span></span>}
                         {/*<iframe className="the-vid" width="640" height="480" src={props.vidView} allow="" sandbox>
@@ -97,7 +97,7 @@ const ProfileHeader = props => {
                                 </button>
                             ):(
                                 <div>
-                                    <button onClick={ e => props.setShowEdit(!props.showEdit)} className={`profile-btn button is-link is-pulled-right`}> 
+                                    <button onClick={ e => props.cancelUpload(e)} className={`profile-btn button is-link is-pulled-right`}> 
                                         Cancel
                                     </button> 
                                     
@@ -116,7 +116,7 @@ const ProfileHeader = props => {
                                 <label htmlFor="file-input-image">
                                     <span className="dp-camera-icon is-pulled-right"> <FontAwesomeIcon icon={faCamera} size="2x" /> </span>
                                 </label>
-                                <input id="file-input-image" name="image-upload" single type="file" onChange={e => props.handleUpload(e)}/>
+                                <input id="file-input-image" name="image-upload" single="true" type="file" onChange={e => props.handleUpload(e)}/>
                             </div> 
                         }
                         <img alt="display" onClick={e => setOpen(true)} className="is-rounded" src={props.imgView} />   

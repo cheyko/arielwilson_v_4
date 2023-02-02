@@ -39,7 +39,7 @@ const ProfileBio = props => {
     
     const action = props.action;
     const user = props.user;
-    console.log(user);
+    //console.log(user);
     
     const getBirthday = (param) => {
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import withContext from "../../withContext";
 import axios from 'axios';
 import { Navigate, useParams } from "react-router-dom";
@@ -27,45 +27,13 @@ const ViewUserProfile = props => {
 
     const [isFollower, setIsFollower] = useState(null);
     const user_id = props.context.user ? props.context.user.id : 0;
-
-    useEffect( () => {
-        if (!imgView && !vidView){
-            loadMainMedia();
-        }
-
-        if (!userview){
-            const result = props.context.getUserView(id).then(
-                (result) => {
-                    if (!result){
-                        console.log("there was an error when search for my details");
-                    }else{
-                        setUserview(result);
-                    }
-                }
-            );
-        }
-
-        if (!isFollower){
-            const response = axios.post('/api/is-follower',{user_id,id}).then(
-                (response) => {
-                    if (response.status !== 200){
-                        console.log('I need a better error messaging system');
-                    }else{
-                        setIsFollower(response.data.is_follower);
-                    }
-                    //console.log("test");
-                }
-            );
-        }
-    });
-
-    const loadMainMedia = async() => {
+    const loadMainMedia = useCallback( async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
-        const user_id = props.match.params.id;
+        const user_id = id;
 
-        const response = await axios.post('/api/get-main-media',{user_id}).then(
+        await axios.post('/api/get-main-media',{user_id}).then(
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_cv === true){
@@ -84,13 +52,45 @@ const ViewUserProfile = props => {
             }
         )
         return true;
-    }
+    },[id]);
+
+
+    useEffect( () => {
+        if (!imgView && !vidView){
+            loadMainMedia();
+        }
+
+        if (!userview){
+            props.context.getUserView(id).then(
+                (result) => {
+                    if (!result){
+                        console.log("there was an error when search for my details");
+                    }else{
+                        setUserview(result);
+                    }
+                }
+            );
+        }
+
+        if (!isFollower){
+            axios.post('/api/is-follower',{user_id,id}).then(
+                (response) => {
+                    if (response.status !== 200){
+                        console.log('I need a better error messaging system');
+                    }else{
+                        setIsFollower(response.data.is_follower);
+                    }
+                    //console.log("test");
+                }
+            );
+        }
+    },[imgView, vidView,userview, id, user_id, isFollower, loadMainMedia, props.context]);
     
     // have onclick functions for add-follower and unfollow
     
     const follow = () => {
         console.log("follow function");
-        const dofollow = axios.post('/api/add-follower',{user_id,id}).then(
+        axios.post('/api/add-follower',{user_id,id}).then(
             (dofollow) => {
                 if (dofollow.status !== 200){
                     console.log('User was followed successful.');
@@ -104,7 +104,7 @@ const ViewUserProfile = props => {
 
     const unfollow = () => {
         console.log("unfollow function");
-        const unfollow = axios.put('/api/un-follow',{user_id,id}).then(
+        axios.put('/api/un-follow',{user_id,id}).then(
             (unfollow) => {
                 if (unfollow.status !== 200){
                     throw new Error('User was unfollowed succesfully.');

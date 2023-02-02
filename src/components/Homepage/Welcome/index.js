@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import withContext from "../../../withContext";
 import axios from 'axios';
 import '../index.css';
@@ -40,17 +40,7 @@ const Welcome = props => {
     const [imgView, setImgView] = useState(null);
     const [vidView, setVidView] = useState(null);
 
-    useEffect( () => {
-        if (val === null){
-            hasUname();
-        }
-        if (!gotMedia){
-            loadMainMedia();
-        }
-        //setResponseMsg(responseMsg);
-    },[val,responseMsg,uname,tagline, cover,display, imgView,vidView]);
-
-    const hasUname = async () => {
+    const hasUname = useCallback( async () => {
         //e.preventDefault();
         //setVal(null);
         
@@ -73,14 +63,14 @@ const Welcome = props => {
         }  
         //setUname(response.data.uname);
         return false;
-    }
+    }, [new_id, val, props.context.user_id] );
 
     const checkUname = async (e) => {
         setResponseMsg("");
         e.preventDefault();
         let userInput = e.target.value;
 
-        const response = await axios.post('/api/check-uname',{userInput}).then(
+        await axios.post('/api/check-uname',{userInput}).then(
             (response) => {
                 if (response.status === 200){
                     setUname(userInput);
@@ -99,7 +89,7 @@ const Welcome = props => {
         //allow user to save username to database
         //do axios put request to update the username of the user
         const user_id = props.context.user_id ? props.context.user_id : new_id;
-        const response = await axios.put('/api/save-uname',{user_id,uname}).then(
+        await axios.put('/api/save-uname',{user_id,uname}).then(
             (response) => {
                 if (response.status === 200){
                     //change some bool to true to display the next button
@@ -118,13 +108,13 @@ const Welcome = props => {
         return true;
     }
 
-    const loadMainMedia = async() => {
+    const loadMainMedia = useCallback( async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
         const user_id = props.context.user_id ? props.context.user_id : new_id;
-        console.log(user_id);
-        const response = await axios.post('/api/get-main-media',{user_id}).then(
+        //console.log(user_id);
+        await axios.post('/api/get-main-media',{user_id}).then(
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_cv === true){
@@ -143,7 +133,7 @@ const Welcome = props => {
             }
         )
         return true;
-    }
+    },[new_id, props.context.user_id]);
 
     const handleUpload = (e) => {
         const upload = Array.from(e.target.files);
@@ -277,6 +267,15 @@ const Welcome = props => {
         setResponseMsg("");
         return true;
     }
+    useEffect( () => {
+        if (val === null){
+            hasUname();
+        }
+        if (!gotMedia){
+            loadMainMedia();
+        }
+        //setResponseMsg(responseMsg);
+    },[val, gotMedia, hasUname, loadMainMedia]);
 
     return (
         <div className="hero">

@@ -8,7 +8,7 @@ import UserCog from "./UserCog";
 
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faBook, faBookOpen, faClipboardList, faCog, faPaperPlane, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBookOpen, faClipboardList, faCog, faPaperPlane, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { faIdCard, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faImages } from '@fortawesome/free-regular-svg-icons';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
@@ -24,13 +24,13 @@ import axios from "axios";
 const Navbar = props => {
 
     const uname = props.context.user ? props.context.user.username : "";
-    const user = props.context.user;
+    //const user = props.context.user;
     const gender = props.context.user ? props.context.user.gender : "";
     const [settingsbtn, activeSettings] = useState(false);
     const [searchbtn, activeSearch] = useState(false);
     const [timelinebtn, activeTimeline] = useState(false);
     const [profilebtn, activeProfile] = useState(false);
-    const [notificationbtn, activeNotifications] = useState(false);
+    //const [notificationbtn, activeNotifications] = useState(false);
     const [wgrbtn, activeWGR] = useState(false);
     const [walletbtn, activeWallet] = useState(false);
     const [activitiesbtn, activeActivities] = useState(false);
@@ -69,7 +69,7 @@ const Navbar = props => {
         //if false load a placeholder image and placeholder video
         const user_id = props.context.user ? props.context.user.id : 0;
         //console.log(user_id);
-        const response = await axios.post('/api/get-main-media',{user_id}).then(
+        await axios.post('/api/get-main-media',{user_id}).then(
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_dp === true){

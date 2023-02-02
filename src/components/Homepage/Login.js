@@ -24,7 +24,7 @@ const Login = props => {
     }
 
     function handleChange(e){
-        var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
         if(e.target.name === "email"){
             if (e.target.value.match(regex)){

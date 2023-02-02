@@ -26,7 +26,7 @@ const TrendyItem = props => {
             }
             setGetMedia(true);
         }
-    }); 
+    },[gotMedia, aPree.attachment]); 
 
     return (
         <>

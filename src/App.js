@@ -73,7 +73,7 @@ export default class App extends Component {
   async componentDidMount(){
     //this.setState({ready:true});
     const time = await axios.get("/api/time");
-    console.log(time);
+    //console.log(time);
     let user = localStorage.getItem("user-context");
     let ready = localStorage.getItem("ready");
     let welcome = localStorage.getItem("welcome");
@@ -96,7 +96,7 @@ export default class App extends Component {
     const user_id = user ? user.id : null;
     const prees = ready ? await axios.post("/api/see-the-pree",{user_id}) : {"data":null}; //add reactions to the prees from the backend before response to request.
     const messages = ready ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
-    console.log(messages);
+    //console.log(messages);
     this.setState({user, prees:prees.data, ready, welcome, userlist, recent, messages, boxWidth:boxWidth});
   }
 

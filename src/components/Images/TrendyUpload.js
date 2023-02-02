@@ -142,7 +142,7 @@ const TrendyUpload = props => {
             formData.set('magazine',trend === "image" ? true : false);
             formData.set('stereo',false);
                         
-            const result = await axios.post('/api/exclusive',formData, 
+           await axios.post('/api/exclusive',formData, 
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'

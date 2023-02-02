@@ -1,19 +1,15 @@
-import React,{ useState, useEffect} from "react";
+import React,{ useState, useEffect, useCallback} from "react";
 import withContext from "../../withContext";
 import axios from "axios";
 import TrendyItem from "./TrendyItem";
 
 const TrendyList = props => {
 
+    const options = ["Stream","Purchase","Contingency","Follower", "Frat", "Rank", "Highlight","Classic"];
+    const sections = ["Trendy","Influence"];
+    
     const [loadlist, setLoadList] = useState(null);
     const [viewlist, setViewList] = useState(null);
-    const options = ["Stream","Purchase","Contingency","Follower", "Frat", "Rank", "Highlight","Classic"];
-    const image_categories = ["Personal", "Design"];
-    const quote_categories = ["Poem", "Piece", "Saying"];
-    const personal_genres = ["Selfie", "Scenery", "Throwback", "Display"];
-    const design_genres = ["Wallpaper", "Cartoon", "3D"];
-    const all_genres = ["Inspirational", "Historical", "Romance", "Comical", "Slang"];
-    const sections = ["Trendy","Influence"];
     const [filter, setFilter] = useState(true);
     const [section, setSection] = useState("all");
     const [searchval, setSearchVal] = useState("");
@@ -24,18 +20,8 @@ const TrendyList = props => {
     const [categorieslist, setViewCategories] = useState([]);
     const [genreslist, setViewGenres] = useState([]);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if (viewlist === null){
-            getExclusives();
-        }
-        if(filter){
-            filterList();
-        }
-    }, [searchval, genre, playback, section, category, filter]);
-
     const getExclusives = () => {
-        const result = axios.get('/api/exclusive').then(
+        axios.get('/api/exclusive').then(
             (result) => {
                 if (result.status !== 200){
                     throw new Error('List of Followings were not sent from server.');
@@ -48,7 +34,14 @@ const TrendyList = props => {
         )
     }
 
-    const filterList = () => {
+    const filterList = useCallback( () => {
+        
+        const image_categories = ["Personal", "Design"];
+        const quote_categories = ["Poem", "Piece", "Saying"];
+        const personal_genres = ["Selfie", "Scenery", "Throwback", "Display"];
+        const design_genres = ["Wallpaper", "Cartoon", "3D"];
+        const all_genres = ["Inspirational", "Historical", "Romance", "Comical", "Slang"];
+
         let result = loadlist;
         setViewCategories([]);
         setViewGenres([]);
@@ -85,7 +78,17 @@ const TrendyList = props => {
         }
         setViewList(result); 
         setFilter(false);
-    }
+    },[searchval, genre, playback, section, category, loadlist]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if (viewlist === null){
+            getExclusives();
+        }
+        if(filter){
+            filterList();
+        }
+    }, [filter, viewlist, filterList]);
 
     return (
         <div className="hero">

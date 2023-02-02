@@ -11,14 +11,15 @@ const TrendyHeader = props => {
     const [reaction, setReaction] = useState(null);
     const [likedcount, setLikes] = useState(details.approvals);
     const [dislikedcount, setDislikes] = useState(details.disapprovals);
-    const [viewcount, setViewcount] = useState(details.views);
+    //const [viewcount, setViewcount] = useState(details.views);
+    const viewcount = details.views;
 
     useEffect( () => {
         const user_id = props.context.user ? props.context.user.id : 0;
         const pree_id = details.pree_id;
         
         //PreeReaction onload
-        const getReaction = axios.post("/api/get-reaction",{user_id,pree_id}).then(
+        axios.post("/api/get-reaction",{user_id,pree_id}).then(
             (getReaction) => {
                 if (getReaction.status === 200){
                     setReaction(getReaction.data.is_approved);
@@ -29,13 +30,13 @@ const TrendyHeader = props => {
                 }
             }
         )
-    },[reaction, likedcount, dislikedcount, commentscount ]);
+    },[reaction, likedcount, dislikedcount, commentscount, props.context.user, details]);
 
         //PreeReactions Functions
         const likePree = (e, pree_id) => {
             const user_id = props.context.user.id;
             if (reaction !== true){
-                const addlike = axios.post("/api/like-pree",{user_id,pree_id}).then(
+                axios.post("/api/like-pree",{user_id,pree_id}).then(
                     (addlike) => {
                         if (addlike.status === 200){
                             setReaction(true);
@@ -47,7 +48,7 @@ const TrendyHeader = props => {
                     }
                 )
             }else{
-                const unlike = axios.put("/api/like-pree",{user_id,pree_id}).then(
+                axios.put("/api/like-pree",{user_id,pree_id}).then(
                     (unlike) => {
                         if (unlike.status === 200){
                             setLikes(unlike.data.likedcount);
@@ -63,7 +64,7 @@ const TrendyHeader = props => {
         const dislikePree = (e, pree_id) => {
             const user_id = props.context.user.id;
             if (reaction !== false){
-                const dislike = axios.post("/api/dislike-pree",{user_id,pree_id}).then(
+                axios.post("/api/dislike-pree",{user_id,pree_id}).then(
                     (dislike) => {
                         if (dislike.status === 200){
                             setLikes(dislike.data.likedcount);
@@ -75,7 +76,7 @@ const TrendyHeader = props => {
                     }
                 )
             }else{
-                const undislike = axios.put("/api/dislike-pree",{user_id,pree_id}).then(
+                axios.put("/api/dislike-pree",{user_id,pree_id}).then(
                     (undislike) => {
                         if (undislike.status === 200){
                             setReaction(null);

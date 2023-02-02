@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import withContext from "../../withContext";
 import AddPree from "./AddPree";
 import PreeItem from "./PreeItem";
 import "./index.css";
-import axios, { all } from "axios";
+import axios from "axios";
 import TimelineExclusive from "./TimelineExclusive";
 
 const Timeline = props => {
@@ -23,23 +23,9 @@ const Timeline = props => {
 
     //console.log(loadPrees);
     
-    useEffect( () => {
-        window.addEventListener('scroll', e => handleScroll(e));
-        if (!gotMedia){
-            loadMainMedia();
-        } 
-        
-        if(allPrees.length === 0){
-            document.getElementById("app-container").style.height = "100vh";
-        }else{
-            document.getElementById("app-container").style.height = "auto";
-        }
+ 
 
-        //sortPrees();
-        //get reactions to prees --> getlist of prees ids from from allPrees = (param) ?
-    },[allPrees]);
-
-    const loadMainMedia = async() => {
+    const loadMainMedia = useCallback( async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
@@ -47,7 +33,7 @@ const Timeline = props => {
         ///use the loadmainmedia from navbar
         const user_id = props.context.user ? props.context.user.id : 0;
         if(user_id > 0){
-            const response = await axios.post('/api/get-main-media',{user_id}).then(
+            await axios.post('/api/get-main-media',{user_id}).then(
                 (response) => {
                     if (response.status === 200){
                         if (response.data.has_dp === true){
@@ -60,7 +46,7 @@ const Timeline = props => {
             )
         }
         return true;
-    }
+    },[props.context.user]);
 
     const handleScroll = e => {
         // Get the make-pree btn
@@ -133,6 +119,21 @@ const Timeline = props => {
         window.scrollTo(0, 0);
     }
 
+    useEffect( () => {
+        window.addEventListener('scroll', e => handleScroll(e));
+        if (!gotMedia){
+            loadMainMedia();
+        } 
+        
+        if(allPrees.length === 0){
+            document.getElementById("app-container").style.height = "100vh";
+        }else{
+            document.getElementById("app-container").style.height = "auto";
+        }
+
+        //sortPrees();
+        //get reactions to prees --> getlist of prees ids from from allPrees = (param) ?
+    },[allPrees, gotMedia, loadMainMedia]);
     return (
         <div id="timeline-div" className="hero">
             <div className="hero-container">

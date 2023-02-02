@@ -9,14 +9,14 @@ const Messages = props => {
 
     const user_id = props.context.user ? props.context.user.id : 0;
     let {id} = useParams();
-    let {catergory} = useParams();
-    let {msgtype} = useParams();
+    //let {catergory} = useParams();
+    //let {msgtype} = useParams();
 
     const [userview, setUserview] = useState("");
     const [convo, setConvo] = useState([]);
     const [count, setCount] = useState(0);
 
-    const [convoView, setConvoView] = useState([]);
+    //const [convoView, setConvoView] = useState([]);
 
     const allmessages = props.context.messages ? props.context.messages : []; 
     const people = props.context.viewlist ? props.context.viewlist : [];
@@ -24,14 +24,14 @@ const Messages = props => {
     const [tab, setTab] = useState("convos");
 
     useEffect((convo) => {
-        console.log("Testing");
+       
         let interval = null;
-        let convoMsgs = null;
+        //let convoMsgs = null;
         const userview_id = id;
 
         if (userview_id !== '0'){
             if (userview === ""){
-                const result = props.context.getUserView(userview_id).then(
+                props.context.getUserView(userview_id).then(
                     (result) => {
                         if (!result){
                             throw new Error("there was an error when search for my details");
@@ -40,7 +40,7 @@ const Messages = props => {
                         }
                     }
                 );
-                convoMsgs = props.context.getConvo(userview_id).then(
+                props.context.getConvo(userview_id).then(
                     (convoMsgs) => {
                         if(!convoMsgs){
                             throw new Error('There was an error when getting convo');
@@ -54,7 +54,7 @@ const Messages = props => {
             }else{
                 if (count < 1){
                     interval = setInterval(() => {
-                        convoMsgs = props.context.getConvo(userview_id).then(
+                        props.context.getConvo(userview_id).then(
                             (convoMsgs) => {
                                 if(!convoMsgs){
                                     throw new Error('There was an error when getting convo');
@@ -73,7 +73,7 @@ const Messages = props => {
         }else{
             props.context.getMessages(user_id);
         }
-    },[count, userview, id, convo, setConvo]);
+    },[count, userview, id, convo, setConvo, props.context, user_id]);
     
     const getLastMsg = (person) => {
         const result = allmessages.filter((msg) => msg.sender_id === person.user_id || msg.receiver_id === person.user_id);
@@ -117,7 +117,7 @@ const Messages = props => {
 
     const loadConvo = async(e, theID) => {
         const userview_id = theID;
-        const result = props.context.getUserView(userview_id).then(
+        props.context.getUserView(userview_id).then(
             (result) => {
                 if (!result){
                     throw new Error("there was an error when search for my details");
@@ -126,7 +126,7 @@ const Messages = props => {
                 }
             }
         );
-        let convoMsgs = props.context.getConvo(userview_id).then(
+        props.context.getConvo(userview_id).then(
             (convoMsgs) => {
                 if(!convoMsgs){
                     throw new Error('There was an error when getting convo');
@@ -147,7 +147,7 @@ const Messages = props => {
         const userview_id = id;
 
         console.log(theMsg);
-        const createMsg = axios.post('/api/create-message',{user_id,userview_id,theMsg,theDate}).then(
+        axios.post('/api/create-message',{user_id,userview_id,theMsg,theDate}).then(
             (createMsg) => {
                 if (createMsg.status !== 200){
                     throw new Error('Message was not sent succesfully.');
@@ -155,7 +155,7 @@ const Messages = props => {
                     console.log('Message was sent succesfully.');
                     document.getElementById("new-message").textContent = "";
                     //add message to exisiting convo
-                    const updateConvo = props.context.getConvo(userview_id).then(
+                    props.context.getConvo(userview_id).then(
                         (updateConvo) => {
                             if(!updateConvo){
                                 throw new Error('There was an error when getting convo');
@@ -181,48 +181,48 @@ const Messages = props => {
         <div className="hero">
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
-                    <a className="navbar-item">
+                    <span className="navbar-item">
                         <h1 className="subtitle"><b>W@H GW@@N !!! </b></h1>
-                    </a>
+                    </span>
 
-                    <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
+                    <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
                     
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <small>sections</small>
-                    </a>
+                    </span>
                 </div>
 
                 <div id="navbarBasicExample" className="navbar-menu">
                     <div className="navbar-start">
-                        <a className="navbar-item">
+                        <span className="navbar-item">
                             Home
-                        </a>
+                        </span>
 
-                        <a className="navbar-item">
+                        <span className="navbar-item">
                             Documentation
-                        </a>
+                        </span>
 
                         <div className="navbar-item has-dropdown is-hoverable">
-                            <a className="navbar-link" onClick={e => setShowMore(!showMore)}>
+                            <span className="navbar-link" onClick={e => setShowMore(!showMore)}>
                                 More
-                            </a>
+                            </span>
 
                             <div className="navbar-dropdown" style={showMore ? {display: "block"} : {display: "none"}}>
-                                <a className="navbar-item">
+                                <span className="navbar-item">
                                     About
-                                </a>
-                                <a className="navbar-item">
+                                </span>
+                                <span className="navbar-item">
                                     Jobs
-                                </a>
-                                <a className="navbar-item">
+                                </span>
+                                <span className="navbar-item">
                                     Contact
-                                </a>
+                                </span>
                                 <hr className="navbar-divider" />
-                                <a className="navbar-item">
+                                <span className="navbar-item">
                                     Report an issue
-                                </a>
+                                </span>
                             </div>
                         </div>
                     </div>
