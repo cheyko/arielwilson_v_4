@@ -48,7 +48,7 @@ const Signup = props => {
     const [phonenumber, setPhone] = useState("");
     const [re_password, setRePassword] = useState("");
     const [error, setError] = useState("");
-    const [check, setCheck] = useState(null);
+    //const [check, setCheck] = useState(null);
     //const [] = useState();
 
     /*useEffect( () => {
@@ -94,20 +94,54 @@ const Signup = props => {
         setError("");
     }
 
-    const checkEmail = (val) => {
-        console.log("1");
+    const signUp = e => {
+        e.preventDefault();
+        //const {firstname,lastname,email,password, re_password, phonenumber} = this.state;
+        setError("");
+        if (!firstname || !lastname || !gender || !email || !password || !phonenumber || !re_password){
+            setError("Fill all Fields !");
+            //setCheck(false);
+            return false;
+        }
+
+        if (!phonenumber.match(/^\d+$/)){
+            setError("Not a valid phone number.");
+            return false;
+        }
+
+        if (password !== re_password){
+            setError("Passwords Do not match.");
+            //setCheck(false);
+            return false;
+        }          
+
         var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (val.match(regex)){
-            axios.post('/api/check-email', {val}).then( response => {
+        if (email.match(regex)){
+            axios.post('/api/check-email', {email}).then( response => {
                 if (response.status === 200){
-                    console.log("2");
-                    setCheck(true);
-                    setError("Email available.");
+                    props.context.signUp(firstname,lastname,gender,email,password,phonenumber).then(
+                    (res) => {
+                        if (res === true){
+                            //call some context function that setState email and password. 
+                            //redirect to welcome page.
+                            //If neccessary clear these email and password states after welcome process is finished.
+                            
+                            props.context.welcomeFunc(email,password);
+                            setModalOpen(false);
+                            return true;
+                        }else{
+                            setModalOpen(true);
+                            setError("There was some issue signing up.");
+                            return false;
+                        }
+        
+                    });
+                    
                     return true;
                     
                 }else{
-                    console.log("3");
-                    setCheck(false);
+                    //console.log("3");
+                    //setCheck(false);
                     setError("Email already registered.");
                     return false;
                 }
@@ -116,49 +150,8 @@ const Signup = props => {
             });
         }else{
             setError("Please enter a valid email address : (exmaple@domain.com)");
-            setCheck(false);
+            //setCheck(false);
             return false;
-        }
-
-    }
-
-    const signUp = e => {
-        e.preventDefault();
-        //const {firstname,lastname,email,password, re_password, phonenumber} = this.state;
-        setError("");
-        if (!firstname || !lastname || !gender || !email || !password || !phonenumber || !re_password){
-            setError("Fill all Fields !");
-            setCheck(false);
-            return false;
-        }
-
-        if (password !== re_password){
-            setError("Passwords Do not match.");
-            setCheck(false);
-            return false;
-        }
- 
-        checkEmail(email);
-
-        if (check === true){
-            console.log("5");
-            props.context.signUp(firstname,lastname,gender,email,password,phonenumber).then(
-            (res) => {
-                if (res === true){
-                    //call some context function that setState email and password. 
-                    //redirect to welcome page.
-                    //If neccessary clear these email and password states after welcome process is finished.
-                    
-                    props.context.welcomeFunc(email,password);
-                    setModalOpen(false);
-                    return true;
-                }else{
-                    setModalOpen(true);
-                    setError("There was some issue signing up.");
-                    return false;
-                }
-
-            });
         }
     }
 
@@ -230,16 +223,19 @@ const Signup = props => {
                                     <label className="label">Phone Number: </label>
                                     <input
                                     className="input"
-                                    type="number"
+                                    type="tel"
                                     name="phonenumber"
                                     value={phonenumber}
+                                    pattern="[0-9]*"
                                     onChange={e => handleChange(e)}
                                     />
+                                    <small>Format: 18769871234</small>
                                 </div>
                                 <div className="field">
                                     <label className="label">Email: </label>
                                     <input
                                     className="input"
+                                    id="email"
                                     type="email"
                                     name="email"
                                     value={email}
@@ -270,9 +266,7 @@ const Signup = props => {
                                     <div className="has-text-danger">{error}</div>
                                 )}
                                 <div className="field is-clearfix">
-                                    <button onClick={e => signUp(e)} className="button is-primary is-pulled-right">
-                                        Submit
-                                    </button>
+                                    <input onClick={e => signUp(e)} type="submit" className="button is-primary is-pulled-right"  />
                                     <button style={{float:'right'}} className="button is-danger is-pulled-left" onClick={e => closeModal(e)}>
                                         Cancel
                                     </button>

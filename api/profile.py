@@ -8,12 +8,13 @@ import pathlib
 from lib2to3.refactor import _identity
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import create_access_token, create_refresh_token
-from flask import request, jsonify
+from flask import request, jsonify, Response
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile
 from api.relations import update_stats
 from flask_cors import CORS, cross_origin
 from os import walk
+from api.security import authenticate_token
 
 ###############----profile.py-----##############
 
@@ -22,6 +23,7 @@ from os import walk
 #    return send_from_directory(app.static_folder,'index.html')
 
 @app.route('/api/time')
+@authenticate_token
 def get_current_time():
     return {'time': time.time()}
 
@@ -219,17 +221,17 @@ def bio():
     elif request.method == 'PUT':
         print('PUT')
         user_id = request.json.get('user_id', None)
-        uname =request.json.get('uname', None)
+        uname = request.json.get('uname', None)
         dob = request.json.get('dob', None)
         tagline = request.json.get('tagline', None)
         description = request.json.get('description', None)
         location = request.json.get('location', None)
         user_record = User.query.get(user_id)
         check = User.query.filter_by(username=uname).first()
-        if check is None:
+        if check is None or user_record.username == uname:
             user_record.username = uname
         else:
-            return jsonify({"msg":"Username not available"}), 205
+            return {"msg":"Username not available"}, 206
         profile_record = Profile.query.get(user_id) 
         profile_record.dob = dob
         profile_record.tagline = tagline
@@ -244,10 +246,12 @@ def bio():
 def get_bio():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
+        user_record = User.query.get(user_id)
         profile_record = Profile.query.get(user_id) 
         if profile_record is not None:
             print(profile_record)
             return {
+                'uname': user_record.username,
                 'dob' : profile_record.dob,
                 'tagline' : profile_record.tagline,
                 'description' : profile_record.description,

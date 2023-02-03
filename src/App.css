@@ -128,6 +128,10 @@
   color: green;
 }
 
+.response-msg{
+  color: royalblue;
+}
+
 .give-space{
   margin: 1rem;
 }

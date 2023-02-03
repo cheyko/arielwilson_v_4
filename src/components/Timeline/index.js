@@ -23,8 +23,6 @@ const Timeline = props => {
 
     //console.log(loadPrees);
     
- 
-
     const loadMainMedia = useCallback( async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
@@ -41,6 +39,7 @@ const Timeline = props => {
                         }else{
                             setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
                         }
+                        setGetMedia(true);
                     }
                 }
             )
@@ -134,6 +133,7 @@ const Timeline = props => {
         //sortPrees();
         //get reactions to prees --> getlist of prees ids from from allPrees = (param) ?
     },[allPrees, gotMedia, loadMainMedia]);
+
     return (
         <div id="timeline-div" className="hero">
             <div className="hero-container">
@@ -220,7 +220,7 @@ const Timeline = props => {
                         </div>
                     )) 
                 ) : (
-                    <div className="container">
+                    <div className="container" style={{ padding:"3rem"}}>
                         <span className="is-size-3" style={{color:"blue"}}>
                             Follow Figures, Make Prees and see 'WAH REALLY A GWAAN'
                         </span>

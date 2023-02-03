@@ -1,10 +1,11 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
  
 from flask_cors import CORS, cross_origin
 from flask_restful import Api, Resource, reqparse
+
 import pathlib
 
 app = Flask(__name__, static_url_path='', static_folder='../build')
@@ -23,7 +24,7 @@ app.url_map.strict_slashes = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-jwt = JWTManager(app)
+jwtmanager = JWTManager(app)
 
 app.config.from_object(__name__)
 #CORS(app, resources={r"/api/*": {"origins": "*"}})

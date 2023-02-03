@@ -18,13 +18,13 @@ const Step1 = props => {
                 type="text" name="uname" onChange={ e => props.checkUname(e) } />
 
             <br />
-            {props.uname !== "" && <span className="give-space success-msg">{props.responseMsg +" "+ props.val}</span> }
+            {props.uname !== "" && <span className="give-space response-msg">{props.responseMsg +" "+ props.val}</span> }
             <br />
-            <button className="button is-medium is-success" onClick={ e => props.saveUname(e) }> Save username </button> 
+            <button id="save-btn" className="button is-medium is-success" onClick={ e => props.saveUname(e) }> Save username </button> 
 
             <hr />
 
-            <button className="button is-medium is-info is-pulled-right" onClick={e => props.next(e,1)}> Next Step </button> 
+            <button id="next-btn" className="button is-medium is-info is-pulled-right" style={{display:"none"}} onClick={e => props.next(e,1)}> Next Step </button> 
             <br /><br />
             {/*props.showNextBtn || props.val ? <button className="button is-medium is-info is-pulled-right" onClick={props.next()}> Next Step </button> : <></>*/}
             <hr />

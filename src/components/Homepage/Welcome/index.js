@@ -1,11 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
 import withContext from "../../../withContext";
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
+
 import '../index.css';
 //import { Steps, Step } from "react-step-builder";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+
+const secret = 'some$3cretKey';
 
 const Welcome = props => {
     
@@ -14,7 +18,7 @@ const Welcome = props => {
     //then if uname is true : login user 
 
     let new_id = localStorage.getItem("user_id");
-    const [uname, setUname] = useState(null);
+    const [uname, setUname] = useState("");
     const [val, setVal] = useState("");
     const [tagline, setTagline] = useState("");
     const [uploaded, setUploaded] = useState(false);
@@ -45,7 +49,7 @@ const Welcome = props => {
         //setVal(null);
         
         const user_id = props.context.user_id ? props.context.user_id : new_id;
-        console.log(user_id);
+        //console.log(user_id);
         const response = await axios.post('/api/has-uname',{user_id}).catch(
             (response) => {
                 if (response.status !== 200) { 
@@ -53,10 +57,13 @@ const Welcome = props => {
                 }
             }
         )
-        //console.log(val);
-        if(response.status === 200 && val === null){
+        //console.log(response);
+        if(response.status === 200 && response.data.uname){
             setVal(response.data.uname);
-            setResponseMsg("Username is : ");
+            setUname(response.data.uname);
+            //setResponseMsg("Username is : ");
+            setShowStep1(false);
+            setShowStep2(true);
             return true;
         }else{
             setResponseMsg("User does not have a username as yet.")
@@ -65,22 +72,30 @@ const Welcome = props => {
         return false;
     }, [new_id, val, props.context.user_id] );
 
+
     const checkUname = async (e) => {
         setResponseMsg("");
         e.preventDefault();
         let userInput = e.target.value;
 
-        await axios.post('/api/check-uname',{userInput}).then(
-            (response) => {
-                if (response.status === 200){
-                    setUname(userInput);
-                    setResponseMsg("Username available");
-                }else{
-                    setResponseMsg("Username not available");
-                    //setUname("");
+        if (userInput !== ""){
+            await axios.post('/api/check-uname',{userInput}).then(
+                (response) => {
+                    if (response.status === 200){
+                        setUname(userInput);
+                        setResponseMsg("Username available");
+                        document.getElementById("save-btn").disabled = false;
+                    }else{
+                        setResponseMsg("Username not available");
+                        document.getElementById("save-btn").disabled = true;
+                        //setUname("");
+                    }
                 }
-            }
-        )
+            )
+        }else{
+            document.getElementById("save-btn").disabled = true;
+            setResponseMsg("Enter your prefered choice for username, this will be unique to your account solely.");
+        }
         return true;
     }
 
@@ -96,6 +111,7 @@ const Welcome = props => {
                     //setBtnShow(true);
                     setResponseMsg("Username was added successfully and your new username is : ");  
                     setVal(uname);
+                    document.getElementById("next-btn").style.display = "block";
                     //clear input box and display success message
                     //setUname("");
 
@@ -151,7 +167,7 @@ const Welcome = props => {
                     break;
             }
         }
-        console.log(vidView);
+        //console.log(vidView);
         setResponseMsg("");
         return true;
         //in the future render a modal and display the newly uploaded file with an ok btn then
@@ -160,8 +176,7 @@ const Welcome = props => {
 
     const saveUpload = async (e) => {
         e.preventDefault();
-        const user_id = props.context.user_id ? props.context.user_id : 0;
-        console.log(user_id);
+        const user_id = props.context.user_id ? props.context.user_id : new_id;
         const formData = new FormData();
         formData.append('user_id', user_id);
         formData.set('has_cover',false);
@@ -215,8 +230,8 @@ const Welcome = props => {
 
     //call login funtion and place in onclick on last btn
     const endWelcome = () => {
-        const email = props.context.email;
-        const password = props.context.password;
+        const email = props.context.email ? props.context.email : localStorage.getItem("email");
+        const password = props.context.password ? props.context.password : CryptoJS.AES.decrypt(localStorage.getItem("password"), secret).toString(CryptoJS.enc.Utf8);
         props.context.clearCred();
         props.context.login(email,password).then(
             (loggedIn) => {
@@ -239,7 +254,7 @@ const Welcome = props => {
                 setShowStep2(true);
                 break;
             case 2:
-                setShowStep2(false);
+                setShowStep2(false);;
                 setGetMedia(true);
                 setShowStep3(true);
                 break;
@@ -268,8 +283,21 @@ const Welcome = props => {
         return true;
     }
     useEffect( () => {
-        if (val === null){
+        //console.log(val);
+        if (val === ""){
+            //console.log("hasuname");
             hasUname();
+            const user_id = props.context.user_id ? props.context.user_id : new_id;
+            axios.post('/api/get-bio',{user_id}).then(
+                (response) => {
+                    if (response.status === 200){
+                        setShowStep2(false);
+                        setShowStep3(true);
+                    }
+                }
+            ).catch( error => {
+                console.log(error);
+            });
         }
         if (!gotMedia){
             loadMainMedia();

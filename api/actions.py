@@ -176,6 +176,7 @@ def do_search():
 def my_view():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
+        print(user_id)
         if user_id != '0':
             user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == user_id).first() #.filter(or_( User.firstname.like(checkwg), User.lastname.like(checkwg), User.username.like(checkwg) )).all()
             myUserObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "access-type":user_details.User.accessType, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "description":user_details.Profile.description, "location":user_details.Profile.location, "followers":user_details.Profile.followers, "following":user_details.Profile.following, "linkages":user_details.Profile.linkages,"groups":user_details.Profile.groups, "has_dp":user_details.Profile.has_dp, "has_cv":user_details.Profile.has_cv}

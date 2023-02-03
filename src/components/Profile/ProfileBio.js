@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 //import Profile from ".";
 import withContext from "../../withContext";
 
@@ -61,6 +61,10 @@ const ProfileBio = props => {
         e.preventDefault();
         setModalOpen(false);
     }
+
+    useEffect (() => {
+
+    },[responseMsg])
 
     return(
         <>

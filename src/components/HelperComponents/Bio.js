@@ -3,9 +3,10 @@ import axios from "axios";
 import withContext from "../../withContext";
 
 const Bio = props => {
-    
+
+    let new_id = localStorage.getItem("user_id");
     const getUname = props.context.user ? props.context.user.username : "";
-    const [uname, setUname] = useState(getUname);
+    const [uname, setUname] = useState("");
     const [dob, setDOB] = useState("");
     const [tagline, setTagline] = useState("");
     const [description, setDesc] = useState("");
@@ -15,7 +16,7 @@ const Bio = props => {
         if (props.func === 'edit' && (dob === "" && tagline === "" && description === "" && location === "")){
             loadBio();
         } 
-    });
+    },[]);
 
     const handleChange = (e) => {
         switch(e.target.name){
@@ -50,12 +51,13 @@ const Bio = props => {
 
     const loadBio = async () => {
         props.setResponseMsg("");
-        const user_id = props.context.user.id;
+        const user_id = props.context.user_id ? props.context.user_id : new_id;
         await axios.post('/api/get-bio',{user_id}).then(
             (result) => {
                 if (result.status !== 200){
                     props.setResponseMsg("Bio information was not loaded, please refresh page and try again. Contact us for suppport if problem persist.");
                 }else{
+                    
                     setUname(result.data.uname);
                     setDOB(new Date(result.data.dob).toISOString().substr(0, 10));
                     setTagline(result.data.tagline);
@@ -71,7 +73,8 @@ const Bio = props => {
     const saveBio = async (e) => {
         e.preventDefault();
         props.setResponseMsg("");
-        const user_id = props.context.user_id;
+        const user_id = props.context.user_id ? props.context.user_id : new_id;
+        console.log(user_id);
         
         if (props.func === 'create'){
             await axios.post('/api/bio',{user_id,dob,tagline,description,location}).then(
@@ -83,6 +86,7 @@ const Bio = props => {
                         props.setResponseMsg("Bio information was saved, click next to continue.");
                         props.setTagline(tagline);
                         clearFunc();
+                        document.getElementById("next-btn").style.display = "block";
                     }else{
                         props.setResponseMsg("Bio information was not saved, please try again. Contact us for suppport if problem persist.");
                     }
@@ -91,14 +95,16 @@ const Bio = props => {
         }else if (props.func === 'edit'){
             await axios.put('/api/bio',{user_id,uname,dob,tagline,description,location}).then(
                 (result2) => {
-                    if (result2.status === 200){
+                    if (result2.status === 200){                    
                         props.setResponseMsg("Bio information was updated.");
                         clearFunc();
-                    }else{
-                        props.setResponseMsg("Bio information was not updated, please try again. Contact us for suppport if problem persist.");
+                    }else{                        
+                        props.setResponseMsg(result2.data.msg);
                     }
                 }
-            );
+            ).catch(response => {
+                console.log(response);
+            });
         }
         return true;
     }

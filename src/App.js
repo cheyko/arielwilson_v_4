@@ -11,6 +11,7 @@ import { Routes, Route, Navigate, BrowserRouter as Router} from "react-router-do
 import axios from "axios";
 import Context from "./Context";
 import jwt_decode from 'jwt-decode';
+import CryptoJS from 'crypto-js';
 
 //Components
 import Profile from "./components/Profile";
@@ -58,6 +59,13 @@ import Talkie from './components/Talkie';
 import Live from './components/Live';
 import Layout from './components/Layout';
 
+const sign = require('jwt-encode');
+const secret = 'some$3cretKey';
+const algorithm = 'HS256';
+const data = {
+  token : 'Required'
+};
+
 
 export default class App extends Component {
   constructor(props){
@@ -72,7 +80,13 @@ export default class App extends Component {
 
   async componentDidMount(){
     //this.setState({ready:true});
-    const time = await axios.get("/api/time");
+    const jwt = sign(data, secret, algorithm); // creation of the JSON Web Token which is placed in the API request headers.
+
+    await axios.get('/api/time',{
+      headers: {
+        'Authorization' : jwt
+      }
+    });
     //console.log(time);
     let user = localStorage.getItem("user-context");
     let ready = localStorage.getItem("ready");
@@ -378,6 +392,8 @@ export default class App extends Component {
     this.setState({email:"", password:"", welcome: false, ready:true});
     localStorage.setItem("ready", JSON.stringify(this.state.ready));
     localStorage.setItem("welcome", JSON.stringify(this.state.welcome));
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
   }
 
   //welcome
@@ -386,6 +402,8 @@ export default class App extends Component {
     console.log("test2");
     this.setState({email,password,welcome}); 
     localStorage.setItem("welcome", JSON.stringify(welcome));
+    localStorage.setItem("email", email);
+    localStorage.setItem("password", CryptoJS.AES.encrypt(password, secret));
   }
 
   //sign-up
@@ -413,7 +431,7 @@ export default class App extends Component {
       }
     )
 
-    //console.log("test3");
+    console.log(res);
     if (res.status === 200){
       //console.log("test4");
       let email = jwt_decode(res.data.access_token).identity;
@@ -454,6 +472,7 @@ export default class App extends Component {
       localStorage.setItem("user-context", JSON.stringify(user));
       localStorage.setItem("ready", JSON.stringify(ready));
       localStorage.setItem("welcome", JSON.stringify(welcome));
+      localStorage.setItem("user_id", JSON.stringify(user_id));
       this.setState({user,welcome,ready});
       return true;
     }else{

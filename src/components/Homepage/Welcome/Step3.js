@@ -12,7 +12,7 @@ const Step3 = props => {
     return(
         <div className="hero">
             <div>
-            <button className="button is-medium is-info" onClick={e => props.prev(e,3)}> Previous Step </button>
+            {/*<button className="button is-medium is-info" onClick={e => props.prev(e,3)}> Previous Step </button>*/}
 
             <h3 className="subtitle has-text-weight-bold"> Step 3 of 3 </h3>
 
@@ -24,23 +24,29 @@ const Step3 = props => {
                         <label htmlFor="file-input-video">
                             <span className="cv-video-icon is-pulled-right"> <FontAwesomeIcon icon={faVideo} size="2x" /> </span> 
                         </label>
-                        <input id="file-input-video" name="video-upload" single type="file" onChange={e => {props.handleUpload(e);e.preventDefault();}}/>
+                        <input id="file-input-video" name="video-upload" single="true" type="file" onChange={e => {props.handleUpload(e);e.preventDefault();}}/>
                     </div> 
-                    <video className="the-vid" width="640" height="480" controls>
-                        <source src={props.vidView} type="video/mp4"/>
-                    </video>
+                    {props.vidView ? 
+                        <video key={props.vidView} className="the-vid" width="640" height="480" controls>
+                            <source src={props.vidView} type="video/mp4"/>
+                        </video> 
+                        : 
+                        <video className="the-vid" width="640" height="480" controls>
+                            <source src="/images/bio/cover/default.mp4" type="video/mp4"/>
+                        </video>
+                    }
                 </div>
             </div>
             <div className="main-media-image">       
-                <fiqure className="display-pic-large has-text-centered image">
+                <figure className="display-pic-large has-text-centered image">
                     <div className="image-upload">
                         <label htmlFor="file-input-image">
                             <span className="dp-camera-icon is-pulled-right"> <FontAwesomeIcon icon={faCamera} size="2x" /> </span>
                         </label>
-                        <input id="file-input-image" name="image-upload" single type="file" onChange={e => props.handleUpload(e)}/>
+                        <input id="file-input-image" name="image-upload" single="true" type="file" onChange={e => props.handleUpload(e)}/>
                     </div> 
-                    <img alt="display" className="is-rounded" src={props.imgView} />   
-                </fiqure>
+                    {props.imgView ? <img alt="display" className="is-rounded" src={props.imgView} /> : <img alt="display" className="is-rounded" src="/images/bio/display/default.jpeg" />}  
+                </figure>
                 <div className="username">
                     {props.uname} 
                 </div>
