@@ -87,7 +87,6 @@ export default class App extends Component {
         'Authorization' : jwt
       }
     });
-    //console.log(time);
     let user = localStorage.getItem("user-context");
     let ready = localStorage.getItem("ready");
     let welcome = localStorage.getItem("welcome");
