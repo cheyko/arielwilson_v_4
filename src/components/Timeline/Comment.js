@@ -57,7 +57,7 @@ const Comment = props => {
     useEffect( () => {
         const user_id = props.context.user.id;
 
-        const getCReaction = axios.post("/api/get-c-reaction",{user_id,comment_id}).then(
+        axios.post("/api/get-c-reaction",{user_id,comment_id}).then(
             (getCReaction) => {
                 if (getCReaction.status === 200){
                     setCReaction(getCReaction.data.is_c_approved);
@@ -69,7 +69,7 @@ const Comment = props => {
             }
         )
     
-        const getReplies = axios.post("/api/get-replies", {comment_id}).then(
+        axios.post("/api/get-replies", {comment_id}).then(
            (getReplies) => {
                 if (getReplies.status === 200){
                     setReplies(getReplies.data.replies);
@@ -79,7 +79,7 @@ const Comment = props => {
             } 
         )
 
-    },[comment,likedcount,dislikedcount, threadcount, c_reaction,reply]);
+    },[comment_id,likedcount,dislikedcount, threadcount, c_reaction, reply]);
 
     const [modalIsOpen, setModalOpen] = useState(false);
     
@@ -96,7 +96,7 @@ const Comment = props => {
 
     const likeComment = (e) => {
         if (c_reaction !== true){
-            const likecomment = axios.post("/api/like-comment",{user_id,comment_id}).then(
+            axios.post("/api/like-comment",{user_id,comment_id}).then(
                 (likecomment) => {
                     if (likecomment.status === 200){
                         setCReaction(true);
@@ -108,7 +108,7 @@ const Comment = props => {
                 }
             )
         }else{
-            const unlikecomment = axios.put("/api/like-comment",{user_id,comment_id}).then(
+            axios.put("/api/like-comment",{user_id,comment_id}).then(
                 (unlikecomment) => {
                     if (unlikecomment.status === 200){
                         setCReaction(null);
@@ -123,7 +123,7 @@ const Comment = props => {
 
     const dislikeComment = (e) => {
         if (c_reaction !== false){
-            const dislike = axios.post("/api/dislike-comment",{user_id,comment_id}).then(
+            axios.post("/api/dislike-comment",{user_id,comment_id}).then(
                 (dislike) => {
                     if (dislike.status === 200){
                         setCReaction(false);
@@ -135,7 +135,7 @@ const Comment = props => {
                 }
             )
         }else{
-            const undislike = axios.put("/api/dislike-comment",{user_id,comment_id}).then(
+            axios.put("/api/dislike-comment",{user_id,comment_id}).then(
                 (undislike) => {
                     if (undislike.status === 200){
                         setCReaction(null);
@@ -150,7 +150,7 @@ const Comment = props => {
 
     const sendReply = (e) => {
         const user_id = props.context.user.id;
-        const send = axios.post("/api/handle-replies", {user_id, comment_id, reply}).then(
+        axios.post("/api/handle-replies", {user_id, comment_id, reply}).then(
             (send) => {
                 if (send.status === 200){
                     //update comments list.
@@ -166,7 +166,7 @@ const Comment = props => {
 
     const saveEdit = (e) => {
         const user_id = props.context.user.id;
-        const save = axios.put("/api/handle-comments", {user_id, comment_id, editcomment}).then(
+        axios.put("/api/handle-comments", {user_id, comment_id, editcomment}).then(
             (save) => {
                 if (save.status === 200){
                     //console.log(send.data.comment);
@@ -184,7 +184,7 @@ const Comment = props => {
 
     const deleteComment = (e) => {
         const pree_id = aPree.pree_id;
-        const remove = axios.post("/api/delete-comment", {pree_id,comment_id}).then(
+        axios.post("/api/delete-comment", {pree_id,comment_id}).then(
             (remove) => {
                 if (remove.status === 200){
                     setStatus(false);

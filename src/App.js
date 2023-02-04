@@ -73,20 +73,21 @@ export default class App extends Component {
     this.state = {
       user: null,
       prees: [],
+      jwt : sign(data, secret, algorithm), // creation of the JSON Web Token which is placed in the API request headers.
     };
     /// Create Router reference 
     this.routerRef = React.createRef();
   }
 
   async componentDidMount(){
-    //this.setState({ready:true});
-    const jwt = sign(data, secret, algorithm); // creation of the JSON Web Token which is placed in the API request headers.
+    //this.setState({ready:true}); 
 
     await axios.get('/api/time',{
       headers: {
-        'Authorization' : jwt
+        'Authorization' : this.state.jwt
       }
     });
+
     let user = localStorage.getItem("user-context");
     let ready = localStorage.getItem("ready");
     let welcome = localStorage.getItem("welcome");
@@ -402,7 +403,7 @@ export default class App extends Component {
     this.setState({email,password,welcome}); 
     localStorage.setItem("welcome", JSON.stringify(welcome));
     localStorage.setItem("email", email);
-    localStorage.setItem("password", CryptoJS.AES.encrypt(password, secret));
+    localStorage.setItem("password", CryptoJS.AES.encrypt(password, this.state.secret));
   }
 
   //sign-up
@@ -424,7 +425,11 @@ export default class App extends Component {
   //login
   login = async (email, password) => {
 
-    const res = await axios.post("/api/login",{email,password}).catch(
+    const res = await axios.post("/api/login",{email,password},{
+      headers: {
+        'Authorization' : this.state.jwt
+      }
+    }).catch(
       (res) => { 
         if (res.status !== 200) { return { status: res.status, message: 'Not successful' } }
       }

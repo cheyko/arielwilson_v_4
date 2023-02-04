@@ -23,11 +23,11 @@ const Timeline = props => {
 
     //console.log(loadPrees);
     
-    const loadMainMedia = useCallback( async() => {
+    /*const loadMainMedia = useCallback( async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
-        /************* */
+    
         ///use the loadmainmedia from navbar
         const user_id = props.context.user ? props.context.user.id : 0;
         if(user_id > 0){
@@ -45,7 +45,7 @@ const Timeline = props => {
             )
         }
         return true;
-    },[props.context.user]);
+    },[props.context.user]);*/
 
     const handleScroll = e => {
         // Get the make-pree btn
@@ -120,9 +120,9 @@ const Timeline = props => {
 
     useEffect( () => {
         window.addEventListener('scroll', e => handleScroll(e));
-        if (!gotMedia){
+        /*if (!gotMedia){
             loadMainMedia();
-        } 
+        } */
         
         if(allPrees.length === 0){
             document.getElementById("app-container").style.height = "100vh";
@@ -132,7 +132,7 @@ const Timeline = props => {
 
         //sortPrees();
         //get reactions to prees --> getlist of prees ids from from allPrees = (param) ?
-    },[allPrees, gotMedia, loadMainMedia]);
+    },[allPrees]);//, gotMedia, loadMainMedia]);
 
     return (
         <div id="timeline-div" className="hero">
@@ -152,7 +152,7 @@ const Timeline = props => {
                 <br />
                 
                 <div className="timeline-container">
-                    <AddPree imgView={imgView} renderPrees={renderPrees} preetype={"individual"}/>
+                    <AddPree renderPrees={renderPrees} preetype={"individual"}/>
                 </div>
 
                 <div id="make-pree" className="hero">

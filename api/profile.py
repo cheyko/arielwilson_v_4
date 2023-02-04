@@ -66,6 +66,7 @@ def signup():
 #api method for Login
 #@cross_origin()
 @app.route('/api/login', methods=['GET','POST'])
+@authenticate_token
 def login():
     if request.method == 'POST':    
         email = request.json.get('email', None)

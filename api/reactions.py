@@ -5,7 +5,7 @@ import os
 
 from flask import request, jsonify
 from sqlalchemy import or_ , and_
-from api.models import db, User, Accesses, Profile, Pree, Approvals, Media, Quote, Follower, Comments, CommentsApprovals, CommentsReplies
+from api.models import db, User, Accesses, Profile, Pree, Approvals, Media, Quote, Follower, Comments, CommentsApprovals, CommentsReplies, RepliesApprovals
 
 ###############----reactions.py-----##############
 
@@ -208,7 +208,7 @@ def dislike_comment():
         comment_id = request.json.get('comment_id', None)
         wasClicked = was_c_clicked(user_id,comment_id)
         if wasClicked == True:
-            record = CommentApprovals.query.filter_by(user_id=user_id,comment_id=comment_id).first()
+            record = CommentsApprovals.query.filter_by(user_id=user_id,comment_id=comment_id).first()
             if (record.is_c_approved == True):
                 comment_details = Comments.query.get(comment_id)
                 likedcount = comment_details.c_approvals - 1
@@ -310,7 +310,6 @@ def like_reply():
         db.session.commit()
         return jsonify({"msg":"Like added.","is_liked":True, "likedcount":likedcount, "dislikedcount": reply_details.r_disapprovals}) , 200
     if request.method == 'PUT':
-        print('un-like')
         user_id = request.json.get('user_id', None)
         reply_id = request.json.get('reply_id', None)
         record = RepliesApprovals.query.filter_by(user_id=user_id,reply_id=reply_id).first()
@@ -345,15 +344,13 @@ def dislike_reply():
         db.session.commit()
         return jsonify({"msg":"Pree was disliked.","is_liked":False,"likedcount":reply_details.r_approvals,"dislikedcount":dislikedcount}) , 200
     if request.method == 'PUT':
-        print('un-dis-like')
         user_id = request.json.get('user_id', None)
         reply_id = request.json.get('reply_id', None)
         record = RepliesApprovals.query.filter_by(user_id=user_id,reply_id=reply_id).first()
         record.is_r_approved = None
-
         reply_details = CommentsReplies.query.get(reply_id)
         dislikedcount = reply_details.r_disapprovals - 1
-        comment_details.r_disapprovals = dislikedcount
+        reply_details.r_disapprovals = dislikedcount
         db.session.commit()
         return jsonify({"msg":"Like added.","is_liked": None,"dislikedcount":dislikedcount}) , 200
     return jsonify({"msg":"There was an error somewhere."}), 400
@@ -367,7 +364,7 @@ def delete_reply():
         reply_details = CommentsReplies.query.get(comment_id)
         reply_details.is_visible = False
         comment_details = Comments.query.get(comment_id)
-        count = pree_details.replies - 1
+        count = comment_details.replies - 1
         comment_details.replies = count
         db.session.commit()
         return jsonify({"msg":"Reply deleted was successful.","reply_id":reply_id}), 200

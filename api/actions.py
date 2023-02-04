@@ -114,6 +114,7 @@ def see_the_pree():
                     groupObj = {"group_id":theGroup.group_id,"group_name":theGroup.name}
                 else:
                     groupObj = {}
+                #add has_dp to preeobj
                 preeObj = {"pree_id":pree.pree_id, "user":userObj, "date_added":str(pree.date_added), "is_media":pree.is_media,"pree_type":pree.pree_type, "approvals":pree.approvals, "disapprovals":pree.disapprovals, "comments":pree.comments, "attachment" : attachment, "group":groupObj}
                 prees.append(preeObj)
         return json.dumps(prees), 200

@@ -20,7 +20,7 @@ const PreeItem = props => {
         if (!gotMedia){
             loadMainMedia();
         }
-    });
+    },[gotMedia]);
 
     const loadMainMedia = async() => {
         //check if cv and dp is available (database check):

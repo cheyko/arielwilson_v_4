@@ -49,20 +49,6 @@ const Navbar = props => {
     const [openImage, setOpen] = useState(false);
     const [toggleMenu, setToggle] = useState(true);
 
-    useEffect( ()=> {
-        if (!clicked && window.location.href !== "http://localhost:3000/"){
-            let reloadChoice = JSON.parse(localStorage.getItem("choice"));
-            activate(reloadChoice);
-        }else if(window.location.href === "http://localhost:3000/"){
-            //change implementation account for browser navigation.
-            
-            activate("timeline");
-        }
-        if (!gotMedia){
-            loadMainMedia();
-        }
-    });
-
     const loadMainMedia = async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
@@ -77,7 +63,7 @@ const Navbar = props => {
                     }else{
                         setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
                     }
-                    
+                    setGetMedia(true);
                 }
             }
         )
@@ -191,6 +177,20 @@ const Navbar = props => {
                 break;
         }
     }
+
+    
+    useEffect( ()=> {
+        if (!clicked && window.location.href !== "http://localhost:3000/"){
+            let reloadChoice = JSON.parse(localStorage.getItem("choice"));
+            activate(reloadChoice);
+        }else if(window.location.href === "http://localhost:3000/"){
+            //change implementation account for browser navigation.
+            activate("timeline");
+        }
+        if (!gotMedia){
+            loadMainMedia();
+        }
+    },[gotMedia]);
 
     return(
         <div className="custom-nav" id="custom-nav">

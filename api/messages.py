@@ -28,7 +28,6 @@ def create_message():
 @app.route('/api/get-messages', methods=['GET','POST'])
 def get_messages():
     if request.method == 'POST':
-        print('POST')
         user_id = request.json.get('user_id', None)
         messages = []
         results = Message.query.filter(or_(Message.sender_id == user_id, Message.receiver_id == user_id)).all()
