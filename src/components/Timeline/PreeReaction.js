@@ -21,11 +21,11 @@ const PreeReaction = props => {
 
     useEffect( () => {
         if (load){
-            const user_id = props.context.user ? props.context.user.id : 0;
+            //const user_id = props.context.user ? props.context.user.id : 0;
             const pree_id = aPree.pree_id;
             
             //PreeReaction onload
-            axios.post("/api/get-reaction",{user_id,pree_id}).then(
+            /*axios.post("/api/get-reaction",{user_id,pree_id}).then(
                 (getReaction) => {
                     if (getReaction.status === 200){
                         setReaction(getReaction.data.is_approved);
@@ -35,16 +35,18 @@ const PreeReaction = props => {
                         throw new Error("Error while Reacting to Pree");
                     }
                 }
-            )
-
-            axios.post("/api/get-comments", {pree_id}).then(
-            (getComments) => {
-                    if (getComments.status === 200){
-                        setComments(getComments.data.comments);
-                    }else{
-                    throw new Error("No comments available.");
-                    } 
-            });
+            )*/
+            setReaction(aPree.is_approved);
+            if (clickable === "view"){
+                axios.post("/api/get-comments", {pree_id}).then(
+                (getComments) => {
+                        if (getComments.status === 200){
+                            setComments(getComments.data.comments);
+                        }else{
+                        throw new Error("No comments available.");
+                        } 
+                });
+            }
             //console.log(comments);
             setLoad(false);
         }
@@ -142,7 +144,7 @@ const PreeReaction = props => {
                     <b className="reaction-btn" style={reaction === false ? {color:"blue"}:{color:"black"}}> <span className="reaction-txt">Dis-Like <br /> </span>   <i className="fas fa-heart-broken" aria-hidden="true"></i> {dislikedcount} </b>
                 </div>
                 <div className="column">
-                    {clickable === "view" ?
+                    {clickable === "expand" ?
                         (
                             <Link to={`/view-pree/${aPree.pree_id}`}>
                                 <b className="reaction-btn" style={{color:"black"}}> <span className="reaction-txt">Comment <br /> </span>  <i className="fas fa-comment"></i> {commentscount} </b>

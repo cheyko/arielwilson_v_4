@@ -27,8 +27,14 @@ const PreeItem = props => {
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
         const user_id = aPree.user.user_id;
+        if (aPree.user.has_dp === true){
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+        }else{
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+        }
+        setGetMedia(true);
         //console.log(user_id);
-        await axios.post('/api/get-main-media',{user_id}).then(
+        /*await axios.post('/api/get-main-media',{user_id}).then(
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_dp === true){
@@ -40,7 +46,7 @@ const PreeItem = props => {
                     
                 }
             }
-        )
+        )*/
         return true;
     }
     return (

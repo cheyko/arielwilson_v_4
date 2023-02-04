@@ -97,7 +97,9 @@ def see_the_pree():
         for pree in results:
             if(check_following(user_id, pree.user_id) or pree.user_id == user_id):
                 theUser = User.query.get(pree.user_id)
-                userObj = {"user_id":theUser.user_id, "username":theUser.username,"access-type":theUser.accessType}
+                theProfile = Profile.query.get(pree.user_id)
+                #theUsers = User.query.join(Profile, User.user_id == Profile.user_id).filter(User.user_id == pree.user_id)
+                userObj = {"user_id":theUser.user_id, "username":theUser.username,"access-type":theUser.accessType, "has_dp":theProfile.has_dp}
                 if pree.is_media and pree.pree_type != 'exclusive':
                     theMedia = Media.query.get(pree.pree_id)
                     attachment = {"caption":theMedia.caption, "no_of_media":theMedia.no_of_media, "has_image":theMedia.has_image, "has_audio":theMedia.has_audio, "has_video":theMedia.has_video}
@@ -114,8 +116,12 @@ def see_the_pree():
                     groupObj = {"group_id":theGroup.group_id,"group_name":theGroup.name}
                 else:
                     groupObj = {}
-                #add has_dp to preeobj
-                preeObj = {"pree_id":pree.pree_id, "user":userObj, "date_added":str(pree.date_added), "is_media":pree.is_media,"pree_type":pree.pree_type, "approvals":pree.approvals, "disapprovals":pree.disapprovals, "comments":pree.comments, "attachment" : attachment, "group":groupObj}
+                record = Approvals.query.filter_by(user_id=user_id,pree_id=pree.pree_id).first()
+                if record is not None:
+                    approvedObj = record.is_approved
+                else:
+                    approvedObj = None
+                preeObj = {"pree_id":pree.pree_id, "user":userObj, "date_added":str(pree.date_added), "is_media":pree.is_media,"pree_type":pree.pree_type, "approvals":pree.approvals, "disapprovals":pree.disapprovals, "comments":pree.comments, "attachment" : attachment, "group":groupObj, "is_approved": approvedObj}
                 prees.append(preeObj)
         return json.dumps(prees), 200
     return jsonify({"msg":"There was an error somewhere."}), 400
