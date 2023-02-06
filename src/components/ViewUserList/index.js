@@ -68,8 +68,11 @@ const ViewUserList = props => {
 
     return (
         <div className="hero">
-            <div className="hero-body has-text-centered">
-                <button className="button is-pulled-left is-info" onClick={e => navigate(-1) }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+            <div className="hero-container has-text-centered">
+                <div className="is-pulled-left">
+                    <button className="button is-fixed is-info" style={{zIndex:"3"}} onClick={e => navigate(-1) }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                
+                </div>
                             
                 <h1 className="title">{action}</h1>
                 <div className="columns is-multiline is-mobile">

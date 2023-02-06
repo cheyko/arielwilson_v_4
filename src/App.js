@@ -110,7 +110,7 @@ export default class App extends Component {
     const user_id = user ? user.id : null;
     const prees = ready ? await axios.post("/api/see-the-pree",{user_id}) : {"data":null}; //add reactions to the prees from the backend before response to request.
     const messages = ready ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
-    console.log(prees);
+    //console.log(prees);
     this.setState({user, prees:prees.data, ready, welcome, userlist, recent, messages, boxWidth:boxWidth});
   }
 
@@ -228,6 +228,7 @@ export default class App extends Component {
         
       if (messages.status === 200){
         const allmessages = messages.data.messages;
+        //correspondents is a unique list of senders and recipients of messages exchanged between a user.
         const correspondents = allmessages ? [...new Set(allmessages.map((unique)=> ((unique.sender_id === user_id) && unique.receiver_id) || unique.sender_id ))] : [];
         //console.log(correspondents);
         var i = 0, len = correspondents.length;
@@ -239,7 +240,7 @@ export default class App extends Component {
                     if (!y){
                         throw new Error("There was an error while searching for this user.");
                     }else{
-                        console.log(y);
+                        //console.log(y);
                         viewlist.add(y);
                         //console.log(viewlist);
                         this.setState({viewlist:[...new Set(viewlist)]});
@@ -283,7 +284,7 @@ export default class App extends Component {
 
   //main page func that saves all list; takes as params a list and a option
   listSave = (alist, option) => {
-      console.log(alist);
+      //console.log(alist);
       switch(option){
         case 'userlist':
           const userlist = alist;

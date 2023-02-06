@@ -1,4 +1,4 @@
-import React from "react"; 
+import React, { useState } from "react"; 
 import withContext from "../../../withContext";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -12,16 +12,26 @@ const Results = props => {
 
     const {userlist} = props;
 
-    var placeholders = [
+    const [userIndex, setUserIndex] = useState(0);
+
+    const handleNav = (option) => {
+        if(option === "prevUser" && userIndex !== 0){
+            setUserIndex(userIndex - 1);
+        }else if(option === "nextUser" && userIndex !== (userlist.length - 1)){
+            setUserIndex(userIndex + 1);
+        }
+    }
+
+   /* var placeholders = [
         {id : 0 , text : "test 0"},
         {id : 1 , text : "test 1"},
         {id : 2 , text : "test 2"},
         {id : 3 , text : "test 3"},
         {id : 4 , text : "test 4"},
         {id : 5 , text : "test 5"},
-    ]
+    ]*/
 
-    var settings = {
+    /*var settings = {
         dots: false,
         infinite: true,
         speed: 500,
@@ -29,43 +39,10 @@ const Results = props => {
         slidesToScroll: 1,
         arrows: true,
     };
-
-    // remember to slice all list from search to 6 items with the 7th being view more.
-
-    const settingsThumbs = {
-        speed: 500,
-        slidesToShow: 1,
-        infinite: true,
-        slidesToScroll: 1,
-        dots: false,
-        arrows: true,
-        centerMode: true,
-        /*responsive:[
-          {
-            breakpoint: 480,
-            settings: {
-                slidesToShow: 1,
-            }
-          },
-          {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 2,
-            }
-          },
-          {
-            breakpoint: 1025,
-            settings: {
-                slidesToShow: 3,
-            }
-          }
-        ]*/
-    };
-
-    
+*/  
     return(
         <div className="hero">
-            <div className="return-div" style={{float:"left"}}>
+            <div className="return-div">
                 <button className="button" 
                     onClick={e => {
                         props.setCheckWG(props.checkwg);
@@ -84,20 +61,21 @@ const Results = props => {
                 <div className="box">
                     <div className="search-content content"> 
                         <h1> Users </h1>
-                        <div className="box">
-                            <div className="slick-wrapper users-thumbnail has-text-centered">
-                                <Slider {...settingsThumbs}>
-                                    {userlist.map((aUser, index) => (
-                                        <div key={index} className="slick-slide">
-                                            <ViewUser 
-                                                key={index}
-                                                user={aUser}
-                                            />
-                                        </div>
-                                    ))}
-                                </Slider>
+                        <div className="columns is-mobile">
+                            <div className="column">
+                                <button id="prev-user" className="button is-primary" onClick={ e => handleNav("prevUser")}><i className="fas fa-arrow-circle-left"></i></button>
+                            </div>
+                            <div className="column">
+                                <button id="next-user" className="button is-primary" onClick={ e => handleNav("nextUser")}><i className="fas fa-arrow-circle-right"></i></button>
                             </div>
                         </div>
+                        <div key={userIndex} className="custom-slide">
+                            <ViewUser 
+                                key={userIndex}
+                                user={userlist[userIndex]}
+                            />
+                        </div>
+                        <br /> 
                         <Link to='/view-user-list/0/search'> <button className="button is-link is-rounded is-small"> ... View All </button> </Link>
                     </div>
                 </div>
@@ -108,7 +86,7 @@ const Results = props => {
             <div className="box">
                 <div className="search-content content"> 
                     <h1> Portfolios </h1>
-                    <div className="box">
+                    {/*<div className="box">
                         <div className="slick-wrapper has-text-centered">
                             <Slider {...settings}>
                                 {placeholders.map((aSpot, index) => (
@@ -118,7 +96,7 @@ const Results = props => {
                                 ))}
                             </Slider>
                         </div>
-                    </div>
+                                </div>*/}
                 </div>
             </div>
             
@@ -127,7 +105,7 @@ const Results = props => {
             <div className="box">
                 <div className="search-content content"> 
                     <h1> Preepedia </h1>
-                    <div className="box">
+                    {/*<div className="box">
                         <div className="slick-wrapper has-text-centered">
                             <Slider {...settings}>
                                 {placeholders.map((aSpot, index) => (
@@ -137,13 +115,13 @@ const Results = props => {
                                 ))}
                             </Slider>
                         </div>                           
-                    </div>
+                                </div>*/}
                 </div>
             </div>
             
             <hr />
             
-            <div className="tabs is-fullwidth">
+            {/*<div className="tabs">
                 <ul>
                     <li className="is-active">
                     <span>
@@ -184,7 +162,7 @@ const Results = props => {
                     </span>
                     </li>
                 </ul>
-            </div>
+                            </div>*/}
             <div className="search-result-div">
                 <h1> Search Results </h1>
             </div>

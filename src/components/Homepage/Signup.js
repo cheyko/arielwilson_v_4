@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
 import Modal from "react-modal";
 import axios from "axios";
-//import {useHistory} from "react-router-dom";
 import "./index.css";
 
 Modal.setAppElement('#root');

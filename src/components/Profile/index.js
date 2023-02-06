@@ -56,11 +56,11 @@ const Profile = props => {
     useEffect(() => {
         window.scroll(0,0);
         //console.log(vidView);
-        if (!imgView && !vidView){
+        if (imgView === null && vidView === null){
             loadMainMedia();
         }
 
-        if (!myView){
+        if (myView === null){
             props.context.getMyView().then(
                 (result) => {
                     if (!result){

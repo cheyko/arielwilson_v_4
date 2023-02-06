@@ -7,14 +7,13 @@
     height: 100% !important;
 }
 
-.search-content .slick-wrapper{
-    width: 50rem !important;
-}
+/*.search-content .slick-wrapper{
+    width: 90% !important;
+}*/
 
-.users-thumbnail .slick-slide {
-    margin-inline: 3rem;
-    width: 20rem !important;
-}
+/*.users-thumbnail .slick-slide {
+    height: 100% !important;
+}*/
 
 .content figure{
     margin : 0 !important;
@@ -65,3 +64,4 @@
 .search-menu .column .card{
     height: 20rem;
 }
+

@@ -37,15 +37,15 @@ const ViewUserProfile = props => {
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_cv === true){
-                        setVidView(process.env.PUBLIC_URL + "/bio/cover/" + user_id);
+                        setVidView(process.env.PUBLIC_URL + "/images/bio/cover/" + user_id + ".mp4");
                     }else{
-                        setVidView(process.env.PUBLIC_URL + "/bio/cover/default.mp4");
+                        setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
                     }
 
                     if (response.data.has_dp === true){
-                        setImgView(process.env.PUBLIC_URL + "/bio/display/" + user_id);
+                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
                     }else{
-                        setImgView(process.env.PUBLIC_URL + "/bio/display/default.jpeg");
+                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
                     }
                     
                 }
@@ -72,7 +72,7 @@ const ViewUserProfile = props => {
             );
         }
 
-        if (!isFollower){
+        if (isFollower === null){
             axios.post('/api/is-follower',{user_id,id}).then(
                 (response) => {
                     if (response.status !== 200){
@@ -89,7 +89,6 @@ const ViewUserProfile = props => {
     // have onclick functions for add-follower and unfollow
     
     const follow = () => {
-        console.log("follow function");
         axios.post('/api/add-follower',{user_id,id}).then(
             (dofollow) => {
                 if (dofollow.status !== 200){
@@ -99,11 +98,9 @@ const ViewUserProfile = props => {
                 }
             }
         );
-        //isFollower(true);
     }
 
     const unfollow = () => {
-        console.log("unfollow function");
         axios.put('/api/un-follow',{user_id,id}).then(
             (unfollow) => {
                 if (unfollow.status !== 200){
@@ -113,24 +110,18 @@ const ViewUserProfile = props => {
                 }
             }
         );
-        //isFollower(false);
     }
 
     return (`${user_id}` === `${id}`) ? (
         <Navigate to="/profile" />
     ):(  
-        <div className="hero">
-            <div className="hero-body">
-                
-                <div className="hero-body box userview-profile-box" style={{width:"90%",margin:"0 auto"}}>
+        <div className="hero hero-container">
+            <div className="card userview-profile-box">
+                <button className="button return-btn is-info" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                  
-                    <button className="button return-btn is-info" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
-                 
-                    <ProfileHeader showDropDown={showDropDown} setShowDropDown={setShowDropDown} isFollower={isFollower} follow={follow} unfollow={unfollow} user={userview} imgView={imgView} vidView={vidView} action="read" />
-                    
-                    <br />
-
-                    <Tabs>
+                 <ProfileHeader showDropDown={showDropDown} setShowDropDown={setShowDropDown} isFollower={isFollower} follow={follow} unfollow={unfollow} user={userview} imgView={imgView} vidView={vidView} action="read" />
+                 <Tabs>
+                    <div className="card has-text-centered has-text-weight-bold">
                         <TabList>
                             <Tab>Bio & PRees</Tab>
                             <Tab>Professional</Tab>
@@ -138,226 +129,224 @@ const ViewUserProfile = props => {
                             <Tab>PreePedia</Tab>
                             <Tab>PRee Reactions</Tab>
                         </TabList>
-                        <TabPanel>
-                            <ProfileBio user={userview} action="read"/>
+                    </div>
+                    <TabPanel>
+                        <ProfileBio user={userview} action="read"/>
 
-                            <hr />
-                            
-                            <div className="multimedia-div">
-                                <article className="profile-container">
-                                    <div className="message">
-                                        <div className="message-header">
-                                            <div className="has-text-centered">
-                                                <p className="subtitle has-text-weight-bold profile-title"> {userview ? "@"+userview.username : ""} Prees </p>
-                                            </div>
-                                            <div className="tabs is-boxed">
-                                                <ul>
-                                                    <li className="button">
-                                                    <span>
-                                                        <span className="icon is-small"><i className="fas fa-upload" aria-hidden="true"></i></span>
-                                                        <span>All</span>
-                                                    </span>
-                                                    </li>
-
-                                                    <li className="button is-active">
-                                                    <span>
-                                                        <span className="icon is-small"><i className="far fa-images" aria-hidden="true"></i></span>
-                                                        <span>Magazine</span>
-                                                    </span>
-                                                    </li>
-                                                    
-                                                    <li className="button">
-                                                    <span>
-                                                        <span className="icon is-small"><i className="fas fa-play-circle" aria-hidden="true"></i></span>
-                                                        <span>AV</span>
-                                                    </span>
-                                                    </li>
-                                                
-                                                </ul>
-                                            </div>
-                                                
+                        <hr />
+                        
+                        <div className="multimedia-div">
+                            <article className="profile-container">
+                                <div className="message">
+                                    <div className="message-header">
+                                        <div className="has-text-centered">
+                                            <p className="subtitle has-text-weight-bold profile-title"> {userview ? "@"+userview.username : ""} Prees </p>
                                         </div>
-                                        
-                                        <div className="message-body">
-                                            <h1>Content</h1>
+                                        <div className="tabs is-boxed">
+                                            <ul>
+                                                <li className="button">
+                                                <span>
+                                                    <span className="icon is-small"><i className="fas fa-upload" aria-hidden="true"></i></span>
+                                                    <span>All</span>
+                                                </span>
+                                                </li>
+
+                                                <li className="button is-active">
+                                                <span>
+                                                    <span className="icon is-small"><i className="far fa-images" aria-hidden="true"></i></span>
+                                                    <span>Magazine</span>
+                                                </span>
+                                                </li>
+                                                
+                                                <li className="button">
+                                                <span>
+                                                    <span className="icon is-small"><i className="fas fa-play-circle" aria-hidden="true"></i></span>
+                                                    <span>AV</span>
+                                                </span>
+                                                </li>
+                                            
+                                            </ul>
+                                        </div>
+                                            
+                                    </div>
+                                    
+                                    <div className="message-body">
+                                        <h1>Content</h1>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </TabPanel>
+                    <TabPanel>
+                        <div className="professional-div">
+                            <article className="profile-container">
+                                <div className="message">
+                                    <div className="message-header">
+                                        <div className="tabs">
+                                            <ul>
+
+                                                <li className="button">
+                                                    <span className="icon is-small"><i className="fas fa-search" aria-hidden="true"></i></span>
+                                                    <span>Search</span>
+                                                </li>
+
+                                                <li className="button">
+                                                    <span className="icon is-small"><i className="fas fa-edit" aria-hidden="true"></i></span>
+                                                    <span>Edit</span>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                                </article>
-                            </div>
-                        </TabPanel>
-                        <TabPanel>
-                            <div className="professional-div">
-                                <article className="profile-container">
-                                    <div className="message">
-                                        <div className="message-header">
-                                            <div className="tabs">
-                                                <ul>
-            
-                                                    <li className="button">
-                                                        <span className="icon is-small"><i className="fas fa-search" aria-hidden="true"></i></span>
-                                                        <span>Search</span>
-                                                    </li>
+                                    <div className="message-body">
+                                        <h1> List </h1>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </TabPanel>
+                    <TabPanel>                            
+                        <div className="portfolio-div">
+                            <article className="profile-container">
+                                <div className="message">
+                                    <div className="message-header">
+                                        <div>
+                                            <p className="subtitle has-text-weight-bold profile-title"> Portfolios</p>
+                                        </div>
+                                        <div className="tabs is-boxed">
+                                            <ul>
+                                                <li className="button is-active">
+                                                <span>
+                                                    <span className="icon is-small"><i className="fas fa-briefcase" aria-hidden="true"></i></span>
+                                                    <span>Business</span>
+                                                </span>
+                                                </li>
 
-                                                    <li className="button">
+                                                <li className="button">
+                                                <span>
+                                                    <span className="icon is-small"><i className="fas fa-link" aria-hidden="true"></i></span>
+                                                    <span>Website</span>
+                                                </span>
+                                                </li>
+
+                                                <li className="button">
+                                                <span>
+                                                    <span className="icon is-small"><i className="far fa-file-alt" aria-hidden="true"></i></span>
+                                                    <span>Documents</span>
+                                                </span>
+                                                </li>
+
+                                                <li className="button">
+                                                    <span className="icon is-small"><i className="fas fa-edit" aria-hidden="true"></i></span>
+                                                    <span>Edit</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="message-body">
+                                        {true && 
+                                            <div className="product-div">
+                                                <h1> Product Shops </h1> 
+                                            </div>
+                                        }
+                                        {true &&
+                                            <div className="service-div">
+                                                <h1> Service Shops </h1> 
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </TabPanel>
+                    <TabPanel>
+                        <div className="preepedia-div">
+                            <article className="profile-container">
+                                <div className="message">
+                                    <div className="message-header">
+                                        <div>
+                                            <p className="subtitle has-text-weight-bold profile-title"> Preepedia </p>
+                                        </div>
+                                        <div className="tabs is-boxed">
+                                            <ul>
+                                                <li className="button is-active">
+                                                    <span>
+                                                        <span className="icon is-small"><i className="fas fa-file-invoice" aria-hidden="true"></i></span>
+                                                        <span> Publications </span>
+                                                    </span>
+                                                </li>
+                                                
+                                                <li className="button">
+                                                    <span>
+                                                        <span className="icon is-small"><i className="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                                                        <span>Contributions</span>
+                                                    </span>
+                                                </li>
+                                                <li className="button">
+                                                    <span>
                                                         <span className="icon is-small"><i className="fas fa-edit" aria-hidden="true"></i></span>
                                                         <span>Edit</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div className="message-body">
-                                            <h1> List </h1>
-                                        </div>
-                                    </div>
-                                </article>
-                            </div>
-                        </TabPanel>
-                        <TabPanel>                            
-                            <div className="portfolio-div">
-                                <article className="profile-container">
-                                    <div className="message">
-                                        <div className="message-header">
-                                            <div>
-                                                <p className="subtitle has-text-weight-bold profile-title"> Portfolios</p>
-                                            </div>
-                                            <div className="tabs is-boxed">
-                                                <ul>
-                                                    <li className="button is-active">
-                                                    <span>
-                                                        <span className="icon is-small"><i className="fas fa-briefcase" aria-hidden="true"></i></span>
-                                                        <span>Business</span>
                                                     </span>
-                                                    </li>
-
-                                                    <li className="button">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="message-body">
+                                        <div className="publications-div">
+                                            <h1> Publications </h1> 
+                                        </div>
+                                        <div className="contributions-div">
+                                            <h1> Contributions </h1> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </TabPanel>
+                    <TabPanel>
+                        <div className="reactions-div">
+                            <article className="profile-container">
+                                <div className="message">
+                                    <div className="message-header">
+                                        <div>
+                                            <p className="subtitle has-text-weight-bold profile-title"> Pree Reactions </p>
+                                        </div>
+                                        <div className="tabs is-boxed">
+                                            <ul>
+                                                <li className="button">
                                                     <span>
-                                                        <span className="icon is-small"><i className="fas fa-link" aria-hidden="true"></i></span>
-                                                        <span>Website</span>
+                                                        <span className="icon is-small"><i className="far fa-comments" aria-hidden="true"></i></span>
+                                                        <span> Comments </span>
                                                     </span>
-                                                    </li>
+                                                </li>
 
-                                                    <li className="button">
+                                                <li className="button is-active">
                                                     <span>
-                                                        <span className="icon is-small"><i className="far fa-file-alt" aria-hidden="true"></i></span>
-                                                        <span>Documents</span>
+                                                        <span className="icon is-small"><i className="fas fa-heart" aria-hidden="true"></i></span>
+                                                        <span> Approvals </span>
                                                     </span>
-                                                    </li>
+                                                </li>
 
-                                                    <li className="button">
-                                                        <span className="icon is-small"><i className="fas fa-edit" aria-hidden="true"></i></span>
-                                                        <span>Edit</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div className="message-body">
-                                            {true && 
-                                                <div className="product-div">
-                                                    <h1> Product Shops </h1> 
-                                                </div>
-                                            }
-                                            {true &&
-                                                <div className="service-div">
-                                                    <h1> Service Shops </h1> 
-                                                </div>
-                                            }
+                                                <li className="button">
+                                                    <span>
+                                                        <span className="icon is-small"><i className="fas fa-heart-broken" aria-hidden="true"></i></span>
+                                                        <span> Disapprovals </span>
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                                </article>
-                            </div>
-                        </TabPanel>
-                        <TabPanel>
-                            <div className="preepedia-div">
-                                <article className="profile-container">
-                                    <div className="message">
-                                        <div className="message-header">
-                                            <div>
-                                                <p className="subtitle has-text-weight-bold profile-title"> Preepedia </p>
-                                            </div>
-                                            <div className="tabs is-boxed">
-                                                <ul>
-                                                    <li className="button is-active">
-                                                        <span>
-                                                            <span className="icon is-small"><i className="fas fa-file-invoice" aria-hidden="true"></i></span>
-                                                            <span> Publications </span>
-                                                        </span>
-                                                    </li>
-                                                    
-                                                    <li className="button">
-                                                        <span>
-                                                            <span className="icon is-small"><i className="fas fa-pencil-alt" aria-hidden="true"></i></span>
-                                                            <span>Contributions</span>
-                                                        </span>
-                                                    </li>
-                                                    <li className="button">
-                                                        <span>
-                                                            <span className="icon is-small"><i className="fas fa-edit" aria-hidden="true"></i></span>
-                                                            <span>Edit</span>
-                                                        </span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div className="message-body">
-                                            <div className="publications-div">
-                                                <h1> Publications </h1> 
-                                            </div>
-                                            <div className="contributions-div">
-                                                <h1> Contributions </h1> 
-                                            </div>
-                                        </div>
+                                    
+                                    <div className="message-body">
+                                        <h1>Reactions</h1>
                                     </div>
-                                </article>
-                            </div>
-                        </TabPanel>
-                        <TabPanel>
-                            <div className="reactions-div">
-                                <article className="profile-container">
-                                    <div className="message">
-                                        <div className="message-header">
-                                            <div>
-                                                <p className="subtitle has-text-weight-bold profile-title"> Pree Reactions </p>
-                                            </div>
-                                            <div className="tabs is-boxed">
-                                                <ul>
-                                                    <li className="button">
-                                                        <span>
-                                                            <span className="icon is-small"><i className="far fa-comments" aria-hidden="true"></i></span>
-                                                            <span> Comments </span>
-                                                        </span>
-                                                    </li>
-
-                                                    <li className="button is-active">
-                                                        <span>
-                                                            <span className="icon is-small"><i className="fas fa-heart" aria-hidden="true"></i></span>
-                                                            <span> Approvals </span>
-                                                        </span>
-                                                    </li>
-
-                                                    <li className="button">
-                                                        <span>
-                                                            <span className="icon is-small"><i className="fas fa-heart-broken" aria-hidden="true"></i></span>
-                                                            <span> Disapprovals </span>
-                                                        </span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="message-body">
-                                            <h1>Reactions</h1>
-                                        </div>
-                                    </div>
-                                </article>
-                            </div>      
-                        </TabPanel>
-                        <br/>
-                    </Tabs>
-            
-                    
-                      
-                </div>
+                                </div>
+                            </article>
+                        </div>      
+                    </TabPanel>
+                    <br />
+                </Tabs>
             </div>
+            
         </div>
     )
 }

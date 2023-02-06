@@ -159,20 +159,36 @@ def see_the_view():
         return json.dumps(prees)
     return jsonify({"msg":"There was an error somewhere."}), 400
 
+#api method for performing search of Users only ( add rank to search result )
+@app.route('/api/search-users', methods=['POST'])
+def search_users():
+    if request.method == 'POST':
+        searchval = request.json.get('searchval', None)
+        user_id = request.json.get('user_id', None)
+        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%') )).order_by(User.username).all() 
+        userlist = []
+        for user in users:
+            is_follower = check_follower(user_id,user.User.user_id)
+            aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
+            userlist.append(aUserObj)
+        result = {"userlist":userlist}
+        return result , 200
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
 #api method for performing search (reduce data from search result -x-  replace access-type with ranking )
 @app.route('/api/do-search', methods=['POST'])
 def do_search():
     if request.method == 'POST':
         checkwg = request.json.get('checkwg', None)
-        print(checkwg)
+        user_id = request.json.get('user_id', None)
         #users = User.query.filter(or_( User.firstname.like(checkwg), User.lastname.like(checkwg), User.username.like(checkwg) )).all()
-        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+checkwg+'%'), User.firstname.ilike('%'+checkwg+'%'), User.lastname.ilike('%'+checkwg+'%') )).all() #.filter(or_( User.firstname.like(checkwg), User.lastname.like(checkwg), User.username.like(checkwg) )).all()
-        print(users)
+        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+checkwg+'%'), User.firstname.ilike('%'+checkwg+'%'), User.lastname.ilike('%'+checkwg+'%') )).order_by(User.username).all() 
         userlist = []
         #portfolios
         portfoliolist = [1,2,3,4,5]
         for user in users:
-            aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "access-type":user.User.accessType, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp}
+            is_follower = check_follower(user_id,user.User.user_id)
+            aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "access-type":user.User.accessType, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
             userlist.append(aUserObj)
         result = {"userlist":userlist,"portfoliolist":portfoliolist}
         return result , 200

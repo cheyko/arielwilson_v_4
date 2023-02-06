@@ -15,24 +15,7 @@ import PagesSearch from "./PagesSearch";
 //****** Try to maintian the search results after a search result is clicked so on return search results will be present. *********
 const Search = props => {
 
-    /*var placeholders = [
-        {id : 0 , text : "test 0"},
-        {id : 1 , text : "test 1"},
-        {id : 2 , text : "test 2"},
-        {id : 3 , text : "test 3"},
-        {id : 4 , text : "test 4"},
-        {id : 5 , text : "test 5"},
-    ]
-
-    var settings = {
-        dots: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        arrows: true,
-    };*/
-
+    const user_id = props.context.user.id;
     const [checkwg, setCheckWG] = useState("");
     const [flashMsg, setFlashMsg] = useState("");
     const [userlist, setUserList] = useState([]);
@@ -50,7 +33,7 @@ const Search = props => {
         setView("results")
         e.preventDefault();
 
-        const search = await axios.post('/api/do-search',{checkwg}).catch(
+        const search = await axios.post('/api/do-search',{checkwg, user_id}).catch(
             (search) => {
                 if (search.status !== 200){ 
                     setFlashMsg("No results from search");
@@ -76,46 +59,12 @@ const Search = props => {
             if (search.data.crawllist){
                 console.log("crawllist");
             }
-        }   
-
-
-        
+        }           
     }
-
-    /*const settingsThumbs = {
-        speed: 1000,
-        slidesToShow: 1,
-        infinite: false,
-        slidesToScroll: 1,
-        dots: false,
-        arrows: true,
-        centerMode: true,
-        responsive:[
-          {
-            breakpoint: 480,
-            settings: {
-                slidesToShow: 1,
-            }
-          },
-          {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 2,
-            }
-          },
-          {
-            breakpoint: 1025,
-            settings: {
-                slidesToShow: 3,
-            }
-          }
-        ]
-    };*/
-
     
     return(
         <div className="hero">
-            <div className="container">
+            <div className="hero-container">
                 <div className="has-text-centered">
 
                     <div className="search-options">

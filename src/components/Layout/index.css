@@ -7,9 +7,10 @@
     text-align: center !important;
   }
 
-/*.app-container{
-    height: 100vh;
-}*/
+#app-container{
+    height: 100vh !important;
+    overflow-y: scroll;
+}
 
 .app-container{
     background-color:wheat;
