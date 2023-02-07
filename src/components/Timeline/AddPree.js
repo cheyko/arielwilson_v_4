@@ -78,16 +78,14 @@ const AddPree = props => {
                             break;
                     }
                 });
-                setConfirmMsg("Media Posted")
-                console.log(formData);
-                console.log("Media Posted");
+                //setConfirmMsg("Media Posted")
                 setType = true;
                 //window.location.reload();
             }else if(a_quote){
                 type_of = "quote";
                 formData.append('type_of',type_of);
                 formData.append('a_quote', a_quote);
-                setConfirmMsg("Quote made.");
+                //setConfirmMsg("Quote made.");
                 document.getElementById("ypree").value = "";
                 setType = true;
                 //window.location.reload();
@@ -114,9 +112,12 @@ const AddPree = props => {
                 setError("");
                 setMedia(null);
                 setQuote(null);
+                type_of === "quote" ? setConfirmMsg("Quote made.") : setConfirmMsg("Media Posted");
                 props.setLoadNew(true); 
                 //add pree to list inside context using ypree func in App.js
                 return true;
+            }else{
+                type_of === "quote" ? setConfirmMsg("Quote was not made.") : setConfirmMsg("Media was not Posted.");
             }
         }
         
@@ -153,7 +154,7 @@ const AddPree = props => {
                             </div>
                             <div>
                                 <div className="input-options">
-                                    <div className="upload-wrapper has-text-centered">
+                                    <div className="slick-wrapper has-text-centered">
                                         {media ? 
                                             (
                                             <>
@@ -163,7 +164,7 @@ const AddPree = props => {
                                                             {aFile.type.split('/')[0] === "image" && 
                                                             (
                                                                 <figure key={index} className="image is-1by1">
-                                                                    <img src={temp_urls[index]} alt="upload" />
+                                                                    <img className="slick-slide-image" src={temp_urls[index]} alt="upload" />
                                                                 </figure>
                                                             )}
                                                             {aFile.type.split('/')[0] === "audio" && (

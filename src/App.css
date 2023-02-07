@@ -1,5 +1,5 @@
 .hero-contain{
-  padding: 1rem !important;
+  padding: 3rem !important;
 }
 
 
@@ -228,7 +228,7 @@ ul .is-active{
 }
 
 .slick-wrapper{
-  max-width: 50rem;
+  max-width: 40rem;
 }
 
 .slick-wrapper .slick-arrow{
@@ -338,6 +338,15 @@ ul .is-active{
   margin-block: 0 1rem !important ;
 }
 
+@media screen and (max-width:1200px) {
+  .slick-wrapper{
+    max-width: 30rem;
+  }
+  .hero-contain{
+    padding: 1rem !important;
+  }
+}
+
 @media screen and (min-width:1000px){
   .tile-column{
     margin-inline: 0 !important;
@@ -363,6 +372,9 @@ ul .is-active{
   .main-container{
     background-color:wheat;
     width: max-content !important;
+  }
+  .hero-contain{
+    padding: 1rem !important;
   }
 
   /*.app-container{
@@ -393,7 +405,7 @@ ul .is-active{
   }
 
   .slick-wrapper{
-    max-width: 40rem;
+    max-width: 20rem !important;
   }
 
 }
@@ -419,6 +431,9 @@ ul .is-active{
   .slick-wrapper{
     max-width: 18rem;
   }
+  .hero-contain{
+    padding: 0rem !important;
+  }
 }
 
 @media screen and (max-width:375px){
@@ -441,6 +456,16 @@ ul .is-active{
   .slick-wrapper{
     max-width: 16rem;
   }
+  .slick-next{
+    right: -0.5rem !important;
+  }
+  .slick-prev{
+    left: -0.5rem !important;
+  }
+  .hero-contain{
+    padding: 0rem !important;
+  }
+  
 }
 
 @media screen and (max-width:320px){
@@ -448,8 +473,14 @@ ul .is-active{
     width: 100% !important;
   }*/
 
+  .slick-wrapper{
+    max-width: 16rem !important;
+  }
+
   .hero-content{
     margin-top: 3rem;
   }
-  
+  .hero-contain{
+    padding: 0rem !important;
+  }
 }
