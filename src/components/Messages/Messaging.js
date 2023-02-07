@@ -9,15 +9,17 @@ const Messaging = props => {
     let {userview} = props;
     let {user_id} = props;
     let {convo} = props;
+    let msgDIv = document.getElementById("convo-msgs");
 
     const [modalIsOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         if(id > 0){
-            let msgDIv = document.getElementById("convo-msgs");
-            msgDIv.scrollTop = msgDIv.scrollHeight;
+            if(msgDIv !== null){
+                msgDIv.scrollTop = msgDIv.scrollHeight;
+            }
         }
-    })
+    },[id, msgDIv]);
 
     const getDateTime = () => {
         const orignal = new Date();
