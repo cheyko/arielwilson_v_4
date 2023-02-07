@@ -93,9 +93,9 @@ const Messaging = props => {
                 <br />
                 <div id="message-app" className="msg-section">
                     <div className="message-app-container">
-                        {id > 0 ? 
+                        {id > 0 && userview? 
                         (<>
-                            <div id="convo-header">
+                            <div key={userview} id="convo-header">
                                 <div className="media">
                                     <div className="media-left">
                                         <figure className="image is-64x64">

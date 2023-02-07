@@ -214,7 +214,7 @@ const Messages = props => {
                                 <Messaging id={id} userview={userview} user_id={user_id} convo={convo} setConvo={setConvo} />
                             }
                             {tab === "convos" && 
-                                <Convos allmessages={allmessages} people={people} user_id={user_id} setConvo={setConvo} setTab={setTab}/>
+                                <Convos allmessages={allmessages} people={people} user_id={user_id} setUserview={setUserview} setConvo={setConvo} setTab={setTab}/>
                             }
                             {tab === "wg-mail" &&
                                 <div className="hero-body">
