@@ -111,7 +111,7 @@ export default class App extends Component {
     const prees = ready ? await axios.post("/api/see-the-pree",{user_id}) : {"data":null}; //add reactions to the prees from the backend before response to request.
     const messages = ready ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
     //console.log(prees);
-    this.setState({user, prees:prees.data, ready, welcome, userlist, recent, messages, boxWidth:boxWidth});
+    this.setState({user,prees:prees.data, ready, welcome, userlist, recent, messages, boxWidth:boxWidth}); //, 
   }
 
   getTargetPhotos = (theID, contextType) => {

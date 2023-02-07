@@ -179,7 +179,7 @@ const Profile = props => {
                                 <div className="message">
                                     <div className="message-header">
                                         <div className="has-text-centered">
-                                            <p className="subtitle has-text-weight-bold profile-title"> {myView ? "@"+myView.username : ""} Prees </p>
+                                            <p className="subtitle has-text-weight-bold profile-title"> Prees </p>
                                         </div>
                                         <div className="tabs is-boxed">
                                             <ul>

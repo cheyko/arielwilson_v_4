@@ -89,7 +89,7 @@ const ViewUser = props => {
                         </div>
                     </Link>
                     <div className="content">
-                        <Link className="user-item" to={`/view-user-profile/${user.user_id}`}>
+                        <Link className="user-item has-text-centered" to={`/view-user-profile/${user.user_id}`}>
                             <span> #{user.tagline} </span>
                             <br />
                         </Link>

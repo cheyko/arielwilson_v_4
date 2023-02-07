@@ -3,8 +3,9 @@ import withContext from "../../withContext";
 import AddPree from "./AddPree";
 import PreeItem from "./PreeItem";
 import "./index.css";
-import axios from "axios";
+import axios, { all } from "axios";
 import TimelineExclusive from "./TimelineExclusive";
+import { render } from "@testing-library/react";
 
 const Timeline = props => {
 
@@ -14,12 +15,14 @@ const Timeline = props => {
 
     const loadPrees = props.context.prees ? props.context.prees : [];
     //console.log(loadPrees);
+    //const loadPrees = axios.post("/api/see-the-pree",{user_id})
     const [showDropDown, setShowDropDown] = useState(false);
     const [allPrees, renderPrees] = useState(loadPrees);
     const [filterText, setFilterText] = useState("all");
+    const [loadNew, setLoadNew] = useState(false);
 
-    const [gotMedia, setGetMedia] = useState(false);
-    const [imgView, setImgView] = useState(null);
+    /*const [gotMedia, setGetMedia] = useState(false);
+    const [imgView, setImgView] = useState(null);*/
 
     //console.log(loadPrees);
     
@@ -83,30 +86,30 @@ const Timeline = props => {
         switch(order){
             case 'all':
                 setFilterText("all");
-                renderPrees(loadPrees.sort((a,b) => { return b.pree_id - a.pree_id; }));
+                renderPrees(allPrees.sort((a,b) => { return b.pree_id - a.pree_id; }));
                 break;
             case 'today':
                 const today = new Date().toISOString().split("T")[0];
                 setFilterText("today");
-                renderPrees(loadPrees.filter((aPree) => today === aPree.date_added.split(" ")[0]));
+                renderPrees(allPrees.filter((aPree) => today === aPree.date_added.split(" ")[0]));
                 break;
             case 'yesterday':
                 val = (newDate.getDate() - 1) > 0 ? new Date(newDate.setDate(newDate.getDate() - 1)) : new Date(newDate.setMonth(newDate.getMonth() - 1)).setDate(lastday[newDate.getMonth() - 1])
                 const yesterday = val.toISOString().split("T")[0];
                 setFilterText("yesterday");
-                renderPrees(loadPrees.filter((aPree) => yesterday === aPree.date_added.split(" ")[0]));
+                renderPrees(allPrees.filter((aPree) => yesterday === aPree.date_added.split(" ")[0]));
                 break;
             case 'week':
                 val = (newDate.getDate() - 7) > 0 ? new Date(newDate.setDate(newDate.getDate() - 7)) : new Date(newDate.setMonth(newDate.getMonth() - 1)).setDate((lastday[newDate.getMonth() - 1]) + (newDate.getDate() - 7))
                 const lastweek = val.toISOString().split("T")[0];
                 setFilterText("lastweek");
-                renderPrees(loadPrees.filter((aPree) => lastweek < aPree.date_added.split(" ")[0]));
+                renderPrees(allPrees.filter((aPree) => lastweek < aPree.date_added.split(" ")[0]));
                 break;
             case 'month':
                 val = new Date(newDate.setMonth(newDate.getMonth() - 1));
                 const lastmonth = val.toISOString().split("T")[0];
                 setFilterText("lastmonth");
-                renderPrees(loadPrees.filter((aPree) => lastmonth < aPree.date_added.split(" ")[0]));
+                renderPrees(allPrees.filter((aPree) => lastmonth < aPree.date_added.split(" ")[0]));
                 break;
             default:
                 break;
@@ -124,16 +127,27 @@ const Timeline = props => {
             loadMainMedia();
         } */
         
-        if(allPrees.length === 0){
+        /*if(allPrees.length === 0){
             document.getElementById("app-container").style.height = "100vh";
         }else{
             document.getElementById("app-container").style.height = "auto";
-        }
+        }*/
 
         //sortPrees();
         //get reactions to prees --> getlist of prees ids from from allPrees = (param) ?
-    },[allPrees]);//, gotMedia, loadMainMedia]);
-
+        const user_id = props.context.user.id;
+        if(loadNew === true){
+            axios.post("/api/see-the-pree",{user_id}).then(
+                result => {
+                    renderPrees(result.data);
+                    setLoadNew(false);
+                }
+            ).catch( error => {
+                console.log(error);
+            });
+        }
+    },[allPrees,loadNew]);//, gotMedia, loadMainMedia]);
+    console.log(allPrees);
     return (
         <div id="timeline-div" className="hero">
             <div className="hero-container">
@@ -152,7 +166,7 @@ const Timeline = props => {
                 <br />
                 
                 <div className="timeline-container">
-                    <AddPree renderPrees={renderPrees} preetype={"individual"}/>
+                    <AddPree setLoadNew={setLoadNew} renderPrees={renderPrees} preetype={"individual"}/>
                 </div>
 
                 <div id="make-pree" className="hero">
@@ -204,7 +218,8 @@ const Timeline = props => {
                 
             </div>
             <div>
-                {allPrees && allPrees.length > 0 ? (
+                {allPrees && (allPrees.length > 0) ? (
+                    console.log(allPrees),
                     allPrees.map((aPree, index) => (
                         <div key={index}>
                             {aPree.pree_type !== 'exclusive' ? (

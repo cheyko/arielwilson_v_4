@@ -89,7 +89,7 @@ const ViewConvoUser = props => {
                         </div>
                     </Link>
                     <div className="content">
-                        <Link className="user-item" onClick={e => props.setTabs("messages")} to={`/messages/convo/direct/${user.user_id}`}>
+                        <Link className="user-item has-text-centered" onClick={e => props.setTabs("messages")} to={`/messages/convo/direct/${user.user_id}`}>
                             <span> #{user.tagline} </span>
                             <br />
                         </Link>

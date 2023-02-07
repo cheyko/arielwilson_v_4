@@ -114,8 +114,7 @@ const AddPree = props => {
                 setError("");
                 setMedia(null);
                 setQuote(null);
-                const latestprees = await axios.get("/api/ypree");
-                props.renderPrees(latestprees.data);
+                props.setLoadNew(true); 
                 //add pree to list inside context using ypree func in App.js
                 return true;
             }

@@ -17,6 +17,8 @@
 
 .profile-title{
     color:white !important;
+    word-break: initial !important;
+    padding-inline: 0.25rem;
 }
 
 .tagline{

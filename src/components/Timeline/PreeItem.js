@@ -51,8 +51,39 @@ const PreeItem = props => {
     }
     return (
         <div className="hero">
+            <div className="pree-item">
+                <div className='message'>
+                    <div className="dropdown is-pulled-right is-right is-hoverable">
+                        <div className="dropdown-trigger">
+                            
+                            <b> <i style={{fontSize:"1.5rem"}} className="fas fa-ellipsis-h"></i> </b>
+                        </div>
+                        <div className="dropdown-menu" id="dropdown-menu3" role="menu">
+                            <div className="dropdown-content">
+                                <span className="dropdown-item">
+                                    Edit Pree
+                                </span>
+                                <span className="dropdown-item">
+                                    Delete Pree
+                                </span>
+
+                                <span className="dropdown-item">
+                                    Hide Pree
+                                </span>
+                                <span className="dropdown-item">
+                                    Report Pree
+                                </span>
+                                <span className="dropdown-item">
+                                    Add to Favourites
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div className="pree-item card">
                 <article>
+                    
                     <div className="message">
                         <PreeHeader aPree={aPree} imgView={imgView}/>
                         <PreeBody aPree={aPree} clickable={clickable} />

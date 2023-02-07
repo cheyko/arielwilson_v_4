@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './index.css';
 import withContext from '../../withContext';
 import axios from 'axios';
@@ -19,48 +19,52 @@ const ViewUserList = props => {
     const [viewlist, setViewList] = useState(null);
     let navigate = useNavigate();
 
-    if (viewlist === null){
-        switch(action){
-            case 'search':
-                setViewList(props.context.userlist);
-                break;
-            case 'followers':
-                axios.post('/api/get-followers',{id}).then(
-                    (result1) => {
-                        if (result1.status !== 200){
-                            console.log('List of Followers were not sent from server.');
-                        }else{
-                            setViewList(result1.data.followerslist);
+    useEffect( () => {
+        const user_id  = id;
+        if (viewlist === null){
+            switch(action){
+                case 'search':
+                    setViewList(props.context.userlist);
+                    break;
+                case 'followers':
+                    axios.post('/api/get-followers',{user_id}).then(
+                        (result1) => {
+                            if (result1.status !== 200){
+                                console.log('List of Followers were not sent from server.');
+                            }else{
+                                setViewList(result1.data.followerslist);
+                            }
                         }
-                    }
-                )
-                break;
-            case 'following':
-                axios.post('/api/get-followings',{id}).then(
-                    (result2) => {
-                        if (result2.status !== 200){
-                            throw new Error('List of Followings were not sent from server.');
-                        }else{
-                            setViewList(result2.data.followingslist);
+                    )
+                    break;
+                case 'figures': //change function to get-figures
+                    axios.post('/api/get-figures',{user_id}).then(
+                        (result2) => {
+                            if (result2.status !== 200){
+                                throw new Error('List of Followings were not sent from server.');
+                            }else{
+                                setViewList(result2.data.followingslist);
+                            }
                         }
-                    }
-                )
-                break;
-            case 'fraternity':
-                axios.post('/api/get-fraternity',{id}).then(
-                    (result3) => {
-                        if (result3.status !== 200){
-                            throw new Error('List of Fraternity were not sent from server.');
-                        }else{
-                            setViewList(result3.data.fraternitylist);
+                    )
+                    break;
+                case 'fraternity':
+                    axios.post('/api/get-fraternity',{user_id}).then(
+                        (result3) => {
+                            if (result3.status !== 200){
+                                throw new Error('List of Fraternity were not sent from server.');
+                            }else{
+                                setViewList(result3.data.fraternitylist);
+                            }
                         }
-                    }
-                )
-                break;
-            default:
-                break;
+                    )
+                    break;
+                default:
+                    break;
+            }
         }
-    }
+    },[viewlist])
+
 
     console.log(viewlist);
 
@@ -70,7 +74,7 @@ const ViewUserList = props => {
         <div className="hero">
             <div className="hero-container has-text-centered">
                 <div className="is-pulled-left">
-                    <button className="button is-fixed is-info" style={{zIndex:"3"}} onClick={e => navigate(-1) }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                    <button className="button is-fixed is-info" style={{zIndex:"3"}} onClick={e => navigate(-1) }> <i className="fas fa-arrow-circle-left"></i> </button>
                 
                 </div>
                             

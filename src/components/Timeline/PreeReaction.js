@@ -136,7 +136,7 @@ const PreeReaction = props => {
     //console.log(comments);
     return (
         <div className="reactions">
-            <div className="columns is-multiline is-mobile has-text-centered">
+            <div className="columns is-mobile has-text-centered">
                 <div className="column reaction-btn" onClick={(e) => likePree(e,aPree.pree_id) }>
                     <b className="reaction-btn" style={reaction === true ? {color:"blue"}:{color:"black"}} > <span className="reaction-txt">Like <br /></span>  <i className="fas fa-heart" aria-hidden="true"></i> {likedcount} </b>
                 </div>

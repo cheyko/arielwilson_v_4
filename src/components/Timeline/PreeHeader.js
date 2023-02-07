@@ -61,38 +61,7 @@ const PreeHeader = props => {
                 <div className="column" >
                     <b> {formatTime(aPree.date_added)} </b>
                 </div>
-                <div className="column">
-                    
-                    <div className="dropdown is-right is-hoverable">
-                        <div className="dropdown-trigger">
-                            <button className="button is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
-                                <span className="icon is-small">
-                                    <b> <i className="fas fa-filter"></i> </b>
-                                </span>
-                            </button>
-                        </div>
-                        <div className="dropdown-menu" id="dropdown-menu3" role="menu">
-                            <div className="dropdown-content">
-                                <span className="dropdown-item">
-                                    Edit Pree
-                                </span>
-                                <span className="dropdown-item">
-                                    Delete Pree
-                                </span>
-
-                                <span className="dropdown-item">
-                                    Hide Pree
-                                </span>
-                                <span className="dropdown-item">
-                                    Report Pree
-                                </span>
-                                <span className="dropdown-item">
-                                    Add to Favourites
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     )

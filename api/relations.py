@@ -63,7 +63,7 @@ def update_stats(user_id):
 def get_followers():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
-        followers = Follower.query.filter(Follower.user_id == user_id).all()
+        followers = Follower.query.filter(Follower.user_id == user_id).all()#, Follower.is_following == True).all()
         followerslist = []
         for follower in followers:
             user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == follower.follower_id).first()
@@ -73,8 +73,8 @@ def get_followers():
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 #api method to get followings
-@app.route('/api/get-followings', methods=['POST'])
-def get_followings():
+@app.route('/api/get-figures', methods=['POST'])
+def get_figures():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
         followings = Follower.query.filter(Follower.follower_id == user_id).all()
@@ -363,7 +363,7 @@ def is_group_admin():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
         group_id = request.json.get('group_id', None)
-        didJoin = did_join(following_id, follower_id)
+        didJoin = did_join(user_id, group_id)
         if didJoin is True:
             isApart = GroupRelations.query.filter_by(user_id=user_id,group_id=group_id, is_admin=True).first()
             if isApart is not None:
@@ -378,8 +378,8 @@ def is_group_admin():
 @app.route('/api/join-group', methods=['POST'])
 def join_group():
     if request.method == 'POST':
-        follower_id = request.json.get('user_id', None)
-        following_id = request.json.get('group_id', None)
+        user_id = request.json.get('user_id', None)
+        group_id = request.json.get('group_id', None)
         didJoin = did_join(user_id,group_id)
         if didJoin == True:
             record = GroupRelations.query.filter_by(user_id=user_id,group_id=group_id).first()
