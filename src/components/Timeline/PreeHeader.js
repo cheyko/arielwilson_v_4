@@ -20,12 +20,14 @@ const PreeHeader = props => {
         var before = new Date(param);
         var seconds = (now.getTime() - before.getTime())/1000;
         let answer;
-        if (seconds < 60){
-            answer = Math.round(seconds) + (Math.round(seconds) > 1 ? " secs ago" : " sec ago");
+        if (seconds < 5){
+            answer = "just now";
+        }else if (seconds > 5 && seconds < 60){
+            answer = Math.round(seconds) + " secs ago";
         }else if(seconds > 60 && seconds < 3600){
-            answer = Math.round(seconds / 60) + (Math.round(seconds / 60) > 1 ? " mins ago" : " min ago");
+            answer = Math.round(seconds / 60) + (Math.round(seconds / 60) > 1 ? "mins ago" : "min ago");
         }else if(seconds > 3600 && seconds < 86400){
-            answer = Math.round(seconds / 3600) + ( Math.round(seconds / 3600) > 1 ?  " hrs ago" : " hr ago" );
+            answer = Math.round(seconds / 3600) + ( Math.round(seconds / 3600) > 1 ?  "hrs ago" : "hr ago" );
         }else{
             answer = months[before.getMonth()] + " " + before.getDate() + " at " + getFullTime(before); 
         }
@@ -44,21 +46,21 @@ const PreeHeader = props => {
     
     return(
         <div className="message-header">
-            <div className="columns has-text-centered is-fullwidth is-multiline is-mobile">
-                <div className="column">
+            <div className="th-divs has-text-centered is-fullwidth is-multiline is-mobile">
+                <div className="th-div">
                     <Link to={`/view-user-profile/${aPree.user.user_id}`}>
-                        <figure className="display-pic-small image is-128x128">
+                        <figure className="image is-96x96">
                             <img alt="display" className="is-rounded" src={props.imgView} />
                         </figure>
                     </Link>
                 </div>
-                <div className="column">
+                <div className="th-div">
                     <Link to={`/view-user-profile/${aPree.user.user_id}`}>
                         <b> @{aPree.user.username} </b>
                         <b> Rank </b>
                     </Link>
                 </div>
-                <div className="column" >
+                <div className="th-div">
                     <b> {formatTime(aPree.date_added)} </b>
                 </div>
                 

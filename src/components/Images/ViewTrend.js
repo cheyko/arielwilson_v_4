@@ -104,6 +104,18 @@ const ViewTrend = props => {
                     </div>
                 </section>
                 <div className="page-body">
+                    <div className="columns is-mobile no-margin">
+                        <div className="column no-padding">
+                            <span className="special-header">
+                                <span className="tag" style={{textTransform:"capitalize"}}><i class="fas fa-certificate"></i> {aPree.attachment.genre}</span>
+                            </span>
+                        </div>
+                        <div className="column no-padding has-text-right">
+                            <span className="special-header">
+                                <span className="tag"><i className="fas fa-cog reaction-btn"></i></span>
+                            </span>
+                        </div>
+                    </div>
                     <article className="message is-link">
                         <div className="message-header">
                             <TrendyHeader operation={operation} commentscount={commentscount} details={{"id":aPree.id,"theDate":aPree.date_added.split(" "), "genre":aPree.attachment.genre, "playback":aPree.attachment.playback, "approvals": aPree.approvals, "disapprovals": aPree.disapprovals, "views" : aPree.attachment.views}}/>

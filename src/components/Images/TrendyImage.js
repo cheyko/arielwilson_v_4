@@ -9,7 +9,7 @@ const TrendyImage = props =>{
     
     return (
         <div className="hero">
-        <div className="hero-body trendy-body">
+        <div className="trendy-body">
             <div className="trendy-container">
                 
                 <div className="trendy-box">

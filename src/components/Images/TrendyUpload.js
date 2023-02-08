@@ -225,19 +225,33 @@ const TrendyUpload = props => {
     console.log(temp_url);
     return (
         <div className="hero">
-           <div className="hero-body">
+           <div className="container">
                 <div className="create-page">
                     <div className="heading has-text-centered">
                         <h1>Upload to Trendy</h1>
                     </div>
                     <div className="body trendy-upload">
+                        <div className="columns is-mobile no-margin">
+                            <div className="column no-padding">
+                                <span className="special-header">
+                                    <span>{" "}{addGenre && <i className="fas fa-edit reaction-btn" onClick={e => {setAddGenre(false);checkRadio();}}></i>}</span>
+                                    <span className="tag" style={{textTransform:"capitalize"}}><i class="fas fa-certificate reaction-btn"></i> {genre}</span>
+                                    
+                                </span>
+                            </div>
+                            <div className="column no-padding has-text-right">
+                                <span className="special-header">
+                                    <span className="tag"><i className="fas fa-cog reaction-btn"></i></span>
+                                </span>
+                            </div>
+                        </div>
                         <article className="message is-link">
                             <div className="message-header">
                                 <TrendyHeader operation="upload" details={{"theDate":theDate, "genre":genre, "playback":playback}} addGenre={addGenre} setAddGenre={setAddGenre} checkRadio={checkRadio}/>
                             </div>
                             <div className="message-body no-padding">
                                 <div className="content">
-                                    <div className="columns is-multiline is-mobile no-margin">
+                                    <div className="columns is-multiline no-margin">
                                         <div className="column no-padding">
                                             <div className="card" style={{background:"none"}}>
                                                 {addTitle && <i className="fas fa-edit reaction-btn" onClick={e => { setAddTitle(false);e.preventDefault();}}>edit title</i> }

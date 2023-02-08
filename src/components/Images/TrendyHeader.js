@@ -92,7 +92,7 @@ const TrendyHeader = props => {
 
     return (
         <div className="special-header is-fullwidth">
-            <div className="columns has-text-centered is-multiline is-mobile">
+            <div className="columns has-text-centered is-mobile">
                 <span className="column">
                     <span className="tag">
                         {details.playback === "Free" ? (<i className="fas fa-lock-open reaction-btn" onClick={e => console.log("icon")}></i>):(<i style={{fontSize:"x-large"}} className="fas fa-lock reaction-btn" onClick={e => console.log("icon")}></i>)}
@@ -106,21 +106,18 @@ const TrendyHeader = props => {
                 </div>
                 <div className="column">
                     <span>
-                        <span className="tag" style={{textTransform:"capitalize"}}>{details.genre}</span>
-                        {props.operation === "upload" && <span>{" "}{props.addGenre && <i className="fas fa-edit reaction-btn" onClick={e => {props.setAddGenre(false);props.checkRadio();}}></i>}</span>}
+                        <span className="tag "> 
+                        {props.operation === "upload" ? ("") : (viewcount)} 
+                        &nbsp;<i className="fas fa-eye reaction-btn" onClick={e => console.log("views")}></i>
+                        </span>
                     </span>
                 </div>
-                <span className="column">
-                    <span className="tag">
-                        <i className="fas fa-cog reaction-btn"></i>
-                    </span>
-                </span>
             </div>
-            <div className="columns has-text-centered is-multiline is-mobile">
+            <div className="columns has-text-centered is-mobile">
                 <div className="column">
                     <span>
                         <span className="tag reaction-btn" onClick={e => {props.operation === "view" || props.operation === "timeline" ? likePree(e,details.pree_id) :  console.log(props.operation) }}>
-                        {props.operation === "upload" ? ("Likes") : (likedcount)} 
+                        {props.operation === "upload" ? ("") : (likedcount)} 
                         &nbsp;<i className="fas fa-thumbs-up reaction-btn" style={reaction === true ? {color:"blue"}:{color:"black"}} ></i>
                         </span>
                     </span>
@@ -128,7 +125,7 @@ const TrendyHeader = props => {
                 <div className="column">
                     <span>
                         <span className="tag reaction-btn" onClick={(e) => {props.operation === "view" || props.operation === "timeline" ? dislikePree(e,details.pree_id) : console.log("down") }}>
-                        {props.operation === "upload" ? ("Dislikes") : (dislikedcount)}  
+                        {props.operation === "upload" ? ("") : (dislikedcount)}  
                         &nbsp;<i className="fas fa-thumbs-down reaction-btn" style={reaction === false ? {color:"blue"}:{color:"black"}} ></i>
                         </span>
                     </span>
@@ -136,16 +133,8 @@ const TrendyHeader = props => {
                 <div className="column">
                     <span>
                         <span className="tag"> 
-                        {props.operation === "upload" ? ("Comments") : (commentscount)} 
+                        {props.operation === "upload" ? ("") : (commentscount)} 
                         &nbsp; <i className="fas fa-comments reaction-btn" onClick={e => console.log("up")}></i>
-                        </span>
-                    </span>
-                </div>
-                <div className="column">
-                    <span>
-                        <span className="tag "> 
-                        {props.operation === "upload" ? ("Views") : (viewcount)} 
-                        &nbsp;<i className="fas fa-eye reaction-btn" onClick={e => console.log("views")}></i>
                         </span>
                     </span>
                 </div>

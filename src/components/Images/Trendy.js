@@ -40,11 +40,11 @@ const Trendy = props => {
 
     return(
         <div className="hero">
-            <div className="hero-contain">
+            <div className="">
                 <section className="page-header">
                     <div className="container">
                         <div className="container page-header has-text-centered">
-                            <button className="button is-small is-pulled-left is-info" onClick={e => view === "main" ? navigate(-1) : setView("main") }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                            <button className="button is-small is-pulled-left is-info" onClick={e => view === "main" ? navigate(-1) : setView("main") }> <i className="fas fa-arrow-circle-left"></i> </button>
                             <div className="is-pulled-right"> 
                                 <div className="dropdown is-right is-hoverable">
                                     <div className="dropdown-trigger">
@@ -52,7 +52,7 @@ const Trendy = props => {
                                             <span className="icon is-small">
                                                 <b> <i className="fas fa-bars"></i> </b>
                                             </span>
-                                            <span>Options</span>
+                                         
                                         </button>
                                     </div>
                                     <div className="dropdown-menu" id="dropdown-menu3" role="menu">

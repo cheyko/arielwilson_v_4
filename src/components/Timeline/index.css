@@ -209,6 +209,15 @@ padding-top: 60px !important;
     padding-block: 0.5rem !important;
 }
 
+.th-divs{
+    display: flex;
+}
+
+.th-div{
+    margin-inline : 1rem;
+    width: 15rem;
+}
+
 @media screen and (max-width:1300px) and (min-width:768px){
     .timeline-container{
         width: 35rem !important;
@@ -288,6 +297,10 @@ padding-top: 60px !important;
         width: -webkit-fill-available !important;
         /*font-size: 25px !important;*/
     }
+    .th-div{
+        margin-inline: 10px;
+        width: auto;
+    }
 }
 
 @media screen and (max-width:375px){
@@ -320,6 +333,10 @@ padding-top: 60px !important;
     }
     .reaction-txt{
         display: none !important;
+    }
+    .th-div{
+        margin-inline : 0rem;
+        width: auto;
     }
 }
 
