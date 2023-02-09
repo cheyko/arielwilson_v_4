@@ -58,6 +58,7 @@ import Specials from './components/Specials';
 import Talkie from './components/Talkie';
 import Live from './components/Live';
 import Layout from './components/Layout';
+import Trendy from './components/Images/Trendy';
 
 const sign = require('jwt-encode');
 const secret = 'some$3cretKey';
@@ -73,6 +74,7 @@ export default class App extends Component {
     this.state = {
       user: null,
       prees: [],
+      menuChoice: "",
       jwt : sign(data, secret, algorithm), // creation of the JSON Web Token which is placed in the API request headers.
     };
     /// Create Router reference 
@@ -93,6 +95,7 @@ export default class App extends Component {
     let welcome = localStorage.getItem("welcome");
     let userlist = localStorage.getItem("userlist");
     let recent = localStorage.getItem("recent");
+    let menuChoice = JSON.parse(localStorage.getItem("choice"));
     user = user ? JSON.parse(user) : null;
     ready = ready ? JSON.parse(ready) : null;
     welcome = welcome ? JSON.parse(welcome) : null;
@@ -100,7 +103,7 @@ export default class App extends Component {
     let val = window.screen.width;
     let boxWidth;
     if (val < 500){
-       boxWidth = "85%";
+       boxWidth = "80%";
     }else{
         boxWidth = "60%";
     }
@@ -111,7 +114,11 @@ export default class App extends Component {
     const prees = ready ? await axios.post("/api/see-the-pree",{user_id}) : {"data":null}; //add reactions to the prees from the backend before response to request.
     const messages = ready ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
     //console.log(prees);
-    this.setState({user,prees:prees.data, ready, welcome, userlist, recent, messages, boxWidth:boxWidth}); //, 
+    this.setState({user,prees:prees.data, ready, welcome, userlist, menuChoice, recent, messages, boxWidth:boxWidth}); //, 
+  }
+
+  setMenuChoice = (choice) => {
+      this.setState({menuChoice:choice});
   }
 
   getTargetPhotos = (theID, contextType) => {
@@ -378,9 +385,24 @@ export default class App extends Component {
     this.setState({ prees }, () => callback && callback());
   }
 
-  getPree = preeId => {
-    const { prees } = this.state
-    return prees.find(pree => pree.pree_id.toString() === preeId.toString())
+  getPree = async (pree_id) => {
+    const { prees } = this.state;
+    const pree = prees.find(pree => pree.pree_id.toString() === pree_id.toString());
+    //console.log(pree === undefined);
+    let result;
+    if (pree === undefined){
+      const user_id = this.state.user.id;
+      const val = await axios.post("/api/get-pree",{pree_id, user_id}).catch(error => {console.log(error)});
+      if (val.status === 200){
+        result = val.data;
+      }else{
+        result = false;
+      }
+      
+    }else{
+      result = pree;
+    }
+    return result;
   }
   
   //setError
@@ -497,14 +519,16 @@ export default class App extends Component {
   }
 
   toggleMenu = e => {
-    if(this.state.toggle){
+    if(this.state.toggle && window.screen.width < 1000){
       $(".custom-nav").animate({
           width: 0,
+          left: "-25px"
       });
       this.setState({toggle:false});
-    }else{
+    }else if(!this.state.toggle && window.screen.width < 1000){
       $(".custom-nav").animate({
         width: this.state.boxWidth,
+        left: 0,
       });
       this.setState({toggle:true});
     }
@@ -515,6 +539,7 @@ export default class App extends Component {
       <Context.Provider
         value ={{
           ...this.state,
+          setMenuChoice: this.setMenuChoice,
           login: this.login,
           signUp: this.signUp,
           logout: this.logout,
@@ -583,8 +608,16 @@ export default class App extends Component {
                 <Route path="/specials" element={<Specials />} />
                 <Route path="/talkie" element={<Talkie />} />
                 <Route path="/live" element={<Live />} />
+                {/*<Route path='/trendy' element={<Trendy />} />*/}
                 {/*<Route path="/welcome" component={Welcome} />*/}
               </Route>
+              {/*advertising components*/}
+              {/* about W@H-GW@@N */}
+              {/* about Trendy */}
+              {/* about Blueberry */}
+              {/* about Reports */}
+              {/* about Glossa */}
+              {/* about Market */}
             </Routes>
             
           </Router>

@@ -154,7 +154,7 @@ const TrendyUpload = props => {
                     if (result.status === 200){
                         setResponseMsg("Exclusive Uploaded");
                         const pree_id = result.data.pree_id;
-                        return <Navigate to={`/view-exclusive/${pree_id}`} />
+                        return <Navigate to={`/view-trendy/${pree_id}`} />
                     }else{
                         setResponseMsg("Media was not uploaded, please try again. Contact us for suppport if problem persist.");
                     }
@@ -222,7 +222,7 @@ const TrendyUpload = props => {
         } 
         setContingency(newArray);
     }; 
-    console.log(temp_url);
+
     return (
         <div className="hero">
            <div className="container">
@@ -235,7 +235,7 @@ const TrendyUpload = props => {
                             <div className="column no-padding">
                                 <span className="special-header">
                                     <span>{" "}{addGenre && <i className="fas fa-edit reaction-btn" onClick={e => {setAddGenre(false);checkRadio();}}></i>}</span>
-                                    <span className="tag" style={{textTransform:"capitalize"}}><i class="fas fa-certificate reaction-btn"></i> {genre}</span>
+                                    <span className="tag" style={{textTransform:"capitalize"}}><i className="fas fa-certificate reaction-btn"></i>&nbsp; {genre}</span>
                                     
                                 </span>
                             </div>
@@ -254,7 +254,8 @@ const TrendyUpload = props => {
                                     <div className="columns is-multiline no-margin">
                                         <div className="column no-padding">
                                             <div className="card" style={{background:"none"}}>
-                                                {addTitle && <i className="fas fa-edit reaction-btn" onClick={e => { setAddTitle(false);e.preventDefault();}}>edit title</i> }
+                                                {addTitle && <i className="fas fa-edit reaction-btn" onClick={e => { setAddTitle(false);e.preventDefault();}}>edit Title</i> } {" "}
+                                                {addArtist && <i className="fas fa-edit reaction-btn" onClick={e => { setAddArtist(false);e.preventDefault();}}>edit Artist</i> }
                                                 <div className="mainmedia">
                                                 {trend === "image" &&                                                            
                                                     <>

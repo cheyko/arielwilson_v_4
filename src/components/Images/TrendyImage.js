@@ -14,8 +14,9 @@ const TrendyImage = props =>{
                 
                 <div className="trendy-box">
                     <div className="trendy-title">
-                        <span>{details.title}</span>
+                        <span>{details.title} &nbsp;by:&nbsp; {details.artist}</span>
                     </div>
+                    <br />
                     
                     <div className="trendy-image">
                         <figure className="image">

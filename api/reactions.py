@@ -24,11 +24,12 @@ def get_reaction():
         user_id = request.json.get('user_id', None)
         pree_id = request.json.get('pree_id', None) #hopefully implement with list of pree-IDS to reduce number of calls
         wasClicked = was_clicked(user_id,pree_id)
+        pree_details = Pree.query.get(pree_id)
         if wasClicked == True:
             record = Approvals.query.filter_by(user_id=user_id,pree_id=pree_id).first()
-            return {"is_approved": record.is_approved}, 200
+            return {"is_approved": record.is_approved,"likedcount":pree_details.approvals, "dislikedcount": pree_details.disapprovals, "commentscount" : pree_details.comments}, 200
         else:
-            return {"is_approved": None}, 201
+            return {"is_approved": None,"likedcount":pree_details.approvals, "dislikedcount": pree_details.disapprovals, "commentscount" : pree_details.comments}, 201
     return jsonify({"msg":"There was an error somewhere."}), 400
     
 #api method to add pree likes

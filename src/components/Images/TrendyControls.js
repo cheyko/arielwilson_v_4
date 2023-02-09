@@ -79,12 +79,12 @@ const TrendyControls = props => {
                                                     <div className="hero">
                                                         <div className="comments-control">
                                                             <button onClick={e => sendComment(e)} className="button is-success is-pulled-left">
-                                                                Make Comment &nbsp; <i className="fas fa-share"></i>
+                                                                Make &nbsp; <i className="fas fa-share"></i>
                                                             </button>
                                                             <div className="dropdown is-hoverable is-pulled-right">
                                                                 <div className="dropdown-trigger">
                                                                     <button className="button is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
-                                                                        <span>Filter Comments</span>
+                                                                        <span>Filter</span>
                                                                         <span className="icon is-small">
                                                                             <i className="fas fa-angle-down" aria-hidden="true"></i>
                                                                         </span>

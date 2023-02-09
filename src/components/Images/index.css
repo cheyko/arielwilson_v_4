@@ -1,6 +1,6 @@
 .trendy-body, .trendy-controls{
     background-color: tan;
-    height: 25rem;
+    /*height: 25rem;*/
 }
 
 .trendy-container{
@@ -30,7 +30,6 @@
 
 .trendy-title{
     text-align: center;
-    text-transform: capitalize;
 }
 
 .trendy-quote{

@@ -227,6 +227,10 @@ ul .is-active{
   font-weight: bold;
 }
 
+.navbar-item.is-active{
+  background: transparent !important;
+}
+
 .slick-wrapper{
   max-width: 40rem;
 }
@@ -416,9 +420,10 @@ ul .is-active{
     padding: 1rem;
   }*/
 
-  .pree-item .is-fullwidth{
+  /*.pree-item .is-fullwidth{
     width: auto !important;
-  }
+  }*/
+
   .mobile-menu{
     display: block !important;
   }
@@ -442,9 +447,9 @@ ul .is-active{
     padding: 1rem;
   }*/
 
-  .pree-item .is-fullwidth{
+  /*.pree-item .is-fullwidth{
     width: auto !important;
-  }
+  }*/
 
   .mobile-menu{
     display: block !important;

@@ -74,6 +74,7 @@ const Navbar = props => {
         setClick(true);
         deactivate();
         setSelection(choice);
+        props.context.setMenuChoice(choice);
         localStorage.setItem("choice", JSON.stringify(choice));
         switch(choice){
             case 'settings':
@@ -113,6 +114,8 @@ const Navbar = props => {
                 activeSI(true);
                 break;
             case 'images':
+                localStorage.setItem("trendy-view","main");
+                localStorage.setItem("mag-section","all");
                 activeImages(true);
                 break;
             case 'videos':
@@ -180,8 +183,11 @@ const Navbar = props => {
 
     
     useEffect( ()=> {
+        //console.log(window.location.href);
         if (!clicked && window.location.href !== "http://localhost:3000/"){
             let reloadChoice = JSON.parse(localStorage.getItem("choice"));
+            //let reloadChoice = window.location.href.split("http://localhost:3000/");
+            //console.log(reloadChoice);
             activate(reloadChoice);
         }else if(window.location.href === "http://localhost:3000/"){
             //change implementation account for browser navigation.
@@ -190,7 +196,13 @@ const Navbar = props => {
         if (!gotMedia){
             loadMainMedia();
         }
-    },[gotMedia]);
+
+        if(selection !== props.context.menuChoice){
+            console.log(selection);
+            console.log(props.context.menuChoice);
+            activate(props.context.menuChoice);
+        }
+    },[gotMedia, window.location.href, clicked, props.context.menuChoice]);
 
     return(
         <div className="custom-nav" id="custom-nav">

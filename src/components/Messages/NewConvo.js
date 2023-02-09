@@ -105,21 +105,24 @@ const NewConvo = props => {
                         </div>
                     </form>
                     <div className="userslist">
-                    { userlist && userlist.length > 0 ? (
-                        userlist.map((aUser, index) => (
-                            <div className="column" key={index}>
-                                <ViewConvoUser 
-                                    key={index}
-                                    user={aUser}
-                                    setTabs={props.setTabs}
-                                />
+                        { userlist && userlist.length > 0 ? (
+                            userlist.map((aUser, index) => (
+                                <div className="column" key={index}>
+                                    <ViewConvoUser 
+                                        key={index}
+                                        user={aUser}
+                                        setTabs={props.setTabs}
+                                    />
+                                </div>
+                            ))
+                        ):(
+                            <div className="container">
+                                
                             </div>
-                        ))
-                    ):(
-                        <div className="container">
-                            
-                        </div>
-                    )}
+                        )}
+                    </div>
+                    <div style={{width:"100%"}} className="modal-footer container">
+                        <button onClick={e => closeModal(e)} style={{backgroundColor:"red"}} className="button modal-close is-large" aria-label="close"></button>
                     </div>
                 </Modal>
         </div>

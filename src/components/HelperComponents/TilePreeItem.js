@@ -56,10 +56,10 @@ const TilePreeItem = props => {
                                         {aPree.attachment.has_image === true && 
                                         (
                                             <div className="tiled-image">
-                                                <div class="card">
-                                                    <div class="card-image">
+                                                <div className="card">
+                                                    <div className="card-image">
                                                         <figure className="image is-5by4 img-holder">
-                                                            <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/media/pree${aPree.pree_id}/post0`} />
+                                                            <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post0`} />
                                                             <small className="tag caption-tag"> 
                                                                 <span className="tag date-caption">{formatTime(aPree.date_added)}</span> 
                                                             </small>

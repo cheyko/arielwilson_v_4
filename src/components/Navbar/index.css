@@ -8,7 +8,7 @@
     box-sizing: border-box !important;
     display: flex ;
     flex-direction: column !important;
-    overflow-y: auto;
+    overflow: hidden;
     max-height: inherit !important;
     padding: 0.5rem;
 }
@@ -21,6 +21,9 @@
     overflow: auto ;
 }
 
+.navbar-menu{
+    background: none !important;
+}
 .special-nav .navbar{
     overflow:initial ;
 }
@@ -34,7 +37,6 @@
 
 .navbar-burger{
     color: burlywood !important;
-    margin-right: 1rem !important;
 }
 
 .navbar-brand .navbar-item .subtitle{
@@ -203,7 +205,7 @@
         padding: 1rem !important;
     }
     .navbar{    
-        margin-top: 3.5rem !important;
+        margin-top: 3.25rem !important;
         width: 100% !important;
         
     }
@@ -213,6 +215,10 @@
 
     .control-btn svg{
         font-size: 3em;
+    }
+
+    .navbar-burger span{
+        height:3px !important;
     }
 } 
 
@@ -232,9 +238,6 @@
         padding-inline: 0.5rem !important;
     }
 
-    .navbar-burger span{
-        height:3px !important;
-    }
     .control-btn svg{
         font-size: 3em;
     }

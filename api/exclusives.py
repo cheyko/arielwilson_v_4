@@ -9,6 +9,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from flask import request, jsonify
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree, Approvals, Exclusive, ExclusiveSale, Subscriber, Subscription
+from api.specials import Preepedia, Biography
 
 def str2bool(v):
   return v.lower() == "true" 
@@ -42,7 +43,7 @@ def exclusive():
         newExclusive = Exclusive(pree_id=newPree.pree_id,title=result["title"],artistname=result["artistname"],category=result["category"],genre=result["genre"],captionlist=result["captionlist"].split(","),description=result["description"],playback=result["playback"],contingency=result["contingency"],is_locked=str2bool(result["is_locked"]), is_downloadable=str2bool(result["is_downloadable"]), unlock_requirement=unlock_requirement, unlock_fee=result["unlock_fee"], currency=result["currency"],no_of_media=no_of_media,mediatypes=mediatypes, influence=str2bool(result["influence"]), magazine=str2bool(result["magazine"]), stereo=str2bool(result["stereo"]),md=str2bool(result["md"]))
         db.session.add(newExclusive)
         db.session.flush()
-        upload_folder = "/images/exclusives/"
+        upload_folder = app.config['UPLOAD_FOLDER'] + "exclusives/"
         prefix = "exclusive" + str(newExclusive.exclusive_id)
         os.makedirs(upload_folder + prefix)
         for index, file in enumerate(mainmedia):
@@ -64,7 +65,7 @@ def exclusive():
         return {"exclusives":exclusives}, 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
-@app.route('/api/get-exclusive', methods=['GET','POST'])
+"""@app.route('/api/get-exclusive', methods=['GET','POST'])
 def get_exclusive():
     if request.method == 'POST':
         exclusive_id = request.json.get('exclusive_id', None)
@@ -98,4 +99,4 @@ def get_exclusive():
             return {"page":pageObj} , 200
         else:
             return jsonify({"msg":"Group does not have ID of Zero (0)."}), 205
-    return jsonify({"msg":"There was an error somewhere."}), 400
+    return jsonify({"msg":"There was an error somewhere."}), 400"""

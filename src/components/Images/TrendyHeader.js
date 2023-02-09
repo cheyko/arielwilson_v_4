@@ -6,31 +6,45 @@ import axios from "axios";
 const TrendyHeader = props => {
 
     const {details} = props;
-    const  {commentscount} = props;
+    let {operation} = props;
 
-    const [reaction, setReaction] = useState(null);
+    const [reaction, setReaction] = useState(details.is_approved);
     const [likedcount, setLikes] = useState(details.approvals);
     const [dislikedcount, setDislikes] = useState(details.disapprovals);
-    //const [viewcount, setViewcount] = useState(details.views);
+    const [commentscount, setCommentsCount] = useState(props.commentscount);
     const viewcount = details.views;
+    const [gotReaction, setGetReaction] = useState(null);
 
     useEffect( () => {
         const user_id = props.context.user ? props.context.user.id : 0;
         const pree_id = details.pree_id;
         
         //PreeReaction onload
-        axios.post("/api/get-reaction",{user_id,pree_id}).then(
-            (getReaction) => {
-                if (getReaction.status === 200){
-                    setReaction(getReaction.data.is_approved);
-                }else if(getReaction.status === 201){
-                    setReaction(null);
-                }else{
-                    throw new Error("Error while Reacting to Pree");
+        if((operation !== "upload" && gotReaction === null) || commentscount !== props.commentscount){
+            axios.post("/api/get-reaction",{user_id,pree_id}).then(
+                (getReaction) => {
+                    if (getReaction.status === 200){
+                        setReaction(getReaction.data.is_approved);
+                        setLikes(getReaction.data.likedcount);
+                        setDislikes(getReaction.data.dislikedcount);
+                        setCommentsCount(getReaction.data.commentscount);
+                        setGetReaction(true);
+                    }else if(getReaction.status === 201){
+                        setReaction(null);
+                        setLikes(getReaction.data.likedcount);
+                        setDislikes(getReaction.data.dislikedcount);
+                        setCommentsCount(getReaction.data.commentscount);
+                        setGetReaction(true);
+                    }else{
+                        throw new Error("Error while Reacting to Pree");
+                    }
                 }
-            }
-        )
-    },[reaction, likedcount, dislikedcount, commentscount, props.context.user, details]);
+            );
+        }
+        /*if(commentscount !== props.commentscount){
+            setCommentsCount(props.commentscount);
+        }*/
+    },[reaction, gotReaction, props.commentscount]);
 
         //PreeReactions Functions
         const likePree = (e, pree_id) => {
@@ -88,7 +102,6 @@ const TrendyHeader = props => {
                 )
             }
         }
-    console.log(details);
 
     return (
         <div className="special-header is-fullwidth">
@@ -132,7 +145,7 @@ const TrendyHeader = props => {
                 </div>
                 <div className="column">
                     <span>
-                        <span className="tag"> 
+                        <span key={commentscount} className="tag"> 
                         {props.operation === "upload" ? ("") : (commentscount)} 
                         &nbsp; <i className="fas fa-comments reaction-btn" onClick={e => console.log("up")}></i>
                         </span>

@@ -1,5 +1,3 @@
-
-
 #messages-view{
     padding-inline: 1rem;
 }
@@ -124,10 +122,14 @@
     padding: 0.5rem !important;
 }
 
-@media screen and (max-width:400px){
+@media screen and (max-width:425px){
     .sub-tabs{
         width: 23rem !important;
         overflow-x: scroll;
+    }
+
+    #messages-view{
+        padding-inline: 0rem;
     }
 }
 

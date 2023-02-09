@@ -8,7 +8,8 @@ import "./index";
 
 const Trendy = props => {
 
-    const [view, setView] = useState("main");
+    let sessionVar = localStorage.getItem("trendy-view") ? localStorage.getItem("trendy-view") : "main";
+    const [view, setView] = useState(sessionVar);
 
     //const accessLevel = props.context.user.accessLevel;
 
@@ -44,7 +45,7 @@ const Trendy = props => {
                 <section className="page-header">
                     <div className="container">
                         <div className="container page-header has-text-centered">
-                            <button className="button is-small is-pulled-left is-info" onClick={e => view === "main" ? navigate(-1) : setView("main") }> <i className="fas fa-arrow-circle-left"></i> </button>
+                            <button className="button is-small is-pulled-left is-info" onClick={e => {setView("main");localStorage.setItem("trendy-view","main")}}> <i className="fas fa-arrow-circle-left"></i> </button>
                             <div className="is-pulled-right"> 
                                 <div className="dropdown is-right is-hoverable">
                                     <div className="dropdown-trigger">
@@ -57,7 +58,7 @@ const Trendy = props => {
                                     </div>
                                     <div className="dropdown-menu" id="dropdown-menu3" role="menu">
                                         <div className="dropdown-content" style={{padding:0}}>
-                                            <span className="button dropdown-item" onClick={e => setView("upload")}>
+                                            <span className="button dropdown-item" onClick={e => {setView("upload"); localStorage.setItem("trendy-view","upload");}}>
                                                 Upload Media 
                                             </span>
                                             <span className="button dropdown-item" onClick={e => setView("resource")}>

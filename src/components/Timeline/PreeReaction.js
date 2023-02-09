@@ -12,7 +12,7 @@ const PreeReaction = props => {
 
     //const [showComments, setShowComments] = useState(false);
     const [load, setLoad] = useState(true);
-    const [reaction, setReaction] = useState(null);
+    const [reaction, setReaction] = useState(aPree.is_approved);
     const [likedcount, setLikes] = useState(aPree.approvals);
     const [dislikedcount, setDislikes] = useState(aPree.disapprovals);
     const [commentscount, setCommentsCount] = useState(aPree.comments); 
@@ -21,22 +21,28 @@ const PreeReaction = props => {
 
     useEffect( () => {
         if (load){
-            //const user_id = props.context.user ? props.context.user.id : 0;
+            const user_id = props.context.user ? props.context.user.id : 0;
             const pree_id = aPree.pree_id;
             
             //PreeReaction onload
-            /*axios.post("/api/get-reaction",{user_id,pree_id}).then(
+            axios.post("/api/get-reaction",{user_id,pree_id}).then(
                 (getReaction) => {
                     if (getReaction.status === 200){
                         setReaction(getReaction.data.is_approved);
+                        setLikes(getReaction.data.likedcount);
+                        setDislikes(getReaction.data.dislikedcount);
+                        setCommentsCount(getReaction.data.commentscount);
                     }else if(getReaction.status === 201){
                         setReaction(null);
+                        setLikes(getReaction.data.likedcount);
+                        setDislikes(getReaction.data.dislikedcount);
+                        setCommentsCount(getReaction.data.commentscount);
                     }else{
                         throw new Error("Error while Reacting to Pree");
                     }
                 }
-            )*/
-            setReaction(aPree.is_approved);
+            );
+           // setReaction(aPree.is_approved);
             if (clickable === "view"){
                 axios.post("/api/get-comments", {pree_id}).then(
                 (getComments) => {
@@ -204,7 +210,6 @@ const PreeReaction = props => {
                         <div className="list-comments is-centered">
                             {comments && comments.length > 0 ?
                                 comments.map((aComment, index) => {
-                                    //console.log(comments);
                                     return(
                                         <div key={index} className="box comment-box">
                                             <Comment aPree={aPree} comment={aComment} />

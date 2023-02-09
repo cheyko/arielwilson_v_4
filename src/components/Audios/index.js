@@ -8,7 +8,8 @@ import $ from 'jquery';
 const Audios = props => {
 
     const [audios, renderAudios] = useState([]);
-    const [section, setSection] = useState("all");
+    let sessionVar = localStorage.getItem("av-section") ? localStorage.getItem("av-section") : "all";
+    const [section, setSection] = useState(sessionVar);
     const [showDropDown, setShowDropDown] = useState(false);
     const [showMore, setShowMore] = useState(false);
 
@@ -67,23 +68,23 @@ const Audios = props => {
                 <div id="navbarBasicExample" className="navbar-menu">
                     <div className="navbar-start">
                         <div className="buttons">
-                            <a className={`navbar-item button ${section === "all" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("all");toggleMenu(e)}}>
+                            <a className={`navbar-item button ${section === "all" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("all"); localStorage.setItem("av-section","all"); toggleMenu(e)}}>
                                 <i className="fas fa-play-circle" aria-hidden="true"></i> &nbsp; <strong>ALL</strong>
                             </a>
 
-                            <a className={`navbar-item button ${section === "yours" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("yours");toggleMenu(e);}}>
+                            <a className={`navbar-item button ${section === "yours" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("yours");  localStorage.setItem("av-section","yours"); toggleMenu(e);}}>
                                 <i className="fas fa-user" aria-hidden="true"></i> &nbsp; <strong>YOURS</strong> 
                             </a>
 
-                            <a className={`navbar-item button ${section === "tagged" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("tagged");toggleMenu(e);}}>
+                            <a className={`navbar-item button ${section === "tagged" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("tagged"); localStorage.setItem("av-section","tagged");toggleMenu(e);}}>
                                 <i className="fas fa-at" aria-hidden="true"></i> &nbsp; <strong>TAGGED</strong> 
                             </a>
 
-                            <a className={`navbar-item button ${section === "favourites" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("favourites");toggleMenu(e);}}>
+                            <a className={`navbar-item button ${section === "favourites" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("favourites"); localStorage.setItem("av-section","favourites"); toggleMenu(e);}}>
                                 <i className="fab fa-gratipay" aria-hidden="true"></i> &nbsp; <strong>FAVOURITES</strong> 
                             </a>
 
-                            <a className={`navbar-item button ${section === "wg-stereo" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("wg-stereo");toggleMenu(e);}}>
+                            <a className={`navbar-item button ${section === "wg-stereo" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("wg-stereo"); localStorage.setItem("av-section","wg-stereo");toggleMenu(e);}}>
                                 <i className="fas fa-film" aria-hidden="true"></i> 
                                     &nbsp; <strong>BLUEBERRY</strong> &nbsp; 
                                 <i className="fas fa-record-vinyl" aria-hidden="true"></i>

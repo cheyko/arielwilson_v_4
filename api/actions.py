@@ -56,14 +56,18 @@ def ypree():
             match_group = GroupPree(pree_id=newPree.pree_id,group_id=result["group_id"])
             db.session.add(match_group)
         db.session.commit()
-        return jsonify({"msg": "Pree made successfully","id":newPree.pree_id}), 200
-    """elif request.method == 'GET':
-        print('GET')
+        return jsonify({"msg": "Pree made successfully","id":newPree.pree_id}), 200        
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
+@app.route('/api/get-pree', methods=['POST'])
+def get_pree():
+    if request.method == 'POST':
+        pree_id = request.json.get('pree_id', None)
+        user_id = request.json.get('user_id', None)
         #users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+checkwg+'%'), User.firstname.ilike('%'+checkwg+'%'), User.lastname.ilike('%'+checkwg+'%') )).all() 
         #results = db.session.query(Pree, Approvals).join(Approvals, Pree.pree_id == Approvals.pree_id).order_by(Pree.pree_id.desc()).all()
-        results = Pree.query.filter( Pree.is_visible == True).order_by(Pree.pree_id.desc()).all()
-        prees = []
-        for pree in results:
+        pree = Pree.query.get(pree_id)
+        if pree.is_visible == True:
             theUser = User.query.get(pree.user_id)
             userObj = {"user_id":theUser.user_id, "username":theUser.username,"access-type":theUser.accessType}
             if pree.is_media and pree.pree_type != 'exclusive':
@@ -82,11 +86,16 @@ def ypree():
                 groupObj = {"group_id":theGroup.group_id,"group_name":theGroup.name}
             else:
                 groupObj = {}
-            preeObj = {"pree_id":pree.pree_id, "user":userObj, "date_added":str(pree.date_added), "is_media":pree.is_media,"pree_type":pree.pree_type, "approvals":pree.approvals, "disapprovals":pree.disapprovals, "comments":pree.comments, "attachment" : attachment, "group":groupObj}
-            prees.append(preeObj)
-        return json.dumps(prees)"""
+            record = Approvals.query.filter_by(user_id=user_id,pree_id=pree.pree_id).first()
+            if record is not None:
+                approvedObj = record.is_approved
+            else:
+                approvedObj = None
+            preeObj = {"pree_id":pree.pree_id, "user":userObj, "date_added":str(pree.date_added), "is_media":pree.is_media,"pree_type":pree.pree_type, "approvals":pree.approvals, "disapprovals":pree.disapprovals, "comments":pree.comments, "attachment" : attachment, "group":groupObj,"is_approved": approvedObj}
+            return preeObj, 200
+        else:
+            return {"msg":"pree no longer is visible"}, 201
     return jsonify({"msg":"There was an error somewhere."}), 400
-
 #api method for prees of figures -- standard
 @app.route('/api/see-the-pree', methods=['GET','POST'])
 def see_the_pree():

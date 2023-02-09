@@ -13,6 +13,7 @@ const PreeBody = props => {
     const [theUrls, setUrls] = useState(null);
     const {clickable} = props;
     const [openImage, setOpen] = useState(false);
+    const [val, setVal] = useState(0);
 
     var settings = {
         dots: true,
@@ -54,7 +55,7 @@ const PreeBody = props => {
                                                             <div className="image-container">
                                                                 <figure key={index} className="image is-1by1">
                                                                     {/*<img src={aUrl} alt="upload" />*/}
-                                                                    {<img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`} />}
+                                                                    <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`} />
                                                                 </figure>
                                                             </div>
                                                         )}
@@ -118,11 +119,12 @@ const PreeBody = props => {
                                                             <div className="image-container">
                                                                 <figure key={index} className="image is-1by1">
                                                                     {/*<img src={aUrl} alt="upload" />*/}
-                                                                    <img className="reaction-btn is-normal" alt="media" onClick={e => setOpen(true)} src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`} />
+                                                                    <img className="reaction-btn is-normal" alt="media" onClick={e => {setOpen(true);setVal(index)}} src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`} />
                                                                     {openImage && (
                                                                     <Lightbox
+                                                                        key={index}
                                                                         imageTitle={aPree.attachment.caption}
-                                                                        mainSrc={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`}
+                                                                        mainSrc={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${val}`}
                                                                         onCloseRequest={() => setOpen(false)}
                                                                         
                                                                     />)}

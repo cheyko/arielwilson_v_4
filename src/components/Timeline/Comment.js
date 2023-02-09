@@ -202,7 +202,7 @@ const Comment = props => {
                 <>
                     <div className="column is-3 has-text-centered" style={{padding:"0.5rem"}}>
                         <figure className="display-pic image is-64x64" style={{margin:"0 auto"}}>
-                            <img alt="display" className="is-rounded" src={process.env.PUBLIC_URL + "/images/test_image.jpg"} />
+                            <img alt="display" className="is-rounded" src={process.env.PUBLIC_URL + "/images/default-dp.jpeg"} />
                         </figure>
                     </div>
                     <div className="column is-7 ">

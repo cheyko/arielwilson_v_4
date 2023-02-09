@@ -19,7 +19,7 @@ const Timeline = props => {
     const [showDropDown, setShowDropDown] = useState(false);
     const [allPrees, renderPrees] = useState(loadPrees);
     const [filterText, setFilterText] = useState("all");
-    const [loadNew, setLoadNew] = useState(false);
+    const [loadNew, setLoadNew] = useState(true);
 
     /*const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);*/
@@ -147,7 +147,6 @@ const Timeline = props => {
             });
         }
     },[allPrees,loadNew]);//, gotMedia, loadMainMedia]);
-    console.log(allPrees);
     return (
         <div id="timeline-div" className="hero">
             <div className="hero-container">
@@ -219,7 +218,6 @@ const Timeline = props => {
             </div>
             <div>
                 {allPrees && (allPrees.length > 0) ? (
-                    console.log(allPrees),
                     allPrees.map((aPree, index) => (
                         <div key={index}>
                             {aPree.pree_type !== 'exclusive' ? (
