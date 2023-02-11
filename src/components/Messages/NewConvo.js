@@ -18,8 +18,8 @@ const customStyles = {
         zIndex:'3'
     },
     content : {
-      width: '35rem',
-      height                : '35rem',
+      width: '30rem',
+      height                : '30rem',
       top                   : '55%',
       left                  : '50%',
       right                 : 'auto',

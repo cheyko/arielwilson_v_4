@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
 import {Link } from "react-router-dom";
 //import Slider from "react-slick";
-import MediaHeader from "../Audios/MediaHeader";
+import MediaFooter from "../Audios/MediaFooter";
 import MusicPlayer from "../Audios/MusicPlayer";
 import VideoPlayer from "../Audios/VideoPlayer";
-import TrendyHeader from "../Images/TrendyHeader";
+import TrendyFooter from "../Images/TrendyFooter";
 import TrendyImage from "../Images/TrendyImage";
 import TrendyQuote from "../Images/TrendyQuote";
 
@@ -17,7 +17,8 @@ const TimelineExclusive = props => {
 
     const [mainmedia, setMainmedia] = useState(null);
     const [details, setDetails] = useState(aPree);
-    const [mediatype, setMediaType] = useState(null);
+    const [mediatype, setMediaType] = useState("");
+    const [display_url, setDisplayUrl] = useState("");
     const [url, setUrl] = useState(null);
     const [options, setOptions] = useState(null);
     const [commentscount, setCommentsCount] = useState(aPree.comments); 
@@ -25,6 +26,7 @@ const TimelineExclusive = props => {
 
     useEffect( () => {
         if (details){
+            
             if (aPree.attachment.mediatypes[0] === "audio"){
                 setMediaType("audio/mp3");
             }
@@ -33,18 +35,32 @@ const TimelineExclusive = props => {
             }
             setMainmedia(true);
             setUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/upload0");
+            if (aPree.attachment.has_cover_art === true){
+                setDisplayUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/display_art");
+            }
         }
     },[url, details, aPree]);
-
+    
     return(
         <div className="hero">
             <div className="pree-item">
                 <div className="content">
                     {(aPree.attachment.md === true || aPree.attachment.stereo === true) ? (
                         <div className="timeline-blueberry">
+                           <div className="columns is-mobile no-margin">
+                                <div className="column no-padding">
+                                    <span className="special-header">
+                                        <span className="tag" style={{textTransform:"capitalize"}}><i className="fas fa-certificate reaction-btn"></i>&nbsp; {aPree.attachment.genre}</span>  
+                                    </span>
+                                </div>
+                                <div className="column no-padding has-text-right">
+                                    <span className="special-header">
+                                        <span className="tag"><i className="fas fa-cog reaction-btn"></i></span>
+                                    </span>
+                                </div>
+                            </div>
                             <article className="message is-link">
                                 <div className="message-header">
-                                    <MediaHeader operation={operation} commentscount={commentscount} details={{"pree_id":aPree.pree_id,"theDate":aPree.date_added.split(" "), "genre":aPree.attachment.genre, "playback":aPree.attachment.playback, "approvals": aPree.approvals, "disapprovals": aPree.disapprovals, "comments" : aPree.comments}} />
                                 </div>
                                 
                                 <div className="message-body">
@@ -60,7 +76,7 @@ const TimelineExclusive = props => {
                                                                         {mediatype.split('/')[0] === "audio" ?
                                                                             (
                                                                                 <MusicPlayer 
-                                                                                    temp_url={url} mediatype={mediatype} 
+                                                                                    temp_url={url} mediatype={mediatype} display_url={display_url}
                                                                                     details={{"title":aPree.attachment.title, "artist":aPree.attachment.artistname, "playback":aPree.attachment.playback}}
                                                                                 />
                                                                             
@@ -82,6 +98,9 @@ const TimelineExclusive = props => {
                                             </div>
                                         </div>
                                     </Link>
+                                    <div className="exclusive-footer">
+                                        <MediaFooter operation={operation} commentscount={commentscount} details={{"pree_id":aPree.pree_id,"theDate":aPree.date_added.split(" "), "genre":aPree.attachment.genre, "playback":aPree.attachment.playback, "approvals": aPree.approvals, "disapprovals": aPree.disapprovals, "comments" : aPree.comments}} />
+                                    </div>
                                 </div>
                                 
                             </article>        
@@ -102,7 +121,6 @@ const TimelineExclusive = props => {
                             </div>
                             <article className="message is-link">
                                 <div className="message-header">
-                                    <TrendyHeader operation={operation} commentscount={commentscount} details={{"pree_id":aPree.pree_id,"theDate":aPree.date_added.split(" "), "genre":aPree.attachment.genre, "playback":aPree.attachment.playback, "approvals": aPree.approvals, "disapprovals": aPree.disapprovals,"is_approved":aPree.is_approved, "views" : aPree.attachment.views}}/>
                                 </div>
                                 
                                 <div className="message-body">
@@ -131,14 +149,18 @@ const TimelineExclusive = props => {
                                             </div>
                                         </div>
                                     </Link>
+                                    <div className="exclusive-footer">
+                                        <TrendyFooter operation={operation} commentscount={commentscount} details={{"pree_id":aPree.pree_id,"theDate":aPree.date_added.split(" "), "genre":aPree.attachment.genre, "playback":aPree.attachment.playback, "approvals": aPree.approvals, "disapprovals": aPree.disapprovals,"is_approved":aPree.is_approved, "views" : aPree.attachment.views}}/>
+                                    </div>
                                 </div>
+                                
                             </article>
                         </div>
                     )}
                 
                 </div>
             </div>
-            <hr className="h-line" />
+           <br />
         </div>
     )
 }

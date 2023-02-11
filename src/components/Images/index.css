@@ -45,6 +45,21 @@
     padding: 1rem;
 }
 
+/*.landscape img{
+    width: 30rem !important;
+    height: 15rem !important;
+    margin: 0 auto !important;
+}
+
+.square img{
+    width: 20rem !important;
+    height: 20rem !important;
+}
+
+.portrait img{
+    width: 15rem !important;
+    height: 30rem !important;
+}*/
 
 @media screen and (max-width : 425px){
     .trendy-body{

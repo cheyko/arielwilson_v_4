@@ -105,6 +105,8 @@ const Navbar = props => {
                 activeQutoes(true);
                 break;
             case 'audios':
+                localStorage.setItem("bb-view","main");
+                localStorage.setItem("av-section","all");
                 activeAudios(true);
                 break;
             case 'messages':
@@ -198,8 +200,6 @@ const Navbar = props => {
         }
 
         if(selection !== props.context.menuChoice){
-            console.log(selection);
-            console.log(props.context.menuChoice);
             activate(props.context.menuChoice);
         }
     },[gotMedia, window.location.href, clicked, props.context.menuChoice]);
@@ -254,7 +254,7 @@ const Navbar = props => {
                             </div>
                         </div>
                     </div>
-                    <div className="username tag" style={{fontSize:"large",fontWeight:"bold"}}> 
+                    <div className="username tag" style={{fontSize:"medium", width:"100%"}}> 
                         <span> {uname} </span>&nbsp;
                         <span> (rank) </span>&nbsp;
                         <span> <UserCog /> </span>&nbsp;

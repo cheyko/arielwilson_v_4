@@ -10,6 +10,7 @@ const Trendy = props => {
 
     let sessionVar = localStorage.getItem("trendy-view") ? localStorage.getItem("trendy-view") : "main";
     const [view, setView] = useState(sessionVar);
+    const [showSearch, setShowSearch] = useState(false);
 
     //const accessLevel = props.context.user.accessLevel;
 
@@ -45,35 +46,8 @@ const Trendy = props => {
                 <section className="page-header">
                     <div className="container">
                         <div className="container page-header has-text-centered">
-                            <button className="button is-small is-pulled-left is-info" onClick={e => {setView("main");localStorage.setItem("trendy-view","main")}}> <i className="fas fa-arrow-circle-left"></i> </button>
-                            <div className="is-pulled-right"> 
-                                <div className="dropdown is-right is-hoverable">
-                                    <div className="dropdown-trigger">
-                                        <button className="button is-small is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
-                                            <span className="icon is-small">
-                                                <b> <i className="fas fa-bars"></i> </b>
-                                            </span>
-                                         
-                                        </button>
-                                    </div>
-                                    <div className="dropdown-menu" id="dropdown-menu3" role="menu">
-                                        <div className="dropdown-content" style={{padding:0}}>
-                                            <span className="button dropdown-item" onClick={e => {setView("upload"); localStorage.setItem("trendy-view","upload");}}>
-                                                Upload Media 
-                                            </span>
-                                            <span className="button dropdown-item" onClick={e => setView("resource")}>
-                                                View Recent 
-                                            </span>
-                                            <span className="button dropdown-item" onClick={e => setView("important")}>
-                                                View Playlist  
-                                            </span>
-                                            <span className="button dropdown-item" onClick={e => setView("live")}>
-                                                Settings
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {/*<button className="button is-small is-pulled-left is-info" onClick={e => {setView("main");localStorage.setItem("trendy-view","main")}}> <i className="fas fa-arrow-circle-left"></i> </button>*/}
+                            
                             
                             <div className="media is-fullwidth">
                                 <div className="content is-fullwidth">
@@ -103,23 +77,50 @@ const Trendy = props => {
                         {view === "main" && 
                             <div className="home-content">
                                 <br />
-                                <div className="container">
-                                    <div className="box">
-                                        <div className="field has-addons">
-                                            <div className="control has-icons-right is-fullwidth">
-                                                <input className="input" placeholder="Search Preepedia" type="text" name="checkprp" />
-                                                <span className="icon is-medium is-right">
-                                                    <i className="fas fa-search"></i>
-                                                </span>
+                                <div className="has-text-centered"> 
+                                    <div className="dropdown is-hoverable">
+                                        <div className="dropdown-trigger">
+                                            <button className="button is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
                                                 
-                                            </div>
-                                            <div className="control">
-                                                <button type="submit" className="button is-link is-rounded is-focused"> Search </button>
+                                                <span> Options </span>
+                                            </button>
+                                        </div>
+                                        <div className="dropdown-menu" id="dropdown-menu3" role="menu">
+                                            <div className="dropdown-content" style={{padding:0}}>
+                                                <span className="button dropdown-item" onClick={e => {setView("upload"); localStorage.setItem("trendy-view","upload");}}>
+                                                    Upload Trend 
+                                                </span>
+                                                <span className="button dropdown-item" onClick={e => setView("resource")}>
+                                                    View Recent 
+                                                </span>
+                                                <span className="button dropdown-item" onClick={e => setView("important")}>
+                                                    View Playlist  
+                                                </span>
+                                                <span className="button dropdown-item" onClick={e => setView("live")}>
+                                                    Settings
+                                                </span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>{" "}
+                                    <button onClick={ e => setShowSearch(!showSearch)} className="button is-primary"> Search </button>
                                 </div>
-                                <br />
+                                {showSearch &&
+                                <div className="card">
+                                    <div className="field has-addons">
+                                        <div className="control has-icons-right is-fullwidth">
+                                            <input className="input" placeholder="Search Preepedia" type="text" name="checkprp" />
+                                            <span className="icon is-medium is-right">
+                                                <i className="fas fa-search"></i>
+                                            </span>
+                                            
+                                        </div>
+                                        <div className="control">
+                                            <button type="submit" className="button is-link is-rounded is-focused"> Search </button>
+                                        </div>
+                                    </div>
+                                     
+                                </div>}
+                                
                                 <div className="slick-wrapper hero-body">
                                     <div className="card reaction-btn">
                                         <div className="container has-text-centered"><span className="has-text-link" onClick={e => setView("stereolist")}> <b> Explore more on Stereo </b></span></div>

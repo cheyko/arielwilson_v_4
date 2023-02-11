@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import withContext from "../../withContext";
 import axios from "axios";
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import TrendyControls from "./TrendyControls";
-import TrendyHeader from "./TrendyHeader";
+import TrendyFooter from "./TrendyFooter";
 import TrendyImage from "./TrendyImage";
 import TrendyQuote from "./TrendyQuote";
 
@@ -46,6 +46,7 @@ const TrendyUpload = props => {
     const all_genres = ["Inspirational", "Historical", "Romance", "Comical", "Slang"];
     const [ready, setReady] = useState(false);
  
+    let navigate = useNavigate();
     useEffect( () => {
         if(!ready){
             if (trend === "image" && (mainmedia) && category && genre && playback){
@@ -154,7 +155,7 @@ const TrendyUpload = props => {
                     if (result.status === 200){
                         setResponseMsg("Exclusive Uploaded");
                         const pree_id = result.data.pree_id;
-                        return <Navigate to={`/view-trendy/${pree_id}`} />
+                        navigate('/view-trendy/'+pree_id);
                     }else{
                         setResponseMsg("Media was not uploaded, please try again. Contact us for suppport if problem persist.");
                     }
@@ -247,7 +248,6 @@ const TrendyUpload = props => {
                         </div>
                         <article className="message is-link">
                             <div className="message-header">
-                                <TrendyHeader operation="upload" details={{"theDate":theDate, "genre":genre, "playback":playback}} addGenre={addGenre} setAddGenre={setAddGenre} checkRadio={checkRadio}/>
                             </div>
                             <div className="message-body no-padding">
                                 <div className="content">
@@ -284,6 +284,9 @@ const TrendyUpload = props => {
                                                 }        
                                                 {addMainMedia && <div style={{padding:"0.5rem 1rem"}}><i className="fas fa-image reaction-btn" onClick={e => { setAddMainMedia(false);e.preventDefault();}}> Change Media</i> </div>}
                                                 </div>
+                                                <div className="exclusive-footer">
+                                                    <TrendyFooter operation="upload" details={{"theDate":theDate, "playback":playback}} checkRadio={checkRadio}/>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="column no-padding">
@@ -300,7 +303,8 @@ const TrendyUpload = props => {
                                     </div>
                                 </div>
                             </div>
-                            </article>
+                            
+                        </article>
                   
                         <form className="form" onSubmit={ e => saveMedia(e)}>
                             <div className="field">

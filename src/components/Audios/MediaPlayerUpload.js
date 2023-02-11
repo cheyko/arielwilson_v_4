@@ -5,8 +5,9 @@ import MediaInfo from "./MediaInfo";
 import MusicPlayer from "./MusicPlayer";
 import axios from "axios";
 //import {Redirect} from "react-router-dom";
-import MediaHeader from "./MediaHeader";
+import MediaFooter from "./MediaFooter";
 import VideoPlayer from "./VideoPlayer";
+import { useNavigate } from "react-router-dom";
 
 const MediaPlayerUpload = props => {
 
@@ -15,7 +16,7 @@ const MediaPlayerUpload = props => {
     const [addMainMedia, setAddMainMedia] = useState(false);
     const [temp_url, setUrl] = useState(null);
     const [display_art, setDisplay] = useState(null);
-    const [display_url, setDisplayUrl] = useState(null);
+    const [display_url, setDisplayUrl] = useState("");
     const [addDisplay, setAddDisplay] = useState(false);
     const [title, setTitle] = useState("");
     const [addTitle, setAddTitle] = useState(false);
@@ -25,7 +26,7 @@ const MediaPlayerUpload = props => {
     const [category, setCategory] = useState(null);
     const [addCategory, setAddCategory] = useState(false);
     const audio_categories = ["Recording", "Music","Podcast","Audiobook","Speech","Interview"];
-    const music_genres = ["Alternative", "Dancehall", "Hip-Hop", "Rap", "R&B", "Reggae", "Rock", "World"];
+    const music_genres = ["Afro-Beats","Alternative","Country", "Dancehall", "Hip-Hop", "Rap", "R&B", "Reggae", "Rock", "World"];
     const [genre, setGenre] = useState("");
     const [addGenre, setAddGenre] = useState(false);
     const [description, setDescription] = useState("");
@@ -48,6 +49,9 @@ const MediaPlayerUpload = props => {
     const film_genres = ["Action", "Comedy", "Horror", "Romance", "Thriller", "Western"];
     const recording_genres = ["Normal", " Highlight", "Historical", "Information", "Review"];
 
+    const [ready, setReady] = useState(false);
+
+    let navigate = useNavigate();
     const checkRadio = useCallback(() => {
         var radios = document.getElementsByName("genre");
         for (var j = 0; j < radios.length; j++) {
@@ -100,14 +104,24 @@ const MediaPlayerUpload = props => {
     }
 
     useEffect( () => {
-        if (mainmedia && mainmedia.type) {
-            console.log(mainmedia.type);
+        if(!ready){
+            if (mainmedia && mainmedia.type.split("/")[0] === "audio" && title && artistname && display_art && (description !== "") && category && genre && playback){
+                setResponseMsg("Exclusive Eligible");
+                setReady(true);
+
+            }
+            else if (mainmedia && mainmedia.type.split("/")[0] === "video" && title && artistname && (description !== "") && category && genre && playback){
+                setResponseMsg("Exclusive Eligible");
+                setReady(true);
+            }else{
+                setResponseMsg("");
+            }
         }
         checkRadio();
         checkCategory();
         setCaptionList(["testing","testing","testing"]);
 
-    },[addGenre,genre, mainmedia, category, checkCategory,checkRadio]);
+    },[ready, title, artistname, description, genre, mainmedia, category, playback, checkCategory,checkRadio]);
 
     const saveMedia = async(e) => {
         e.preventDefault();
@@ -123,6 +137,7 @@ const MediaPlayerUpload = props => {
             formData.append('title', title);
             formData.append('artistname', artistname);
             formData.append('genre', genre);
+            formData.append('category', category);
             formData.append('description',description);
             formData.append('playback',playback);
             formData.append('contingency', contingency);
@@ -135,9 +150,9 @@ const MediaPlayerUpload = props => {
             formData.append('mainmedia',mainmedia);
             formData.append('display_art',display_art);
             formData.set('influence',false);
-            formData.set('md',mainmedia.type.split("/") === "video" ? true : false);
+            formData.set('md',mainmedia.type.split("/")[0] === "video" ? true : false);
             formData.set('magazine',false);
-            formData.set('stereo',mainmedia.type.split("/") === "audio" ? true : false);
+            formData.set('stereo',mainmedia.type.split("/")[0] === "audio" ? true : false);
                         
             const result = await axios.post('/api/exclusive',formData, 
             {
@@ -156,8 +171,8 @@ const MediaPlayerUpload = props => {
             if (result.status === 200){
                 setResponseMsg("Exclusive Uploaded");
                 const pree_id = result.data.pree_id;
-                console.log(pree_id);
-                return true; //<Redirect to={`/view-exclusive/${pree_id}`} />
+                navigate('/view-blueberry/'+pree_id);
+                //return true; //<Redirect to={`/view-exclusive/${pree_id}`} />
             }
             return true;
                 
@@ -194,9 +209,13 @@ const MediaPlayerUpload = props => {
 
     const handleMainMedia = e => {
         setUrl(URL.createObjectURL(Array.from(e.target.files)[0]));
-        let temp = Array.from(e.target.files);
-        setMainMedia(temp[0]);
-        setMediaTypes(temp[0].mediatype);
+        setMainMedia(Array.from(e.target.files)[0]);
+        
+        let temp = [];
+        Array.from(e.target.files).map( (file) => {
+            temp = [...temp, file.type.split('/')[0]]
+        });
+        setMediaTypes(temp);
         setAddGenre(false);
         setCategory("");
         setGenre("");
@@ -211,7 +230,6 @@ const MediaPlayerUpload = props => {
 
     const handleToggleChange = (e) => {
         var isChecked = document.getElementById("response_value").checked;
-        console.log(isChecked);
         setDownloadable(isChecked);
     }
 
@@ -223,22 +241,34 @@ const MediaPlayerUpload = props => {
         setContingency(newArray);
     };
 
-    console.log(mainmedia);
     return (
         <div className="hero">
-            <div className="hero-body">
+            <div className="container">
                 <div className="create-page">
                     <div className="heading has-text-centered">
                         <h1>Upload to MD-STEREO</h1>
                     </div>
                     <div className="body mpu">
+                        <div className="columns is-mobile no-margin">
+                            <div className="column no-padding">
+                                <span className="special-header">
+                                    <span>{" "}{addGenre && <i className="fas fa-edit reaction-btn" onClick={e => {setAddGenre(false);checkRadio();}}></i>}</span>
+                                    <span className="tag" style={{textTransform:"capitalize"}}><i className="fas fa-certificate reaction-btn"></i>&nbsp; {genre}</span>
+                                    
+                                </span>
+                            </div>
+                            <div className="column no-padding has-text-right">
+                                <span className="special-header">
+                                    <span className="tag"><i className="fas fa-cog reaction-btn"></i></span>
+                                </span>
+                            </div>
+                        </div>
                         <article className="message is-link">
                             <div className="message-header">
-                                <MediaHeader operation="upload" details={{"theDate":theDate, "genre":genre, "playback":playback}} addGenre={addGenre} setAddGenre={setAddGenre} checkRadio={checkRadio}/>
                             </div>
                             <div className="message-body no-padding">
                                 <div className="content">
-                                    <div className="columns is-multiline is-mobile no-margin">
+                                    <div className="columns is-multiline no-margin">
                                         <div className="column no-padding">
                                             <div className="card" style={{background:"none"}}>
                                                 <div className="mainmedia">
@@ -257,6 +287,9 @@ const MediaPlayerUpload = props => {
                                                                         details={{"title":title,"artist":artistname}}
                                                                     />)
                                                                 }
+                                                                <div className="exclusive-footer">
+                                                                    <MediaFooter operation="upload" details={{"theDate":theDate, "genre":genre, "playback":playback}} checkRadio={checkRadio}/>
+                                                                </div>
                                                                 <MediaInfo operation="upload" details={{"description":description}} />
                                                             </>
                                                         ):(
@@ -281,6 +314,7 @@ const MediaPlayerUpload = props => {
                                     </div>
                                 </div>
                             </div>
+                            
                         </article>
                         <form className="form" onSubmit={ e => saveMedia(e)}>
                             <div className="field">
@@ -294,14 +328,16 @@ const MediaPlayerUpload = props => {
                                 <div className="field">
                                     <div className="card">
                                         <div className="card-content image-upload">
-                                            <button className="button is-small is-success custom-margin" onClick={e => {e.preventDefault();setAddMainMedia(true);}}>Add Main Media</button>
-                                            <br/>
+                                            
                                             <label className="media-select" htmlFor="mainmedia">
                                                 <i style={{fontSize:"xx-large"}} className="fas fa-photo-video"></i> 
                                                 <small>Select Main Media</small> {mainmedia ? (<i style={{color:"green"}} className="fas fa-check-circle"></i>) : ("")}
                                                 <br /> { !mainmedia && <small> No files selected </small>}
                                             </label>
                                             <input onChange={e => handleMainMedia(e)} name="mainmedia" single="true" id="mainmedia" type="file" />
+                                            <br />
+                                            <button className="button is-small is-success custom-margin" onClick={e => {e.preventDefault();setAddMainMedia(true);}}>Add Main Media</button>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -311,7 +347,6 @@ const MediaPlayerUpload = props => {
                                     <div className="control">
                                         <div className="card">
                                             <div className="card-content">
-                                                <button className="button is-small is-success" onClick={e => {e.preventDefault();setAddTitle(true);}}>Add Title</button>
                                                 <label className="label"> Title </label>
                                                 <input
                                                 placeholder="Enter title of Media"
@@ -322,6 +357,9 @@ const MediaPlayerUpload = props => {
                                                 onChange={e => handleChange(e)}
 
                                                 />
+                                                <br /><br />
+                                                <button className="button is-small is-success" onClick={e => {e.preventDefault();setAddTitle(true);}}>Add Title</button>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -332,7 +370,6 @@ const MediaPlayerUpload = props => {
                                     <div className="control">
                                         <div className="card">
                                             <div className="card-content">
-                                                <button className="button is-small is-success" onClick={e => {e.preventDefault();setAddArtist(true);}}>Add Artist</button>
                                                 <label className="label"> Artist </label>
                                                 <input
                                                 placeholder="Enter Artist of Media"
@@ -343,23 +380,28 @@ const MediaPlayerUpload = props => {
                                                 onChange={e => handleChange(e)}
 
                                                 />
+                                                <br/><br />
+                                                <button className="button is-small is-success" onClick={e => {e.preventDefault();setAddArtist(true);}}>Add Artist</button>
+                                                
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             }
-                            {mainmedia && addDisplay === false &&
+                            {mainmedia && mainmedia.type.split("/")[0] === "audio" && addDisplay === false &&
                                 <div className="field">
                                     <div className="card">
                                         <div className="card-content image-upload">
-                                            <button className="button is-small is-success custom-margin" onClick={e => {e.preventDefault();setAddDisplay(true);}}>Add Display</button>
-                                            <br/>
+                                            
                                             <label className="media-select" htmlFor="display_art">
                                                 <i style={{fontSize:"xx-large"}} className="fas fa-photo-video"></i> 
                                                 <small>Select Cover Art</small> {display_art ? (<i style={{color:"green"}} className="fas fa-check-circle"></i>) : ("")}
                                                 <br /> { !display_art && <small> No files selected </small>}
                                             </label>
                                             <input onChange={e => handleDisplayArt(e)} name="display_art" single="true" id="display_art" type="file" />
+                                            <br/>
+                                            <button className="button is-small is-success custom-margin" onClick={e => {e.preventDefault();setAddDisplay(true);}}>Add Cover Art</button>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -369,8 +411,6 @@ const MediaPlayerUpload = props => {
                                     <div className="control">
                                         <div className="card">
                                             <div className="card-content">
-                                                <button className="button is-small is-success" onClick={e => {e.preventDefault();setAddCategory(true);}}>Add Artist</button>
-                                                
                                                 <label className="label"> Category </label>
                                                 {mainmedia.type.split("/")[0] === "audio" ? (
                                                     <>
@@ -395,7 +435,9 @@ const MediaPlayerUpload = props => {
                                                         })}
                                                     </>
                                                 )}
-
+                                                <br /><br />
+                                                <button className="button is-small is-success" onClick={e => {e.preventDefault();setAddCategory(true);}}>Add Category</button>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -485,8 +527,6 @@ const MediaPlayerUpload = props => {
                                     <div className="control">
                                         <div className="card">
                                             <div className="card-content">
-                                                <button className="button is-small is-success" onClick={e => {e.preventDefault();setAddDescription(true);}}>Add Description</button>
-                                                
                                                 <label className="label"> Description: </label>
                                                 <textarea
                                                     className="textarea"
@@ -497,16 +537,16 @@ const MediaPlayerUpload = props => {
                                                     value={description}
                                                     onChange={e => handleChange(e)}
                                                     />
-
+                                                <br />
+                                                <button className="button is-small is-success" onClick={e => {e.preventDefault();setAddDescription(true);}}>Add Description</button>
+                                                
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             }
                             {addSettings === false &&
-                            <div className="box">
-                                <button className="button is-small is-success" onClick={e => {e.preventDefault();setAddSettings(true);checkPlaybackRadio();}}>Add Playback Settings</button>
-                                                
+                            <div className="box">                
                                 <div className="field">
                                     <div className="control">
                                         <div className="card">
@@ -586,7 +626,12 @@ const MediaPlayerUpload = props => {
                                                         </select>
                                                     </div>
                                                 </div>}
+                                                <br /><br />
+                                                
+                                                <button className="button is-small is-success" onClick={e => {e.preventDefault();setAddSettings(true);checkPlaybackRadio();}}>Add Playback Settings</button>
+                                
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>

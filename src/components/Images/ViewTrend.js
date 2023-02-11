@@ -3,7 +3,7 @@ import withContext from "../../withContext";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 //import Slider from "react-slick";
 import TrendyControls from "./TrendyControls";
-import TrendyHeader from "./TrendyHeader";
+import TrendyFooter from "./TrendyFooter";
 import TrendyImage from "./TrendyImage";
 import TrendyQuote from "./TrendyQuote";
 
@@ -38,7 +38,7 @@ const ViewTrend = props => {
         setOperation(view);
         window.scroll(0,0);
         if (aPree){
-            setCommentsCount(aPree.comments)
+            setCommentsCount(aPree.comments);
             setUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/upload0");
         }
         if (aPree === null){
@@ -59,6 +59,13 @@ const ViewTrend = props => {
         navigate('/images');
     }
 
+    const goToTrendy = () => {
+        localStorage.setItem("trendy-view","main");
+        localStorage.setItem("mag-section","wg-influence");
+        props.context.setMenuChoice("images");
+        navigate('/images');
+    }
+
     return(
         <div className="hero">
             {aPree ? 
@@ -67,7 +74,7 @@ const ViewTrend = props => {
                         <div className="container">
                             <div className="container page-header has-text-centered">
                                 <button className="button is-small is-pulled-left is-info" onClick={e => navigate(-1) }> <i className="fas fa-arrow-circle-left"></i> </button>
-                                <div className="is-pulled-right"> 
+                                {/*<div className="is-pulled-right"> 
                                     <div className="dropdown is-right is-hoverable">
                                         <div className="dropdown-trigger">
                                             <button className="button is-small is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
@@ -94,18 +101,16 @@ const ViewTrend = props => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+            </div>*/}
                                 
                                 <div className="media is-fullwidth">
                                     <div className="content is-fullwidth">
-                                        <b className="title reaction-btn subpage-title" onClick={e => setView("main")}> 
+                                        <b className="title reaction-btn subpage-title" onClick={e => goToTrendy()}> 
                                             <i className="fas fa-scroll"></i> 
                                                 {" "}TRENDY INFLUENCE{" "}
                                             <i className="fas fa-camera-retro"></i> 
                                         </b>
-                                        {returnHome && (
-                                            <Navigate to="/images" />
-                                        )}
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +132,6 @@ const ViewTrend = props => {
                         </div>
                         <article className="message is-link">
                             <div className="message-header">
-                                <TrendyHeader operation={operation} commentscount={commentscount} details={{"pree_id":aPree.pree_id,"theDate":aPree.date_added.split(" "), "genre":aPree.attachment.genre, "playback":aPree.attachment.playback, "approvals": aPree.approvals, "disapprovals": aPree.disapprovals,"is_approved":aPree.is_approved, "views" : aPree.attachment.views}}/>
                             </div>
                             <div className="message-body no-padding">
                                 <div className="content">
@@ -148,6 +152,9 @@ const ViewTrend = props => {
                                                             />
                                                         </> 
                                                     }   
+                                                </div>
+                                                <div className="exclusive-footer">
+                                                    <TrendyFooter operation={operation} commentscount={commentscount} details={{"pree_id":aPree.pree_id,"theDate":aPree.date_added.split(" "), "genre":aPree.attachment.genre, "playback":aPree.attachment.playback, "approvals": aPree.approvals, "disapprovals": aPree.disapprovals,"is_approved":aPree.is_approved, "views" : aPree.attachment.views}}/>
                                                 </div>
                                             </div>
                                         </div>

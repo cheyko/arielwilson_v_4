@@ -95,7 +95,7 @@ const Audios = props => {
             </nav>
         
             <div className="page-content">
-                <div className="audios-div hero-contain">
+                <div className="audios-div">
                     {section === "all" &&
                         (
                             <div className="all-audios prees-container">

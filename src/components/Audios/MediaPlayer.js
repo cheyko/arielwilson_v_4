@@ -7,7 +7,9 @@ import MediaPlayerUpload from "./MediaPlayerUpload";
 
 const MediaPlayer = props => {
 
-    const [view, setView] = useState("main");
+    let sessionVar = localStorage.getItem("bb-view") ? localStorage.getItem("bb-view") : "main";
+    const [view, setView] = useState(sessionVar);
+    const [showSearch, setShowSearch] = useState(false);
 
     //const accessLevel = props.context.user.accessLevel;
 
@@ -43,36 +45,8 @@ const MediaPlayer = props => {
                 <section className="page-header">
                     <div className="container">
                         <div className="container page-header has-text-centered">
-                            <button className="button is-small is-pulled-left is-info" onClick={e => view === "main" ? navigate(-1) : setView("main") }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
-                            <div className="is-pulled-right"> 
-                                <div className="dropdown is-right is-hoverable">
-                                    <div className="dropdown-trigger">
-                                        <button className="button is-small is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
-                                            <span className="icon is-small">
-                                                <b> <i className="fas fa-bars"></i> </b>
-                                            </span>
-                                            <span>Options</span>
-                                        </button>
-                                    </div>
-                                    <div className="dropdown-menu" id="dropdown-menu3" role="menu">
-                                        <div className="dropdown-content" style={{padding:0}}>
-                                            <span className="button dropdown-item" onClick={e => setView("upload")}>
-                                                Upload Media 
-                                            </span>
-                                            <span className="button dropdown-item" onClick={e => setView("resource")}>
-                                                View Recent 
-                                            </span>
-                                            <span className="button dropdown-item" onClick={e => setView("important")}>
-                                                View Playlist  
-                                            </span>
-                                            <span className="button dropdown-item" onClick={e => setView("live")}>
-                                                Settings
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
+                            {/*<button className="button is-small is-pulled-left is-info" onClick={e => view === "main" ? navigate(-1) : setView("main") }> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button> */}
+
                             <div className="media is-fullwidth">
                                 <div className="content is-fullwidth">
                                     <b className="title reaction-btn subpage-title" onClick={e => setView("main")}> 
@@ -80,8 +54,6 @@ const MediaPlayer = props => {
                                         {" "}BLUEBERRY MD-STUDIO {" "}
                                         <i className="fas fa-film"></i> 
                                     </b>
-                                    
-
                                 </div>
                             </div>
                            
@@ -102,23 +74,53 @@ const MediaPlayer = props => {
                         {view === "main" && 
                             <div className="home-content">
                                 <br />
-                                <div className="container">
-                                    <div className="box">
-                                        <div className="field has-addons">
-                                            <div className="control has-icons-right is-fullwidth">
-                                                <input className="input" placeholder="Search Preepedia" type="text" name="checkprp" />
-                                                <span className="icon is-medium is-right">
-                                                    <i className="fas fa-search"></i>
-                                                </span>
+                                                            
+                                <div className="has-text-centered"> 
+                                    <div className="dropdown is-hoverable">
+                                        <div className="dropdown-trigger">
+                                            <button className="button is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
                                                 
-                                            </div>
-                                            <div className="control">
-                                                <button type="submit" className="button is-link is-rounded is-focused"> Search </button>
+                                                <span> Options</span>
+                                            </button>
+                                        </div>
+                                        <div className="dropdown-menu" id="dropdown-menu3" role="menu">
+                                            <div className="dropdown-content" style={{padding:0}}>
+                                                <span className="button dropdown-item" onClick={e => {setView("upload");localStorage.setItem("bb-view","upload");}}>
+                                                    Upload Media 
+                                                </span>
+                                                <span className="button dropdown-item" onClick={e => setView("resource")}>
+                                                    View Recent 
+                                                </span>
+                                                <span className="button dropdown-item" onClick={e => setView("important")}>
+                                                    View Playlist  
+                                                </span>
+                                                <span className="button dropdown-item" onClick={e => setView("live")}>
+                                                    Settings
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <br />
+                                    {" "}
+                                <button onClick={ e => setShowSearch(!showSearch)} className="button is-primary"> Search </button>
+                            
+                                </div> 
+                                {showSearch &&
+                                <div className="card">
+                                    <div className="field has-addons">
+                                        <div className="control has-icons-right is-fullwidth">
+                                            <input className="input" placeholder="Search BLUEBERRY" type="text" name="checkprp" />
+                                            <span className="icon is-medium is-right">
+                                                <i className="fas fa-search"></i>
+                                            </span>
+                                            
+                                        </div>
+                                        <div className="control">
+                                            <button type="submit" className="button is-link is-rounded is-focused"> Search </button>
+                                        </div>
+                                    </div>
+                                     
+                                </div>}
+                                 
                                 <div className="slick-wrapper hero-body">
                                     <div className="card reaction-btn">
                                         <div className="container has-text-centered"><span className="has-text-link" onClick={e => setView("stereolist")}> <b> Explore more on Stereo </b></span></div>

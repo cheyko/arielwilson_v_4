@@ -49,6 +49,12 @@ def exclusive():
         for index, file in enumerate(mainmedia):
             filename = "upload" + str(index) 
             file.save(os.path.join(upload_folder + prefix, filename)) 
+        cover_art = request.files['display_art']
+        if cover_art.filename == '':
+            newExclusive.has_cover_art = False
+        else:
+            newExclusive.has_cover_art = True
+            cover_art.save(os.path.join(upload_folder + prefix, 'display_art')) 
         db.session.commit()
         return jsonify({"msg": "Upload made successfully","pree_id":newPree.pree_id, "exclusive_id": newExclusive.exclusive_id}), 200
     elif request.method == 'GET':

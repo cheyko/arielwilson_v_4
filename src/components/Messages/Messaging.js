@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import withContext from "../../withContext";
 import axios from "axios";
 import NewConvo from "./NewConvo";
@@ -9,17 +9,19 @@ const Messaging = props => {
     let {userview} = props;
     let {user_id} = props;
     let {convo} = props;
-    let msgDIv = document.getElementById("convo-msgs");
+
+    const endOfMessages = useRef(null);
 
     const [modalIsOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
+        
         if(id > 0){
-            if(msgDIv !== null){
-                msgDIv.scrollTop = msgDIv.scrollHeight;
-            }
+            if(convo.length > 0){
+                endOfMessages.current.scrollIntoView({ behavior: "smooth" });
+            }        
         }
-    },[id, msgDIv]);
+    },[id, convo]);
 
     const getDateTime = () => {
         const orignal = new Date();
@@ -115,7 +117,8 @@ const Messaging = props => {
                                 <div id="inside-convo" className="inside-convo">
                                     <ul id="convo-msgs" className="convo-msgs">
                                         {convo && convo.length > 0 ? (
-                                            convo.map((aMsg,index) => (
+                                            <>
+                                            {convo.map((aMsg,index) => (
                                                 <li className={`box ${aMsg.sender_id === user_id ? "msg-span-send" : "msg-span-rcve"}`} key={index}>
                                                     <small className="sent-date">{formatTime(aMsg.sent_date)}</small>
                                                     <br />
@@ -125,12 +128,15 @@ const Messaging = props => {
                                                         <p>{aMsg.message_content}</p>
                                                     </div>
                                                 </li>   
-                                            ))
+                                            ))}
+                                            <li style={{float:"left"}} ref={endOfMessages}></li>
+                                            </>
                                         ):(
                                             <div className="box">
                                                 <p className="text is-info"> No Message sent yet in this Convo</p>
                                             </div>
                                         )}
+                                        
                                     </ul>
                                 </div>
                             </div>

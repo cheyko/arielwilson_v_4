@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
 import "./index.css";
+import Lightbox from "react-image-lightbox";
+import ArtistView from "./ArtistView";
 
 const MusicPlayer = props => {
 
@@ -16,6 +18,8 @@ const MusicPlayer = props => {
     const [forwardBtn, setForwardBtn] = useState(null);
     //const [backwardBtn, setBackwardBtn] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [openImage, setOpen] = useState(false);
+    const [modalIsOpen, setModalOpen] = useState(false);
 
     const {temp_url} = props;
     const {display_url} = props;
@@ -38,11 +42,11 @@ const MusicPlayer = props => {
             setLoading(false);
         }
         
-        /*if(temp_url && seekBar && currentTime && music){
+        if(temp_url && seekBar && currentTime && music){
             loadMusic();
-        }*/
+        }
 
-        if(container && display_url){ 
+        if(container && display_url !== ""){ 
             container.style.backgroundImage = `url(${display_url})`;
         }
 
@@ -60,18 +64,15 @@ const MusicPlayer = props => {
 
     const loadMusic = () => {
 
-        seekBar ? seekBar.value = 0 : console.log("no-seek-bar"); // set range slide value to 0;
+        seekBar.value = 0; // set range slide value to 0;
         let url = temp_url;
-        music ? music.src = url : console.log("no-music");
-        music ? music.type = mediatype : console.log("no-music");
+        music.src = url;
+        music.type = mediatype;
 
-        //disk.style.backgroundImage = `url('${song.cover}')`;
-        //container.style.backgroundImage = `url('${song.cover}')`;
-    
-        currentTime ? currentTime.innerHTML = '00:00' : console.log("currentTime-not-available");
+        currentTime.innerHTML = '00:00';
         setTimeout(() => {
-            seekBar ? seekBar.max = music.duration : console.log("no-seek-bar");
-            musicDuration && music ? musicDuration.innerHTML = formatTime(music.duration) : console.log("music-duration-not-available"); 
+            seekBar.max = music.duration;
+            musicDuration.innerHTML = formatTime(music.duration); 
         }, 300);
     }
 
@@ -122,22 +123,30 @@ const MusicPlayer = props => {
         disk.classList.add('play');
     }
 
-    loadMusic();
+    //loadMusic();
     
     return(
         <div className="hero" >
             <div id="music-player-container" className="music-player-container">
                 <div className="music-player">
+                    {openImage && (
+                        <Lightbox
+                            imageTitle={details.title}
+                            mainSrc={display_url}
+                            onCloseRequest={() => setOpen(false)}
+                        />
+                    )}
                     <h1 className="music-name"><span>{details.title}</span></h1>
                     <p className="artist-name"><span>{details.artist}</span></p>
-                    <div className="disk"></div>
+                    <ArtistView modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
+                    <div className="disk" onClick={e => setModalOpen(true)}></div>
                     <div className="song-slider">
                         <input type="range" value="0" className="seek-bar" onChange={e => handleChangeSeekBar(e)} />
                         <span className="tag current-time">00:00</span>
                         <span className="tag song-duration">00:00</span>
                     </div>
                     <div className="controls-class">
-                        <button className="btn-small backward-btn"><i style={{fontWeight:"bold", fontSize:"large"}} className="fas fa-eye"></i></button>
+                        <button className="btn-small backward-btn" onClick={e => setOpen(true)}><i style={{fontWeight:"bold", fontSize:"large"}} className="fas fa-eye"></i></button>
                         <button className="btn backward-btn" onClick={e => playNext}><i style={{fontWeight:"bolder", fontSize:"x-large"}} className="fas fa-chevron-left"></i></button>
                         <button id="play-btn" className="play-btn pause" onClick={e => handlePlay(e)}>
                             <span></span>
@@ -146,18 +155,6 @@ const MusicPlayer = props => {
                         <button className="btn forward-btn" onClick={e => playPrevious}><i style={{fontWeight:"bolder", fontSize:"x-large"}} className="fas fa-chevron-right"></i></button>
                         <button className="btn-small backward-btn"><i style={{fontWeight:"bold", fontSize:"large"}} className="fas fa-ellipsis-v"></i></button>
                     </div>
-                    {/*<div className="columns">
-                        <div className="column">
-                            <span className="tag">{song.genre}</span>
-                        </div>
-                        <div className="column has-text-centered">
-                            <span className="tag">Genre</span>
-                        </div>
-                        <div className="column">
-                            <span className="tag is-pulled-right">Genre</span>
-                        </div>
-    </div>*/}
-                    
                     <audio src="" id="audio"></audio>
                     
                 </div>

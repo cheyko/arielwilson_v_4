@@ -365,6 +365,7 @@ class Exclusive(db.Model):
     md = db.Column(db.Boolean)
     magazine = db.Column(db.Boolean)
     views = db.Column(db.Integer)
+    has_cover_art = db.Column(db.Boolean)
     #has_multiple = db.Column(db.Boolean)
     #multi = db.Column(db.String(80), default=("No"))
 

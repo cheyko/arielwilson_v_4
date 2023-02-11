@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
+import { faL, faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
 import { faQuoteRight } from '@fortawesome/free-solid-svg-icons';
 import {Link} from "react-router-dom";
 import Lightbox from 'react-image-lightbox';
