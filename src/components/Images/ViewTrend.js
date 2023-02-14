@@ -6,6 +6,7 @@ import TrendyControls from "./TrendyControls";
 import TrendyFooter from "./TrendyFooter";
 import TrendyImage from "./TrendyImage";
 import TrendyQuote from "./TrendyQuote";
+import TrendyHeader from "./TrendyHeader";
 
 const ViewTrend = props => {
 
@@ -34,19 +35,37 @@ const ViewTrend = props => {
     const [commentscount, setCommentsCount] = useState(0); 
     const [returnHome, setReturn] = useState(false);
 
+    const [gotMedia, setGetMedia] = useState(false);
+    const [imgView, setImgView] = useState(null);
+        
+    const loadMainMedia = () => {
+        const user_id = aPree.user.user_id;
+        if (aPree.user.has_dp === true){
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+        }else{
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+        }
+        setGetMedia(true);
+        return true;
+    }
+
     useEffect( () => {
         setOperation(view);
         window.scroll(0,0);
         if (aPree){
             setCommentsCount(aPree.comments);
             setUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/upload0");
+
+            if (!gotMedia){
+                loadMainMedia();
+            }
         }
         if (aPree === null){
             props.context.getPree(id).then((promise) => {
                 setAPree(promise);
             });
         }
-    },[url, aPree, view, commentscount]);
+    },[url, aPree, view, commentscount, gotMedia]);
 
     const updateSettings = () => {
 
@@ -132,6 +151,7 @@ const ViewTrend = props => {
                         </div>
                         <article className="message is-link">
                             <div className="message-header">
+                                <TrendyHeader aPree={aPree} imgView={imgView} />
                             </div>
                             <div className="message-body no-padding">
                                 <div className="content">

@@ -2,7 +2,7 @@ import React from "react";
 import withContext from "../../withContext";
 import {Link} from "react-router-dom";
 
-const PreeHeader = props => {
+const TrendyHeader = props => {
     const {aPree} = props;
 
     //const user = props.user ? props.user : "";
@@ -35,7 +35,6 @@ const PreeHeader = props => {
     }
     
     function getFullTime(aTime){
-        console.log(aTime.getHours());
         if (aTime.getHours() < 12){
             return aTime.getHours() + ":" + (aTime.getMinutes() < 10 ? ("0" + aTime.getMinutes()) : aTime.getMinutes()) + "am";
         }else if (aTime.getHours() === 12){
@@ -46,8 +45,8 @@ const PreeHeader = props => {
     }
     
     return(
-        <div className="message-header">
-            <div className="th-divs has-text-centered is-fullwidth is-multiline is-mobile">
+        
+        <div className="th-divs has-text-centered is-fullwidth is-mobile">
                 <div className="th-div">
                     <Link to={`/view-user-profile/${aPree.user.user_id}`}>
                         <figure className="display-figure">
@@ -65,8 +64,7 @@ const PreeHeader = props => {
                     <b> {formatTime(aPree.date_added)} </b>
                 </div>
                 
-            </div>
         </div>
     )
 }
-export default withContext(PreeHeader);
+export default withContext(TrendyHeader);

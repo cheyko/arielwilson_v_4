@@ -60,7 +60,7 @@ const ProfileHeader = props => {
                                 </div>
                             </div>
                         </div>
-                        <div className="column has-text-centered" style={{padding:"0px"}}>
+                        <div className="column has-text-centered" style={{padding:"0px"}} onClick={e => localStorage.setItem("msg-view","message")}>
                             <Link to={`/messages/convo/direct/${user.user_id}`}><button style={{fontSize:"large"}} className="button"> <i className="fas fa-envelope"></i> </button></Link>
                         </div>
                         <div className="column" style={{padding:"0px"}}>
@@ -110,7 +110,7 @@ const ProfileHeader = props => {
                     </div>
                 }
                 <div className="main-media-image has-text-centered">       
-                    <figure className="display-pic-large image">
+                    <figure className="display-figure">
                         {action === 'read-write' && props.showEdit &&
                             <div className="image-upload">
                                 <label htmlFor="file-input-image">
@@ -119,7 +119,7 @@ const ProfileHeader = props => {
                                 <input id="file-input-image" name="image-upload" single="true" type="file" onChange={e => props.handleUpload(e)}/>
                             </div> 
                         }
-                        <img alt="display" onClick={e => setOpen(true)} className="is-rounded" src={props.imgView} />   
+                        <img alt="display" onClick={e => setOpen(true)} className="display-image-large" src={props.imgView} />   
                         {openImage && (
                             <Lightbox
                                 imageTitle={`${user.username}`}

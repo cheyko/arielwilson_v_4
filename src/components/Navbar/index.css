@@ -18,7 +18,18 @@
     background-color: royalblue !important;
     position: fixed !important;
     padding-inline: 1rem !important;
-    overflow: auto ;
+}
+
+.navbar-dropdown{
+    background-color: royalblue !important;
+}
+
+.navbar-item.is-active{
+    background-color: white !important;
+}
+
+.navbar-link:not(.is-arrowless)::after{
+    border-color: burlywood !important;
 }
 
 .navbar-menu{
@@ -32,7 +43,8 @@
     color: burlywood !important;
     font-weight: bold;
     text-transform: capitalize !important;
-    font-size: medium !important;  
+    font-size: medium !important; 
+    cursor: pointer; 
 }
 
 .navbar-burger{
@@ -117,7 +129,13 @@
     .control-btn b{
         font-size: 1rem;
     }
-    
+
+    .not-laptop{
+        display: none;
+    }
+    .laptop{
+        display: block;
+    }
  
 }
 
@@ -139,6 +157,14 @@
     .control-btn b{
         font-size: 1rem;
     }
+
+    .not-laptop{
+        display: none;
+    }
+
+    .laptop{
+        display: block;
+    }
     
  
 }
@@ -150,6 +176,21 @@
 
     .control-btn p, .control-btn b{
         font-size: 2rem;
+    }
+
+    .not-laptop{
+        display: inline-block;
+    }
+
+    .laptop{
+        display: none;
+    }
+
+    .custom-nav{
+        width: 25% !important;
+    }
+    .navbar{
+        max-width: 75% !important;
     }
 }
 
@@ -181,7 +222,12 @@
     .control-btn b{
         font-size: 1rem;
     }
-  
+    .not-laptop{
+        display: block;
+    }
+    .laptop{
+        display: none;
+    }
 }
   
 @media screen and (max-width:768px){
@@ -219,6 +265,10 @@
 
     .navbar-burger span{
         height:3px !important;
+    }
+
+    .laptop{
+        display: none;
     }
 } 
 

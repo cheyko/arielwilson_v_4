@@ -41,7 +41,7 @@ const MediaPlayer = props => {
 
     return(
         <div className="hero">
-            <div className="hero-contain">
+            <div>
                 <section className="page-header">
                     <div className="container">
                         <div className="container page-header has-text-centered">
@@ -49,7 +49,7 @@ const MediaPlayer = props => {
 
                             <div className="media is-fullwidth">
                                 <div className="content is-fullwidth">
-                                    <b className="title reaction-btn subpage-title" onClick={e => setView("main")}> 
+                                    <b className="title reaction-btn subpage-title" onClick={e => {setView("main");localStorage.setItem("bb-view","main");}}> 
                                         <i className="fas fa-record-vinyl"></i> 
                                         {" "}BLUEBERRY MD-STUDIO {" "}
                                         <i className="fas fa-film"></i> 

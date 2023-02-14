@@ -94,7 +94,7 @@ const Audios = props => {
                 </div>
             </nav>
         
-            <div className="page-content">
+            <div className="page-content hero-contain">
                 <div className="audios-div">
                     {section === "all" &&
                         (
@@ -125,7 +125,7 @@ const Audios = props => {
                     }
                     {section === "yours" &&
                         (
-                            <div className="your-audios hero-contain">
+                            <div className="your-audios">
                                 <div className="columns is-multiline is-mobile">
                                     {audios && audios.length > 0 ? (
                                         audios.map((quote, index) => (
@@ -151,7 +151,7 @@ const Audios = props => {
                     {section === "tagged" &&
 
                         ( 
-                            <div className="tagged-audios hero-contain">
+                            <div className="tagged-audios">
                                 <h1> TAGGED </h1>
                             </div>
                         )
@@ -168,7 +168,7 @@ const Audios = props => {
 
                     {section === "favourites" &&
                         (
-                            <div className="favourite-audios hero-contain">
+                            <div className="favourite-audios">
                                 <h1> FAVOURITES </h1>
                             </div>
                         )

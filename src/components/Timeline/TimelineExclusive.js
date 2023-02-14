@@ -8,6 +8,8 @@ import VideoPlayer from "../Audios/VideoPlayer";
 import TrendyFooter from "../Images/TrendyFooter";
 import TrendyImage from "../Images/TrendyImage";
 import TrendyQuote from "../Images/TrendyQuote";
+import TrendyHeader from "../Images/TrendyHeader";
+import MediaHeader from "../Audios/MediaHeader";
 
 const TimelineExclusive = props => {
 
@@ -24,6 +26,9 @@ const TimelineExclusive = props => {
     const [commentscount, setCommentsCount] = useState(aPree.comments); 
     const [operation, setOperation] = useState("timeline"); 
 
+    const [gotMedia, setGetMedia] = useState(false);
+    const [imgView, setImgView] = useState(null);
+
     useEffect( () => {
         if (details){
             
@@ -38,9 +43,25 @@ const TimelineExclusive = props => {
             if (aPree.attachment.has_cover_art === true){
                 setDisplayUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/display_art");
             }
+
+            if (!gotMedia){
+                loadMainMedia();
+            }
         }
-    },[url, details, aPree]);
+        
+    },[url, details, aPree, gotMedia]);
     
+    const loadMainMedia = async() => {
+        const user_id = aPree.user.user_id;
+        if (aPree.user.has_dp === true){
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+        }else{
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+        }
+        setGetMedia(true);
+        return true;
+    }
+
     return(
         <div className="hero">
             <div className="pree-item">
@@ -61,9 +82,11 @@ const TimelineExclusive = props => {
                             </div>
                             <article className="message is-link">
                                 <div className="message-header">
+                                    <MediaHeader aPree={aPree} imgView={imgView} />
                                 </div>
                                 
                                 <div className="message-body">
+                                    
                                     <Link to={`/view-blueberry/${aPree.pree_id}`}>
                                         <div className="content">
                                             <div className="columns no-margin">
@@ -121,6 +144,7 @@ const TimelineExclusive = props => {
                             </div>
                             <article className="message is-link">
                                 <div className="message-header">
+                                    <TrendyHeader aPree={aPree} imgView={imgView} />
                                 </div>
                                 
                                 <div className="message-body">

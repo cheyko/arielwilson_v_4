@@ -24,7 +24,8 @@ const Messages = props => {
     const allmessages = props.context.messages ? props.context.messages : []; 
     const people = props.context.viewlist ? props.context.viewlist : [];
     const [showMore, setShowMore] = useState(false);
-    const [tab, setTab] = useState("message");
+    let sessionVar = localStorage.getItem("msg-view") ? localStorage.getItem("msg-view") : "message";
+    const [tab, setTab] = useState(sessionVar);
 
     useEffect((convo) => {
        
@@ -145,6 +146,7 @@ const Messages = props => {
                                     <li className={`button ${tab === "message" ? "is-active" : "is-not-active"}`}
                                         onClick={ e => {
                                             setTab("message");
+                                            localStorage.setItem("msg-view","message")
                                         }}
                                     >
                                         <span className="reaction-btn">
@@ -155,6 +157,7 @@ const Messages = props => {
                                     <li className={`button ${tab === "convos" ? "is-active" : "is-not-active"}`}
                                         onClick={ e => {
                                             setTab("convos");
+                                            localStorage.setItem("msg-view","convos")
                                         }}
                                     >
                                         <span className="reaction-btn">
@@ -166,6 +169,7 @@ const Messages = props => {
                                     <li className={`button ${tab === "wg-mail" ? "is-active" : "is-not-active"}`}
                                         onClick={ e => {
                                             setTab("wg-mail"); 
+                                            localStorage.setItem("msg-view","wg-mail")
                                         }}
                                     >
                                         <span className="reaction-btn">
@@ -177,6 +181,7 @@ const Messages = props => {
                                     <li className={`button ${tab === "happenings" ? "is-active" : "is-not-active"}`}
                                         onClick={ e => {
                                             setTab("happenings");
+                                            localStorage.setItem("msg-view","happenings")
                                         }}
                                     >
                                         <span className="reaction-btn">
@@ -188,6 +193,7 @@ const Messages = props => {
                                     <li className={`button ${tab === "mentions" ? "is-active" : "is-not-active"}`}
                                         onClick={ e => {
                                             setTab("mentions");
+                                            localStorage.setItem("msg-view","mentions")
                                         }}
                                     >
                                         <span className="reaction-btn">
@@ -199,6 +205,7 @@ const Messages = props => {
                                     <li className={`button ${tab === "recommendations" ? "is-active" : "is-not-active"}`}
                                         onClick={ e => {
                                             setTab("recommendations");
+                                            localStorage.setItem("msg-view","recommendations")
                                         }}
                                     >
                                         <span className="reaction-btn">

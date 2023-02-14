@@ -7,6 +7,7 @@ import MediaControls from "./MediaControls";
 import MediaInfo from "./MediaInfo";
 import MusicPlayer from "./MusicPlayer";
 import VideoPlayer from "./VideoPlayer";
+import MediaHeader from "./MediaHeader";
 
 
 const ViewMediaItem = props => {
@@ -37,6 +38,20 @@ const ViewMediaItem = props => {
     const [commentscount, setCommentsCount] = useState(0); 
     const [returnHome, setReturn] = useState(false);
 
+    const [gotMedia, setGetMedia] = useState(false);
+    const [imgView, setImgView] = useState(null);
+        
+    const loadMainMedia = () => {
+        const user_id = aPree.user.user_id;
+        if (aPree.user.has_dp === true){
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+        }else{
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+        }
+        setGetMedia(true);
+        return true;
+    }
+
     useEffect( () => {
         window.scroll(0,0);
         if (aPree){
@@ -52,13 +67,17 @@ const ViewMediaItem = props => {
             if (aPree.attachment.has_cover_art === true){
                 setDisplayUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/display_art");
             }
+
+            if (!gotMedia){
+                loadMainMedia();
+            }
         }
         if (aPree === null){
             props.context.getPree(id).then((promise) => {
                 setAPree(promise);
             });
         }
-    },[url, aPree, view, commentscount]);
+    },[url, aPree, view, commentscount, gotMedia]);
 
     const updateSettings = () => {
         setOperation("edit");
@@ -130,6 +149,7 @@ const ViewMediaItem = props => {
                     </div>
                     <article className="message is-link">
                         <div className="message-header">
+                            <MediaHeader aPree={aPree} imgView={imgView} />
                         </div>
                         <div className="message-body no-padding">
                             <div className="container">

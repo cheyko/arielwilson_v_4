@@ -59,6 +59,10 @@
     .profile-box{
         padding: 3rem !important;
     }
+
+    .profile-box .controls{
+        padding-inline: 1rem;
+    }
     
 }
 

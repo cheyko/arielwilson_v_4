@@ -65,9 +65,9 @@ h1 {
     border-radius: 0.5rem;
 }
 
-.pree-item .image{
+/*.pree-item .image{
     height: fit-content !important;
-}
+}*/
 
 .pree-slider-wrapper{
     width: auto !important;
@@ -215,7 +215,7 @@ padding-top: 60px !important;
 
 .th-div{
     margin-inline : 1rem;
-    width: 15rem;
+    width: 33%;
 }
 
 @media screen and (max-width:1300px) and (min-width:768px){

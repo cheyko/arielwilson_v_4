@@ -58,9 +58,9 @@ const MusicPlayer = props => {
                     forwardBtn.click();
                 }
             }
-        }, 500);
+        }, 500);        
 
-    },[seekBar, musicDuration, currentTime, music, playBtn, temp_url, display_url, container, forwardBtn,loading]);
+    },[openImage, seekBar, musicDuration, currentTime, music, playBtn, temp_url, display_url, container, forwardBtn,loading]);
 
     const loadMusic = () => {
 
@@ -101,7 +101,25 @@ const MusicPlayer = props => {
             disk.classList.toggle('play');
         }
     };
+
+    /*const handleView = (e) => {
+        e.preventDefault(e);
+        setOpen(true);
+    }
     
+    const handleClose = (e) => {
+        e.preventDefault(e);
+        if(openImage === true){
+            console.log("image opened");
+            var closeBtn = document.getElementsByClassName('ril-close');
+            console.log(closeBtn.item(0));
+            closeBtn[0] ? closeBtn[0].addEventListener("click", console.log("clicked")):console.log("null");
+        }
+        setOpen(false);
+        return false;
+
+    }*/
+
     const handleChangeSeekBar = (e) => {
         music.currentTime = seekBar.value;
     }
@@ -133,7 +151,7 @@ const MusicPlayer = props => {
                         <Lightbox
                             imageTitle={details.title}
                             mainSrc={display_url}
-                            onCloseRequest={() => setOpen(false)}
+                            onCloseRequest={(e) => setOpen(false)}
                         />
                     )}
                     <h1 className="music-name"><span>{details.title}</span></h1>
@@ -146,14 +164,14 @@ const MusicPlayer = props => {
                         <span className="tag song-duration">00:00</span>
                     </div>
                     <div className="controls-class">
-                        <button className="btn-small backward-btn" onClick={e => setOpen(true)}><i style={{fontWeight:"bold", fontSize:"large"}} className="fas fa-eye"></i></button>
+                        <button className="btn-small view-art-btn" onClick={e => setOpen(true)}><i style={{fontWeight:"bold", fontSize:"large"}} className="fas fa-eye"></i></button>
                         <button className="btn backward-btn" onClick={e => playNext}><i style={{fontWeight:"bolder", fontSize:"x-large"}} className="fas fa-chevron-left"></i></button>
                         <button id="play-btn" className="play-btn pause" onClick={e => handlePlay(e)}>
                             <span></span>
                             <span></span>
                         </button>
                         <button className="btn forward-btn" onClick={e => playPrevious}><i style={{fontWeight:"bolder", fontSize:"x-large"}} className="fas fa-chevron-right"></i></button>
-                        <button className="btn-small backward-btn"><i style={{fontWeight:"bold", fontSize:"large"}} className="fas fa-ellipsis-v"></i></button>
+                        <button className="btn-small option-btn"><i style={{fontWeight:"bold", fontSize:"large"}} className="fas fa-ellipsis-v"></i></button>
                     </div>
                     <audio src="" id="audio"></audio>
                     

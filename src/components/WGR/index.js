@@ -29,7 +29,6 @@ const WGR = props => {
 
     useEffect( () => {
         window.scrollTo(0, 0);
-        
         if (start){
             $(".ad-bar-container").animate({
                 width: boxWidth
@@ -38,8 +37,6 @@ const WGR = props => {
                 width: 0
             });
         }
-         
-
         //set current to local storage. 
     
     },[start, boxWidth]);
@@ -91,226 +88,230 @@ const WGR = props => {
     }
 
     return (
+        
         <div className="hero special-nav">
-            <nav className="navbar" role="navigation" aria-label="main navigation">
-                <div className="navbar-brand">
-                    <a className="navbar-item">
-                        <h1 className="subtitle"><b onClick={e => { setView('highlights'); toggleMenu(e) ; }}>WGR </b></h1>
-                    </a>
+            <div className="card">
+                <nav className="navbar" role="navigation" aria-label="main navigation">
+                    <div className="navbar-brand">
+                        <span className="navbar-item">
+                            <h1 className="title" style={{fontSize:"1rem"}}><b onClick={e => { setView('highlights'); toggleMenu(e) ; }}>WGR </b></h1>
+                        </span>
 
-                    <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
-                    
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <small>sections</small>
-                    </a>
-                </div>
+                        <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
+                        
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <small>sections</small>
+                        </span>
+                    </div>
 
-                <div id="navbarBasicExample" className="navbar-menu">
-                    <div className="navbar-start">
+                    <div id="navbarBasicExample" className="navbar-menu">
+                        <div className="navbar-start">
 
-                        <a className="navbar-item" onClick={e => { setView('news'); toggleMenu(e);}}>
-                            News
-                        </a>
+                            <span className={`navbar-item ${rView === 'news' ? 'is-active' : ''}`} onClick={e => { setView('news'); toggleMenu(e);setShowMore(false);}}>
+                                News
+                            </span>
 
-                        <a className="navbar-item" onClick={e => {setView('sports');toggleMenu(e);}}>
-                            Sports
-                        </a>
+                            <span className={`navbar-item ${rView === 'sports' ? 'is-active' : ''}`} onClick={e => {setView('sports');toggleMenu(e);setShowMore(false)}}>
+                                Sports
+                            </span>
 
-                        <a className="navbar-item" onClick={e => {setView('weather');toggleMenu(e);}}>
-                            Weather 
-                        </a>
+                            <span className={`navbar-item ${rView === 'weather' ? 'is-active' : ''}`} onClick={e => {setView('weather');toggleMenu(e);setShowMore(false);}}>
+                                Weather 
+                            </span>
 
-                        <a className="navbar-item" onClick={e => {setView('entertainment');toggleMenu(e);}}>
-                            Entertainment
-                        </a>
+                            <span className={`navbar-item ${rView === 'entertainment' ? 'is-active' : ''}`} onClick={e => {setView('entertainment');toggleMenu(e);setShowMore(false);}}>
+                                Entertainment
+                            </span>
 
-                        <div className="navbar-item has-dropdown is-hoverable">
-                            <a className="navbar-link" onClick={e => setShowMore(!showMore)}>
-                                <i className="fas fa-plus"> More </i> 
-                            </a>
+                            <div className={`navbar-item has-dropdown is-hoverable ${(rView === 'business' || rView === 'sci-tech' || rView === 'culture' || rView === 'exclusives' || rView === 'archives') ? 'is-active' : ''}`} onMouseOver={e => setShowMore(true)} onMouseOut={ e => setShowMore(false)}>
+                                <span id="more-dropdown" className="navbar-link" onClick={e => setShowMore(!showMore)}>
+                                    <i className="fas fa-plus"> More </i> 
+                                </span>
 
-                            <div className="navbar-dropdown" style={showMore ? {display:"block"} : {display: "none"}}>
-                                <a className="navbar-item" onClick={e => { setView('business');toggleMenu(e); }}>
-                                    Business
-                                </a>
-                                <a className="navbar-item" onClick={e => { setView('sci-tech'); toggleMenu(e);}}>
-                                    Science & Techonolgy
-                                </a>
-                                <a className="navbar-item" onClick={e => {setView('culture'); toggleMenu(e);}}>
-                                    Culture
-                                </a>
-                                <hr className="navbar-divider" />
-                                <a className="navbar-item" onClick={e => {setView('exclusives');toggleMenu(e);}}>
-                                    Exclusives
-                                </a>
-                                <a className="navbar-item" onClick={e => {setView('archives');toggleMenu(e);}}>
-                                    Archives
-                                </a>
+                                <div className="navbar-dropdown" style={showMore ? {display:"block"} : {display: "none"}}>
+                                    <span className={`navbar-item ${rView === 'business' ? 'is-active' : ''}`} onClick={e => { setView('business');toggleMenu(e); setShowMore(!showMore);}}>
+                                        Business
+                                    </span>
+                                    <span className={`navbar-item ${rView === 'sci-tech' ? 'is-active' : ''}`} onClick={e => { setView('sci-tech'); toggleMenu(e);setShowMore(!showMore);}}>
+                                        Science & Techonolgy
+                                    </span>
+                                    <span className={`navbar-item ${rView === 'culture' ? 'is-active' : ''}`} onClick={e => {setView('culture'); toggleMenu(e);setShowMore(!showMore);}}>
+                                        Culture
+                                    </span>
+                                    <hr className="navbar-divider" />
+                                    <span className={`navbar-item ${rView === 'exclusives' ? 'is-active' : ''}`} onClick={e => {setView('exclusives');toggleMenu(e);setShowMore(!showMore);}}>
+                                        Exclusives
+                                    </span>
+                                    <span className={`navbar-item ${rView === 'archives' ? 'is-active' : ''}`} onClick={e => {setView('archives');toggleMenu(e);setShowMore(!showMore);}}>
+                                        Archives
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="navbar-end">
+                            <div className="navbar-item">
+                                <div className="buttons">
+                                    <span onClick={ e => { toggleAds(e); toggleMenu(e);setShowMore(false);}} className="button is-light">
+                                        <i className="fas fa-rss" aria-hidden="true"></i> &nbsp; Ads
+                                    </span>
+                                    <span onClick={ e => {toggleBN(e); toggleMenu(e);setShowMore(false);}} className="button is-primary">
+                                        <strong>Breaking !</strong>
+                                    </span>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div className="navbar-end">
-                        <div className="navbar-item">
-                            <div className="buttons">
-                                <a onClick={ e => { toggleAds(e); toggleMenu(e);}} className="button is-light">
-                                    Ads
-                                </a>
-                                <a onClick={ e => {toggleBN(e); toggleMenu(e);}} className="button is-primary">
-                                    <strong>Breaking !</strong>
-                                </a>
-
+                </nav>
+                <div className="page-content" style={{height:"30rem"}}>
+                    {/*
+                    <div className={`columns is-mobile ${toggleads ? "not-iso":"iso"} ${togglebn ? "bnview":""}`} onClick={e => setShowDropDown(false)}>
+                        {toggleads && 
+                            <div className="column is-one-quarter">
+                                <div className="ad-bar-container">
+                                    <div className={` ${toggleads ? "ads-active" : "ads-not-active"} `} id="ad-bar">
+                                        
+                                        <article id="ad-bar" className="message">
+                                            <div className="message-header ads-header">
+                                                <h1 className="ads-heading">ADS</h1>&nbsp;
+                                                <i onClick={e => console.log("expand")} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-external-link-alt" aria-hidden="true"></i>
+                                                <span style={{width:"100%"}}>
+                                                    <i onClick={e => toggleAds(e)} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-times-circle is-pulled-right" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                            <div className="message-body ads-body">
+                                                
+                                                <ul>
+                                                    <li>
+                                                        test 1
+                                                    </li>
+                                                    <li>
+                                                        test 2
+                                                    </li>
+                                                    <li>
+                                                        test 3
+                                                    </li>
+                                                    <li>
+                                                        test 4
+                                                    </li>
+                                                    <li>
+                                                        test 5
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </article>
+                                    </div>    
+                                </div>
+                                
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <div className="page-content">
-                <div className={`columns is-mobile ${toggleads ? "not-iso":"iso"} ${togglebn ? "bnview":""}`} onClick={e => setShowDropDown(false)}>
-                    {toggleads && 
-                        <div className="column is-one-fifth">
-                            <div className="ad-bar-container">
-                                <div className={` ${toggleads ? "ads-active" : "ads-not-active"} `} id="ad-bar">
-                                    
-                                    <article id="ad-bar" className="message">
-                                        <div className="message-header ads-header">
-                                            <h1 className="ads-heading">ADS</h1>&nbsp;
-                                            <i onClick={e => console.log("expand")} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-external-link-alt" aria-hidden="true"></i>
-                                            <span style={{width:"100%"}}>
-                                                <i onClick={e => toggleAds(e)} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-times-circle is-pulled-right" aria-hidden="true"></i>
-                                            </span>
-                                        </div>
-                                        <div className="message-body ads-body">
-                                            
-                                            <ul>
-                                                <li>
-                                                    test 1
-                                                </li>
-                                                <li>
-                                                    test 2
-                                                </li>
-                                                <li>
-                                                    test 3
-                                                </li>
-                                                <li>
-                                                    test 4
-                                                </li>
-                                                <li>
-                                                    test 5
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </article>
-                                </div>    
-                            </div>
-                            
-                        </div>
-                    }
-                    
-                    {rView === 'highlights' && 
-                        <div className="column wgr-articles"
-                        onClick={e => {
-                            setToggleAds(false);
-                            setToggleBN(false);
-                        }}>
-                            <Highlights />
-                        </div>
-                    }
-                    {rView === 'news' &&
-                        <div className="column wgr-articles"
+                        }
+                        
+                        {rView === 'highlights' && 
+                            <div className="column wgr-articles"
                             onClick={e => {
                                 setToggleAds(false);
                                 setToggleBN(false);
                             }}>
-                            <News  />
-                        </div>
-
-                    }
-                    {rView === 'sports' &&
-                        <div className="column wgr-articles"
-                        onClick={e => {
-                            setToggleAds(false);
-                            setToggleBN(false);
-                        }}>
-                            <Sports  />
-                        </div>
-
-                    }
-                    {rView === 'weather' &&
-                        <div className="column wgr-articles"
-                        onClick={e => {
-                            setToggleAds(false);
-                            setToggleBN(false);
-                        }}>
-                            <Weather  />
-                        </div>
-
-                    }
-                    {rView === 'entertainment' &&
-                        <div className="column wgr-articles"
-                        onClick={e => {
-                            setToggleAds(false);
-                            setToggleBN(false);
-                        }}>
-                            <Entertainment  />
-                        </div>
-
-                    }
-                    {rView === 'archives' &&
-                        <div className="column wgr-articles"
-                        onClick={e => {
-                            setToggleAds(false);
-                            setToggleBN(false);
-                        }}>
-                            <Archives  />
-                        </div>
-
-                    }
-                    {rView === 'business' &&
-                        <div className="column wgr-articles"
-                        onClick={e => {
-                            setToggleAds(false);
-                            setToggleBN(false);
-                        }}>
-                            <Business  />
-                        </div>
-
-                    }
-                    {togglebn &&
-                        <div className="aux-containers column is-one-fifth">
-                            <div className="bn-container">
-                                <div className={` ${togglebn ? "bn-active" : "bn-not-active"} `} id="bn">
-                                    <div className="bn-body">
-                                        <article className="message">
-                                            <Tabs>
-                                                <div className="message-header">
-                                                    <i onClick={e => toggleBN(e)} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-times-circle" aria-hidden="true"></i>
-                                                    <TabList>
-                                                        <Tab>Breaking News</Tab>
-
-                                                    </TabList>
-                                                    <i onClick={e => console.log("expand")} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-external-link-alt" aria-hidden="true"></i>
-                                                </div>
-                                                <div className="message-body">
-                                                    <TabPanel>
-                                                        <h1>Info</h1>
-                                                    </TabPanel>
-                                                </div>
-                                            </Tabs>
-                                        </article>
-                                    </div>
-                                </div>    
+                                <Highlights />
                             </div>
-                             
+                        }
+                        {rView === 'news' &&
+                            <div className="column wgr-articles"
+                                onClick={e => {
+                                    setToggleAds(false);
+                                    setToggleBN(false);
+                                }}>
+                                <News  />
+                            </div>
+
+                        }
+                        {rView === 'sports' &&
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Sports  />
+                            </div>
+
+                        }
+                        {rView === 'weather' &&
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Weather  />
+                            </div>
+
+                        }
+                        {rView === 'entertainment' &&
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Entertainment  />
+                            </div>
+
+                        }
+                        {rView === 'archives' &&
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Archives  />
+                            </div>
+
+                        }
+                        {rView === 'business' &&
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Business  />
+                            </div>
+
+                        }
+                        {togglebn &&
+                            <div className="aux-containers column is-one-fifth">
+                                <div className="bn-container">
+                                    <div className={` ${togglebn ? "bn-active" : "bn-not-active"} `} id="bn">
+                                        <div className="bn-body">
+                                            <article className="message">
+                                                <Tabs>
+                                                    <div className="message-header">
+                                                        <i onClick={e => toggleBN(e)} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-times-circle" aria-hidden="true"></i>
+                                                        <TabList>
+                                                            <Tab>Breaking News</Tab>
+
+                                                        </TabList>
+                                                        <i onClick={e => console.log("expand")} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-external-link-alt" aria-hidden="true"></i>
+                                                    </div>
+                                                    <div className="message-body">
+                                                        <TabPanel>
+                                                            <h1>Info</h1>
+                                                        </TabPanel>
+                                                    </div>
+                                                </Tabs>
+                                            </article>
+                                        </div>
+                                    </div>    
+                                </div>
+                                
+                            </div>
+                        }
+                    </div>  
+                    <div className="hero">
+                        <div className="hero-body">
+                            <WGRFooter />
                         </div>
-                    }
-                </div>  
-                <div className="hero">
-                    <div className="hero-body">
-                        <WGRFooter />
-                    </div>
+                    </div>*/}
                 </div>
             </div>
         </div>

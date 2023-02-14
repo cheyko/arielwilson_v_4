@@ -33,22 +33,9 @@ const PreeItem = props => {
             setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
         }
         setGetMedia(true);
-        //console.log(user_id);
-        /*await axios.post('/api/get-main-media',{user_id}).then(
-            (response) => {
-                if (response.status === 200){
-                    if (response.data.has_dp === true){
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
-                    }else{
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
-                    }
-                    setGetMedia(true);
-                    
-                }
-            }
-        )*/
         return true;
     }
+    
     return (
         <div className="hero">
             <div className="pree-item">

@@ -37,3 +37,12 @@
         width: 35rem !important;
     }
 }
+
+@media screen and (min-width:2000px){
+    .nav-column{
+        width: 25% !important;
+    }
+    .app-container{
+        width: 75% !important;
+    }
+}

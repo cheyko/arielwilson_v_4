@@ -264,8 +264,8 @@ const Navbar = props => {
                     <div className="navbar-body">
                         <div className="display-pic-box">
                             <div className="media">
-                                <figure className="display-pic-large mirror-pic image">
-                                    <img alt="display" className="is-rounded" onClick={e => setOpen(true)} src={imgView} />
+                                <figure className="display-figure">
+                                    <img alt="display" className="display-image-large" onClick={e => setOpen(true)} src={imgView} />
                                     {openImage && (
                                     <Lightbox
                                         imageTitle={`${props.context.user.username}`}

@@ -2,7 +2,7 @@ import React from "react";
 import withContext from "../../withContext";
 import {Link} from "react-router-dom";
 
-const PreeHeader = props => {
+const MediaHeader = props => {
     const {aPree} = props;
 
     //const user = props.user ? props.user : "";
@@ -46,27 +46,27 @@ const PreeHeader = props => {
     }
     
     return(
-        <div className="message-header">
-            <div className="th-divs has-text-centered is-fullwidth is-multiline is-mobile">
-                <div className="th-div">
-                    <Link to={`/view-user-profile/${aPree.user.user_id}`}>
-                        <figure className="display-figure">
-                            <img alt="display" className="display-image-small" src={props.imgView} />
-                        </figure>
-                    </Link>
-                </div>
-                <div className="th-div">
-                    <Link to={`/view-user-profile/${aPree.user.user_id}`}>
-                        <b> @{aPree.user.username} </b>
-                        <b> Rank </b>
-                    </Link>
-                </div>
-                <div className="th-div">
-                    <b> {formatTime(aPree.date_added)} </b>
-                </div>
-                
+        
+        <div className="th-divs has-text-centered is-fullwidth is-mobile">
+            <div className="th-div">
+                <Link to={`/view-user-profile/${aPree.user.user_id}`}>
+                    <figure>
+                        <img alt="display" className="display-image-small" src={props.imgView} />
+                    </figure>
+                </Link>
             </div>
+            <div className="th-div">
+                <Link to={`/view-user-profile/${aPree.user.user_id}`}>
+                    <b> @{aPree.user.username} </b>
+                    <b> Rank </b>
+                </Link>
+            </div>
+            <div className="th-div">
+                <b> {formatTime(aPree.date_added)} </b>
+            </div>
+            
         </div>
+       
     )
 }
-export default withContext(PreeHeader);
+export default withContext(MediaHeader);
