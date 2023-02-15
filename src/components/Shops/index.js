@@ -126,14 +126,20 @@ const Shops = props => {
                         <div className="navbar-start">
 
                             <div className={`navbar-item has-dropdown is-hoverable ${shopView === 'enterprise' ? 'is-active' : ''}`}  onMouseOver={e => setEnterpriseMenu(true)} onMouseOut={ e => setEnterpriseMenu(false)}>
-                                <span id="more-dropdown" className="navbar-link"onClick={ e => {setShopView("enterprise");setSubView('ProductsHome');setEnterpriseMenu(!enterpriseMenu);}}>
-                                    <i className="fas fa-shopping-cart head-icon" aria-hidden="true"> &nbsp; <span className='not-laptop'>Enterprise</span> </i> 
+                                <span id="more-dropdown" className="navbar-link"onClick={ e => setEnterpriseMenu(!enterpriseMenu)}>
+                                    <i className="fas fa-shopping-cart head-icon" aria-hidden="true"> &nbsp; <span className='mobile'>Enterprise</span> </i> 
                                 </span>
 
                                 <div className="navbar-dropdown" style={enterpriseMenu ? {display:"block"} : {display: "none"}}>
-                                    <div className='laptop'>
+                                    <div className='not-mobile'>
                                         <span className={`navbar-item ${subview === 'ProductsHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ProductsHome');setShopView("enterprise");toggleMenu(e); setEnterpriseMenu(!enterpriseMenu);}}>
                                             <i className="fas fa-shopping-cart" aria-hidden="true"> ENTERPRISE </i>
+                                        </span>
+                                        <hr className="navbar-divider" />
+                                    </div>
+                                    <div className='mobile'>
+                                        <span className={`navbar-item ${subview === 'ProductsHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ProductsHome');setShopView("enterprise");toggleMenu(e); setEnterpriseMenu(!enterpriseMenu);}}>
+                                            <i className="fas fa-shopping-cart" aria-hidden="true"> Home </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
@@ -164,14 +170,20 @@ const Shops = props => {
                                 </div>
                             </div>
                             <div className={`navbar-item has-dropdown is-hoverable ${shopView === 'bickle' ? 'is-active' : ''}`} onMouseOver={e => setBickleMenu(true)} onMouseOut={ e => setBickleMenu(false)}>
-                                <span id="more-dropdown" className="navbar-link" onClick={ e => {setShopView("bickle");setSubView('BCHome');setBickleMenu(!bickleMenu);}}>
-                                    <i className="fas fa-utensils head-icon" aria-hidden="true"> &nbsp; <span className='not-laptop'>Bickle Court</span> </i> 
+                                <span id="more-dropdown" className="navbar-link" onClick={ e => setBickleMenu(!bickleMenu)}>
+                                    <i className="fas fa-utensils head-icon" aria-hidden="true"> &nbsp; <span className='mobile'>Bickle Court</span> </i> 
                                 </span>
 
                                 <div className="navbar-dropdown" style={bickleMenu ? {display:"block"} : {display: "none"}}>
-                                    <div className='laptop'>
+                                    <div className='not-mobile'>
                                         <span className={`navbar-item ${subview === 'BCHome' ? 'is-active' : ''}`} onClick={e => { setSubView('BCHome');setShopView("bickle");toggleMenu(e); setBickleMenu(!bickleMenu);}}>
                                             <i className="fas fa-utensils" aria-hidden="true"> BICKLE COURT </i>
+                                        </span>
+                                        <hr className="navbar-divider" />
+                                    </div>
+                                    <div className='mobile'>
+                                        <span className={`navbar-item ${subview === 'BCHome' ? 'is-active' : ''}`} onClick={e => { setSubView('BCHome');setShopView("bickle");toggleMenu(e); setBickleMenu(!bickleMenu);}}>
+                                            <i className="fas fa-utensils" aria-hidden="true"> Home </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
@@ -199,14 +211,21 @@ const Shops = props => {
                                 </div>
                             </div>
                             <div className={`navbar-item has-dropdown is-hoverable ${shopView === 'worksite' ? 'is-active' : ''}`}  onMouseOver={e => setWSMenu(true)} onMouseOut={ e => setWSMenu(false)}>
-                                <span id="more-dropdown" className="navbar-link" onClick={ e => {setShopView("worksite");setSubView('ServicesHome');setWSMenu(!worksiteMenu);}}>
-                                    <i className="fas fa-toolbox head-icon" aria-hidden="true"> &nbsp; <span className='not-laptop'>Worksite</span> </i> 
+                                <span id="more-dropdown" className="navbar-link" onClick={ e => setWSMenu(!worksiteMenu)}>
+                                    <i className="fas fa-toolbox head-icon" aria-hidden="true"> &nbsp; <span className='mobile'>Worksite</span> </i> 
                                 </span>
 
                                 <div className="navbar-dropdown" style={worksiteMenu ? {display:"block"} : {display: "none"}}>
-                                    <div className='laptop'>
+                                    
+                                    <div className='not-mobile'>
                                         <span className={`navbar-item ${subview === 'ServicesHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ServicesHome');setShopView("worksite");toggleMenu(e); setWSMenu(!worksiteMenu);}}>
                                             <i className="fas fa-toolbox" aria-hidden="true"> WORKSITE </i>
+                                        </span>
+                                        <hr className="navbar-divider" />
+                                    </div>
+                                    <div className='mobile'>
+                                        <span className={`navbar-item ${subview === 'ServicesHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ServicesHome');setShopView("worksite");toggleMenu(e); setWSMenu(!worksiteMenu);}}>
+                                            <i className="fas fa-toolbox" aria-hidden="true"> Home </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
@@ -232,14 +251,20 @@ const Shops = props => {
                                 </div>
                             </div>
                             <div className={`navbar-item has-dropdown is-hoverable ${shopView === 'propfinder' ? 'is-active' : ''}`} onMouseOver={e => setPFMenu(true)} onMouseOut={ e => setPFMenu(false)}>
-                                <span id="more-dropdown" className="navbar-link" onClick={ e => {setShopView("propfinder");setSubView('PFHome');setPFMenu(!propfinderMenu);}}>
-                                    <i className="fas fa-sign head-icon" aria-hidden="true"> &nbsp; <span className='not-laptop'>Prop-Finder</span> </i> 
+                                <span id="more-dropdown" className="navbar-link" onClick={ e => setPFMenu(!propfinderMenu)}>
+                                    <i className="fas fa-sign head-icon" aria-hidden="true"> &nbsp; <span className='mobile'>Prop-Finder</span> </i> 
                                 </span>
 
                                 <div className="navbar-dropdown" style={propfinderMenu ? {display:"block"} : {display: "none"}}>
-                                    <div className='laptop'>
+                                    <div className='not-mobile'>
                                         <span className={`navbar-item ${subview === 'PFHome' ? 'is-active' : ''}`} onClick={e => { setSubView('PFHome');setShopView("propfinder");;toggleMenu(e); setPFMenu(!propfinderMenu);}}>
                                             <i className="fas fa-sign" aria-hidden="true"> PROP-FINDER </i>
+                                        </span>
+                                        <hr className="navbar-divider" />
+                                    </div>
+                                    <div className='mobile'>
+                                        <span className={`navbar-item ${subview === 'PFHome' ? 'is-active' : ''}`} onClick={e => { setSubView('PFHome');setShopView("propfinder");;toggleMenu(e); setPFMenu(!propfinderMenu);}}>
+                                            <i className="fas fa-sign" aria-hidden="true"> Home </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
@@ -270,14 +295,20 @@ const Shops = props => {
                                 </div>
                             </div>
                             <div className={`navbar-item has-dropdown is-hoverable ${shopView === 'wov' ? 'is-active' : ''}`} onMouseOver={e => setWOVMenu(true)} onMouseOut={ e => setWOVMenu(false)}>
-                                <span id="more-dropdown" className="navbar-link" onClick={ e => {setShopView("wov");setSubView('WOVHome');setWOVMenu(!wovMenu);}}>
-                                    <i className="fas fa-car head-icon" aria-hidden="true"> &nbsp; <span className='not-laptop'>World of Vehicle</span> </i> 
+                                <span id="more-dropdown" className="navbar-link" onClick={ e => setWOVMenu(!wovMenu)}>
+                                    <i className="fas fa-car head-icon" aria-hidden="true"> &nbsp; <span className='mobile'>World of Vehicle</span> </i> 
                                 </span>
 
                                 <div className="navbar-dropdown" style={wovMenu ? {display:"block"} : {display: "none"}}>
-                                    <div className='laptop'>
+                                    <div className='not-mobile'>
                                         <span className={`navbar-item ${subview === 'WOVHome' ? 'is-active' : ''}`} onClick={e => { setSubView('WOVHome');setShopView("wov");toggleMenu(e); setWOVMenu(!wovMenu);}}>
                                             <i className="fas fa-car" aria-hidden="true"> WORLD OF VEHICLE </i>
+                                        </span>
+                                        <hr className="navbar-divider" />
+                                    </div>
+                                    <div className='mobile'>
+                                        <span className={`navbar-item ${subview === 'WOVHome' ? 'is-active' : ''}`} onClick={e => { setSubView('WOVHome');setShopView("wov");toggleMenu(e); setWOVMenu(!wovMenu);}}>
+                                            <i className="fas fa-car" aria-hidden="true"> Home </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>

@@ -130,10 +130,10 @@
         font-size: 1rem;
     }
 
-    .not-laptop{
+    .mobile{
         display: none;
     }
-    .laptop{
+    .not-mobile{
         display: block;
     }
  
@@ -158,11 +158,11 @@
         font-size: 1rem;
     }
 
-    .not-laptop{
+    .mobile{
         display: none;
     }
 
-    .laptop{
+    .not-mobile{
         display: block;
     }
     
@@ -178,11 +178,11 @@
         font-size: 2rem;
     }
 
-    .not-laptop{
+    .mobile{
         display: inline-block;
     }
 
-    .laptop{
+    .not-mobile{
         display: none;
     }
 
@@ -222,10 +222,10 @@
     .control-btn b{
         font-size: 1rem;
     }
-    .not-laptop{
+    .mobile{
         display: block;
     }
-    .laptop{
+    .not-mobile{
         display: none;
     }
 }
@@ -267,7 +267,7 @@
         height:3px !important;
     }
 
-    .laptop{
+    .not-mobile{
         display: none;
     }
 } 
