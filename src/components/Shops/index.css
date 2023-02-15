@@ -7,9 +7,10 @@
 
 .ad-bar-container{
     height: 100% !important;
-    width: 16.5rem;
+    width: 17.75%;
     position: fixed;
     z-index: 4;
+    margin-left: 1.25rem !important;
 }
 
 .no-space{
@@ -26,10 +27,10 @@
 
 .cart-container{
     height: 100% !important;
-    width: 16.5rem;
-    right: 0.25%;
-    position: fixed;
+    width: 18.75%;
+    position: fixed !important;
     z-index: 4;
+    right:0.5%;
 }
 
 #cart, .cart-body{
@@ -271,9 +272,18 @@
     margin-top: 1.5rem;
 }
 
-@media screen and (max-width:1025px) and (min-width:769px){
+.shops-body{
+    margin-bottom: 0 !important;
+}
+
+@media screen and (max-width:1000px) and (min-width:769px){
+    .cart-container{
+        width: 17.5rem;
+    }
     .ad-bar-container{
-        width: 16.5rem;
+        width: 17.5rem;
+        padding-left: 0.5rem !important;
+        margin-left: 0.5rem !important;
     }
 
     .self-column .fixed-card{
@@ -317,8 +327,14 @@
 }
 
 @media screen and (max-width:768px) and (min-width:425px){
+
     .cart-container{
-        width: auto !important;
+        width: 75%;
+    }
+    .ad-bar-container{
+        width: 75%;
+        margin-left: 0.5rem !important;
+        padding-left: 0.5rem !important;
     }
 
     .self-column .fixed-card{
@@ -351,12 +367,6 @@
     .leftContent, .rightContent{
         margin: 0 auto !important;
     }
-    .ad-bar-container{
-        height: 100% !important;
-        width: 16.5rem;
-        position: fixed;
-        z-index:4 !important;
-    }
 
     .frontpage-card .card-content{
         height: 10rem !important;
@@ -369,6 +379,14 @@
 }
 @media screen and (max-width:424px){
 
+    .cart-container{
+        width: 75%;
+    }
+    .ad-bar-container{
+        width: 75%;
+        margin-left: 0.5rem !important;
+        padding-left: 0.5rem !important;
+    }
     .self-column .fixed-card{
         width: 48.5rem !important;
     }

@@ -112,20 +112,32 @@ const PFHome = props => {
                 <div className="item-box box">
                     <div className="realestate content"> 
                         <h1> Real Estate </h1>
-                        <div className="box">
+                        <div>
                             <div className="slick-wrapper has-text-centered">
                                 {listings && listings.length > 0 ? (
-                                    <Slider {...settingsThumbs}>
-                                        {listings.map((listing, index) => (
-                                            <div className="slick-slide" key={index}>
-                                                <PFLItem
-                                                    imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0"}
-                                                    listing={listing}
-                                                    key={index}
-                                                />
-                                            </div>
-                                        ))}
-                                    </Slider>
+                                    <>
+                                        <Slider {...settingsThumbs}>
+                                            {listings.map((listing, index) => (
+                                                <div className="slick-slide" key={index}>
+                                                    <PFLItem
+                                                        imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0"}
+                                                        listing={listing}
+                                                        key={index}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </Slider>
+                                        <div className="control">
+                                            <button 
+                                                className="button is-link"
+                                                onClick={e => {
+                                                    props.setPFView('All');
+                                                }}
+                                            > 
+                                                Explore More Real Estate 
+                                            </button> 
+                                        </div>
+                                    </>
                                 ) : (
                                     <div className="column">
                                         <span className="title has-text-grey-light">
@@ -136,24 +148,12 @@ const PFHome = props => {
                             </div>
                         </div>
                     </div>
-                    <div className="control">
-                    <button 
-                        className="button is-link"
-                        onClick={e => {
-                            props.setPFView('All');
-                            props.setShowPFHome(false);
-                            props.setShowPFList(true);
-                        }}
-                    > 
-                        Explore More Real Estate 
-                    </button> 
-                </div>
                 </div>
 
                 <div className="item-box box">
                     <div className="accomadations content"> 
                         <h1> Accomadations </h1>
-                        <div className="box">
+                        
                             <div className="slick-wrapper has-text-centered">
                                 <Slider {...settingsThumbs}>
                                     {placeholders.map((aSpot, index) => (
@@ -163,11 +163,11 @@ const PFHome = props => {
                                     ))}
                                 </Slider>
                             </div>
-                        </div>
-                    </div>
-                    <div className="control">
+                            <div className="control">
                         <button className="button is-link"> Explore More Accomadations </button> 
                     </div>
+                    </div>
+                    
                 </div>
             
             </div>

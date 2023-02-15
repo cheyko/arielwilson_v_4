@@ -96,24 +96,38 @@ const ProductsHome = props => {
                 </div>
             </div>
             <div className="productlistContainer has-text-centered">
-                <h3 className="title is-3 box" style={{color: "Black"}}> View a Wide Range of Products </h3>
+                <h1 className="title box"> View a Wide Range of Products </h1>
                 <div className="item-box box">
-                    <div className="automobile-sales"> 
+                    <div className="product-sales"> 
                         <h1> Products </h1>
-                        <div className="box">
+                        <div>
                             <div className="slick-wrapper has-text-centered">
                                 {products && products.length > 0 ? (
-                                    <Slider {...settingsThumbs}>
-                                        {products.map((product, index) => (
-                                            <div className="slick-slide" key={index}>
-                                                <ProductItem
-                                                    imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0"}
-                                                    product={product}
-                                                    key={index}
-                                                />
-                                            </div>
-                                        ))}
-                                    </Slider>
+                                    <>
+                                        <Slider {...settingsThumbs}>
+                                            {products.map((product, index) => (
+                                                <div className="slick-slide" key={index}>
+                                                    <ProductItem
+                                                        imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0"}
+                                                        product={product}
+                                                        key={index}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </Slider>
+                                        <div className="control">
+                                            <button 
+                                                className="button is-link"
+                                                onClick={e => {
+                                                    //props.setPFView('All');
+                                                    //props.setShowPFHome(false);
+                                                    //props.setShowPFList(true);
+                                                }}
+                                            > 
+                                                Explore More Products
+                                            </button> 
+                                        </div>
+                                    </>
                                 ) : (
                                     <div className="column">
                                         <span className="title has-text-grey-light">
@@ -124,24 +138,12 @@ const ProductsHome = props => {
                             </div>
                         </div>
                     </div>
-                    <div className="control">
-                    <button 
-                        className="button is-link"
-                        onClick={e => {
-                            //props.setPFView('All');
-                            //props.setShowPFHome(false);
-                            //props.setShowPFList(true);
-                        }}
-                    > 
-                        Explore More Products
-                    </button> 
-                </div>
                 </div>
 
                 <div className="item-box box">
                     <div className="accomadations content"> 
                         <h1> Categories </h1>
-                        <div className="box">
+                        <div className="container">
                             <div className="slick-wrapper has-text-centered">
                                 <Slider {...settingsThumbs}>
                                     {placeholders.map((aSpot, index) => (
@@ -151,11 +153,12 @@ const ProductsHome = props => {
                                     ))}
                                 </Slider>
                             </div>
+                            <div className="control">
+                                <button className="button is-link"> See All Categories </button> 
+                            </div>
                         </div>
                     </div>
-                    <div className="control">
-                        <button className="button is-link"> See All Categories </button> 
-                    </div>
+                    
                 </div>
             
             </div>
@@ -172,7 +175,7 @@ const ProductsHome = props => {
                         </h4>
                         <hr></hr>
                         <h4 className="subtitle">
-                            'John-Shop' also have products that are for rent. Perhaps purchasing an item for non-continuous use is not the 
+                            'Enterprise' also have products that are for rent. Perhaps purchasing an item for non-continuous use is not the 
                             best option; thus renting that item might be the most cost effective solution for the task at hand. Most common types of 
                             items that can be rented are tools, items used in decor, heavy duty equipments, electronics, amongst other items. </h4>
                         <hr></hr>
@@ -193,7 +196,7 @@ const ProductsHome = props => {
                                     <div className="card-header-title is-centered">Product Sales</div>
                                 </div>
                                 <div className="card-content">
-                                    <p> 'JOHN-SHOP' should have any item you desire in stock. Search through 
+                                    <p> 'Enterprise' should have any item you desire in stock. Search through 
                                         the many Vendors, the many Categories and the many Products for your prefered goods. 
                                     </p>
                                 </div>
@@ -217,8 +220,8 @@ const ProductsHome = props => {
                                     <div className="card-header-title is-centered">Become a Vendor</div>
                                 </div>
                                 <div className="card-content">
-                                    <p> Place your Goods on 'JOHN-SHOP' and secure a fast and 
-                                        garanteed sale; locally or even internationally. 'JOHN-SHOP' also
+                                    <p> Place your Goods on 'Enterprise' and secure a fast and 
+                                        garanteed sale; locally or even internationally. 'Enterprise' also
                                         has a shipping and delivery option. 
                                     </p>
                                 </div>
@@ -317,7 +320,7 @@ const ProductsHome = props => {
                                 </div>
                                 <div className="card-content">
                                     <p> Increase the income of your business by securing more bookings;
-                                        'JOHN-SHOP' provides a secure and reliable process that will ensure your
+                                        'Enterprise' provides a secure and reliable process that will ensure your
                                         rental is available.  
                                     </p>
                                 </div>
@@ -386,7 +389,7 @@ const ProductsHome = props => {
                                     <FontAwesomeIcon icon={faShippingFast} size="3x"/>
                                 </div>
                                 <div className="card-header">
-                                    <div className="card-header-title is-centered"> John-Shop Partners </div>
+                                    <div className="card-header-title is-centered"> Enterprise Partners </div>
                                 </div>
                                 <div className="card-content">
                                     <p> 

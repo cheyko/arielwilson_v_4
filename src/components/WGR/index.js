@@ -90,7 +90,7 @@ const WGR = props => {
     return (
         
         <div className="hero special-nav">
-            <div className="card">
+            <div className="wgr-div">
                 <nav className="navbar" role="navigation" aria-label="main navigation">
                     <div className="navbar-brand">
                         <span className="navbar-item">
@@ -166,7 +166,41 @@ const WGR = props => {
                         </div>
                     </div>
                 </nav>
-                <div className="page-content" style={{height:"30rem"}}>
+                <br />
+                <div className="page-content">
+                    <div className='columns is-mobile'>
+                        {toggleads &&
+                            <div className='column no-padding is-one-quarter'>
+                                <div className='ad-bar-container box no-padding'>
+                                    <article className='message'>
+                                        <div className='message-header ads-header'>
+                                            <h1 className="ads-heading">ADS</h1>&nbsp;
+                                            <i onClick={e => console.log("expand")} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-external-link-alt" aria-hidden="true"></i>
+                                            <span style={{width:"100%"}}>
+                                                <i onClick={e => toggleAds(e)} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-times-circle is-pulled-right" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                        <div className='message-body'>
+
+                                        </div>
+                                        
+                                    </article>
+                                </div>
+                            </div>
+                        }
+                        <div className='column no-padding'>
+                            <div className='box'>
+                                <h1>main</h1>
+                            </div>
+                        </div>
+                        {togglebn &&
+                            <div className='column no-padding is-one-quarter'>
+                                <div className='cart-container box'>
+                                    <h1>Breaking news</h1>
+                                </div>
+                            </div>
+                        }
+                    </div>
                     {/*
                     <div className={`columns is-mobile ${toggleads ? "not-iso":"iso"} ${togglebn ? "bnview":""}`} onClick={e => setShowDropDown(false)}>
                         {toggleads && 

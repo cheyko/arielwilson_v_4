@@ -1,5 +1,7 @@
 .hero-contain{
   padding: 3rem !important;
+  text-align:left;
+  text-justify:inter-word;
 }
 
 
@@ -485,9 +487,6 @@ ul .is-active{
   .slick-wrapper{
     max-width: 18rem;
   }
-  .hero-contain{
-    padding: 0rem !important;
-  }
 
   .display-image-small{
     height:70px;
@@ -520,9 +519,6 @@ ul .is-active{
   .slick-prev{
     left: -0.5rem !important;
   }
-  .hero-contain{
-    padding: 0rem !important;
-  }
   .display-image-small{
     height:70px;
   }
@@ -539,8 +535,5 @@ ul .is-active{
 
   .hero-content{
     margin-top: 3rem;
-  }
-  .hero-contain{
-    padding: 0rem !important;
   }
 }

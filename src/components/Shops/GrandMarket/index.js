@@ -7,7 +7,7 @@ const GrandMarket = props => {
 
     return(
         <div className="hero live-vending">
-            <div className="hero-body day24">
+            <div className="box day24">
                 <h1>GRANDMARKET</h1>
             </div>
         </div>

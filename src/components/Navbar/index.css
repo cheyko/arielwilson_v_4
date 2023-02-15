@@ -149,7 +149,7 @@
         width: 25% !important;
     }
     .navbar{
-        width: 75% !important;
+        width: 75%;
     }
     .control-btn svg{
         font-size: 4em;
@@ -190,7 +190,7 @@
         width: 25% !important;
     }
     .navbar{
-        max-width: 75% !important;
+        width: 75% !important;
     }
 }
 

@@ -1,11 +1,5 @@
 .page-content{
-    margin-top: 3rem;
-}
-.bn-container{
-    height: 100% !important;
-    width: 16rem !important;
-    right: 0.25% !important;
-    position: fixed !important;
+    margin-top: 2.75rem;
 }
 
 #bn, .bn-body{
@@ -88,7 +82,7 @@
 
 @media screen and (max-width: 1000px){
     .page-content{
-        margin-top: 7rem !important;
+        margin-top: 5.85rem !important;
     }
     .horizontal-list{
         width: 40rem !important;
