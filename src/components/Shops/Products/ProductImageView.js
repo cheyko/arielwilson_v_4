@@ -65,7 +65,7 @@ const ProductImageView = props => {
       };
       return(
           <div className="box imagesContainer">
-            <button className="button is-fixed" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i></button>
+            <button className="button" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i></button>
             <br/>
             <div className="slick-wrapper">
                 <div className="currentSlide">

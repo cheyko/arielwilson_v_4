@@ -24,7 +24,7 @@ const ProductItem = props => {
           </div>  
           
           <div className="card-image">
-              <figure className="image is-1x1">
+              <figure className="image is-1by1">
                 <img
                   src={url}
                   alt={product.name}

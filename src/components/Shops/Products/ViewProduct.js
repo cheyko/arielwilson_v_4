@@ -64,13 +64,13 @@ const ViewProduct = props => {
     return (
         <div className="hero">
             {product ?
-                <div className="hero-container">
+                <div className="hero-container market-content">
                     <div className="product-content">
                         <div className="columns is-multiline">
                             <div className="leftContent column">
                                 <ProductImageView product={product} thePics={thePics}/>
                             </div>
-                            <div className="rightContent column">
+                            <div className="productlistContainer rightContent column">
                                 <div className="content box">
                                     <ProductDetail product={product} />
                                 </div>

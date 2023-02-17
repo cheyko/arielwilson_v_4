@@ -30,7 +30,7 @@
     width: 18.75%;
     position: fixed !important;
     z-index: 4;
-    right:0.5%;
+    right:1px;
 }
 
 #cart, .cart-body{
@@ -72,7 +72,7 @@
 .searchbar .control .button {
     z-index: 0 !important;
 }
-
+/*
 .fixed-card{
     position: fixed !important;
     width: inherit !important;
@@ -82,7 +82,7 @@
     padding: 0.5rem !important;
 }
 
-/*.self-column .fixed-card{
+.self-column .fixed-card{
     width: 59rem !important;
 }
 
@@ -131,7 +131,7 @@
 }
 
 .frontpage-card .card-content{
-    height: 10rem !important;
+    /*height: 10rem !important;*/
     padding: 0.5rem !important;
 }
 
@@ -159,9 +159,9 @@
 .vehicle-card{
     height: 100% !important;
 }
-.product-card img{
+/*.product-card img{
     height: 12rem !important;
-}
+}*/
 /*.self-column .product-card .card-content{
     height: 7rem !important;
 }
@@ -276,6 +276,10 @@
     margin-bottom: 0 !important;
 }
 
+.market-content .rightContent{
+    width:37.5%;
+}
+
 @media screen and (max-width:1000px) and (min-width:769px){
     .cart-container{
         width: 17.5rem;
@@ -309,30 +313,33 @@
     .imagesContainer {
         height: auto;
         width: auto;
-        position: fixed;
+        position: relative;
     }
     
     .frontpage-card .card-content{
         height: 18rem !important;
     }
 
-    .reduced-column .card-content{
+    /*.reduced-column .card-content{
         height: 15rem !important;
     }
     
     .self-column{
         padding: 0.1rem 0 !important;
         margin-inline: 0rem !important;
+    }*/
+    .market-content .rightContent{
+        width: auto;
     }
 }
 
 @media screen and (max-width:768px) and (min-width:425px){
 
     .cart-container{
-        width: 75%;
+        width: 17.5rem;;
     }
     .ad-bar-container{
-        width: 75%;
+        width: 17.5rem;
         margin-left: 0.5rem !important;
         padding-left: 0.5rem !important;
     }
@@ -371,9 +378,13 @@
     .frontpage-card .card-content{
         height: 10rem !important;
     }
-    .self-column{
+   /* .self-column{
         padding: 0.1rem 0 !important;
         margin-inline: 0 !important;
+    }*/
+
+    .market-content .rightContent{
+        width: auto;
     }
     
 }
@@ -422,6 +433,10 @@
         padding: 0 !important;
         margin-inline: 0 !important;
     }*/
+
+    .market-content .rightContent{
+        width: auto;
+    }
     
 }
 @media screen and (max-width:375px){

@@ -18,6 +18,7 @@
     background-color: royalblue !important;
     position: fixed !important;
     padding-inline: 1rem !important;
+    width: -webkit-fill-available !important;
 }
 
 .navbar-dropdown{
@@ -120,9 +121,6 @@
     .custom-nav{
         width: 25% !important;
     }
-    .navbar{
-        width: 75% !important;
-    }
     .control-btn svg{
         font-size: 2em;
     }
@@ -147,9 +145,6 @@
     }
     .custom-nav{
         width: 25% !important;
-    }
-    .navbar{
-        width: 75%;
     }
     .control-btn svg{
         font-size: 4em;

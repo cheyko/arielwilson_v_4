@@ -6,6 +6,7 @@ import "./index.css";
 import axios, { all } from "axios";
 import TimelineExclusive from "./TimelineExclusive";
 import { render } from "@testing-library/react";
+import MarketPree from "./MarketPree";
 
 const Timeline = props => {
 
@@ -147,6 +148,20 @@ const Timeline = props => {
             });
         }
     },[allPrees,loadNew]);//, gotMedia, loadMainMedia]);
+
+    let timeline;
+    if(allPrees.length > 0){
+        timeline = allPrees.map((aPree,index) => {
+            if(aPree.pree_type === 'exclusive'){
+                return <TimelineExclusive aPree={aPree} key={index}  />
+            }else if(aPree.pree_type === 'product'){
+                return <MarketPree aPree={aPree} key={index}  />
+            }else{
+                return <PreeItem aPree={aPree} key={index} showComments={false} clickable={"expand"} />
+            }
+        })
+    }
+    
     return (
         <div id="timeline-div" className="hero">
             <div className="hero-container">
@@ -217,21 +232,13 @@ const Timeline = props => {
                 
             </div>
             <div>
-                {allPrees && (allPrees.length > 0) ? (
-                    allPrees.map((aPree, index) => (
+                {allPrees && (allPrees.length > 0) ? (    
+                    timeline.map((element, index) => (
                         <div key={index}>
-                            {aPree.pree_type !== 'exclusive' ? (
-                                <PreeItem
-                                    aPree={aPree}
-                                    key={index}
-                                    showComments={false}
-                                    clickable={"expand"}
-                                />
-                            ):(
-                                <TimelineExclusive aPree={aPree} key={index}  />
-                            )}
+                            {element}
                         </div>
                     )) 
+                    
                 ) : (
                     <div className="container" style={{ padding:"3rem"}}>
                         <span className="is-size-3" style={{color:"blue"}}>
