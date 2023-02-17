@@ -24,7 +24,7 @@ const ProductItem = props => {
           </div>  
           
           <div className="card-image">
-              <figure className="image is-1by1">
+              <figure className="image is-square">
                 <img
                   src={url}
                   alt={product.name}
@@ -32,11 +32,16 @@ const ProductItem = props => {
               </figure>
           </div>
           <footer className="card-footer">
-              {/*<span className="card-footer-item">
-                  <button className="button is-small">
-                      <span> <i style={{fontSize:"x-large"}} className="fas fa-eye" aria-hidden="true"></i> View </span>
-                  </button>
-              </span>*/}
+              <span className="card-footer-item">
+                <strong><span className="tag"> Review</span></strong>
+                
+              </span>
+              <span className="card-footer-item">
+                <strong><span className="tag"> In-Stock</span></strong>
+                
+              </span>
+            </footer>
+          <footer className="card-footer">
               <span className="card-footer-item">
                 <button className="button is-info is-small"
                   onClick={() => 
@@ -45,7 +50,7 @@ const ProductItem = props => {
                           product,
                           amount:1
                       })}>
-                      <span> <i style={{fontSize:"x-large"}} className="fas fa-receipt" aria-hidden="true"></i> Add to Order </span>
+                      <span> <i className="fas fa-receipt" aria-hidden="true"></i> Add to Order </span>
                   </button>
                 </span>
             </footer>

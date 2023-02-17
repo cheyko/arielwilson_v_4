@@ -77,7 +77,7 @@ const ProductImageView = props => {
                         {thePics.map((pic, index) => 
 
                           <div className="slick-slide" key={index}>
-                            <h2 className="slick-slide-title">Shopie{/*vehicle.make === "" ? "Shopie" : vehicle.year + " " + vehicle.make + " " +vehicle.model*/}</h2>
+                            {/*<h2 className="slick-slide-title">Shopie{vehicle.make === "" ? "Shopie" : vehicle.year + " " + vehicle.make + " " +vehicle.model</h2>*/}
                             <img className="slick-slide-image customSlide" name={index} onClick={testfunc} alt={product.product_id} 
                             src={pic} />
 
@@ -87,7 +87,7 @@ const ProductImageView = props => {
                     </Slider>
                       {openImage && (
                       <Lightbox
-                        imageTitle={`Image ${pIndex} of ${thePics.length - 1}`}
+                        imageTitle={`Image ${pIndex + 1} of ${thePics.length}`}
                         mainSrc={thePics[pIndex]}//{`/images/test/${pIndex}.jpg`} 
                         nextSrc={thePics[((pIndex+1) % thePics.length)]}//{`/images/test/${((pIndex+1) % slidesData.length)}.jpg`}  
                         prevSrc={thePics[((pIndex + thePics.length - 1) % thePics.length)]}//{`/images/test/${((pIndex + slidesData.length - 1) % slidesData.length)}.jpg`}  
