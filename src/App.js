@@ -121,48 +121,49 @@ export default class App extends Component {
       this.setState({menuChoice:choice});
   }
 
-  getTargetPhotos = (theID, contextType) => {
+  getTargetPhotos = (theElement, contextType) => {
     const targetPhotos = [];
     switch(contextType){
       case 'listing':
-        const { listings } = this.state;
+        /*const { listings } = this.state;
         const listing = listings ? listings.find(listing => listing.listing_id.toString() === theID.toString()) : null;
         for (var x=0; x<parseInt(listing.numOfPics); x++){
           let url = process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/" + x;
           targetPhotos.push(url);
-        }
+        }*/
         break;
       case 'vehicle':
-        const { vehicles } = this.state;
+        /*const { vehicles } = this.state;
         const vehicle = vehicles ? vehicles.find(vehicle => vehicle.vehicle_id.toString() === theID.toString()) : null;
         for (var y=0; y<parseInt(vehicle.numOfPics); y++){
           let url = process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/" + y;
           targetPhotos.push(url);
-        }
+        }*/
         break;
       case 'product':
-          const { products } = this.state;
-          const product = products ? products.find(product => product.product_id.toString() === theID.toString()) : null;
+          //const { products } = this.state;
+          //const product = products ? products.find(product => product.product_id.toString() === theID.toString()) : null;
+          const product = theElement;
           for (var z=0; z<parseInt(product.numOfPics); z++){
             let url = process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/" + z;
             targetPhotos.push(url);
           }
           break;
       case 'service':
-        const { services } = this.state;
+        /*const { services } = this.state;
         const service = services ? services.find(service => service.service_id.toString() === theID.toString()) : null;
         for (var i=0; i<parseInt(service.numOfPics); i++){
           let url = process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/" + i;
           targetPhotos.push(url);
-        }
+        }*/
         break;
       case 'item':
-        const { items } = this.state;
+        /*const { items } = this.state;
         const item = items ? items.find(item => item.item_id.toString() === theID.toString()) : null;
         for (var j=0; j<parseInt(item.numOfPics); j++){
           let url = process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/" + j;
           targetPhotos.push(url);
-        }
+        }*/
         break;
       default:
         break;
@@ -180,9 +181,26 @@ export default class App extends Component {
     return vehicles ? vehicles.find(vehicle => vehicle.vehicle_id.toString() === vehicleID.toString()) : null;
   }
 
-  getProduct = (productID) => {
+  getProduct = async (productID) => {
+    //const { products } = this.state;
+    //return products ? products.find(product => product.product_id.toString() === productID.toString()) : null;
     const { products } = this.state;
-    return products ? products.find(product => product.product_id.toString() === productID.toString()) : null;
+    const product = products ? products.find(product => product.product_id.toString() === productID.toString()) : null;
+    //console.log(pree === undefined);
+    let result;
+    if (product === undefined || product === null){
+      const product_id = productID;
+      const val = await axios.post("/api/get-product",{product_id}).catch(error => {console.log(error)});
+      if (val.status === 200){
+        result = val.data;
+      }else{
+        result = false;
+      }
+      
+    }else{
+      result = product;
+    }
+    return result;
   }
 
   getService = (serviceID) => {

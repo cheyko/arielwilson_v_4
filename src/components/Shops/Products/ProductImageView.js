@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Lightbox from 'react-image-lightbox';
+import { useNavigate } from 'react-router-dom';
 import Slider from "react-slick";
 import withContext from "../../../withContext";
 
@@ -12,6 +13,8 @@ const ProductImageView = props => {
     const [openImage, setOpen] = useState(false);
     const [pIndex, setIndex] = useState(0);
     const show = thePics.length < 3 ? thePics.length : 3;
+
+    let navigate = useNavigate();
 
     useEffect(() => {
 
@@ -62,6 +65,8 @@ const ProductImageView = props => {
       };
       return(
           <div className="box imagesContainer">
+            <button className="button is-fixed" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i></button>
+            <br/>
             <div className="slick-wrapper">
                 <div className="currentSlide">
                     <Slider

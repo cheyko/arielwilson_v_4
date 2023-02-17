@@ -8,25 +8,41 @@ import SimilarProduct from "./SimilarProduct";
 
 import { useNavigate, useParams } from "react-router-dom";
 import $ from 'jquery';
+import { useState } from "react";
 
 
 const ViewProduct = props => {
 
+    let {id} = useParams();
+
+    const [product, setProduct] = useState(null);
+    const [thePics, setPics] = useState(null);
+
     useEffect(() => {
         window.scrollTo(0, 0);
         $('#rightContent').scrollTop(0); //did not work as expected
-    }, []);
+        if (product === null){
+            props.context.getProduct(id).then((promise) => {
+                if(promise){
+                    setProduct(promise);
+                    setPics(props.context.getTargetPhotos(promise, "product"));
+                    console.log(promise);
+                }
+            });
+        }
 
-    let product = localStorage.getItem("vehicle");
+    }, [product]);
+
+    /*let product = localStorage.getItem("vehicle");
     let thePics = localStorage.getItem("thePics");
-    let {id} = useParams();
+    
     const result = props.context.getProduct(id);
     
     product = (result === null) ? JSON.parse(product) : result;
     thePics =  (result === null) ? JSON.parse(thePics) : props.context.getTargetPhotos(product.product_id, "product");
     
     localStorage.setItem("product", JSON.stringify(product));
-    localStorage.setItem("thePics", JSON.stringify(thePics));
+    localStorage.setItem("thePics", JSON.stringify(thePics));*/
 
     //implement input where items are added in a list ///
     const interior = ['Overhead Airbags','Power Locks','Power Mirrors','Power Windows','Side Airbags'];
@@ -47,32 +63,37 @@ const ViewProduct = props => {
     
     return (
         <div className="hero">
-            <div className="listing-view">
-                <div className="vehicle-content">
-                    <div className="columns">
-                        <div className="leftContent column is-half">
-                            <div className="hero-body viewing-controls">
-                                <button className="button is-fixed" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+            {product ?
+                <div className="hero-container">
+                    <div className="product-content">
+                        <div className="columns is-multiline">
+                            <div className="leftContent column">
+                                <ProductImageView product={product} thePics={thePics}/>
                             </div>
-                            <br />
-                            <ProductImageView product={product} thePics={thePics}/>
-                        </div>
-                        <div className="productlistContainer rightContent column is-half">
-                            <div className="content box">
-                                <ProductDetail product={product} />
-                            </div>
-                            <hr />
-                            <div className="content box">
-                                <ProductFeatures product={product} interior={interior} exterior={exterior} entertainment={entertainment} technology={technology} comfort={comfort}/>
-                            </div>
-                            <hr />
-                            <div className="item-box content box">
-                                <SimilarProduct product={product}/> 
+                            <div className="rightContent column">
+                                <div className="content box">
+                                    <ProductDetail product={product} />
+                                </div>
+                                <hr />
+                                <div className="content box">
+                                    <ProductFeatures product={product} interior={interior} exterior={exterior} entertainment={entertainment} technology={technology} comfort={comfort}/>
+                                </div>
+                                <hr />
+                                <div className="item-box content box">
+                                    <SimilarProduct product={product}/> 
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>:
+                <div className="hero-container">
+                    <div className="hero-body">
+                        <span className="is-size-3" style={{color:"gray"}}>
+                            Product is not found !
+                        </span>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     )
 }

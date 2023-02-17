@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import withContext from "../../../withContext";
 import axios from "axios";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement('#root');
 
@@ -72,6 +73,8 @@ const ProductsAdd = props => {
     const [packageInfo, setPackage] = useState("");
     const [description, setDescription] = useState("");
     const [photos, setPhotos] = useState([]);
+
+    let navigate = useNavigate();
 
     //add
     //Performance => Torque, Horsepower, Fuel Capacity
@@ -166,14 +169,22 @@ const ProductsAdd = props => {
         } 
         setParking(newArray);
     };*/
+    const getDateTime = () => {
+        const original = new Date();
+        const isoVal = original.toString();
+        const result = isoVal.split("GMT")[0];
+        //console.log(result);
+        return result;
+    }
 
     const saveProduct = async (e) => {
         e.preventDefault();
         setResponseMsg("");
         const user_id = props.context.user.id;
-        
+        var theDateTime = getDateTime();
         if (name && category && price && stock){
             const formData = new FormData();
+            formData.append('theDateTime',theDateTime);
             formData.append('user_id',user_id);
             formData.append('brand',brand);
             formData.append('name',name);
@@ -202,7 +213,8 @@ const ProductsAdd = props => {
                     if (result.status === 200){
                         setResponseMsg("Product was saved.");
                         //const numOfPics = result.data.numOfPics;
-                        //const product_id = result.data.product_id;
+                        const product_id = result.data.product_id;
+                        navigate('/product-view/'+product_id);
                         //add listing to context 
                         /********* */
                         clearFunc();

@@ -35,7 +35,7 @@ const MediaHeader = props => {
     }
     
     function getFullTime(aTime){
-        console.log(aTime.getHours());
+        //console.log(aTime.getHours());
         if (aTime.getHours() < 12){
             return aTime.getHours() + ":" + (aTime.getMinutes() < 10 ? ("0" + aTime.getMinutes()) : aTime.getMinutes()) + "am";
         }else if (aTime.getHours() === 12){

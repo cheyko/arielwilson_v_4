@@ -5,7 +5,7 @@ import os
 
 from flask import request, jsonify
 from sqlalchemy import or_ , and_
-from api.models import db, User, Accesses, Profile
+from api.models import db, User, Accesses, Profile, Pree
 from api.specials import Listing, Vehicle, Product, Item, Service
 
 ###############----shops.py-----##############
@@ -89,8 +89,11 @@ def products():
         photos = request.files.getlist("photos")
         numOfPics = (len(photos))
         colors = result["colors"].split(',')
+        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="product")
+        db.session.add(newPree)
+        db.session.flush()
         #newAddress = Address(address1=result["address1"],address2=result["address2"],town=result["town"],parish=result["parish"])
-        newProduct = Product(lister=result["user_id"],brand=result["brand"],name=result["name"],category=result["category"],condition=result["condition"],typeOf=result["typeOf"],location=result["location"],stock=result["stock"],price=result["price"],currency=result["currency"],year=result["year"],colors=colors,package=result["packageInfo"],description=result["description"], numOfPics=numOfPics)
+        newProduct = Product(pree_id=newPree.pree_id,lister=result["user_id"],brand=result["brand"],name=result["name"],category=result["category"],condition=result["condition"],typeOf=result["typeOf"],location=result["location"],stock=result["stock"],price=result["price"],currency=result["currency"],year=result["year"],colors=colors,package=result["packageInfo"],description=result["description"], numOfPics=numOfPics)
         db.session.add(newProduct)
         db.session.flush()
         prefix = "product" + str(newProduct.product_id)
@@ -102,6 +105,18 @@ def products():
             pic.save(os.path.join(product_folder , filename))
         db.session.commit()
         return jsonify({"msg": "added successfully", "product_id":newProduct.product_id, "numOfPics":numOfPics}), 200
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
+@app.route('/api/get-product', methods=['POST'])
+def get_product():
+    if request.method == 'POST':
+        product_id = request.json.get('product_id', None)
+        product = Product.query.get(product_id)
+        if product.is_visible == True:
+            productObj = {"product_id":product.product_id,"pree_id":product.pree_id,"lister":product.lister,"brand":product.brand,"name":product.name,"category":product.category,"condition":product.condition,"typeOf":product.typeOf,"location":product.location,"stock":product.stock,"price":product.price,"currency":product.currency, "year": product.year, "colors": product.colors, "package": product.package, "description": product.description, "numOfPics":product.numOfPics}
+            return productObj, 200
+        else:
+            return {"msg":"product no longer is visible"}, 201
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/items', methods=['GET', 'POST'])

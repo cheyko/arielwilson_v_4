@@ -48,7 +48,7 @@ const Shops = props => {
             });
         }
         if (shopView === ""){
-            let reloadView = JSON.parse(localStorage.getItem("shopView"));
+            let reloadView = localStorage.getItem("shopView");
             if(reloadView){
                 setShopView(reloadView);
             }else{

@@ -18,8 +18,8 @@ const ProductItem = props => {
                 </b>
                 <br />
                 <strong><span className="tag is-danger is-bold"> ${product.price.toLocaleString()}{" "}{product.currency}</span></strong>
-                <br/>
-                <div>{product.description}</div>
+                {/*<br/>
+                <div>{product.description}</div>*/}
               </div>
           </div>  
           

@@ -40,10 +40,10 @@
     display: block !important;
 }
 
-.self-column{
+/*.self-column{
     padding: 0.1rem 0 !important;
     margin-inline: 2.5rem !important;
-}
+}*/
 .shop-content{
     margin: 0 auto !important;
 }
@@ -82,7 +82,7 @@
     padding: 0.5rem !important;
 }
 
-.self-column .fixed-card{
+/*.self-column .fixed-card{
     width: 59rem !important;
 }
 
@@ -100,7 +100,7 @@
     width: 13rem;
     background-color:"white";
     z-index: 2 !important;
-}
+}*/
 
 .slogan{
     background: rgba(236, 228, 228, 0.5);
@@ -135,10 +135,10 @@
     padding: 0.5rem !important;
 }
 
-.reduced-column .card-content{
+/*.reduced-column .card-content{
     height: 12rem !important;
     padding: 0.5rem !important;
-}
+}*/
 
 .checkbox{
     margin: 0.5rem;
@@ -162,13 +162,13 @@
 .product-card img{
     height: 12rem !important;
 }
-.self-column .product-card .card-content{
+/*.self-column .product-card .card-content{
     height: 7rem !important;
 }
 
 .reduced-column .product-card .card-content{
     height: 8rem !important;
-}
+}*/
 
 .listing-card a, .vehicle-card a{
     color: black;
@@ -197,8 +197,8 @@
 }
 
 .imagesContainer {
-    height: 33rem;
-    width: 31.5rem;
+    height: 100vh;
+    width: 37.5%;
     position: fixed;
     padding-inline: 1.75rem !important;
     margin-inline: 0.5rem !important;
@@ -286,7 +286,7 @@
         margin-left: 0.5rem !important;
     }
 
-    .self-column .fixed-card{
+    /*.self-column .fixed-card{
         width: 50rem !important;
     }
     .reduced-column .fixed-card{
@@ -299,7 +299,7 @@
 
     .self-column .sub-content{
         width: 50rem !important;
-    }
+    }*/
 
     .listing-content, .vehicle-content{
         margin: 0 !important;
@@ -307,8 +307,8 @@
     }
 
     .imagesContainer {
-        height: 33rem;
-        width: 23rem;
+        height: auto;
+        width: auto;
         position: fixed;
     }
     
@@ -337,7 +337,7 @@
         padding-left: 0.5rem !important;
     }
 
-    .self-column .fixed-card{
+    /*.self-column .fixed-card{
         width: 50rem !important;
     }
     
@@ -350,7 +350,7 @@
     }
     .self-column .sub-content{
         width: 50rem !important;
-    }
+    }*/
 
     .listing-content, .vehicle-content{
         margin: 0.25rem !important;
@@ -387,7 +387,7 @@
         margin-left: 0.5rem !important;
         padding-left: 0.5rem !important;
     }
-    .self-column .fixed-card{
+    /*.self-column .fixed-card{
         width: 48.5rem !important;
     }
         
@@ -400,7 +400,7 @@
     }
     .self-column .sub-content{
         width: 48.5rem !important;
-    }
+    }*/
 
     .listing-content, .vehicle-content{
         margin: 0.25rem !important;
@@ -418,15 +418,15 @@
         height: 10rem !important;
     }
 
-    .self-column{
+    /*.self-column{
         padding: 0 !important;
         margin-inline: 0 !important;
-    }
+    }*/
     
 }
 @media screen and (max-width:375px){
 
-    .self-column .fixed-card{
+    /*.self-column .fixed-card{
         width: 23.5rem !important;
     }
         
@@ -439,7 +439,7 @@
     }
     .self-column .sub-content{
         width: 23.5rem !important;
-    }
+    }*/
 
     .listing-content, .vehicle-content{
         margin: 0.25rem !important;
@@ -465,7 +465,7 @@
 
 @media screen and (max-width:320px){
 
-    .self-column .fixed-card{
+    /*.self-column .fixed-card{
         width: 21.75rem !important;
     }
         
@@ -478,7 +478,7 @@
     }
     .self-column .sub-content{
         width: 21.75rem !important;
-    }
+    }*/
 
     .listing-content, .vehicle-content{
         margin: 0.25rem !important;
@@ -486,8 +486,8 @@
     }
 
     .imagesContainer {
-        height: 33rem;
-        width: 20rem;
+        height: auto;
+        width: auto;
         position: relative;
     }
 
@@ -495,8 +495,8 @@
         height: 10rem !important;
     }
     
-    .self-column{
+    /*.self-column{
         padding: 0 !important;
         margin-inline: 0 !important;
-    }
+    }*/
 }

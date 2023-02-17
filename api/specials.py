@@ -101,6 +101,7 @@ class Product(db.Model):
 
     product_id = db.Column(db.Integer, db.Sequence('wg_products_product_id_seq'), primary_key=True)
     lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
     name = db.Column(db.String(255))
     brand = db.Column(db.String(80))
     category = db.Column(db.String(80))

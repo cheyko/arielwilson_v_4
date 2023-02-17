@@ -9,7 +9,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from flask import request, jsonify
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree, Approvals, Media, Quote, Exclusive, ExclusiveSale, Subscriber, Subscription, GroupPree, Group
-from api.specials import Preepedia, Biography
+from api.specials import Preepedia, Biography, Product
 from api.relations import check_follower, check_following
 
 ###############-----actions.py----##############
@@ -76,6 +76,9 @@ def get_pree():
             elif pree.is_media and pree.pree_type == 'exclusive':
                 theExclusive = Exclusive.query.filter_by(pree_id = pree.pree_id).first()
                 attachment = {"exclusive_id":theExclusive.exclusive_id,"title":theExclusive.title, "artistname":theExclusive.artistname, "genre":theExclusive.genre, "captionlist":theExclusive.captionlist, "description":theExclusive.description, "playback":theExclusive.playback, "unlock_requirement": theExclusive.unlock_requirement, "is_locked":theExclusive.is_locked, "is_downloadable":theExclusive.is_downloadable, "unlock_fee":theExclusive.unlock_fee, "no_of_media":theExclusive.no_of_media, "mediatypes":theExclusive.mediatypes , "influence":theExclusive.influence,"stereo":theExclusive.stereo, "md" : theExclusive.md,"magazine":theExclusive.magazine, "views":theExclusive.views , "has_cover_art":theExclusive.has_cover_art }
+            elif pree.is_media and pree.pree_type == 'product':
+                product = Product.query.filter_by(pree_id = pree.pree_id).first()
+                attachment = {"product_id":product.product_id,"lister":product.lister,"brand":product.brand,"name":product.name,"category":product.category,"condition":product.condition,"typeOf":product.typeOf,"location":product.location,"stock":product.stock,"price":product.price,"currency":product.currency, "year": product.year, "colors": product.colors, "package": product.package, "description": product.description, "numOfPics":product.numOfPics}
             else:
                 theQuote = Quote.query.get(pree.pree_id)
                 attachment = {"the_quote":theQuote.the_quote}
@@ -109,12 +112,15 @@ def see_the_pree():
                 theProfile = Profile.query.get(pree.user_id)
                 #theUsers = User.query.join(Profile, User.user_id == Profile.user_id).filter(User.user_id == pree.user_id)
                 userObj = {"user_id":theUser.user_id, "username":theUser.username,"access-type":theUser.accessType, "has_dp":theProfile.has_dp}
-                if pree.is_media and pree.pree_type != 'exclusive':
+                if pree.is_media and pree.pree_type == 'individual':
                     theMedia = Media.query.get(pree.pree_id)
                     attachment = {"caption":theMedia.caption, "no_of_media":theMedia.no_of_media, "has_image":theMedia.has_image, "has_audio":theMedia.has_audio, "has_video":theMedia.has_video}
                 elif pree.is_media and pree.pree_type == 'exclusive':
                     theExclusive = Exclusive.query.filter_by(pree_id = pree.pree_id).first()
                     attachment = {"exclusive_id":theExclusive.exclusive_id,"title":theExclusive.title, "artistname":theExclusive.artistname, "genre":theExclusive.genre, "captionlist":theExclusive.captionlist, "description":theExclusive.description, "playback":theExclusive.playback, "unlock_requirement": theExclusive.unlock_requirement, "is_locked":theExclusive.is_locked, "is_downloadable":theExclusive.is_downloadable, "unlock_fee":theExclusive.unlock_fee, "no_of_media":theExclusive.no_of_media, "mediatypes":theExclusive.mediatypes , "influence":theExclusive.influence,"stereo":theExclusive.stereo, "md" : theExclusive.md,"magazine":theExclusive.magazine, "views":theExclusive.views, "has_cover_art":theExclusive.has_cover_art }
+                elif pree.is_media and pree.pree_type == 'product':
+                    product = Product.query.filter_by(pree_id = pree.pree_id).first()
+                    attachment = {"product_id":product.product_id,"lister":product.lister,"brand":product.brand,"name":product.name,"category":product.category,"condition":product.condition,"typeOf":product.typeOf,"location":product.location,"stock":product.stock,"price":product.price,"currency":product.currency, "year": product.year, "colors": product.colors, "package": product.package, "description": product.description, "numOfPics":product.numOfPics}
                 else:
                     theQuote = Quote.query.get(pree.pree_id)
                     attachment = {"the_quote":theQuote.the_quote}
