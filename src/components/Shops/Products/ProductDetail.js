@@ -35,9 +35,9 @@ const ProductDetail = props =>{
                         </div>
                     </div>
                     <div>
-                        <p className="has-text-centered">
+                        <div className="has-text-centered">
                             <span> <ContactModal /> </span>
-                        </p>
+                        </div>
                     </div>
                     <br />
                     <div className="rows">

@@ -105,13 +105,13 @@ const ProductsList = props => {
 
     return (
         <div className="hero has-text-centered">
-            <div className="hero-contain">
+            <div className="">
                 <div className="filter-list">
                     <div className="card" onClick={e => setShow(!showFilter)}>
                         <i style={{fontSize:"x-large"}} className="button fas fa-caret-down">&nbsp; filter list </i>
                     </div>
                     {showFilter &&
-                        <div className="card">
+                        <div className="card hero-body">
                             <div className="columns is-multiline">
 
                                 <div className="column is-6">
@@ -356,7 +356,7 @@ const ProductsList = props => {
                             <div className="columns is-multiline is-mobile">
                             {slice && slice.length > 0 ? (
                                 slice.map((product, index) => (
-                                    <div key={index} className="column is-one-third-desktop is-full-mobile has-text-centered">
+                                    <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                         <ProductItem
                                             imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0"}
                                             product={product}

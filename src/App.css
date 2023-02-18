@@ -448,6 +448,9 @@ ul .is-active{
     padding: 1rem;
   }*/
 
+  .column.is-half-tablet {
+    width: 50% !important;
+  }
   .mobile-menu{
     display: block !important;
   }
