@@ -296,6 +296,20 @@
 /*.market-card .content{
     height:70% !important;
 }*/
+
+.market-home .slick-wrapper{
+    max-width: 45rem !important;
+}
+
+.productlistContainer .market-title{
+    height: 5rem !important;
+}
+@media screen and (max-width:1200px) and (min-width:1001px){
+    .market-home .slick-wrapper{
+        max-width: 40rem !important;
+    }
+}
+
 @media screen and (max-width:1000px) and (min-width:769px){
     .cart-container{
         width: 17.5rem;
@@ -306,6 +320,9 @@
         margin-left: 0.5rem !important;
     }
 
+    .market-home .slick-wrapper{
+        max-width: 40rem !important;
+    }
     /*.market-image img, .market-image{
         height:192px !important;
         width:192px !important;
@@ -369,6 +386,9 @@
         padding-left: 0.5rem !important;
     }
 
+    .market-home .slick-wrapper{
+        max-width: 35rem !important;
+    }
     /*.market-image img, .market-image{
         height:192px !important;
         width:192px !important;
@@ -421,6 +441,12 @@
     }
     
 }
+
+@media screen and (max-width:600px) and (min-width:425px){
+    .market-home .slick-wrapper{
+        max-width: 20rem !important;
+    }
+}
 @media screen and (max-width:424px){
 
     .cart-container{
@@ -430,6 +456,10 @@
         width: 75%;
         margin-left: 0.5rem !important;
         padding-left: 0.5rem !important;
+    }
+
+    .market-home .slick-wrapper{
+        max-width: 18rem !important;
     }
 
     /*.market-image img, .market-image{

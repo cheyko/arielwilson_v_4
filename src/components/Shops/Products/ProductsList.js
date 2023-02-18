@@ -361,6 +361,7 @@ const ProductsList = props => {
                                             imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0"}
                                             product={product}
                                             key={index}
+                                            page={"list"}
                                         />
                                     </div>
                                 ))

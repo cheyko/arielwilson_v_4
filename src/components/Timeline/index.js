@@ -155,13 +155,13 @@ const Timeline = props => {
             if(aPree.pree_type === 'exclusive'){
                 return <TimelineExclusive aPree={aPree} key={index}  />
             }else if(aPree.pree_type === 'product'){
-                return <MarketPree aPree={aPree} key={index}  />
+                return <MarketPree aPree={aPree} key={index} index={index}  />
             }else{
                 return <PreeItem aPree={aPree} key={index} showComments={false} clickable={"expand"} />
             }
         })
     }
-    
+
     return (
         <div id="timeline-div" className="hero">
             <div className="hero-container">

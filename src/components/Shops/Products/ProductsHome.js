@@ -48,13 +48,13 @@ const ProductsHome = props => {
         centerPadding: '10px',
         responsive:[
           {
-            breakpoint: 400,
+            breakpoint: 426,
             settings: {
                 slidesToShow: 1,
             }
           },
           {
-            breakpoint: 600,
+            breakpoint: 770,
             settings: {
                 slidesToShow: 2,
             }
@@ -78,7 +78,7 @@ const ProductsHome = props => {
     const [showDropDownRight, setShowDropDownRight] = useState(false);
 
     return(
-        <div>
+        <div className="market-home">
             <div className="hero products-bg-one is-medium">
                 <div className="hero-contain has-text-centered">
                     <br /><br />
@@ -111,6 +111,7 @@ const ProductsHome = props => {
                                                         imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0"}
                                                         product={product}
                                                         key={index}
+                                                        page={"home"}
                                                     />
                                                 </div>
                                             ))}
