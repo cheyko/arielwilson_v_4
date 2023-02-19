@@ -125,13 +125,13 @@ const ProductItem = props => {
                 
               </span>
               <span className="card-footer-item">
-                <strong><span className="tag"> In-Stock</span></strong>
+                <strong><span className="tag">5 left in stock</span></strong>
                 
               </span>
             </footer>
           <footer className="card-footer">
               <span className="card-footer-item">
-                <button className="button is-info is-small"
+                <button className="button is-info"
                   onClick={() => 
                       props.addToCart({
                           id: product.id,

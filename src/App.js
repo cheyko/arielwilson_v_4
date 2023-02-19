@@ -127,18 +127,22 @@ export default class App extends Component {
       case 'listing':
         /*const { listings } = this.state;
         const listing = listings ? listings.find(listing => listing.listing_id.toString() === theID.toString()) : null;
+        */
+       const listing = theElement;
         for (var x=0; x<parseInt(listing.numOfPics); x++){
           let url = process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/" + x;
           targetPhotos.push(url);
-        }*/
+        }
         break;
       case 'vehicle':
         /*const { vehicles } = this.state;
         const vehicle = vehicles ? vehicles.find(vehicle => vehicle.vehicle_id.toString() === theID.toString()) : null;
+        */
+       const vehicle = theElement;
         for (var y=0; y<parseInt(vehicle.numOfPics); y++){
           let url = process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/" + y;
           targetPhotos.push(url);
-        }*/
+        }
         break;
       case 'product':
           //const { products } = this.state;
@@ -151,19 +155,21 @@ export default class App extends Component {
           break;
       case 'service':
         /*const { services } = this.state;
-        const service = services ? services.find(service => service.service_id.toString() === theID.toString()) : null;
+        const service = services ? services.find(service => service.service_id.toString() === theID.toString()) : null;*/
+        const service = theElement;
         for (var i=0; i<parseInt(service.numOfPics); i++){
           let url = process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/" + i;
           targetPhotos.push(url);
-        }*/
+        }
         break;
       case 'item':
         /*const { items } = this.state;
-        const item = items ? items.find(item => item.item_id.toString() === theID.toString()) : null;
+        const item = items ? items.find(item => item.item_id.toString() === theID.toString()) : null;*/
+        const item = theElement;
         for (var j=0; j<parseInt(item.numOfPics); j++){
           let url = process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/" + j;
           targetPhotos.push(url);
-        }*/
+        }
         break;
       default:
         break;
@@ -171,14 +177,42 @@ export default class App extends Component {
     return targetPhotos;
   }
 
-  getListing = (listingID) => {
+  getListing = async (listingID) => {
     const { listings } = this.state;
-    return listings ? listings.find(listing => listing.listing_id.toString() === listingID.toString()) : null;
+    const listing = listings ? listings.find(listing => listing.listing_id.toString() === listingID.toString()) : null;
+    let result;
+    if (listing === undefined || listing === null){
+      const listing_id = listingID;
+      const val = await axios.post("/api/get-listing",{listing_id}).catch(error => {console.log(error)});
+      if (val.status === 200){
+        result = val.data;
+      }else{
+        result = false;
+      }
+      
+    }else{
+      result = listing;
+    }
+    return result;
   }
 
-  getVehicle = (vehicleID) => {
+  getVehicle = async (vehicleID) => {
     const { vehicles } = this.state;
-    return vehicles ? vehicles.find(vehicle => vehicle.vehicle_id.toString() === vehicleID.toString()) : null;
+    const vehicle = vehicles ? vehicles.find(vehicle => vehicle.vehicle_id.toString() === vehicleID.toString()) : null;
+    let result;
+    if (vehicle === undefined || vehicle === null){
+      const vehicle_id = vehicleID;
+      const val = await axios.post("/api/get-vehicle",{vehicle_id}).catch(error => {console.log(error)});
+      if (val.status === 200){
+        result = val.data;
+      }else{
+        result = false;
+      }
+      
+    }else{
+      result = vehicle;
+    }
+    return result;
   }
 
   getProduct = async (productID) => {
@@ -203,14 +237,42 @@ export default class App extends Component {
     return result;
   }
 
-  getService = (serviceID) => {
+  getService = async (serviceID) => {
     const { services } = this.state;
-    return services ? services.find(service => service.service_id.toString() === serviceID.toString()) : null;
+    const service = services ? services.find(service => service.service_id.toString() === serviceID.toString()) : null;
+    let result;
+    if (service === undefined || service === null){
+      const service_id = serviceID;
+      const val = await axios.post("/api/get-service",{service_id}).catch(error => {console.log(error)});
+      if (val.status === 200){
+        result = val.data;
+      }else{
+        result = false;
+      }
+      
+    }else{
+      result = service;
+    }
+    return result;
   }
 
-  getItem = (itemID) => {
+  getItem = async (itemID) => {
     const { items } = this.state;
-    return items ? items.find(item => item.item_id.toString() === itemID.toString()) : null;
+    const item = items ? items.find(item => item.item_id.toString() === itemID.toString()) : null;
+    let result;
+    if (item === undefined || item === null){
+      const item_id = itemID;
+      const val = await axios.post("/api/get-item",{item_id}).catch(error => {console.log(error)});
+      if (val.status === 200){
+        result = val.data;
+      }else{
+        result = false;
+      }
+      
+    }else{
+      result = item;
+    }
+    return result;
   }
 
   addListing = (listing, callback) => {

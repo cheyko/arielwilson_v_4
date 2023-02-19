@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Lightbox from 'react-image-lightbox';
+import { useNavigate } from 'react-router-dom';
 import Slider from "react-slick";
 import withContext from "../../../withContext";
 
@@ -55,12 +56,14 @@ const VehicleImageView = props => {
 
       function testfunc(e){
           setOpen(true);
-          console.log(openImage);
-          console.log(pIndex);
           e.preventDefault();
       };
+
+      let navigate = useNavigate();
       return(
           <div className="box imagesContainer">
+            <button className="button" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+            <br/>
             <div className="slick-wrapper">
                 <div className="currentSlide">
                     <Slider

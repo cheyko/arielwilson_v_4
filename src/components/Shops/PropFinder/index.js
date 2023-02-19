@@ -28,7 +28,7 @@ const PropFinder = props => {
                             <PFHome setPFView={setPFView}/>
                         </div>
                     }
-                    {PFView === 'PFBuy' || PFView === 'PFRent' && 
+                    {(PFView === 'PFBuy' || PFView === 'PFRent') && 
                         <div className="content">
                             <PFList PFView={PFView} setPFView={setPFView} />
                         </div>
@@ -43,6 +43,13 @@ const PropFinder = props => {
                             <PFLodge />
                         </div>
                     }
+                    {PFView === 'PFRealtor' && 
+                        <div className="content">
+                            <div className="box">
+                                <h1>PropFinder Realtors</h1>
+                            </div>
+                        </div>
+                    }
                     {PFView === 'PFRenovate' && 
                         <div className="content">
                             <PFRenovate />
@@ -50,12 +57,16 @@ const PropFinder = props => {
                     }
                     {PFView === 'PFPS' && 
                         <div className="content">
-                            <h1>PropFinder Partnerships</h1>
+                            <div className="box">
+                                <h1>PropFinder Partnerships</h1>
+                            </div>
                         </div>
                     }
                     {PFView === 'PFInfo' && 
                         <div className="content">
-                            <h1>PF-I</h1>
+                            <div className="box">
+                                <h1>PF-I</h1>
+                            </div>
                         </div>
                     }
                 </div>

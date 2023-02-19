@@ -3,11 +3,22 @@ import withContext from '../../../withContext';
 import PFLItem from "./PFLItem";
 import ReactPaginate from 'react-paginate';
 import "./index.css";
+import axios from "axios";
 
 const PFList = props => {
     const {PFView} = props;
-    let fullList = props.context.listings;
+    let fullList = props.context.listings ? props.context.listings : [];
     const [listings, setListings] = useState(fullList);
+
+    if(listings.length == 0){
+        axios.get("/api/listings").then(res => {
+            if (res.status === 200){
+                setListings(res.data);
+                fullList = res.data;
+            }
+        });
+    }
+    
     const perPage = 12;
     const pageCount = Math.ceil(listings.length / perPage);
     let slice;
@@ -22,7 +33,7 @@ const PFList = props => {
     const [beds, setBeds] = useState("");
     const [baths, setBaths] = useState("");
     const [showFilter, setShow] = useState(false);
-    const [filter, setFilter] = useState(false);
+    const [filter, setFilter] = useState(null);
     const [sortOrder, setSortOrder] = useState("");
     const [fromVal, setFromVal] = useState(0);
     const [toVal, setToVal ] = useState(1000000000);
@@ -100,13 +111,13 @@ const PFList = props => {
 
     return (
         <div className="hero has-text-centered">
-            <div className="hero-contain">
+            <div className="">
                 <div className="filter-list">
                     <div className="card" onClick={e => setShow(!showFilter)}>
-                        <i style={{fontSize:"x-large"}} className="button fas fa-caret-down">&nbsp; filter list </i>
+                        <i style={{fontSize:"x-large"}} className="button fas fa-caret-down">&nbsp; Lookup Property </i>
                     </div>
                     {showFilter &&
-                        <div className="card">
+                        <div className="card hero-body">
                             <div className="columns is-multiline is-mobile">
                                 <div className="column is-12">
                                     <div className="columns">
@@ -327,27 +338,38 @@ const PFList = props => {
                         </div>
                     }
                     </div>
-                <div className="houselistContainer">
+                <div className="houselistContainer box">
                     <div className="columns is-multiline is-mobile">
                     {slice && slice.length > 0 ? (
                         slice.map((listing, index) => (
-                            <div key={index} className="column is-one-third-desktop is-full-mobile has-text-centered">
+                            <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                 <PFLItem
                                     imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0"}
                                     listing={listing}
                                     key={index}
+                                    page={"list"}
                                 />
                             </div>
                         ))
                     ) : (
-                        <div className="column has-text-centered">
-                        <span className="title has-text-grey-light">
-                            No Listing to match your search
-                        </span>
-                        </div>
+                        <>
+                            {(filter !== null) ?
+                                <div className="column has-text-centered">
+                                    <span className="title has-text-grey-light">
+                                        No Properties to match your search
+                                    </span>
+                                </div>
+                            :
+                                <div className="column has-text-centered">
+                                    <span className="title has-text-grey-light">
+                                        Loading Properties
+                                    </span>
+                                </div>
+                            }
+                        </>
                     )}
                     </div>
-                    <div className="card paginationBox">
+                    <div className="paginationBox">
                         <ReactPaginate
                             previousLabel="prev"
                             nextLabel="next"

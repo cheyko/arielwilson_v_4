@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import withContext from "../../../withContext";
 import axios from "axios";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement('#root');
 
@@ -57,6 +58,8 @@ const PFAdd = props => {
     const [parking, setParking] = useState([]);
     const [description, setDescription] = useState("");
     const [photos, setPhotos] = useState([]);
+
+    let navigate = useNavigate();
 
     const clearFunc = () => {
         setTitle("");
@@ -127,12 +130,21 @@ const PFAdd = props => {
         setParking(newArray);
     };
 
+    const getDateTime = () => {
+        const original = new Date();
+        const isoVal = original.toString();
+        const result = isoVal.split("GMT")[0];
+        //console.log(result);
+        return result;
+    }
+
     const saveProp = async (e) => {
         e.preventDefault();
         setResponseMsg("");
         const user_id = props.context.user.id;
-
+        var theDateTime = getDateTime();
         const formData = new FormData();
+        formData.append('theDateTime',theDateTime);
         formData.append('user_id',user_id);
         formData.append('title',title);
         formData.append('category',category);
@@ -160,7 +172,8 @@ const PFAdd = props => {
                 if (result.status === 200){
                     setResponseMsg("Property was saved.");
                     //const numOfPics = result.data.numOfPics;
-                    //const listing_id = result.data.listing_id;
+                    const listing_id = result.data.listing_id;
+                    navigate('/listing-view/'+listing_id);
                     //********* */
                     //add listing to context 
                     

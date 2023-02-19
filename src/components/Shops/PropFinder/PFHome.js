@@ -90,7 +90,7 @@ const PFHome = props => {
     console.log(listings);
 
     return(
-        <div>
+        <div className="market-home">
             <div className="hero pf-bg-one is-medium">
                 <div className="hero-contain has-text-centered">
                     <br /><br />

@@ -6,7 +6,7 @@ import ProductDetail from "./ProductDetail";
 import ProductFeatures from "./ProductFeatures";
 import SimilarProduct from "./SimilarProduct";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import $ from 'jquery';
 import { useState } from "react";
 
@@ -26,7 +26,6 @@ const ViewProduct = props => {
                 if(promise){
                     setProduct(promise);
                     setPics(props.context.getTargetPhotos(promise, "product"));
-                    console.log(promise);
                 }
             });
         }
@@ -58,9 +57,6 @@ const ViewProduct = props => {
 
     //console.log(Vehicle);
     //console.log(thePics);
-    
-    let navigate = useNavigate();
-    
     return (
         <div className="hero">
             {product ?
@@ -70,7 +66,7 @@ const ViewProduct = props => {
                             <div className="leftContent column">
                                 <ProductImageView product={product} thePics={thePics}/>
                             </div>
-                            <div className="productlistContainer rightContent column">
+                            <div className="rightContent column">
                                 <div className="content box">
                                     <ProductDetail product={product} />
                                 </div>
@@ -79,7 +75,7 @@ const ViewProduct = props => {
                                     <ProductFeatures product={product} interior={interior} exterior={exterior} entertainment={entertainment} technology={technology} comfort={comfort}/>
                                 </div>
                                 <hr />
-                                <div className="item-box content box">
+                                <div className="content box">
                                     <SimilarProduct product={product}/> 
                                 </div>
                             </div>

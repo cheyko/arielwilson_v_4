@@ -21,7 +21,7 @@ def listings():
         result = Listing.query.all()
         listings = []
         for listing in result:
-            listingObj = {"listing_id":listing.listing_id,"lister":listing.lister,"title":listing.title,"category":listing.category,"typeOf":listing.typeOf,"address":listing.address,"price":listing.price,"currency":listing.currency,"beds":listing.beds, "baths": listing.baths, "insideSqft": listing.insideSqft, "lotSqft": listing.lotSqft, "parking": listing.parking, "description": listing.description, "numOfPics":listing.numOfPics}
+            listingObj = {"listing_id":listing.listing_id,"lister":listing.lister,"pree_id":listing.pree_id,"title":listing.title,"category":listing.category,"typeOf":listing.typeOf,"address":listing.address,"price":listing.price,"currency":listing.currency,"beds":listing.beds, "baths": listing.baths, "insideSqft": listing.insideSqft, "lotSqft": listing.lotSqft, "parking": listing.parking, "description": listing.description, "numOfPics":listing.numOfPics}
             listings.append(listingObj)
         return json.dumps(listings)
     else:
@@ -29,8 +29,11 @@ def listings():
         photos = request.files.getlist("photos")
         numOfPics = (len(photos))
         parking = result["parking"].split(',')
+        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="listing")
+        db.session.add(newPree)
+        db.session.flush()
         #newAddress = Address(address1=result["address1"],address2=result["address2"],town=result["town"],parish=result["parish"])
-        newListing = Listing(lister=result["user_id"],title=result["title"],category=result["category"],typeOf=result["typeOf"],address=result["address"],price=result["price"],currency=result["currency"],beds=result["beds"],baths=result["baths"],insideSqft=result["insideSqft"],lotSqft=result["lotSqft"],parking=parking,description=result["description"], numOfPics=numOfPics)
+        newListing = Listing(pree_id=newPree.pree_id,lister=result["user_id"],title=result["title"],category=result["category"],typeOf=result["typeOf"],address=result["address"],price=result["price"],currency=result["currency"],beds=result["beds"],baths=result["baths"],insideSqft=result["insideSqft"],lotSqft=result["lotSqft"],parking=parking,description=result["description"], numOfPics=numOfPics)
         db.session.add(newListing)
         db.session.flush()
         prefix = "listing" + str(newListing.listing_id)
@@ -44,6 +47,18 @@ def listings():
         return jsonify({"msg": "added successfully", "listing_id":newListing.listing_id, "numOfPics":numOfPics}), 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
+@app.route('/api/get-listing', methods=['POST'])
+def get_listing():
+    if request.method == 'POST':
+        listing_id = request.json.get('listing_id', None)
+        listing = Listing.query.get(listing_id)
+        if listing.is_visible == True:
+            listingObj = {"listing_id":listing.listing_id,"lister":listing.lister,"pree_id":listing.pree_id,"title":listing.title,"category":listing.category,"typeOf":listing.typeOf,"address":listing.address,"price":listing.price,"currency":listing.currency,"beds":listing.beds, "baths": listing.baths, "insideSqft": listing.insideSqft, "lotSqft": listing.lotSqft, "parking": listing.parking, "description": listing.description, "numOfPics":listing.numOfPics}
+            return listingObj, 200
+        else:
+            return {"msg":"product no longer is visible"}, 201
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
 ## development vehicles
 @app.route('/api/vehicles', methods=['GET', 'POST'])
 def vehicles():
@@ -51,16 +66,19 @@ def vehicles():
         result = Vehicle.query.all()
         vehicles = []
         for vehicle in result:
-            vehicleObj = {"vehicle_id":vehicle.vehicle_id,"lister":vehicle.lister,"make":vehicle.make,"model":vehicle.model,"condition":vehicle.condition,"typeOf":vehicle.typeOf,"fuel":vehicle.fuel,"transmission":vehicle.transmission,"mileage":vehicle.mileage,"location":vehicle.location,"price":vehicle.price,"currency":vehicle.currency,"engine":vehicle.engine, "year": vehicle.year, "color": vehicle.color, "steering": vehicle.steering, "ignition": vehicle.ignition, "seats":vehicle.seats, "description": vehicle.description, "numOfPics":vehicle.numOfPics}
+            vehicleObj = {"vehicle_id":vehicle.vehicle_id,"lister":vehicle.lister,"pree_id":vehicle.pree_id,"make":vehicle.make,"model":vehicle.model,"condition":vehicle.condition,"typeOf":vehicle.typeOf,"fuel":vehicle.fuel,"transmission":vehicle.transmission,"mileage":vehicle.mileage,"location":vehicle.location,"price":vehicle.price,"currency":vehicle.currency,"engine":vehicle.engine, "year": vehicle.year, "color": vehicle.color, "steering": vehicle.steering, "ignition": vehicle.ignition, "seats":vehicle.seats, "description": vehicle.description, "numOfPics":vehicle.numOfPics}
             vehicles.append(vehicleObj)
         return json.dumps(vehicles)
     else:
         result = request.form
         photos = request.files.getlist("photos")
         numOfPics = (len(photos))
+        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="vehicle")
+        db.session.add(newPree)
+        db.session.flush()
         #parking = result["parking"].split(',')
         #newAddress = Address(address1=result["address1"],address2=result["address2"],town=result["town"],parish=result["parish"])
-        newVehicle = Vehicle(lister=result["user_id"],make=result["make"],model=result["model"],condition=result["condition"],typeOf=result["typeOf"],fuel=result["fuel"],transmission=result["transmission"],mileage=result["mileage"],location=result["location"],price=result["price"],currency=result["currency"],engine=result["engine"],year=result["year"],color=result["color"],steering=result["steering"],ignition=result["ignition"], seats=result["seats"],description=result["description"], numOfPics=numOfPics)
+        newVehicle = Vehicle(pree_id=newPree.pree_id,lister=result["user_id"],make=result["make"],model=result["model"],condition=result["condition"],typeOf=result["typeOf"],fuel=result["fuel"],transmission=result["transmission"],mileage=result["mileage"],location=result["location"],price=result["price"],currency=result["currency"],engine=result["engine"],year=result["year"],color=result["color"],steering=result["steering"],ignition=result["ignition"], seats=result["seats"],description=result["description"], numOfPics=numOfPics)
         db.session.add(newVehicle)
         db.session.flush()
         prefix = "vehicle" + str(newVehicle.vehicle_id)
@@ -74,6 +92,18 @@ def vehicles():
         return jsonify({"msg": "added successfully", "vehicle_id":newVehicle.vehicle_id, "numOfPics":numOfPics}), 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
+@app.route('/api/get-vehicle', methods=['POST'])
+def get_vehicle():
+    if request.method == 'POST':
+        vehicle_id = request.json.get('vehicle_id', None)
+        vehicle = Vehicle.query.get(vehicle_id)
+        if vehicle.is_visible == True:
+            vehicleObj = {"vehicle_id":vehicle.vehicle_id,"lister":vehicle.lister,"pree_id":vehicle.pree_id,"make":vehicle.make,"model":vehicle.model,"condition":vehicle.condition,"typeOf":vehicle.typeOf,"fuel":vehicle.fuel,"transmission":vehicle.transmission,"mileage":vehicle.mileage,"location":vehicle.location,"price":vehicle.price,"currency":vehicle.currency,"engine":vehicle.engine, "year": vehicle.year, "color": vehicle.color, "steering": vehicle.steering, "ignition": vehicle.ignition, "seats":vehicle.seats, "description": vehicle.description, "numOfPics":vehicle.numOfPics}
+            return vehicleObj, 200
+        else:
+            return {"msg":"product no longer is visible"}, 201
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
 ## development products
 @app.route('/api/products', methods=['GET', 'POST'])
 def products():
@@ -81,7 +111,7 @@ def products():
         result = Product.query.all()
         products = []
         for product in result:
-            productObj = {"product_id":product.product_id,"lister":product.lister,"brand":product.brand,"name":product.name,"category":product.category,"condition":product.condition,"typeOf":product.typeOf,"location":product.location,"stock":product.stock,"price":product.price,"currency":product.currency, "year": product.year, "colors": product.colors, "package": product.package, "description": product.description, "numOfPics":product.numOfPics}
+            productObj = {"product_id":product.product_id,"lister":product.lister,"pree_id":product.pree_id,"brand":product.brand,"name":product.name,"category":product.category,"condition":product.condition,"typeOf":product.typeOf,"location":product.location,"stock":product.stock,"price":product.price,"currency":product.currency, "year": product.year, "colors": product.colors, "package": product.package, "description": product.description, "numOfPics":product.numOfPics}
             products.append(productObj)
         return json.dumps(products)
     else:
@@ -125,7 +155,7 @@ def items():
         result = Item.query.all()
         items = []
         for item in result:
-            itemObj = {"item_id":item.item_id,"lister":item.lister,"name":item.name,"category":item.category,"typeOf":item.typeOf,"calories":item.calories,"price":item.price,"currency":item.currency, "ingredients": item.ingredients, "description": item.description, "numOfPics":item.numOfPics}
+            itemObj = {"item_id":item.item_id,"lister":item.lister,"pree_id":item.pree_id,"name":item.name,"category":item.category,"typeOf":item.typeOf,"calories":item.calories,"price":item.price,"currency":item.currency, "ingredients": item.ingredients, "description": item.description, "numOfPics":item.numOfPics}
             items.append(itemObj)
         return json.dumps(items)
     else:
@@ -133,8 +163,11 @@ def items():
         media = request.files.getlist("media")
         numOfPics = (len(media))
         ingredients = result["ingredients"].split(',')
+        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="item")
+        db.session.add(newPree)
+        db.session.flush()
         #newAddress = Address(address1=result["address1"],address2=result["address2"],town=result["town"],parish=result["parish"])
-        newItem = Item(lister=result["user_id"],name=result["name"],category=result["category"],typeOf=result["typeOf"],calories=result["calories"],price=result["price"],currency=result["currency"],ingredients=ingredients,description=result["description"], numOfPics=numOfPics)
+        newItem = Item(pree_id=newPree.pree_id,lister=result["user_id"],name=result["name"],category=result["category"],typeOf=result["typeOf"],calories=result["calories"],price=result["price"],currency=result["currency"],ingredients=ingredients,description=result["description"], numOfPics=numOfPics)
         db.session.add(newItem)
         db.session.flush()
         prefix = "item" + str(newItem.item_id)
@@ -148,23 +181,37 @@ def items():
         return jsonify({"msg": "added successfully", "product_id":newItem.item_id, "numOfPics":numOfPics}), 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
+@app.route('/api/get-item', methods=['POST'])
+def get_item():
+    if request.method == 'POST':
+        item_id = request.json.get('item_id', None)
+        item = Item.query.get(item_id)
+        if item.is_visible == True:
+            itemObj = {"item_id":item.item_id,"lister":item.lister,"pree_id":item.pree_id,"name":item.name,"category":item.category,"typeOf":item.typeOf,"calories":item.calories,"price":item.price,"currency":item.currency, "ingredients": item.ingredients, "description": item.description, "numOfPics":item.numOfPics}
+            return itemObj, 200
+        else:
+            return {"msg":"product no longer is visible"}, 201
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
 @app.route('/api/services', methods=['GET', 'POST'])
 def services():
     if request.method == 'GET':
         result = Service.query.all()
         services = []
         for service in result:
-            serviceObj = {"service_id":service.service_id,"lister":service.lister,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics}
+            serviceObj = {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics}
             services.append(serviceObj)
         return json.dumps(services)
     else:
         result = request.form
         photos = request.files.getlist("media")
         numOfPics = (len(photos))
-        print(numOfPics)
         procedures = result["procedures"].split(',')
+        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="service")
+        db.session.add(newPree)
+        db.session.flush()
         #newAddress = Address(address1=result["address1"],address2=result["address2"],town=result["town"],parish=result["parish"])
-        newService = Service(lister=result["user_id"],title=result["title"],category=result["category"],deliverable=result["deliverable"],provider=result["provider"],contact=result["contact"],email=result["email"],timetaken=result["timetaken"],timeunit=result["timeunit"],price=result["price"],currency=result["currency"],procedures=procedures,description=result["description"], numOfPics=numOfPics)
+        newService = Service(pree_id=newPree.pree_id,lister=result["user_id"],title=result["title"],category=result["category"],deliverable=result["deliverable"],provider=result["provider"],contact=result["contact"],email=result["email"],timetaken=result["timetaken"],timeunit=result["timeunit"],price=result["price"],currency=result["currency"],procedures=procedures,description=result["description"], numOfPics=numOfPics)
         db.session.add(newService)
         db.session.flush()
         prefix = "service" + str(newService.service_id)
@@ -176,6 +223,18 @@ def services():
             pic.save(os.path.join(service_folder , filename))
         db.session.commit()
         return jsonify({"msg": "added successfully", "service_id":newService.service_id, "numOfPics":numOfPics}), 200
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
+@app.route('/api/get-service', methods=['POST'])
+def get_service():
+    if request.method == 'POST':
+        service_id = request.json.get('service_id', None)
+        service = Service.query.get(service_id)
+        if service.is_visible == True:
+            serviceObj = {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics}
+            return serviceObj, 200
+        else:
+            return {"msg":"product no longer is visible"}, 201
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 ## Production listings

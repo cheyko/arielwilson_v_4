@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import withContext from "../../../withContext";
 import Modal from "react-modal";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement('#root');
 
@@ -67,6 +68,8 @@ const ProductsAdd = props => {
     const [description, setDescription] = useState("");
     const [media, setMedia] = useState([]);
     const [mediatypes , setMediaTypes] = useState([]);
+
+    let navigate = useNavigate();
 
     const clearFunc = () => {
         setTitle("");
@@ -151,13 +154,23 @@ const ProductsAdd = props => {
         setProcedures(newArray);
     };
 
+    const getDateTime = () => {
+        const original = new Date();
+        const isoVal = original.toString();
+        const result = isoVal.split("GMT")[0];
+        //console.log(result);
+        return result;
+    }
+
     const saveService = async (e) => {
         e.preventDefault();
         setResponseMsg("");
         const user_id = props.context.user.id;
-        console.log(provider);
+        var theDateTime = getDateTime();
+        //console.log(provider);
         if (title && category && price ){
             const formData = new FormData();
+            formData.append('theDateTime',theDateTime);
             formData.append('user_id',user_id);
             formData.append('title',title);
             formData.append('category',category);
@@ -185,7 +198,9 @@ const ProductsAdd = props => {
                     if (result.status === 200){
                         setResponseMsg("Service was saved.");
                         //const numOfPics = result.data.numOfPics;
-                        //const service_id = result.data.service_id;
+                        const service_id = result.data.service_id;
+                        navigate('/service-view/' + service_id);
+                        
                         //add listing to context 
                         clearFunc();
                     }else{

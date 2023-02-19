@@ -9,6 +9,7 @@ class Listing(db.Model):
 
     listing_id = db.Column(db.Integer, db.Sequence('wg_listings_listing_id_seq'), primary_key=True)
     lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
     title = db.Column(db.String(255))
     category = db.Column(db.String(80))
     typeOf = db.Column(db.String(80))
@@ -26,7 +27,8 @@ class Listing(db.Model):
     is_available = db.Column(db.Boolean, default=True)
     is_visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self, lister, title, category, typeOf, address, price, currency, beds, baths, insideSqft, lotSqft, parking, description, numOfPics):
+    def __init__(self, pree_id, lister, title, category, typeOf, address, price, currency, beds, baths, insideSqft, lotSqft, parking, description, numOfPics):
+        self.pree_id = pree_id
         self.lister = lister
         self.title = title
         self.category = category
@@ -50,6 +52,7 @@ class Vehicle(db.Model):
 
     vehicle_id = db.Column(db.Integer, db.Sequence('wg_vehicles_vehicle_id_seq'), primary_key=True)
     lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
     make = db.Column(db.String(80))
     model = db.Column(db.String(80))
     condition = db.Column(db.String(80))
@@ -72,7 +75,8 @@ class Vehicle(db.Model):
     is_available = db.Column(db.Boolean, default=True)
     is_visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self, lister, make, model, condition, typeOf, fuel, transmission, mileage, location, price, currency, engine, year, steering, color, ignition, seats, description, numOfPics):
+    def __init__(self,pree_id, lister, make, model, condition, typeOf, fuel, transmission, mileage, location, price, currency, engine, year, steering, color, ignition, seats, description, numOfPics):
+        self.pree_id = pree_id
         self.lister = lister
         self.make = make
         self.model = model
@@ -121,7 +125,8 @@ class Product(db.Model):
     is_available = db.Column(db.Boolean, default=True)
     is_visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self, lister, name, brand, category, condition, typeOf, location, stock, price, currency, year, colors, package, description, numOfPics):
+    def __init__(self, pree_id, lister, name, brand, category, condition, typeOf, location, stock, price, currency, year, colors, package, description, numOfPics):
+        self.pree_id = pree_id
         self.lister = lister
         self.name = name
         self.brand = brand
@@ -222,6 +227,7 @@ class Item(db.Model):
 
     item_id = db.Column(db.Integer, db.Sequence('wg_items_item_id_seq'), primary_key=True)
     lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
     name = db.Column(db.String(255))
     category = db.Column(db.String(80))
     typeOf = db.Column(db.String(80))
@@ -236,7 +242,8 @@ class Item(db.Model):
     is_available = db.Column(db.Boolean, default=True)
     is_visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self, lister, name, category, typeOf, calories, price, currency, ingredients, description, numOfPics):
+    def __init__(self,pree_id, lister, name, category, typeOf, calories, price, currency, ingredients, description, numOfPics):
+        self.pree_id = pree_id
         self.lister = lister
         self.name = name
         self.category = category
@@ -256,6 +263,7 @@ class Service(db.Model):
 
     service_id = db.Column(db.Integer, db.Sequence('wg_services_service_id_seq'), primary_key=True)
     lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
     title = db.Column(db.String(255))
     category = db.Column(db.String(80))
     deliverable = db.Column(db.String(80))
@@ -274,7 +282,8 @@ class Service(db.Model):
     is_available = db.Column(db.Boolean, default=True)
     is_visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self, lister, title, category, deliverable, provider, contact, email, timetaken, timeunit, price, currency, description, procedures,numOfPics):
+    def __init__(self,pree_id, lister, title, category, deliverable, provider, contact, email, timetaken, timeunit, price, currency, description, procedures,numOfPics):
+        self.pree_id = pree_id
         self.lister = lister
         self.title = title
         self.category = category

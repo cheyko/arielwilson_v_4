@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Lightbox from 'react-image-lightbox';
+import { useNavigate } from 'react-router-dom';
 import Slider from "react-slick";
 import withContext from "../../../withContext";
 
@@ -59,8 +60,12 @@ const ListingImageView = props => {
           console.log(pIndex);
           e.preventDefault();
       };
+
+      let navigate = useNavigate();
       return(
           <div className="box imagesContainer">
+            <button className="button" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+            <br />
             <div className="slick-wrapper">
                 <div className="currentSlide">
                     <Slider
@@ -81,7 +86,7 @@ const ListingImageView = props => {
                     </Slider>
                       {openImage && (
                       <Lightbox
-                        imageTitle={`Image ${pIndex} of ${thePics.length - 1}`}
+                        imageTitle={`Image ${pIndex + 1} of ${thePics.length}`}
                         mainSrc={thePics[pIndex]}//{`/images/test/${pIndex}.jpg`} 
                         nextSrc={thePics[((pIndex+1) % thePics.length)]}//{`/images/test/${((pIndex+1) % slidesData.length)}.jpg`}  
                         prevSrc={thePics[((pIndex + thePics.length - 1) % thePics.length)]}//{`/images/test/${((pIndex + slidesData.length - 1) % slidesData.length)}.jpg`}  

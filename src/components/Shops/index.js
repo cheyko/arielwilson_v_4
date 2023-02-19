@@ -49,8 +49,10 @@ const Shops = props => {
         }
         if (shopView === ""){
             let reloadView = localStorage.getItem("shopView");
+            let reloadSubView = localStorage.getItem("subview");
             if(reloadView){
                 setShopView(reloadView);
+                setSubView(reloadSubView);
             }else{
                 setShopView("grandmarket");
             }
@@ -132,39 +134,39 @@ const Shops = props => {
 
                                 <div className="navbar-dropdown" style={enterpriseMenu ? {display:"block"} : {display: "none"}}>
                                     <div className='not-mobile'>
-                                        <span className={`navbar-item ${subview === 'ProductsHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ProductsHome');setShopView("enterprise");toggleMenu(e); setEnterpriseMenu(!enterpriseMenu);}}>
+                                        <span className={`navbar-item ${subview === 'ProductsHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ProductsHome');setShopView("enterprise");toggleMenu(e); setEnterpriseMenu(!enterpriseMenu);localStorage.setItem("subview","ProductsHome");localStorage.setItem("shopView","enterprise")}}>
                                             <i className="fas fa-shopping-cart" aria-hidden="true"> ENTERPRISE </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
                                     <div className='mobile'>
-                                        <span className={`navbar-item ${subview === 'ProductsHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ProductsHome');setShopView("enterprise");toggleMenu(e); setEnterpriseMenu(!enterpriseMenu);}}>
+                                        <span className={`navbar-item ${subview === 'ProductsHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ProductsHome');setShopView("enterprise");toggleMenu(e); setEnterpriseMenu(!enterpriseMenu);localStorage.setItem("subview","ProductsHome");localStorage.setItem("shopView","enterprise")}}>
                                             <i className="fas fa-shopping-cart" aria-hidden="true"> Home </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
-                                    <span className={`navbar-item ${subview === 'ProductsBuy' ? 'is-active' : ''}`} onClick={e => { setSubView('ProductsBuy');setShopView("enterprise"); toggleMenu(e); setEnterpriseMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'ProductsBuy' ? 'is-active' : ''}`} onClick={e => { setSubView('ProductsBuy');setShopView("enterprise"); toggleMenu(e); setEnterpriseMenu(!enterpriseMenu);localStorage.setItem("subview","ProductsBuy");localStorage.setItem("shopView","enterprise")}}>
                                         <i className="fas fa-shopping-basket" aria-hidden="true"> Buy </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'ProductStalls' ? 'is-active' : ''}`} onClick={e => { setSubView('ProductStalls');setShopView("enterprise"); toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'ProductStalls' ? 'is-active' : ''}`} onClick={e => { setSubView('ProductStalls');setShopView("enterprise"); toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);localStorage.setItem("subview","ProductsStall");localStorage.setItem("shopView","enterprise")}}>
                                         <i className="fas fa-store-alt" aria-hidden="true"> Stalls </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'ProductsRental' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsRental');setShopView("enterprise"); toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'ProductsRental' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsRental');setShopView("enterprise"); toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);localStorage.setItem("subview","ProductsRental");localStorage.setItem("shopView","enterprise")}}>
                                         <i className="fas fa-dolly" aria-hidden="true"> Rentals </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'ProductsSell' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsSell');setShopView("enterprise");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'ProductsSell' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsSell');setShopView("enterprise");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);localStorage.setItem("subview","ProductsSell");localStorage.setItem("shopView","enterprise")}}>
                                         <i className="fas fa-money-check-alt" aria-hidden="true"> Sell </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'ProductsCategories' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsCategories');setShopView("enterprise");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'ProductsCategories' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsCategories');setShopView("enterprise");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);localStorage.setItem("subview","ProductsCategories");localStorage.setItem("shopView","enterprise")}}>
                                         <i className="fas fa-pallet" aria-hidden="true"> Categories </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'ProductsWH' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsWH');setShopView("enterprise");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'ProductsWH' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsWH');setShopView("enterprise");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu); localStorage.setItem("subview","ProductsWH");localStorage.setItem("shopView","enterprise")}}>
                                         <i className="fas fa-warehouse" aria-hidden="true"> WareHouse </i> 
                                     </span>
-                                    <span className={`navbar-item ${subview === 'ProductsInfo' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsInfo');setShopView("enterprise");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'ProductsInfo' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsInfo');setShopView("enterprise");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);localStorage.setItem("subview","ProductsInfo");localStorage.setItem("shopView","enterprise")}}>
                                         <i className="fas fa-info-circle" aria-hidden="true"> Information </i> 
                                     </span>
-                                    <span className={`navbar-item ${subview === 'ProductsPS' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsPS');setShopView("enterprise");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'ProductsPS' ? 'is-active' : ''}`} onClick={e => {setSubView('ProductsPS');setShopView("enterprise");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);localStorage.setItem("subview","ProductsPS");localStorage.setItem("shopView","enterprise")}}>
                                         <i className="fas fa-handshake" aria-hidden="true"> Partnerships </i> 
                                     </span>
                                 </div>
@@ -176,36 +178,36 @@ const Shops = props => {
 
                                 <div className="navbar-dropdown" style={bickleMenu ? {display:"block"} : {display: "none"}}>
                                     <div className='not-mobile'>
-                                        <span className={`navbar-item ${subview === 'BCHome' ? 'is-active' : ''}`} onClick={e => { setSubView('BCHome');setShopView("bickle");toggleMenu(e); setBickleMenu(!bickleMenu);}}>
+                                        <span className={`navbar-item ${subview === 'BCHome' ? 'is-active' : ''}`} onClick={e => { setSubView('BCHome');setShopView("bickle");toggleMenu(e); setBickleMenu(!bickleMenu);localStorage.setItem("subview","BCHome");localStorage.setItem("shopView","bickle")}}>
                                             <i className="fas fa-utensils" aria-hidden="true"> BICKLE COURT </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
                                     <div className='mobile'>
-                                        <span className={`navbar-item ${subview === 'BCHome' ? 'is-active' : ''}`} onClick={e => { setSubView('BCHome');setShopView("bickle");toggleMenu(e); setBickleMenu(!bickleMenu);}}>
+                                        <span className={`navbar-item ${subview === 'BCHome' ? 'is-active' : ''}`} onClick={e => { setSubView('BCHome');setShopView("bickle");toggleMenu(e); setBickleMenu(!bickleMenu);localStorage.setItem("BCHome","ProductsHome");localStorage.setItem("shopView","bickle")}}>
                                             <i className="fas fa-utensils" aria-hidden="true"> Home </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
-                                    <span className={`navbar-item ${subview === 'Kiosk' ? 'is-active' : ''}`} onClick={e => { setSubView('Kiosk');setShopView("bickle");toggleMenu(e); setBickleMenu(!bickleMenu);}}>
+                                    <span className={`navbar-item ${subview === 'Kiosk' ? 'is-active' : ''}`} onClick={e => { setSubView('Kiosk');setShopView("bickle");toggleMenu(e); setBickleMenu(!bickleMenu);localStorage.setItem("subview","Kiosk");localStorage.setItem("shopView","bickle")}}>
                                         <i className="fas fa-tablet-alt" aria-hidden="true"> Kiosk </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'Spots' ? 'is-active' : ''}`} onClick={e => { setSubView('Spots');setShopView("bickle"); toggleMenu(e);setBickleMenu(!bickleMenu);}}>
+                                    <span className={`navbar-item ${subview === 'Spots' ? 'is-active' : ''}`} onClick={e => { setSubView('Spots');setShopView("bickle"); toggleMenu(e);setBickleMenu(!bickleMenu);localStorage.setItem("subview","Spots");localStorage.setItem("shopView","bickle")}}>
                                         <i className="fas fa-map-pin" aria-hidden="true"> Spots </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'Reservations' ? 'is-active' : ''}`} onClick={e => {setSubView('Reservations');setShopView("bickle"); toggleMenu(e);setBickleMenu(!bickleMenu);}}>
+                                    <span className={`navbar-item ${subview === 'Reservations' ? 'is-active' : ''}`} onClick={e => {setSubView('Reservations');setShopView("bickle"); toggleMenu(e);setBickleMenu(!bickleMenu);localStorage.setItem("subview","Reservations");localStorage.setItem("shopView","bickle")}}>
                                         <i className="fas fa-concierge-bell" aria-hidden="true"> Reservations </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'BickleSell' ? 'is-active' : ''}`} onClick={e => {setSubView('BickleSell');setShopView("bickle");toggleMenu(e);setBickleMenu(!bickleMenu);}}>
+                                    <span className={`navbar-item ${subview === 'BickleSell' ? 'is-active' : ''}`} onClick={e => {setSubView('BickleSell');setShopView("bickle");toggleMenu(e);setBickleMenu(!bickleMenu);localStorage.setItem("subview","BickleSell");localStorage.setItem("shopView","bickle")}}>
                                         <i className="fas fa-money-check-alt" aria-hidden="true"> Sell </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'BickleCategories' ? 'is-active' : ''}`} onClick={e => {setSubView('BickleCategories');setShopView("bickle");toggleMenu(e);setBickleMenu(!bickleMenu);}}>
+                                    <span className={`navbar-item ${subview === 'BickleCategories' ? 'is-active' : ''}`} onClick={e => {setSubView('BickleCategories');setShopView("bickle");toggleMenu(e);setBickleMenu(!bickleMenu);localStorage.setItem("subview","BickleCategories");localStorage.setItem("shopView","bickle")}}>
                                         <i className="fas fa-pallet" aria-hidden="true"> Categories </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'BickleInfo' ? 'is-active' : ''}`} onClick={e => {setSubView('BickleInfo');setShopView("bickle");toggleMenu(e);setBickleMenu(!bickleMenu);}}>
+                                    <span className={`navbar-item ${subview === 'BickleInfo' ? 'is-active' : ''}`} onClick={e => {setSubView('BickleInfo');setShopView("bickle");toggleMenu(e);setBickleMenu(!bickleMenu);localStorage.setItem("subview","BickleInfo");localStorage.setItem("shopView","bickle")}}>
                                         <i className="fas fa-info-circle" aria-hidden="true"> Information </i> 
                                     </span>
-                                    <span className={`navbar-item ${subview === 'BicklePS' ? 'is-active' : ''}`} onClick={e => {setSubView('BicklePS');setShopView("bickle");toggleMenu(e);setBickleMenu(!bickleMenu);}}>
+                                    <span className={`navbar-item ${subview === 'BicklePS' ? 'is-active' : ''}`} onClick={e => {setSubView('BicklePS');setShopView("bickle");toggleMenu(e);setBickleMenu(!bickleMenu);localStorage.setItem("subview","BicklePS");localStorage.setItem("shopView","bickle")}}>
                                         <i className="fas fa-handshake" aria-hidden="true"> Partnerships </i> 
                                     </span>
                                 </div>
@@ -218,34 +220,34 @@ const Shops = props => {
                                 <div className="navbar-dropdown" style={worksiteMenu ? {display:"block"} : {display: "none"}}>
                                     
                                     <div className='not-mobile'>
-                                        <span className={`navbar-item ${subview === 'ServicesHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ServicesHome');setShopView("worksite");toggleMenu(e); setWSMenu(!worksiteMenu);}}>
+                                        <span className={`navbar-item ${subview === 'ServicesHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ServicesHome');setShopView("worksite");toggleMenu(e); setWSMenu(!worksiteMenu);localStorage.setItem("subview","ServicesHome");localStorage.setItem("shopView","worksite")}}>
                                             <i className="fas fa-toolbox" aria-hidden="true"> WORKSITE </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
                                     <div className='mobile'>
-                                        <span className={`navbar-item ${subview === 'ServicesHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ServicesHome');setShopView("worksite");toggleMenu(e); setWSMenu(!worksiteMenu);}}>
+                                        <span className={`navbar-item ${subview === 'ServicesHome' ? 'is-active' : ''}`} onClick={e => { setSubView('ServicesHome');setShopView("worksite");toggleMenu(e); setWSMenu(!worksiteMenu);localStorage.setItem("subview","ServicesHome");localStorage.setItem("shopView","worksite")}}>
                                             <i className="fas fa-toolbox" aria-hidden="true"> Home </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
                                     
-                                    <span className={`navbar-item ${subview === 'ServicesGet' ? 'is-active' : ''}`} onClick={e => { setSubView('ServicesGet');setShopView("worksite");toggleMenu(e); setWSMenu(!worksiteMenu);}}>
+                                    <span className={`navbar-item ${subview === 'ServicesGet' ? 'is-active' : ''}`} onClick={e => { setSubView('ServicesGet');setShopView("worksite");toggleMenu(e); setWSMenu(!worksiteMenu);localStorage.setItem("subview","ServicesGet");localStorage.setItem("shopView","worksite")}}>
                                         <i className="fas fa-wrench" aria-hidden="true"> Services </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'Workstation' ? 'is-active' : ''}`} onClick={e => { setSubView('Workstation');setShopView("worksite"); toggleMenu(e);setWSMenu(!worksiteMenu);}}>
+                                    <span className={`navbar-item ${subview === 'Workstation' ? 'is-active' : ''}`} onClick={e => { setSubView('Workstation');setShopView("worksite"); toggleMenu(e);setWSMenu(!worksiteMenu);localStorage.setItem("subview","Workstation");localStorage.setItem("shopView","worksite")}}>
                                         <i className="fas fa-briefcase" aria-hidden="true"> WorkStations </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'Offer' ? 'is-active' : ''}`} onClick={e => {setSubView('Offer');setShopView("worksite"); toggleMenu(e);setWSMenu(!worksiteMenu);}}>
+                                    <span className={`navbar-item ${subview === 'Offer' ? 'is-active' : ''}`} onClick={e => {setSubView('Offer');setShopView("worksite"); toggleMenu(e);setWSMenu(!worksiteMenu);localStorage.setItem("subview","Offer");localStorage.setItem("shopView","worksite")}}>
                                         <i className="fas fa-money-check-alt" aria-hidden="true"> Offer Services </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WSCategories' ? 'is-active' : ''}`} onClick={e => {setSubView('WSCategories');setShopView("worksite");toggleMenu(e);setWSMenu(!worksiteMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WSCategories' ? 'is-active' : ''}`} onClick={e => {setSubView('WSCategories');setShopView("worksite");toggleMenu(e);setWSMenu(!worksiteMenu);localStorage.setItem("subview","WSCategories");localStorage.setItem("shopView","worksite")}}>
                                         <i className="fas fa-swatchbook" aria-hidden="true"> Categories </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WSInfo' ? 'is-active' : ''}`} onClick={e => {setSubView('WSInfo');setShopView("worksite");toggleMenu(e);setWSMenu(!worksiteMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WSInfo' ? 'is-active' : ''}`} onClick={e => {setSubView('WSInfo');setShopView("worksite");toggleMenu(e);setWSMenu(!worksiteMenu);localStorage.setItem("subview","WSInfo");localStorage.setItem("shopView","worksite")}}>
                                         <i className="fas fa-info-circle" aria-hidden="true"> Information </i> 
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WSPS' ? 'is-active' : ''}`} onClick={e => {setSubView('WSPS');setShopView("worksite");toggleMenu(e);setWSMenu(!worksiteMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WSPS' ? 'is-active' : ''}`} onClick={e => {setSubView('WSPS');setShopView("worksite");toggleMenu(e);setWSMenu(!worksiteMenu);localStorage.setItem("subview","WSPS");localStorage.setItem("shopView","worksite")}}>
                                         <i className="fas fa-handshake" aria-hidden="true"> Partnerships </i> 
                                     </span>
                                 </div>
@@ -257,39 +259,39 @@ const Shops = props => {
 
                                 <div className="navbar-dropdown" style={propfinderMenu ? {display:"block"} : {display: "none"}}>
                                     <div className='not-mobile'>
-                                        <span className={`navbar-item ${subview === 'PFHome' ? 'is-active' : ''}`} onClick={e => { setSubView('PFHome');setShopView("propfinder");;toggleMenu(e); setPFMenu(!propfinderMenu);}}>
+                                        <span className={`navbar-item ${subview === 'PFHome' ? 'is-active' : ''}`} onClick={e => { setSubView('PFHome');setShopView("propfinder");toggleMenu(e); setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFHome");localStorage.setItem("shopView","propfinder")}}>
                                             <i className="fas fa-sign" aria-hidden="true"> PROP-FINDER </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
                                     <div className='mobile'>
-                                        <span className={`navbar-item ${subview === 'PFHome' ? 'is-active' : ''}`} onClick={e => { setSubView('PFHome');setShopView("propfinder");;toggleMenu(e); setPFMenu(!propfinderMenu);}}>
+                                        <span className={`navbar-item ${subview === 'PFHome' ? 'is-active' : ''}`} onClick={e => { setSubView('PFHome');setShopView("propfinder");;toggleMenu(e); setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFHome");localStorage.setItem("shopView","propfinder")}}>
                                             <i className="fas fa-sign" aria-hidden="true"> Home </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
-                                    <span className={`navbar-item ${subview === 'PFBuy' ? 'is-active' : ''}`} onClick={e => { setSubView('PFBuy');setShopView("propfinder");toggleMenu(e); setPFMenu(!propfinderMenu);}}>
+                                    <span className={`navbar-item ${subview === 'PFBuy' ? 'is-active' : ''}`} onClick={e => { setSubView('PFBuy');setShopView("propfinder");toggleMenu(e); setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFBuy");localStorage.setItem("shopView","propfinder")}}>
                                         <i className="fas fa-house-user" aria-hidden="true"> Buy </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'PFRent' ? 'is-active' : ''}`} onClick={e => { setSubView('PFRent');setShopView("propfinder"); toggleMenu(e);setPFMenu(!propfinderMenu);}}>
+                                    <span className={`navbar-item ${subview === 'PFRent' ? 'is-active' : ''}`} onClick={e => { setSubView('PFRent');setShopView("propfinder"); toggleMenu(e);setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFRent");localStorage.setItem("shopView","propfinder")}}>
                                         <i className="fas fa-door-open" aria-hidden="true"> Rent </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'PFSell' ? 'is-active' : ''}`} onClick={e => {setSubView('PFSell');setShopView("propfinder");toggleMenu(e);setPFMenu(!propfinderMenu);}}>
+                                    <span className={`navbar-item ${subview === 'PFSell' ? 'is-active' : ''}`} onClick={e => {setSubView('PFSell');setShopView("propfinder");toggleMenu(e);setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFSell");localStorage.setItem("shopView","propfinder")}}>
                                         <i className="fas fa-money-check-alt" aria-hidden="true"> Sell </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'PFLodge' ? 'is-active' : ''}`} onClick={e => {setSubView('PFLodge');setShopView("propfinder");toggleMenu(e);setPFMenu(!propfinderMenu);}}>
+                                    <span className={`navbar-item ${subview === 'PFLodge' ? 'is-active' : ''}`} onClick={e => {setSubView('PFLodge');setShopView("propfinder");toggleMenu(e);setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFLodge");localStorage.setItem("shopView","propfinder")}}>
                                         <i className="fas fa-hotel" aria-hidden="true"> Lodging </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'PFRealtor' ? 'is-active' : ''}`} onClick={e => {setSubView('PFRealtor');setShopView("propfinder");toggleMenu(e);setPFMenu(!propfinderMenu);}}>
+                                    <span className={`navbar-item ${subview === 'PFRealtor' ? 'is-active' : ''}`} onClick={e => {setSubView('PFRealtor');setShopView("propfinder");toggleMenu(e);setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFRealtor");localStorage.setItem("shopView","propfinder")}}>
                                         <i className="fas fa-user-secret" aria-hidden="true"> Realtors </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'PFRenovate' ? 'is-active' : ''}`} onClick={e => {setSubView('PFRenovate');setShopView("propfinder");toggleMenu(e);setPFMenu(!propfinderMenu);}}>
+                                    <span className={`navbar-item ${subview === 'PFRenovate' ? 'is-active' : ''}`} onClick={e => {setSubView('PFRenovate');setShopView("propfinder");toggleMenu(e);setPFMenu(!propfinderMenu);;localStorage.setItem("subview","PFRenovate");localStorage.setItem("shopView","propfinder")}}>
                                         <i className="fas fa-hammer" aria-hidden="true"> Renovate </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'PFInfo' ? 'is-active' : ''}`} onClick={e => {setSubView('PFInfo');setShopView("propfinder");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'PFInfo' ? 'is-active' : ''}`} onClick={e => {setSubView('PFInfo');setShopView("propfinder");toggleMenu(e);setEnterpriseMenu(!propfinderMenu);;localStorage.setItem("subview","PFInfo");localStorage.setItem("shopView","propfinder")}}>
                                         <i className="fas fa-info-circle" aria-hidden="true"> Information </i> 
                                     </span>
-                                    <span className={`navbar-item ${subview === 'PFPS' ? 'is-active' : ''}`} onClick={e => {setSubView('PFPS');setShopView("propfinder");toggleMenu(e);setEnterpriseMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'PFPS' ? 'is-active' : ''}`} onClick={e => {setSubView('PFPS');setShopView("propfinder");toggleMenu(e);setEnterpriseMenu(!propfinderMenu);;localStorage.setItem("subview","PFPS");localStorage.setItem("shopView","propfinder")}}>
                                         <i className="fas fa-handshake" aria-hidden="true"> Partnerships </i> 
                                     </span>
                                 </div>
@@ -301,42 +303,42 @@ const Shops = props => {
 
                                 <div className="navbar-dropdown" style={wovMenu ? {display:"block"} : {display: "none"}}>
                                     <div className='not-mobile'>
-                                        <span className={`navbar-item ${subview === 'WOVHome' ? 'is-active' : ''}`} onClick={e => { setSubView('WOVHome');setShopView("wov");toggleMenu(e); setWOVMenu(!wovMenu);}}>
+                                        <span className={`navbar-item ${subview === 'WOVHome' ? 'is-active' : ''}`} onClick={e => { setSubView('WOVHome');setShopView("wov");toggleMenu(e); setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVHome");localStorage.setItem("shopView","wov")}}>
                                             <i className="fas fa-car" aria-hidden="true"> WORLD OF VEHICLE </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
                                     <div className='mobile'>
-                                        <span className={`navbar-item ${subview === 'WOVHome' ? 'is-active' : ''}`} onClick={e => { setSubView('WOVHome');setShopView("wov");toggleMenu(e); setWOVMenu(!wovMenu);}}>
+                                        <span className={`navbar-item ${subview === 'WOVHome' ? 'is-active' : ''}`} onClick={e => { setSubView('WOVHome');setShopView("wov");toggleMenu(e); setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVHome");localStorage.setItem("shopView","wov")}}>
                                             <i className="fas fa-car" aria-hidden="true"> Home </i>
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
-                                    <span className={`navbar-item ${subview === 'WOVBuy' ? 'is-active' : ''}`} onClick={e => { setSubView('WOVBuy');setShopView("wov");toggleMenu(e); setWOVMenu(!wovMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WOVBuy' ? 'is-active' : ''}`} onClick={e => { setSubView('WOVBuy');setShopView("wov");toggleMenu(e); setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVBuy");localStorage.setItem("shopView","wov")}}>
                                         <i className="fas fa-car-side" aria-hidden="true"> Buy </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WOVRent' ? 'is-active' : ''}`} onClick={e => { setSubView('WOVRent');setShopView("wov"); toggleMenu(e);setWOVMenu(!wovMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WOVRent' ? 'is-active' : ''}`} onClick={e => { setSubView('WOVRent');setShopView("wov"); toggleMenu(e);setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVRent");localStorage.setItem("shopView","wov")}}>
                                         <i className="fas fa-caravan" aria-hidden="true"> Rent </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WOVSell' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVSell');setShopView("wov"); toggleMenu(e);setWOVMenu(!wovMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WOVSell' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVSell');setShopView("wov"); toggleMenu(e);setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVSell");localStorage.setItem("shopView","wov")}}>
                                         <i className="fas fa-money-check-alt" aria-hidden="true"> Sell </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WOVTravel' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVTravel');setShopView("wov");toggleMenu(e);setWOVMenu(!wovMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WOVTravel' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVTravel');setShopView("wov");toggleMenu(e);setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVTravel");localStorage.setItem("shopView","wov")}}>
                                         <i className="fas fa-route" aria-hidden="true"> Travel </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WOVTraders' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVTraders');setShopView("wov"); toggleMenu(e);setWOVMenu(!wovMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WOVTraders' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVTraders');setShopView("wov"); toggleMenu(e);setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVTravel");localStorage.setItem("shopView","wov")}}>
                                         <i className="fas fa-industry" aria-hidden="true"> Traders </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WOVGarage' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVGarage');setShopView("wov");toggleMenu(e);setWOVMenu(!wovMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WOVGarage' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVGarage');setShopView("wov");toggleMenu(e);setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVGarage");localStorage.setItem("shopView","wov")}}>
                                         <i className="fas fa-warehouse" aria-hidden="true"> Garage </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WOVWrecking' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVWrecking');setShopView("wov");toggleMenu(e);setWOVMenu(!wovMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WOVWrecking' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVWrecking');setShopView("wov");toggleMenu(e);setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVWrecking");localStorage.setItem("shopView","wov")}}>
                                         <i className="fas fa-car-crash" aria-hidden="true"> Wrecking </i>
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WOVInfo' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVInfo');setShopView("wov");toggleMenu(e);setWOVMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WOVInfo' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVInfo');setShopView("wov");toggleMenu(e);setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVInfo");localStorage.setItem("shopView","wov")}}>
                                         <i className="fas fa-info-circle" aria-hidden="true"> Information </i> 
                                     </span>
-                                    <span className={`navbar-item ${subview === 'WOVPS' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVPS');setShopView("wov");toggleMenu(e);setWOVMenu(!enterpriseMenu);}}>
+                                    <span className={`navbar-item ${subview === 'WOVPS' ? 'is-active' : ''}`} onClick={e => {setSubView('WOVPS');setShopView("wov");toggleMenu(e);setWOVMenu(!wovMenu);localStorage.setItem("subview","WOVPS");localStorage.setItem("shopView","wov")}}>
                                         <i className="fas fa-handshake" aria-hidden="true"> Partnerships </i> 
                                     </span>
                                 </div>
@@ -361,7 +363,7 @@ const Shops = props => {
                 <div className="page-content">
                     <div className='shops-body columns is-mobile'>
                         {toggleads &&
-                            <div className='column no-padding is-one-quarter'>
+                            <div className=''>
                                 <div className='ad-bar-container box no-padding'>
                                     <article className='message'>
                                         <div className='message-header ads-header'>
@@ -456,7 +458,7 @@ const Shops = props => {
                             </div>
                         </div>
                         {togglecart &&
-                            <div className='column no-padding is-one-quarter'>
+                            <div className=''>
                                 <div className='cart-container box no-padding'>
                                     <article className="message">
                                         <Tabs>

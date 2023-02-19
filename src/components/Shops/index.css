@@ -7,7 +7,7 @@
 
 .ad-bar-container{
     height: 100% !important;
-    width: 17.75%;
+    width: 17.5rem;
     position: fixed;
     z-index: 4;
     margin-left: 1.25rem !important;
@@ -27,7 +27,7 @@
 
 .cart-container{
     height: 100% !important;
-    width: 18.75%;
+    width: 17.5rem;
     position: fixed !important;
     z-index: 4;
     right:1px;
@@ -131,7 +131,7 @@
 }
 
 .frontpage-card .card-content{
-    /*height: 10rem !important;*/
+    height: 10rem !important;
     padding: 0.5rem !important;
 }
 
@@ -144,7 +144,7 @@
     margin: 0.5rem;
 }
 
-.listing-card, .vehicle-card, .product-card {
+.listing-card, .vehicle-card, .product-card, .service-card {
     margin-inline: 5px !important;
 }
 
@@ -170,9 +170,9 @@
     height: 8rem !important;
 }*/
 
-.listing-card a, .vehicle-card a{
+/*.listing-card a, .vehicle-card a{
     color: black;
-}
+}*/
 
 .listing-card:hover a, .vehicle-card:hover a, .product-card:hover a, .service-card:hover a{
     color: blue;
@@ -191,10 +191,10 @@
     margin-bottom: 1rem !important;
 }
 
-.listing-content, .vehicle-content{
+/*.listing-content, .vehicle-content{
     margin: 0.25rem !important;
     width: 63rem !important;
-}
+}*/
 
 .imagesContainer {
     height: 100vh;
@@ -298,7 +298,7 @@
 }*/
 
 .market-home .slick-wrapper{
-    max-width: 45rem !important;
+    max-width: 60rem !important;
 }
 
 .productlistContainer .market-title{
@@ -307,6 +307,10 @@
 @media screen and (max-width:1200px) and (min-width:1001px){
     .market-home .slick-wrapper{
         max-width: 40rem !important;
+    }
+    .frontpage-card .card-content{
+        height: 12rem !important;
+        padding: 0.5rem !important;
     }
 }
 

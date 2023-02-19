@@ -9,6 +9,6 @@
     height: 25rem;
 }
 
-.houselistContainer .listing-card{
-  background-color: yellow;
+.listing-card{
+  background-color: lightyellow;
 }

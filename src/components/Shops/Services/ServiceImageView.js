@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Lightbox from 'react-image-lightbox';
+import { useNavigate } from 'react-router-dom';
 import Slider from "react-slick";
 import withContext from "../../../withContext";
 
 const ServiceImageView = props => {
     const {service, thePics} = props;
-    console.log(thePics);
     const [nav1, setNav1] = useState(null);
     const [nav2, setNav2] = useState(null);
     const [slider1, setSlider1] = useState(null);
@@ -61,9 +61,12 @@ const ServiceImageView = props => {
           console.log(pIndex);
           e.preventDefault();
       };
+      let navigate = useNavigate();
       console.log(thePics);
       return(
           <div className="box imagesContainer">
+            <button className="button" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+            <br/>
             <div className="slick-wrapper">
                 <div className="currentSlide">
                     <Slider

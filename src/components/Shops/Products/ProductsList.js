@@ -3,11 +3,22 @@ import withContext from '../../../withContext';
 import "./index.css";
 import ProductItem from "./ProductItem";
 import ReactPaginate from 'react-paginate';
+import axios from "axios";
 
 const ProductsList = props => {
 
-    let fullList = props.context.products;
+    let fullList = props.context.products ? props.context.products : [];
     const [products, setProducts] = useState(fullList);
+
+    if(products.length == 0){
+        axios.get("/api/products").then(res => {
+            if (res.status === 200){
+                setProducts(res.data);
+                fullList = res.data;
+            }
+        });
+    }
+    
     const perPage = 12;
     const pageCount = Math.ceil(products.length / perPage);
     let slice;
@@ -31,9 +42,9 @@ const ProductsList = props => {
     const [brand, setBrand] = useState("All");
     const [category, setCategory] = useState("All");
     const [condition, setCondition] = useState("All");
-    const [color, setColor] = useState("All");
+    const [color, setColor] = useState("Any");
     const [showFilter, setShow] = useState(false);
-    const [filter, setFilter] = useState(false);
+    const [filter, setFilter] = useState(null);
     const [sortOrder, setSortOrder] = useState("");
     const [fromVal, setFromVal] = useState(0);
     const [toVal, setToVal ] = useState(1000000000);
@@ -61,7 +72,8 @@ const ProductsList = props => {
         let result = fullList;
         if (searchval && searchval !== ""){
             result = result.filter(product => product.name.replace(/ /g,'').toLowerCase().includes(searchval.replace(/ /g,'').toLowerCase())
-            || product.brand.replace(/ /g,'').toLowerCase().includes(searchval.replace(/ /g,'').toLowerCase()));         
+            || product.brand.replace(/ /g,'').toLowerCase().includes(searchval.replace(/ /g,'').toLowerCase()));  
+            console.log(result);       
         }
         if (brand && brand !== "All") {
             result = result.filter(product => product.brand === brand);
@@ -81,7 +93,7 @@ const ProductsList = props => {
         if (toVal > 0){
             result = result.filter(product => convertPrice(product.price, product.currency) <= Number(toVal))
         }
-        if (sortOrder) {
+        if (sortOrder !== "") {
             if (sortOrder === 'highestfirst') {
               result = result.sort((a, b) => convertPrice(b.price, b.currency) - convertPrice(a.price, a.currency))
             }
@@ -92,7 +104,7 @@ const ProductsList = props => {
         setProducts(result);
         setOffset(0);
         setFilter(false);
-    },[brand, category, color, condition, fromVal, fullList, searchval, sortOrder, toVal]);
+    },[products, brand, category, color, condition, fromVal, filter, searchval, sortOrder, toVal]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -102,13 +114,12 @@ const ProductsList = props => {
     }, [filter, filterList]);
     
     slice = products.slice(offset, offset + perPage); 
-
     return (
         <div className="hero has-text-centered">
             <div className="">
                 <div className="filter-list">
                     <div className="card" onClick={e => setShow(!showFilter)}>
-                        <i style={{fontSize:"x-large"}} className="button fas fa-caret-down">&nbsp; filter list </i>
+                        <i style={{fontSize:"x-large"}} className="button fas fa-caret-down">&nbsp; Lookup Product </i>
                     </div>
                     {showFilter &&
                         <div className="card hero-body">
@@ -366,28 +377,38 @@ const ProductsList = props => {
                                     </div>
                                 ))
                             ) : (
-                                <div className="column has-text-centered">
-                                    <span className="title has-text-grey-light">
-                                        No Products to match your search
-                                    </span>
-                                </div>
+                                <>
+                                    {(filter !== null) ?
+                                        <div className="column has-text-centered">
+                                            <span className="title has-text-grey-light">
+                                                No Products to match your search
+                                            </span>
+                                        </div>
+                                    :
+                                        <div className="column has-text-centered">
+                                            <span className="title has-text-grey-light">
+                                                Loading Products
+                                            </span>
+                                        </div>
+                                    }
+                                </>
                             )}
                             </div>
-                            <div className="card paginationBox">
-                            <ReactPaginate
-                                previousLabel="prev"
-                                nextLabel="next"
-                                breakLabel={'...'}
-                                breakClassName={'break-me'}
-                                pageCount={pageCount}
-                                marginPagesDisplayed={2}
-                                pageRangeDisplayed={5}
-                                onPageChange={handlePageClick}
-                                containerClassName={'pagination'}
-                                subContainerClassName={'pages pagination'}
-                                activeClassName={'active'}
-                                />
-                        </div>
+                            <div className="paginationBox">
+                                <ReactPaginate
+                                    previousLabel="prev"
+                                    nextLabel="next"
+                                    breakLabel={'...'}
+                                    breakClassName={'break-me'}
+                                    pageCount={pageCount}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    onPageChange={handlePageClick}
+                                    containerClassName={'pagination'}
+                                    subContainerClassName={'pages pagination'}
+                                    activeClassName={'active'}
+                                    />
+                            </div>
                         </div>
                     
                 

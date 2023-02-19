@@ -3,11 +3,22 @@ import withContext from '../../../withContext';
 import VehicleItem from "./VehicleItem";
 import ReactPaginate from 'react-paginate';
 import "./index.css";
+import axios from "axios";
 
 const WOVList = props => {
     //const {WOVView} = props;
     let fullList = props.context.vehicles;
     const [vehicles, setVehicles] = useState(fullList);
+
+    if(vehicles.length == 0){
+        axios.get("/api/vehicles").then(res => {
+            if (res.status === 200){
+                setVehicles(res.data);
+                fullList = res.data;
+            }
+        });
+    }
+
     const perPage = 12;
     const pageCount = Math.ceil(vehicles.length / perPage);
     let slice;
@@ -30,7 +41,7 @@ const WOVList = props => {
     const [color, setColor] = useState("");
     const [seats, setSeats] = useState(0);
     const [showFilter, setShow] = useState(false);
-    const [filter, setFilter] = useState(false);
+    const [filter, setFilter] = useState(null);
     const [sortOrder, setSortOrder] = useState("");
     const [fromVal, setFromVal] = useState(0);
     const [toVal, setToVal ] = useState(1000000000);
@@ -116,7 +127,7 @@ const WOVList = props => {
             <div className="hero-contain">
                 <div className="filter-list">
                     <div className="card" onClick={e => setShow(!showFilter)}>
-                        <i style={{fontSize:"x-large"}} className="button fas fa-caret-down">&nbsp; filter list </i>
+                        <i style={{fontSize:"x-large"}} className="button fas fa-caret-down">&nbsp; Lookup Vehicle </i>
                     </div>
                     {showFilter &&
                         <div className="card">
@@ -382,41 +393,52 @@ const WOVList = props => {
                         </div>
                     }
                 </div>
-                <div className="carlistContainer">
+                <div className="vehiclelistContainer box">
                     <div className="columns is-multiline is-mobile">
                     {slice && slice.length > 0 ? (
                         slice.map((vehicle, index) => (
-                            <div key={index} className="column is-one-third-desktop is-full-mobile has-text-centered">
+                            <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                 <VehicleItem
                                     imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/0"}
                                     vehicle={vehicle}
                                     key={index}
+                                    page={"list"}
                                 />
                             </div>
                         ))
                     ) : (
-                        <div className="column has-text-centered">
-                        <span className="title has-text-grey-light">
-                            No Vehicles to match your search
-                        </span>
-                        </div>
+                        <>
+                            {(filter !== null) ?
+                                <div className="column has-text-centered">
+                                    <span className="title has-text-grey-light">
+                                        No Vehicles to match your search
+                                    </span>
+                                </div>
+                            :
+                                <div className="column has-text-centered">
+                                    <span className="title has-text-grey-light">
+                                        Loading Vehicles
+                                    </span>
+                                </div>
+                            }
+                        </>
                     )}
                     </div>
-                    <div className="card paginationBox">
-                    <ReactPaginate
-                        previousLabel="prev"
-                        nextLabel="next"
-                        breakLabel={'...'}
-                        breakClassName={'break-me'}
-                        pageCount={pageCount}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={handlePageClick}
-                        containerClassName={'pagination'}
-                        subContainerClassName={'pages pagination'}
-                        activeClassName={'active'}
-                        />
-                </div>
+                    <div className="paginationBox">
+                        <ReactPaginate
+                            previousLabel="prev"
+                            nextLabel="next"
+                            breakLabel={'...'}
+                            breakClassName={'break-me'}
+                            pageCount={pageCount}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={handlePageClick}
+                            containerClassName={'pagination'}
+                            subContainerClassName={'pages pagination'}
+                            activeClassName={'active'}
+                            />
+                    </div>
                 </div>
                 
             </div>

@@ -58,6 +58,7 @@ const SimilarProduct = (props) => {
                     product={match}
                     key={index}
                     val={index}
+                    page={"list"}
                 />
                 
             </div>

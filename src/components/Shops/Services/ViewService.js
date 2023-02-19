@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import withContext from "../../../withContext";
 
 import ServiceImageView from "./ServiceImageView";
@@ -6,13 +6,32 @@ import ServiceDetail from "./ServiceDetail";
 import ServiceFeatures from "./ServiceFeatures";
 import SimilarService from "./SimilarService";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import $ from 'jquery';
 
 
 const ViewService = props => {
 
+    let {id} = useParams();
+
+    const [service, setService] = useState(null);
+    const [thePics, setPics] = useState(null);
+
     useEffect(() => {
+        window.scrollTo(0, 0);
+        $('#rightContent').scrollTop(0); //did not work as expected
+        if (service === null){
+            props.context.getService(id).then((promise) => {
+                if(promise){
+                    setService(promise);
+                    setPics(props.context.getTargetPhotos(promise, "service"));
+                }
+            });
+        }
+
+    }, [service]);
+
+    /*useEffect(() => {
         window.scrollTo(0, 0);
         $('#rightContent').scrollTop(0); //did not work as expected
     }, []);
@@ -26,7 +45,7 @@ const ViewService = props => {
     thePics =  (result === null) ? JSON.parse(thePics) : props.context.getTargetPhotos(service.service_id, "service");
     
     localStorage.setItem("service", JSON.stringify(service));
-    localStorage.setItem("thePics", JSON.stringify(thePics));
+    localStorage.setItem("thePics", JSON.stringify(thePics));*/
 
     //implement input where items are added in a list ///
     const interior = ['Overhead Airbags','Power Locks','Power Mirrors','Power Windows','Side Airbags'];
@@ -39,24 +58,17 @@ const ViewService = props => {
     
     const comfort = ["Air Conditioning","Cloth Seats"];
     //////////
-
-    //console.log(Vehicle);
-    console.log(thePics);
-    let navigate = useNavigate();
     
     return (
         <div className="hero">
-            <div className="listing-view">
+            {service ?
+            <div className="hero-container market-content">
                 <div className="vehicle-content">
                     <div className="columns">
-                        <div className="leftContent column is-half">
-                            <div className="hero-body viewing-controls">
-                                <button className="button is-fixed" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
-                            </div>
-                            <br />
+                        <div className="leftContent column">
                             <ServiceImageView service={service} thePics={thePics} />
                         </div>
-                        <div className="productlistContainer rightContent column is-half">
+                        <div className="rightContent column">
                             <div className="content box">
                                 <ServiceDetail service={service} />
                             </div>
@@ -71,7 +83,15 @@ const ViewService = props => {
                         </div>
                     </div>
                 </div>
+            </div>:
+            <div className="hero-container">
+                <div className="hero-body">
+                    <span className="is-size-3" style={{color:"gray"}}>
+                        Service is not found !
+                    </span>
+                </div>
             </div>
+            }
         </div>
     )
 }

@@ -1,4 +1,7 @@
 import ProductItem from "../Shops/Products/ProductItem";
+import PFLItem from "../Shops/PropFinder/PFLItem";
+import ServiceItem from "../Shops/Services/ServiceItem";
+import VehicleItem from "../Shops/WOV/VehicleItem";
 
 const MarketPree = props => {
     let {aPree} = props;
@@ -10,6 +13,27 @@ const MarketPree = props => {
         template = <div className="has-text-centered"><ProductItem
                         imageUrl={process.env.PUBLIC_URL + "/images/products/product" + aPree.attachment.product_id + "/0"}
                         product={aPree.attachment}
+                        key={index}
+                        page={"timeline"}
+                    /><br/></div>
+    }else if(aPree.pree_type === 'listing'){
+        template = <div className="has-text-centered"><PFLItem
+                        imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + aPree.attachment.listing_id + "/0"}
+                        listing={aPree.attachment}
+                        key={index}
+                        page={"timeline"}
+                    /><br/></div>
+    }else if(aPree.pree_type === 'vehicle'){
+        template = <div className="has-text-centered"><VehicleItem
+                        imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + aPree.attachment.vehicle_id + "/0"}
+                        vehicle={aPree.attachment}
+                        key={index}
+                        page={"timeline"}
+                    /><br/></div>
+    }else if(aPree.pree_type === 'service'){
+        template = <div className="has-text-centered"><ServiceItem
+                        imageUrl={process.env.PUBLIC_URL + "/images/services/service" + aPree.attachment.service_id + "/0"}
+                        service={aPree.attachment}
                         key={index}
                         page={"timeline"}
                     /><br/></div>

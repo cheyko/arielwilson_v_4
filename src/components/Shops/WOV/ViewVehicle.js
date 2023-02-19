@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 //import {Link} from "react-router-dom";
 import withContext from "../../../withContext";
 
@@ -7,12 +7,31 @@ import VehicleDetail from "./VehicleDetail";
 import VehicleFeatures from "./VehicleFeatures";
 import SimilarVehicle from "./SimilarVehicle";
 
-import { useNavigate, useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
 import $ from 'jquery';
 
 const ViewVehicle = props => {
 
+    let {id} = useParams();
+
+    const [vehicle, setVehicle] = useState(null);
+    const [thePics, setPics] = useState(null);
+
     useEffect(() => {
+        window.scrollTo(0, 0);
+        $('#rightContent').scrollTop(0); //did not work as expected
+        if (vehicle === null){
+            props.context.getVehicle(id).then((promise) => {
+                if(promise){
+                    setVehicle(promise);
+                    setPics(props.context.getTargetPhotos(promise, "vehicle"));
+                }
+            });
+        }
+
+    }, [vehicle]);
+
+    /*useEffect(() => {
         window.scrollTo(0, 0);
         $('#rightContent').scrollTop(0); //did not work as expected
     }, []);
@@ -26,7 +45,7 @@ const ViewVehicle = props => {
     thePics =  (result === null) ? JSON.parse(thePics) : props.context.getTargetPhotos(vehicle.vehicle_id, "vehicle");
     
     localStorage.setItem("vehicle", JSON.stringify(vehicle));
-    localStorage.setItem("thePics", JSON.stringify(thePics));
+    localStorage.setItem("thePics", JSON.stringify(thePics));*/
 
     //implement input where items are added in a list ///
     const interior = ['Overhead Airbags','Power Locks','Power Mirrors','Power Windows','Side Airbags'];
@@ -39,25 +58,18 @@ const ViewVehicle = props => {
     
     const comfort = ["Air Conditioning","Cloth Seats"];
     //////////
-
-    //console.log(Vehicle);
-    //console.log(thePics);
-    
-    let navigate = useNavigate();
     
     return (
         <div className="hero">
-            <div className="listing-view">
+            {vehicle ? 
+            <div className="hero-container market-content">
                 <div className="vehicle-content">
                     <div className="columns">
-                        <div className="leftContent column is-half">
-                            <div className="hero-body viewing-controls">
-                                <button className="button is-fixed" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
-                            </div>
-                            <br />
+                        <div className="leftContent column ">
+
                             <VehicleImageView vehicle={vehicle} thePics={thePics}/>
                         </div>
-                        <div className="rightContent column is-half">
+                        <div className="rightContent column">
                             <div className="content box">
                                 <VehicleDetail vehicle={vehicle} />
                             </div>
@@ -72,7 +84,15 @@ const ViewVehicle = props => {
                         </div>
                     </div>
                 </div>
+            </div>:
+            <div className="hero-container">
+                <div className="hero-body">
+                    <span className="is-size-3" style={{color:"gray"}}>
+                        Vehicle is not found !
+                    </span>
+                </div>
             </div>
+            }
         </div>
     )
 }

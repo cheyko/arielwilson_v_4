@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import withContext from "../../../withContext";
 import axios from "axios";
 import Modal from "react-modal";
+import {useNavigate } from "react-router-dom";
 
 Modal.setAppElement('#root');
 
@@ -69,6 +70,7 @@ const WOVAdd = props => {
     const [description, setDescription] = useState("");
     const [photos, setPhotos] = useState([]);
 
+    let navigate = useNavigate();
     //add
     //Performance => Torque, Horsepower, Fuel Capacity
     //Measurements => Dimensions, Wheelbase, Tire Size, Driver Leg Room, Driver Head Room
@@ -173,12 +175,21 @@ const WOVAdd = props => {
         setParking(newArray);
     };*/
 
+    const getDateTime = () => {
+        const original = new Date();
+        const isoVal = original.toString();
+        const result = isoVal.split("GMT")[0];
+        //console.log(result);
+        return result;
+    }
+
     const saveVehicle = async (e) => {
         e.preventDefault();
         setResponseMsg("");
         const user_id = props.context.user.id;
-        
+        var theDateTime = getDateTime();
         const formData = new FormData();
+        formData.append('theDateTime',theDateTime);
         formData.append('user_id',user_id);
         formData.append('make',make);
         formData.append('model',model);
@@ -211,7 +222,8 @@ const WOVAdd = props => {
                 if (result.status === 200){
                     setResponseMsg("Vehicle was saved.");
                     //const numOfPics = result.data.numOfPics;
-                    //const vehicle_id = result.data.vehicle_id;
+                    const vehicle_id = result.data.vehicle_id;
+                    navigate('/vehicle-view/' + vehicle_id);
                     //add listing to context 
                     clearFunc();
                 }else{

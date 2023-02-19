@@ -9,6 +9,10 @@
     height: 25rem;
 }
 
-.servicelistContainer .item-box .box{
+/*.servicelistContainer .item-box .box{
+  background-color: blueviolet;
+}*/
+
+.service-card{
   background-color: blueviolet;
 }
