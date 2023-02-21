@@ -10,11 +10,11 @@ const ProductItem = props => {
   const formatName = (val) => {
     if (page === 'timeline'){
       return val.length > 60 ? val.substring(0,60) + "..." : val;
-    }else if ((page === 'home') && (window.screen.width > 1200)){
+    }else if ((page === 'home') && (window.screen.width >= 1200)){
       return val.length > 50 ? val.substring(0,50) + "..." : val;
-    }else if ((page === 'home') && (window.screen.width < 1200) && (window.screen.width > 1000 )){
+    }else if ((page === 'home') && (window.screen.width < 1200) && (window.screen.width >= 1000 )){
       return val.length > 30 ? val.substring(0,30) + "..." : val;
-    }else if ((page === 'home') && (window.screen.width < 1000) && (window.screen.width > 600) ){
+    }else if ((page === 'home') && (window.screen.width < 1000) && (window.screen.width >= 600) ){
       return val.length > 40 ? val.substring(0,40) + "..." : val;
     }else if ((page === 'home') && (window.screen.width < 600 )){
       return val.length > 50 ? val.substring(0,50) + "..." : val;

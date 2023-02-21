@@ -53,8 +53,8 @@ const SimilarListing = (props) => {
         )
 
     return (
-        <div className="hero">
-            <div className="hero-contain similar-listings">
+        <div className="hero has-text-centered similar-container">
+            <div className="hero-body similar-listings">
                 <strong className="is-size-4" style={{textDecoration:"underline"}}>
                     <span> Similar Properties </span> 
                 </strong>

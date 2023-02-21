@@ -60,13 +60,13 @@ const PFHome = props => {
         centerPadding: '10px',
         responsive:[
           {
-            breakpoint: 400,
+            breakpoint: 600,
             settings: {
                 slidesToShow: 1,
             }
           },
           {
-            breakpoint: 600,
+            breakpoint: 1000,
             settings: {
                 slidesToShow: 2,
             }
@@ -87,7 +87,6 @@ const PFHome = props => {
     const [showDropDownLeft, setShowDropDownLeft] = useState(false);
     const [showDropDownMid, setShowDropDownMid] = useState(false);
     const [showDropDownRight, setShowDropDownRight] = useState(false);
-    console.log(listings);
 
     return(
         <div className="market-home">
@@ -123,6 +122,7 @@ const PFHome = props => {
                                                         imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0"}
                                                         listing={listing}
                                                         key={index}
+                                                        page={"home"}
                                                     />
                                                 </div>
                                             ))}

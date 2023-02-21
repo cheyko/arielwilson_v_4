@@ -14,7 +14,7 @@ const customStyles = {
         right: 0,
         bottom: 0,
         backgroundColor: 'rgba(255, 255, 255, 0.75)',
-        zIndex:4
+        zIndex:6
     },
     content : {
       width                 : '45rem',

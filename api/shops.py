@@ -52,7 +52,7 @@ def get_listing():
     if request.method == 'POST':
         listing_id = request.json.get('listing_id', None)
         listing = Listing.query.get(listing_id)
-        if listing.is_visible == True:
+        if listing != None and listing.is_visible == True:
             listingObj = {"listing_id":listing.listing_id,"lister":listing.lister,"pree_id":listing.pree_id,"title":listing.title,"category":listing.category,"typeOf":listing.typeOf,"address":listing.address,"price":listing.price,"currency":listing.currency,"beds":listing.beds, "baths": listing.baths, "insideSqft": listing.insideSqft, "lotSqft": listing.lotSqft, "parking": listing.parking, "description": listing.description, "numOfPics":listing.numOfPics}
             return listingObj, 200
         else:
@@ -97,7 +97,7 @@ def get_vehicle():
     if request.method == 'POST':
         vehicle_id = request.json.get('vehicle_id', None)
         vehicle = Vehicle.query.get(vehicle_id)
-        if vehicle.is_visible == True:
+        if vehicle != None and vehicle.is_visible == True:
             vehicleObj = {"vehicle_id":vehicle.vehicle_id,"lister":vehicle.lister,"pree_id":vehicle.pree_id,"make":vehicle.make,"model":vehicle.model,"condition":vehicle.condition,"typeOf":vehicle.typeOf,"fuel":vehicle.fuel,"transmission":vehicle.transmission,"mileage":vehicle.mileage,"location":vehicle.location,"price":vehicle.price,"currency":vehicle.currency,"engine":vehicle.engine, "year": vehicle.year, "color": vehicle.color, "steering": vehicle.steering, "ignition": vehicle.ignition, "seats":vehicle.seats, "description": vehicle.description, "numOfPics":vehicle.numOfPics}
             return vehicleObj, 200
         else:
@@ -142,7 +142,7 @@ def get_product():
     if request.method == 'POST':
         product_id = request.json.get('product_id', None)
         product = Product.query.get(product_id)
-        if product.is_visible == True:
+        if product != None and product.is_visible == True:
             productObj = {"product_id":product.product_id,"pree_id":product.pree_id,"lister":product.lister,"brand":product.brand,"name":product.name,"category":product.category,"condition":product.condition,"typeOf":product.typeOf,"location":product.location,"stock":product.stock,"price":product.price,"currency":product.currency, "year": product.year, "colors": product.colors, "package": product.package, "description": product.description, "numOfPics":product.numOfPics}
             return productObj, 200
         else:
@@ -186,7 +186,7 @@ def get_item():
     if request.method == 'POST':
         item_id = request.json.get('item_id', None)
         item = Item.query.get(item_id)
-        if item.is_visible == True:
+        if item != None and item.is_visible == True:
             itemObj = {"item_id":item.item_id,"lister":item.lister,"pree_id":item.pree_id,"name":item.name,"category":item.category,"typeOf":item.typeOf,"calories":item.calories,"price":item.price,"currency":item.currency, "ingredients": item.ingredients, "description": item.description, "numOfPics":item.numOfPics}
             return itemObj, 200
         else:
@@ -230,7 +230,7 @@ def get_service():
     if request.method == 'POST':
         service_id = request.json.get('service_id', None)
         service = Service.query.get(service_id)
-        if service.is_visible == True:
+        if service != None and service.is_visible == True:
             serviceObj = {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics}
             return serviceObj, 200
         else:

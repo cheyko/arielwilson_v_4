@@ -4,7 +4,7 @@ import React from 'react';
 
 const Map = (props) => {
     const address = props.fullAddr;
-    
+    const {height} = props;
     //console.log(address);
     //const address = 'Brunswick Avennue, Spanish Town, St. Catherine, Jamaica';
     
@@ -24,8 +24,8 @@ const Map = (props) => {
             <iframe
               title={address}
               src={searchUrl}
-              width="250rem"
-              height="250rem"
+              width="100%"
+              height={height}
               id="gmap_canvas"
               frameBorder="0"
               scrolling="no"

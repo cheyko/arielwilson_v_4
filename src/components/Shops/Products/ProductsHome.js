@@ -48,13 +48,13 @@ const ProductsHome = props => {
         centerPadding: '10px',
         responsive:[
           {
-            breakpoint: 426,
+            breakpoint: 600,
             settings: {
                 slidesToShow: 1,
             }
           },
           {
-            breakpoint: 770,
+            breakpoint: 1000,
             settings: {
                 slidesToShow: 2,
             }

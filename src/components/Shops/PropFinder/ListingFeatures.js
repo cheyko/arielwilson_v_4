@@ -9,7 +9,7 @@ const ListingFeatures = props =>{
             <>
                 <div className="container">
                     <div className="content">
-                        <strong className="is-size-4" style={{textDecoration:"underline"}}>Features</strong>  
+                        <p className="has-text-centered"><strong className="is-size-4" style={{textDecoration:"underline"}}>Features</strong> </p>
                         <div className="featuresContent">
                             <ul>
                                 <li>
@@ -24,7 +24,7 @@ const ListingFeatures = props =>{
                         </div>
                         <br /><br />
                         <div className="columns">
-                            <div className="column col-6 col-xs-12" style={{borderRight:"solid 1px black"}}>
+                            <div className="column col-6 col-xs-12">
                                 <b style={{textDecoration:"underline"}}>Interior</b>
                                 <ul style={{textAlign:"left"}}>
                                     {interior.map(detail => (
@@ -34,7 +34,7 @@ const ListingFeatures = props =>{
                                     ))}
                                 </ul>
                             </div>
-                            <div className="column col-6 col-xs-12" style={{borderRight:"solid 1px black"}}>
+                            <div className="column col-6 col-xs-12">
                                 <b style={{textDecoration:"underline"}}>Exterior</b>
                                 <ul style={{textAlign:"left"}}>
                                     {exterior.map(detail => (

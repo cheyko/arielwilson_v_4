@@ -10,7 +10,7 @@
     width: 17.5rem;
     position: fixed;
     z-index: 4;
-    margin-left: 1.25rem !important;
+    margin-left: 1rem !important;
 }
 
 .no-space{
@@ -146,19 +146,17 @@
 
 .listing-card, .vehicle-card, .product-card, .service-card {
     margin-inline: 5px !important;
+    height: 100% !important;
 }
 
-.listing-card{
+/*.listing-card{
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
     align-self: stretch !important;
     justify-content: space-between !important;
-}
+}*/
 
-.vehicle-card{
-    height: 100% !important;
-}
 /*.product-card img{
     height: 12rem !important;
 }*/
@@ -298,12 +296,13 @@
 }*/
 
 .market-home .slick-wrapper{
-    max-width: 60rem !important;
+    max-width: 50rem !important;
 }
 
-.productlistContainer .market-title{
+.market-home .market-title, .market-list .market-title, .similar-container .market-title{
     height: 5rem !important;
 }
+
 @media screen and (max-width:1200px) and (min-width:1001px){
     .market-home .slick-wrapper{
         max-width: 40rem !important;

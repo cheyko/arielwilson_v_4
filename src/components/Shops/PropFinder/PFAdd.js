@@ -14,7 +14,7 @@ const customStyles = {
         right: 0,
         bottom: 0,
         backgroundColor: 'rgba(255, 255, 255, 0.75)',
-        zIndex:4
+        zIndex:7
     },
     content : {
       width                 : '45rem',
@@ -368,12 +368,23 @@ const PFAdd = props => {
                             onChange={e => handlePhotos(e)}
                             />
                         </div>
+                        <hr />
+                        <div className="columns is-multiline">
+                            {photos.map((photo,index) => 
+                                <div className="column is-half" key={index}>
+                                    <span> {index + 1} </span>
+                                    <br />
+                                    <img className="is-256x256" src={URL.createObjectURL(photo)} />
+                                </div>
+                            )}
+
+                        </div>
                         <br />
                         <span>{responseMsg}</span>
                         <br />
                         <div className="field is-clearfix is-pulled-right">
                             &nbsp;
-                            <button onClick={e => closeModal(e)} className="button is-warning">
+                            <button onClick={e => {clearFunc();closeModal(e)}} className="button is-warning">
                                  Cancel
                             </button>
                             &nbsp;&nbsp;

@@ -7,10 +7,10 @@ import axios from "axios";
 
 const PFList = props => {
     const {PFView} = props;
-    let fullList = props.context.listings ? props.context.listings : [];
+    let fullList = props.context.listings ? props.context.listings : null;
     const [listings, setListings] = useState(fullList);
 
-    if(listings.length == 0){
+    if(listings === null){
         axios.get("/api/listings").then(res => {
             if (res.status === 200){
                 setListings(res.data);
@@ -20,24 +20,26 @@ const PFList = props => {
     }
     
     const perPage = 12;
-    const pageCount = Math.ceil(listings.length / perPage);
+    const pageCount = listings ? Math.ceil(listings.length / perPage) : 0;
     let slice;
     const [offset, setOffset] = useState(0);
-    console.log(PFView);
     //filter implementation
     const Amounts = [1,2,3,4,5,6];
     let types = ["house","apartment","townhouse","residential","commercial","office","building","villa"];
     const [location, setLocation] = useState("");
-    const [market, setMarket] = useState("");
-    const [typeOf, setTypeOf] = useState("");
-    const [beds, setBeds] = useState("");
-    const [baths, setBaths] = useState("");
-    const [showFilter, setShow] = useState(false);
+    const val = PFView === "PFBuy" ? "Sale" : (PFView === "PFRent" ? "Rent" : "all");
+    const [market, setMarket] = useState(val);
+    const [typeOf, setTypeOf] = useState("all");
+    const [beds, setBeds] = useState("Any");
+    const [baths, setBaths] = useState("Any");
+    const filterCache = localStorage.getItem("showfilter") === "true" ? true : false;
+    //console.log(filterCache === false);
+    const [showFilter, setShow] = useState(filterCache);
     const [filter, setFilter] = useState(null);
     const [sortOrder, setSortOrder] = useState("");
     const [fromVal, setFromVal] = useState(0);
     const [toVal, setToVal ] = useState(1000000000);
-    const val = PFView === "PFBuy" ? "Sale" : (PFView === "PFRent" ? "Rent" : "all");
+    
     
     const handlePageClick = (e) => {
         setOffset(e.selected * perPage);
@@ -62,26 +64,34 @@ const PFList = props => {
         if (location !== ""){
             result = result.filter(listing => listing.title.replace(/ /g,'').toLowerCase().includes(location.replace(/ /g,'').toLowerCase())
             ||  listing.address.replace(/ /g,'').toLowerCase().includes(location.replace(/ /g,'').toLowerCase()));
+            console.log(result);
         }
         if (market && market !== "all"){
             result = result.filter(listing => listing.category === market);
+            console.log(market);
         }
         if (typeOf && typeOf !== "all") {
             result = result.filter(listing => listing.typeOf === typeOf);
+            console.log(typeOf);
         }
         if (beds && beds !== "Any") {
             result = result.filter(listing => listing.beds === Number(beds));
+            console.log(beds);
         }
         if (baths && baths !== "Any") {
             result = result.filter(listing => listing.baths === Number(baths));
+            console.log(baths);
         }
         if (fromVal > 0){
             result = result.filter(listing => ( convertPrice(listing.price, listing.currency) >= Number(fromVal)));
+            console.log(fromVal);
         }
         if (toVal > 0){
             result = result.filter(listing => convertPrice(listing.price, listing.currency) <= Number(toVal))
+            console.log(toVal);
         }
         if (sortOrder) {
+            console.log(sortOrder);
             if (sortOrder === 'highestfirst') {
               result = result.sort((a, b) => convertPrice(b.price, b.currency) - convertPrice(a.price, a.currency))
             }
@@ -89,6 +99,7 @@ const PFList = props => {
               result = result.sort((a, b) => convertPrice(a.price, a.currency) - convertPrice(b.price, b.currency))
             }
         }
+        console.log(result);
         setListings(result);
         setOffset(0);
         setFilter(false);
@@ -97,23 +108,34 @@ const PFList = props => {
     
     useEffect(() => {
         window.scrollTo(0, 0);
-        if (!filter){
+        if (filter === null){
             setMarket(val);
-        }else{
-            let pfview = market === "Sale" ? "PFBuy" : (market === "Rent" ? "PFRent" : "all"); 
-            props.setPFView(pfview);
+            //filterList();
         }
-        filterList();
-
+        if (filter === true){
+            let pfview = market === "Sale" ? "PFBuy" : (market === "Rent" ? "PFRent" : "PFAll");
+            //if(pfview === "PFBuy" || pfview === "PFRent"){
+            props.setPFView(pfview);
+            props.setSubView(pfview); 
+            localStorage.setItem("subview",pfview);
+            //} 
+            //props.setPFView(pfview);
+            //filterList();
+        }
+        if(listings){
+            filterList();
+        }
+        //setFilter(false);
+        console.log(listings);
     }, [val, market, filter, props, filterList]);
 
-    slice = listings.slice(offset, offset + perPage); 
+    slice = listings ? listings.slice(offset, offset + perPage) : []; 
 
     return (
         <div className="hero has-text-centered">
-            <div className="">
+            <div className="market-list">
                 <div className="filter-list">
-                    <div className="card" onClick={e => setShow(!showFilter)}>
+                    <div className="card" onClick={e => {setShow(!showFilter);localStorage.setItem("showfilter",(!showFilter));}}>
                         <i style={{fontSize:"x-large"}} className="button fas fa-caret-down">&nbsp; Lookup Property </i>
                     </div>
                     {showFilter &&

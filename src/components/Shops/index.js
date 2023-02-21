@@ -270,6 +270,9 @@ const Shops = props => {
                                         </span>
                                         <hr className="navbar-divider" />
                                     </div>
+                                    <span className={`navbar-item ${subview === 'PFAll' ? 'is-active' : ''}`} onClick={e => { setSubView('PFAll');setShopView("propfinder");toggleMenu(e); setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFAll");localStorage.setItem("shopView","propfinder")}}>
+                                        <i className="fas fa-sign" aria-hidden="true"> All Properties </i>
+                                    </span>
                                     <span className={`navbar-item ${subview === 'PFBuy' ? 'is-active' : ''}`} onClick={e => { setSubView('PFBuy');setShopView("propfinder");toggleMenu(e); setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFBuy");localStorage.setItem("shopView","propfinder")}}>
                                         <i className="fas fa-house-user" aria-hidden="true"> Buy </i>
                                     </span>
@@ -441,7 +444,7 @@ const Shops = props => {
                                 <div>
                                     <div className="hero">
                                         <div className="card">
-                                            <PropFinder subview={subview}/>
+                                            <PropFinder subview={subview} setSubView={setSubView}/>
                                         </div>
                                     </div>
                                 </div>

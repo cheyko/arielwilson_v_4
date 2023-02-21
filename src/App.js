@@ -537,8 +537,6 @@ export default class App extends Component {
         if (res.status !== 200) { return { status: res.status, message: 'Not successful' } }
       }
     )
-
-    console.log(res);
     if (res.status === 200){
       //console.log("test4");
       let email = jwt_decode(res.data.access_token).identity;
@@ -559,9 +557,7 @@ export default class App extends Component {
         has_profile : res.data.has_profile,
         gender : res.data.gender
       }
-      console.log("one");
       if (res.data.has_profile === true){
-        console.log("two");
         ready = true;
         welcome = false;
         user_id = res.data.user_id;

@@ -7,10 +7,10 @@ import axios from "axios";
 
 const ProductsList = props => {
 
-    let fullList = props.context.products ? props.context.products : [];
+    let fullList = props.context.products ? props.context.products : null;
     const [products, setProducts] = useState(fullList);
 
-    if(products.length == 0){
+    if(products === null){
         axios.get("/api/products").then(res => {
             if (res.status === 200){
                 setProducts(res.data);
@@ -20,7 +20,7 @@ const ProductsList = props => {
     }
     
     const perPage = 12;
-    const pageCount = Math.ceil(products.length / perPage);
+    const pageCount = products ? Math.ceil(products.length / perPage) : 0;
     let slice;
     const [offset, setOffset] = useState(0);
 
@@ -113,10 +113,10 @@ const ProductsList = props => {
         }
     }, [filter, filterList]);
     
-    slice = products.slice(offset, offset + perPage); 
+    slice = products ? products.slice(offset, offset + perPage) : []; 
     return (
         <div className="hero has-text-centered">
-            <div className="">
+            <div className="market-list">
                 <div className="filter-list">
                     <div className="card" onClick={e => setShow(!showFilter)}>
                         <i style={{fontSize:"x-large"}} className="button fas fa-caret-down">&nbsp; Lookup Product </i>

@@ -25,6 +25,8 @@ const ViewService = props => {
                 if(promise){
                     setService(promise);
                     setPics(props.context.getTargetPhotos(promise, "service"));
+                }else{
+                    setService(promise);
                 }
             });
         }
@@ -86,9 +88,15 @@ const ViewService = props => {
             </div>:
             <div className="hero-container">
                 <div className="hero-body">
-                    <span className="is-size-3" style={{color:"gray"}}>
-                        Service is not found !
-                    </span>
+                    {service === false ?
+                        <span className="is-size-3" style={{color:"gray"}}>
+                            Service is not found !
+                        </span>
+                        :
+                        <span className="is-size-3" style={{color:"gray"}}>
+                            Loading .....
+                        </span>
+                    }
                 </div>
             </div>
             }

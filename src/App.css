@@ -393,6 +393,11 @@ ul .is-active{
   position: relative;
 }
 
+.is-256x256{
+  height: 256px;
+  width: 256px;
+}
+
 @media screen and (max-width:1200px) {
   .slick-wrapper{
     max-width: 30rem;

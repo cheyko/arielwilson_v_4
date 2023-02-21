@@ -74,8 +74,8 @@ const SimilarVehicle= (props) => {
         )
 
     return (
-        <div className="hero has-text-centered">
-            <div className="hero-body similar-listings">
+        <div className="hero has-text-centered similar-container">
+            <div className="hero-body similar-vehicle">
                 <strong className="is-size-4" style={{textDecoration:"underline"}}>
                     <span>  Similar Vehicles </span>  
                 </strong>

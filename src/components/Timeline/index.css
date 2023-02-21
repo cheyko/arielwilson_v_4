@@ -5,7 +5,7 @@ h1 {
 .timeline-container{
     padding: 0 !important;
     overflow-x: auto !important;
-    margin: 0 auto !important;
+    margin: 0 auto!important;
 }
 .timeline-box{
     padding: 1rem;
@@ -219,9 +219,9 @@ padding-top: 60px !important;
 }
 
 @media screen and (max-width:1300px) and (min-width:768px){
-    .timeline-container{
+    /*.timeline-container{
         width: 35rem !important;
-    }
+    }*/
     .pree-item .message-header .column{
         padding-inline : 0rem !important;
     }
@@ -238,9 +238,9 @@ padding-top: 60px !important;
         width: 425px !important;
         /*font-size: 30px !important;*/
     }
-    .timeline-container{
+    /*.timeline-container{
         width: auto !important;
-    }
+    }*/
     .post-btn{
         font-size: 30px !important;
     }
@@ -273,15 +273,15 @@ padding-top: 60px !important;
 }
 
 @media screen and (max-width:767px) and (min-width:600px){
-    .timeline-container{
+    /*.timeline-container{
         width: 45rem !important;
-    }
+    }*/
 }
 
 @media screen and (max-width:424px) and (min-width:375px){
-    .timeline-container{
+    /*.timeline-container{
         width: 24rem;
-    }
+    }*/
 
     .hero-container{
         margin-top: 3.5rem !important;
@@ -316,9 +316,9 @@ padding-top: 60px !important;
     .hero-timeline{
         padding: 0 !important;
     }
-    .timeline-container{
+    /*.timeline-container{
         width: 18rem;
-    }
+    }*/
     .pree-item{
         width: -webkit-fill-available !important;
         /*font-size: 30px !important;*/
@@ -341,7 +341,7 @@ padding-top: 60px !important;
 }
 
 @media screen and (max-width:320px){
-    .timeline-container{
+    /*.timeline-container{
         width: 18rem;
-    }
+    }*/
 }

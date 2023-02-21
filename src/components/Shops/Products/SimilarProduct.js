@@ -73,8 +73,8 @@ const SimilarProduct = (props) => {
         )
 
     return (
-        <div className="hero has-text-centered">
-            <div className="hero-body similar-products reduced-column">
+        <div className="hero has-text-centered similar-container">
+            <div className="hero-body similar-products">
                 <strong className="is-size-4" style={{textDecoration:"underline"}}>
                     <span>  Similar Products </span>  
                 </strong>

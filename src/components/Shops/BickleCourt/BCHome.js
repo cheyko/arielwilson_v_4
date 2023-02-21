@@ -45,13 +45,13 @@ const BCHome = props => {
         centerPadding: '10px',
         responsive:[
           {
-            breakpoint: 400,
+            breakpoint: 600,
             settings: {
                 slidesToShow: 1,
             }
           },
           {
-            breakpoint: 600,
+            breakpoint: 1000,
             settings: {
                 slidesToShow: 2,
             }
@@ -75,7 +75,7 @@ const BCHome = props => {
     const [showDropDownRight, setShowDropDownRight] = useState(false);
 
     return(
-        <div>
+        <div className="market-home">
             <div className="hero bc-bg-one is-medium">
                 <div className="hero-contain has-text-centered">
                     <br /><br />

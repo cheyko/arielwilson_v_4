@@ -2,10 +2,13 @@ import React from 'react';
 import Map from "./Map";
 import ContactModal from "./ContactModal";
 import TourModal from "./TourModal";
+import { useState } from 'react';
+import MapModal from './MapModal';
 
 const ListingDetail = props =>{
 
         const { listing } = props;
+        const [openMap, setMapOpen] = useState(true);
 
         return (
             <>
@@ -31,7 +34,8 @@ const ListingDetail = props =>{
                         </div>
                         <div className="column">
                             <div className="container listing-map">
-                                <Map fullAddr={listing.address}/>
+                                <Map height={"250rem"} fullAddr={listing.address}/>
+                                <MapModal fullAddr={listing.address} />
                             </div>
                         </div>
                     </div>

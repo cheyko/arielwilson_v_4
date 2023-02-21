@@ -59,13 +59,13 @@ const WOVHome = props => {
         centerPadding: '10px',
         responsive:[
           {
-            breakpoint: 400,
+            breakpoint: 600,
             settings: {
                 slidesToShow: 1,
             }
           },
           {
-            breakpoint: 600,
+            breakpoint: 1000,
             settings: {
                 slidesToShow: 2,
             }
@@ -89,7 +89,7 @@ const WOVHome = props => {
     const [showDropDownRight, setShowDropDownRight] = useState(false);
 
     return(
-        <div>
+        <div className="market-home">
             <div className="hero wov-bg-one is-medium">
                 <div className="hero-body has-text-centered">
                     <br /><br />

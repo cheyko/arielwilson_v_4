@@ -24,6 +24,8 @@ const ViewListing = props => {
                 if(promise){
                     setListing(promise);
                     setPics(props.context.getTargetPhotos(promise, "listing"));
+                }else{
+                    setListing(promise)
                 }
             });
         }
@@ -78,11 +80,17 @@ const ViewListing = props => {
                     </div>
                 </div>
             </div>:
-            <div className="hero-container">
+            <div className="hero-container has-text-centered">
                 <div className="hero-body">
-                    <span className="is-size-3" style={{color:"gray"}}>
-                        Listing is not found !
-                    </span>
+                    {listing === false ? 
+                        <span className="is-size-3" style={{color:"gray"}}>
+                            Listing is not found !
+                        </span>:
+                        <span className="is-size-3" style={{color:"gray"}}>
+                            Loading .....
+                        </span>
+
+                    }
                 </div>
             </div>
             }

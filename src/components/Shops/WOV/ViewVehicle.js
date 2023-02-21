@@ -25,6 +25,8 @@ const ViewVehicle = props => {
                 if(promise){
                     setVehicle(promise);
                     setPics(props.context.getTargetPhotos(promise, "vehicle"));
+                }else{
+                    setVehicle(promise);
                 }
             });
         }
@@ -87,9 +89,15 @@ const ViewVehicle = props => {
             </div>:
             <div className="hero-container">
                 <div className="hero-body">
+                    {vehicle === false ?
                     <span className="is-size-3" style={{color:"gray"}}>
                         Vehicle is not found !
                     </span>
+                    :
+                    <span className="is-size-3" style={{color:"gray"}}>
+                        Loading .....
+                    </span>
+                    }
                 </div>
             </div>
             }

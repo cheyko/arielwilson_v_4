@@ -15,6 +15,8 @@ const PropFinder = props => {
 
     useEffect( () => {
         setPFView(subview);
+        props.setSubView(subview);
+        console.log(subview);
         //set current to local storage. 
     
     },[subview]);
@@ -28,9 +30,19 @@ const PropFinder = props => {
                             <PFHome setPFView={setPFView}/>
                         </div>
                     }
-                    {(PFView === 'PFBuy' || PFView === 'PFRent') && 
+                    {PFView === 'PFAll' && 
                         <div className="content">
-                            <PFList PFView={PFView} setPFView={setPFView} />
+                            <PFList PFView={PFView} setPFView={setPFView} setSubView={props.setSubView} />
+                        </div>
+                    }
+                    {PFView === 'PFBuy' && 
+                        <div className="content">
+                            <PFList PFView={PFView} setPFView={setPFView} setSubView={props.setSubView} />
+                        </div>
+                    }
+                    {PFView === 'PFRent' && 
+                        <div className="content">
+                            <PFList PFView={PFView} setPFView={setPFView} setSubView={props.setSubView} />
                         </div>
                     }
                     {PFView === 'PFSell' && 

@@ -59,8 +59,6 @@ const ProductImageView = props => {
 
       function testfunc(e){
           setOpen(true);
-          console.log(openImage);
-          console.log(pIndex);
           e.preventDefault();
       };
       return(

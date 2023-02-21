@@ -26,6 +26,8 @@ const ViewProduct = props => {
                 if(promise){
                     setProduct(promise);
                     setPics(props.context.getTargetPhotos(promise, "product"));
+                }else{
+                    setProduct(promise);
                 }
             });
         }
@@ -55,7 +57,7 @@ const ViewProduct = props => {
     const comfort = ["Air Conditioning","Cloth Seats"];
     //////////
 
-    //console.log(Vehicle);
+    console.log(product);
     //console.log(thePics);
     return (
         <div className="hero">
@@ -82,11 +84,17 @@ const ViewProduct = props => {
                         </div>
                     </div>
                 </div>:
-                <div className="hero-container">
+                <div className="hero-container has-text-centered">
                     <div className="hero-body">
-                        <span className="is-size-3" style={{color:"gray"}}>
-                            Product is not found !
-                        </span>
+                        {product === false ? 
+                            <span className="is-size-3" style={{color:"gray"}}>
+                                Product is not found !
+                            </span>
+                            :    
+                            <span className="is-size-3" style={{color:"gray"}}>
+                                Loading ......
+                            </span>
+                        }
                     </div>
                 </div>
             }
