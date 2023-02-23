@@ -1,9 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import withContext from "../../../withContext";
 import ServicesAdd from "./ServicesAdd";
 
 const Offer = props => {
 
+    let navigate = useNavigate();
     return (
         <div className="hero sub-container">
             <div className="hero-body">
@@ -15,7 +17,9 @@ const Offer = props => {
                         <p className="subtitle"> Offer Services </p>
                     </div>
                     <div className="content has-text-centered">
-                        <ServicesAdd />
+                        <button onClick={e => navigate('/service-add')} className="button is-link is-large"> Add Service </button>
+
+                        {/*<ServicesAdd />*/}
                     </div>
                 </div>
             </div>

@@ -62,12 +62,12 @@ const WOV = props => {
                             <h1>WOV-Crash</h1>
                         </div>
                     }
-                    {WOVView === 'WOVHome' && 
+                    {WOVView === 'WOVInfo' && 
                         <div className="content">
                             <h1>WOV-Partnerships</h1>
                         </div>
                     }
-                    {WOVView === 'WOVHome' && 
+                    {WOVView === 'WOVPS' && 
                         <div className="content">
                             <h1>WOV-I</h1>
                         </div>

@@ -178,7 +178,7 @@ def items():
             #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
             pic.save(os.path.join(item_folder , filename))
         db.session.commit()
-        return jsonify({"msg": "added successfully", "product_id":newItem.item_id, "numOfPics":numOfPics}), 200
+        return jsonify({"msg": "added successfully", "item_id":newItem.item_id, "numOfPics":numOfPics}), 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/get-item', methods=['POST'])
@@ -199,7 +199,7 @@ def services():
         result = Service.query.all()
         services = []
         for service in result:
-            serviceObj = {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics}
+            serviceObj = {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics, "time_contingency" : service.time_contingency, "price_contingency" : service.price_contingency, "requirements" : service.requirements, "address":service.address}
             services.append(serviceObj)
         return json.dumps(services)
     else:
@@ -211,7 +211,7 @@ def services():
         db.session.add(newPree)
         db.session.flush()
         #newAddress = Address(address1=result["address1"],address2=result["address2"],town=result["town"],parish=result["parish"])
-        newService = Service(pree_id=newPree.pree_id,lister=result["user_id"],title=result["title"],category=result["category"],deliverable=result["deliverable"],provider=result["provider"],contact=result["contact"],email=result["email"],timetaken=result["timetaken"],timeunit=result["timeunit"],price=result["price"],currency=result["currency"],procedures=procedures,description=result["description"], numOfPics=numOfPics)
+        newService = Service(pree_id=newPree.pree_id,lister=result["user_id"],title=result["title"],category=result["category"],deliverable=result["deliverable"],provider=result["provider"],contact=result["contact"],email=result["email"],timetaken=result["timetaken"],timeunit=result["timeunit"],price=result["price"],currency=result["currency"],procedures=procedures,description=result["description"], numOfPics=numOfPics, time_contingency=result["time_contingency"], price_contingency=result["price_contingency"], requirements=result["requirements"], address=result["address"])
         db.session.add(newService)
         db.session.flush()
         prefix = "service" + str(newService.service_id)
@@ -231,13 +231,22 @@ def get_service():
         service_id = request.json.get('service_id', None)
         service = Service.query.get(service_id)
         if service != None and service.is_visible == True:
-            serviceObj = {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics}
+            serviceObj = {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics, "time_contingency" : service.time_contingency, "price_contingency" : service.price_contingency, "requirements" : service.requirements, "address":service.address}
             return serviceObj, 200
         else:
             return {"msg":"product no longer is visible"}, 201
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 ## Production listings
+
+@app.route('/api/test-function', methods=['POST'])
+def test_func():
+    if request.method == 'POST':
+        result = request.form
+        procedures = result["procedures"].split(',')
+        print(procedures[0])
+        return {"msg":"procedures sent"}, 200
+    return jsonify({"msg":"There was an error somewhere."}), 400
 
 """@app.route('/api/listings', methods=['GET', 'POST'])
 def listings():

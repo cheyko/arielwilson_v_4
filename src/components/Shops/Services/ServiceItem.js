@@ -40,12 +40,16 @@ const ServiceItem = props => {
           <div className="card-content">
               
               <div className="content">
-                <div className="market-title">
+                <div className="market-title" style={{color:"yellow"}}>
                   <b style={{ fontStyle:"italic" }}>
                     {formatName(service.title)}
                   </b>
                   <br />
                   <strong><span className="tag is-danger is-bold"> ${service.price.toLocaleString()}{" "}{service.currency}</span></strong>
+                  <br />
+                  <b style={{ fontStyle:"italic" }}>
+                    {formatName(service.address)}
+                  </b>
                 </div>
               </div>
           </div>  
@@ -59,18 +63,31 @@ const ServiceItem = props => {
               </figure>
           </div>
           <footer className="card-footer">
-              <span className="card-footer-item">
-                <button className="button is-info"
-                  onClick={() => 
-                      props.addToCart({
-                          id: service.id,
-                          service,
-                          amount:1
-                      })}>
-                      <span> <i className="fas fa-receipt" aria-hidden="true"></i> Add to Order </span>
-                  </button>
-                </span>
+            <span className="card-footer-item">
+              <button className="button is-info"
+                onClick={() => 
+                    props.addToCart({
+                        id: service.id,
+                        service,
+                        amount:1
+                    })}>
+                <span> <i className="fas fa-file" aria-hidden="true"></i> Request Quote </span>
+              </button>
+            </span>
             </footer>
+            {/*<footer className="card-footer">
+            <span className="card-footer-item">
+              <button className="button is-info"
+                onClick={() => 
+                    props.addToCart({
+                        id: service.id,
+                        service,
+                        amount:1
+                    })}>
+                <span> <i className="fas fa-receipt" aria-hidden="true"></i> Request Service </span>
+              </button>
+            </span>
+                  </footer>*/}
         </Link>
       </div>
   );

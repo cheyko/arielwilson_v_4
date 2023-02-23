@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import withContext from "../../../withContext";
-import WOVAdd from "./WOVAdd";
 
 const WOVSell = props => {
+
+    let navigate = useNavigate();
 
     return (
         <div className="hero sub-container">
@@ -15,7 +17,7 @@ const WOVSell = props => {
                         <p className="subtitle"> Sell Vehicles </p>
                     </div>
                     <div className="content has-text-centered">
-                        <WOVAdd />
+                        <button onClick={e => navigate('/vehicle-add')} className="button is-link is-large"> Add Vehicle </button>
                     </div>
                 </div>
             </div>

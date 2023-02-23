@@ -59,6 +59,8 @@ import Talkie from './components/Talkie';
 import Live from './components/Live';
 import Layout from './components/Layout';
 import Trendy from './components/Images/Trendy';
+import AddService from './components/Shops/Services/AddService';
+import AddVehicle from './components/Shops/WOV/AddVehicle';
 
 const sign = require('jwt-encode');
 const secret = 'some$3cretKey';
@@ -539,22 +541,25 @@ export default class App extends Component {
     )
     if (res.status === 200){
       //console.log("test4");
-      let email = jwt_decode(res.data.access_token).identity;
+      //let email = jwt_decode(res.data.access_token).identity;
+      //console.log(email);
       let welcome;
       let user;
       let ready;
       let toggle = false;
       let user_id;
-      //console.log(user_id);
+      //console.log(jwt_decode(res.data.access_token));
 
       // get access level from database
       user = {
         id: res.data.user_id,
-        email,
+        email:email,
         token: res.data.access_token,
-        accessLevel: email === 'admin@example.com' ? 0 : 1, 
+        accessLevel: res.data.access_type,
         username: res.data.username,
+        fullname : res.data.firstname + " " + res.data.lastname,
         has_profile : res.data.has_profile,
+        phonenumber: res.data.phonenumber,
         gender : res.data.gender
       }
       if (res.data.has_profile === true){
@@ -571,7 +576,6 @@ export default class App extends Component {
       }
       
       //replace the implementations that used user_id with user.id inside the welcome features
-      
       localStorage.setItem("user-context", JSON.stringify(user));
       localStorage.setItem("ready", JSON.stringify(ready));
       localStorage.setItem("welcome", JSON.stringify(welcome));
@@ -678,6 +682,8 @@ export default class App extends Component {
                 <Route path="/vehicle-view/:id" element={<ViewVehicle />} />
                 <Route path="/product-view/:id" element={<ViewProduct />} />
                 <Route path="/service-view/:id" element={<ViewService />} />
+                <Route path="/service-add" element={<AddService />} />
+                <Route path="/vehicle-add" element={<AddVehicle />} />
                 <Route path="/item-view/:id" element={<ViewItem />} />
                 <Route path="/preepedia" element={<Preepedia />} />
                 <Route path="/preepedia/view-page/:id/" element={<ViewPage />} />

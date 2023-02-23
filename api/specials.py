@@ -268,7 +268,7 @@ class Service(db.Model):
     category = db.Column(db.String(80))
     deliverable = db.Column(db.String(80))
     provider = db.Column(db.String(80))
-    contact = db.Column(db.Integer)
+    contact = db.Column(db.String(80))
     email = db.Column(db.String(80))
     timetaken = db.Column(db.Integer)
     timeunit = db.Column(db.String(80))
@@ -281,8 +281,12 @@ class Service(db.Model):
     #additional_info = db.Column(db.Boolean, default=False)
     is_available = db.Column(db.Boolean, default=True)
     is_visible = db.Column(db.Boolean, default=True)
+    time_contingency = db.Column(db.String(80))
+    price_contingency = db.Column(db.String(80))
+    requirements = db.Column(db.String(255))
+    address = db.Column(db.String(255))
 
-    def __init__(self,pree_id, lister, title, category, deliverable, provider, contact, email, timetaken, timeunit, price, currency, description, procedures,numOfPics):
+    def __init__(self,pree_id, lister, title, category, deliverable, provider, contact, email, timetaken, timeunit, price, currency, description, procedures,numOfPics, time_contingency, price_contingency,requirements, address):
         self.pree_id = pree_id
         self.lister = lister
         self.title = title
@@ -298,6 +302,10 @@ class Service(db.Model):
         self.procedures = procedures
         self.description = description
         self.numOfPics = numOfPics
+        self.time_contingency = time_contingency
+        self.price_contingency = price_contingency
+        self.requirements = requirements
+        self.address = address
 
     def __repr__(self):
         return '<Service %d %r %r %r>' %  (self.service_id, self.title, self.price)

@@ -10,7 +10,7 @@ const ItemDetail = props =>{
             <>
                 <div id="vehicle-overview" className="container">
                     <strong className="is-size-4" style={{textDecoration:"underline"}}>
-                        {/*item.brand*/} BRAND
+                        {/*item.brand*/} SPOT
                     </strong>
                     <div className="columns" style={{textAlign:"left",marginTop:'0.5rem'}}>
                         <div className="column">
@@ -35,9 +35,9 @@ const ItemDetail = props =>{
                         </div>
                     </div>
                     <div>
-                        <p className="has-text-centered">
+                        <div className="has-text-centered">
                             <span> <ContactModal /> </span>
-                        </p>
+                        </div>
                     </div>
                     <br />
                     {/*<div className="rows">
@@ -56,14 +56,14 @@ const ItemDetail = props =>{
                     </div>*/}
                     <div className="ingredients">
                         <p className="has-text-centered"><b style={{textDecoration:"underline"}}> Ingredients</b></p>
-                        <p style={{fontWeight:"bold"}}> 
+                        <div style={{fontWeight:"bold"}}> 
                             <ul>
                                 {item.ingredients.map((ingredient, index) => {
                                     <li key={index}> {ingredient}</li>
                                 })} 
                             </ul>
                         
-                        </p>
+                        </div>
                     </div>
                     <div className="descript">
                         <p className="has-text-centered"><b style={{textDecoration:"underline"}}> Description</b></p>

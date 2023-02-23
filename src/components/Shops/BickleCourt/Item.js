@@ -8,7 +8,7 @@ const Item = props => {
   //let imageUrl = props.imageUrl === undefined ? ["default","https://bulma.io/images/placeholders/128x128.png"] : props.imageUrl;
   //const url = imageUrl[1];
   return (
-      <div className="card service-card">
+      <div className="card item-card">
         <Link onClick={localStorage.setItem("item", JSON.stringify(item))} className="service-item" to={`/item-view/${item.item_id}`}>
           <div className="card-content">
               
@@ -18,13 +18,11 @@ const Item = props => {
                 </b>
                 <br />
                 <strong><span className="tag is-danger is-bold"> ${item.price.toLocaleString()}{" "}{item.currency}</span></strong>
-                <br/>
-                <div>{item.description}</div>
               </div>
           </div>  
           
           <div className="card-image">
-              <figure className="image is-1x1">
+              <figure className="image is-1by1">
                 <img
                   src={url}
                   alt={item.name}
@@ -32,11 +30,6 @@ const Item = props => {
               </figure>
           </div>
           <footer className="card-footer">
-              {/*<span className="card-footer-item">
-                  <button className="button is-small">
-                      <span> <i style={{fontSize:"x-large"}} className="fas fa-eye" aria-hidden="true"></i> View </span>
-                  </button>
-              </span>*/}
               <span className="card-footer-item">
                 <button className="button is-info"
                   onClick={() => 

@@ -30,9 +30,10 @@ const VehicleDetail = props =>{
                         </div>
                     </div>
                     <div>
-                        <p className="has-text-centered">
+                        <div className="has-text-centered">
+                            <strong>{vehicle.location}</strong><br/>
                             <span> <ContactModal /> </span>
-                        </p>
+                        </div>
                     </div>
                     <br />
                     <div className="rows">

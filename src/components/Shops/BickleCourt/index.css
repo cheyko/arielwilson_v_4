@@ -9,6 +9,6 @@
     height: 25rem;
 }
 
-.bicklelistContainer .item-box .box{
-  background-color:crimson;
+.item-card{
+  background-color:lightcoral !important;
 }

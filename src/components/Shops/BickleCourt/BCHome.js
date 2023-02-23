@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import withContext from "../../../withContext";
 import "./index.css";
 //import ServiceItem from "./ServiceItem";
@@ -11,6 +11,8 @@ import { faBeer, faBusinessTime, faCarrot, faCashRegister, faCertificate, faChal
 import { faHandHoldingUsd, faInfo } from '@fortawesome/free-solid-svg-icons'
 import { faPeopleCarry } from '@fortawesome/free-solid-svg-icons'
 import {faHouzz} from "@fortawesome/free-brands-svg-icons";
+import Item from "./Item";
+import $ from "jquery";
 
 
 const BCHome = props => {
@@ -67,15 +69,25 @@ const BCHome = props => {
     
     const [searchval, setSearch] = useState("");
     const imageUrls = []; //props.context;
-    //const listings = props.context.listings ? (props.context.listings.length > 5 ? (props.context.listings.slice(0,6)) : props.context.listings ) : null ;
-    const { services } = [];
+    const items = props.context.items ? (props.context.items.length > 5 ? (props.context.items.slice(0,6)) : props.context.items ) : null ;
+    //const { services } = [];
 
     const [showDropDownLeft, setShowDropDownLeft] = useState(false);
     const [showDropDownMid, setShowDropDownMid] = useState(false);
     const [showDropDownRight, setShowDropDownRight] = useState(false);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        //$(window).scrollTop(0);
+        //alert('scroll');
+        //document.getElementById('home').addEventListener("load", window.scrollTo(0, 0));
+        
+    },[items]);
+
+    
+
     return(
-        <div className="market-home">
+        <div id='home' className="market-home">
             <div className="hero bc-bg-one is-medium">
                 <div className="hero-contain has-text-centered">
                     <br /><br />
@@ -99,14 +111,15 @@ const BCHome = props => {
                         <h1> KIOSK </h1>
                         <div className="box">
                             <div className="slick-wrapper has-text-centered">
-                                {services && services.length > 0 ? (
+                                {items && items.length > 0 ? (
                                     <Slider {...settingsThumbs}>
-                                        {services.map((service, index) => (
+                                        {items.map((item, index) => (
                                             <div className="slick-slide" key={index}>
-                                                {/*<ServiceItem
-                                                    service={service}
+                                                <Item
+                                                    imageUrl={process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/0"}
+                                                    item={item}
                                                     key={index}
-                                                />*/}
+                                                />
                                             </div>
                                         ))}
                                     </Slider>

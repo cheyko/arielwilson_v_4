@@ -1,3 +1,4 @@
+import Item from "../Shops/BickleCourt/Item";
 import ProductItem from "../Shops/Products/ProductItem";
 import PFLItem from "../Shops/PropFinder/PFLItem";
 import ServiceItem from "../Shops/Services/ServiceItem";
@@ -34,6 +35,13 @@ const MarketPree = props => {
         template = <div className="has-text-centered"><ServiceItem
                         imageUrl={process.env.PUBLIC_URL + "/images/services/service" + aPree.attachment.service_id + "/0"}
                         service={aPree.attachment}
+                        key={index}
+                        page={"timeline"}
+                    /><br/></div>
+    }else if(aPree.pree_type === 'item'){
+        template = <div className="has-text-centered"><Item
+                        imageUrl={process.env.PUBLIC_URL + "/images/items/item" + aPree.attachment.item_id + "/0"}
+                        item={aPree.attachment}
                         key={index}
                         page={"timeline"}
                     /><br/></div>

@@ -66,8 +66,8 @@ const ServicesHome = props => {
     
     const [searchval, setSearch] = useState("");
     const imageUrls = []; //props.context;
-    //const listings = props.context.listings ? (props.context.listings.length > 5 ? (props.context.listings.slice(0,6)) : props.context.listings ) : null ;
-    const { services } = [];
+    const services = props.context.services ? (props.context.services.length > 5 ? (props.context.services.slice(0,6)) : props.context.services ) : null ;
+    //const { services } = [];
 
     const [showDropDownLeft, setShowDropDownLeft] = useState(false);
     const [showDropDownMid, setShowDropDownMid] = useState(false);
@@ -103,9 +103,10 @@ const ServicesHome = props => {
                                         {services.map((service, index) => (
                                             <div className="slick-slide" key={index}>
                                                 <ServiceItem
-                                                    imageUrl={""/*process.env.PUBLIC_URL + "/vehicles/vehicle" + vehicle.vehicle_id + "/0"*/}
+                                                    imageUrl={process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/0"}
                                                     service={service}
                                                     key={index}
+                                                    page={"home"}
                                                 />
                                             </div>
                                         ))}

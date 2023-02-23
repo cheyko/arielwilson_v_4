@@ -46,10 +46,11 @@ const VehicleItem = props => {
               </figure>
           </div>
           <div className="card-content">
+              <b>{formatName(vehicle.year + " " + vehicle.make + " " + vehicle.model)}</b>
+              <br />
+              <strong><span className="tag is-dark is-bold"> ${vehicle.price.toLocaleString()}{" "}{vehicle.currency}</span></strong>
               <p className="market-title" style={{ fontStyle:"italic" }}>
-                <b>{formatName(vehicle.year + " " + vehicle.make + " " + vehicle.model)}</b>
-                <br />
-                <strong><span className="tag is-dark is-bold"> ${vehicle.price.toLocaleString()}{" "}{vehicle.currency}</span></strong>
+                <b>{formatName(vehicle.location)}</b>
               </p>
           </div>                 
         </Link>

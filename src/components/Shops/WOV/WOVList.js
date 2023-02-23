@@ -124,7 +124,7 @@ const WOVList = props => {
 
     return (
         <div className="hero has-text-centered">
-            <div className="hero-contain">
+            <div className="market-list">
                 <div className="filter-list">
                     <div className="card" onClick={e => setShow(!showFilter)}>
                         <i style={{fontSize:"x-large"}} className="button fas fa-caret-down">&nbsp; Lookup Vehicle </i>

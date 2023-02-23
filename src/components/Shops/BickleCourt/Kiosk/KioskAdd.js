@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import withContext from "../../../../withContext";
 import axios from "axios";
 import Modal from "react-modal";
+import $ from "jquery";
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement('#root');
 
@@ -39,7 +41,7 @@ const KioskAdd = props => {
     const [responseMsg, setResponseMsg] = useState("");
     const [modalIsOpen, setModalOpen] = useState(false);
 
-    const categories = ["Meal", "Beverage", "Dessert"];
+    const categories = ["Combo","Meal", "Beverage", "Dessert"];
     const mealsTypes = ["Dish","Side","Sandwich","Soup"];
     const beverageTypes = ["Alcohol","Juice","Mix", "Diary"];
     const dessertTypes = ["ice-cream","cake","candy","Diary"];
@@ -59,6 +61,7 @@ const KioskAdd = props => {
     const [media, setMedia] = useState([]);
     const [mediatypes , setMediaTypes] = useState([]);
 
+    let navigate = useNavigate();
     //add
     //Performance => Torque, Horsepower, Fuel Capacity
     //Measurements => Dimensions, Wheelbase, Tire Size, Driver Leg Room, Driver Head Room
@@ -88,6 +91,8 @@ const KioskAdd = props => {
                     setTypes(beverageTypes);
                 }else if(e.target.value === "Dessert"){
                     setTypes(dessertTypes);
+                }else{
+                    setTypes([]);
                 }
                 break;
             case 'typeOf':
@@ -128,13 +133,23 @@ const KioskAdd = props => {
         setIngredients(newArray);
     };
 
+    const getDateTime = () => {
+        const original = new Date();
+        const isoVal = original.toString();
+        const result = isoVal.split("GMT")[0];
+        //console.log(result);
+        return result;
+    }
+
     const saveItem = async (e) => {
         e.preventDefault();
         setResponseMsg("");
         const user_id = props.context.user.id;
-        
+        var theDateTime = getDateTime();
+
         if (name && category && price){
             const formData = new FormData();
+            formData.append('theDateTime',theDateTime);
             formData.append('user_id',user_id);
             formData.append('name',name);
             formData.append('category',category);
@@ -158,6 +173,8 @@ const KioskAdd = props => {
                     if (result.status === 200){
                         setResponseMsg("Item was saved.");
                         clearFunc();
+                        const item_id = result.data.item_id;
+                        navigate('/item-view/' + item_id);
                     }else{
                         setResponseMsg("Product was not saved, please try again. Contact us for suppport if problem persist.");
                     }
@@ -181,6 +198,16 @@ const KioskAdd = props => {
         setModalOpen(false);
     }
     
+    /* Prevent scrolling for number input types*/
+    $('form').on('focus', 'input[type=number]', function (e) {
+        $(this).on('wheel.disableScroll', function (e) {
+          e.preventDefault()
+        })
+      })
+      $('form').on('blur', 'input[type=number]', function (e) {
+        $(this).off('wheel.disableScroll')
+      })
+
     return (
         <div>
             <button onClick={e => openModal(e)} className="button is-link is-large"> Add Item </button>
@@ -211,7 +238,8 @@ const KioskAdd = props => {
                             </select>
                         </div>
                         
-                        <div className="field">
+                        {category !== "Combo" &&
+                         <div className="field">
                             <label className="label"> Type: </label>
                             <select
                                 className="select form-select"
@@ -229,6 +257,7 @@ const KioskAdd = props => {
                                 ))}
                             </select>
                         </div>
+                        }
                                              
                         <div className="field">
                             <label className="label"> Name: </label>
@@ -312,6 +341,16 @@ const KioskAdd = props => {
                             multiple
                             onChange={e => handlePhotos(e)}
                             />
+                        </div>
+                        <hr />
+                        <div className="columns is-multiline">
+                            {media.map((photo,index) => 
+                                <div className="column is-half has-text-centered" key={index}>
+                                    <span> {index + 1} </span>
+                                    <br />
+                                    <img className="is-256x256" src={URL.createObjectURL(photo)} />
+                                </div>
+                            )}
                         </div>
                         <br />
                         <span>{responseMsg}</span>

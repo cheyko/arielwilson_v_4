@@ -53,14 +53,14 @@ class ContactModal extends Component {
     render(){
         return(
             <div>
-                <button onClick={this.openModal} className="button is-info contactButton">Contact Dealer</button>
+                <button onClick={this.openModal} className="button is-info contactButton">Contact Provider</button>
                 <Modal 
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}
                     style={customStyles}>
                     
                     <div className="has-text-centered">
-                        <h1>Contact Dealer</h1>
+                        <h1>Contact Provider</h1>
 
                         <h3>Telephone : 876-123-4567 </h3>
                     </div>

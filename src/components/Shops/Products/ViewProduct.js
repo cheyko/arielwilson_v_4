@@ -57,7 +57,7 @@ const ViewProduct = props => {
     const comfort = ["Air Conditioning","Cloth Seats"];
     //////////
 
-    console.log(product);
+    //console.log(product);
     //console.log(thePics);
     return (
         <div className="hero">

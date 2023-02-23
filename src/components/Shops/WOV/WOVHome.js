@@ -93,7 +93,7 @@ const WOVHome = props => {
             <div className="hero wov-bg-one is-medium">
                 <div className="hero-body has-text-centered">
                     <br /><br />
-                    <h1 className="title slogan" style={{color: "lightgreen"}}> Vehicles Galore ! ... WOV !!!!</h1>
+                    <h1 className="title slogan" style={{color: "green"}}> Vehicles Galore ! ... WOV !!!!</h1>
                     <form>
                         <div className="field has-addons searchbar" style={{display: "inline-flex"}}>
                             <div className="control">
@@ -121,6 +121,7 @@ const WOVHome = props => {
                                                     imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/0"}
                                                     vehicle={vehicle}
                                                     key={index}
+                                                    page={"home"}
                                                 />
                                             </div>
                                         ))}

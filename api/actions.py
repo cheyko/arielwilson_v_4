@@ -139,7 +139,7 @@ def see_the_pree():
                 elif pree.is_media and pree.pree_type == 'service':
                     service = Service.query.filter_by(pree_id = pree.pree_id).first()
                     #reduce return object values
-                    attachment =  {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics}
+                    attachment =  {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics, "time_contingency" : service.time_contingency, "price_contingency" : service.price_contingency, "requirements" : service.requirements, "address":service.address}
                 else:
                     theQuote = Quote.query.get(pree.pree_id)
                     attachment = {"the_quote":theQuote.the_quote}

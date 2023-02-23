@@ -58,6 +58,7 @@ const SimilarService = (props) => {
                     service={match}
                     key={index}
                     val={index}
+                    page={"list"}
                 />
                 
             </div>

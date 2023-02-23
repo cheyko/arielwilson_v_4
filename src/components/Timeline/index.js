@@ -154,7 +154,7 @@ const Timeline = props => {
         timeline = allPrees.map((aPree,index) => {
             if(aPree.pree_type === 'exclusive'){
                 return <TimelineExclusive aPree={aPree} key={index}  />
-            }else if(aPree.pree_type === 'product' || aPree.pree_type === 'listing' || aPree.pree_type === 'service' || aPree.pree_type === 'vehicle'){
+            }else if(aPree.pree_type === 'product' || aPree.pree_type === 'listing' || aPree.pree_type === 'service' || aPree.pree_type === 'vehicle' || aPree.pree_type === 'item'){
                 return <MarketPree aPree={aPree} key={index} index={index}  />
             }else{
                 return <PreeItem aPree={aPree} key={index} showComments={false} clickable={"expand"} />

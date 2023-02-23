@@ -5,7 +5,6 @@ import withContext from "../../../withContext";
 const ServiceDetail = props =>{
 
         const { service } = props;
-
         return (
             <>
                 <div id="vehicle-overview" className="container">
@@ -17,12 +16,20 @@ const ServiceDetail = props =>{
                             <div className="content">
                                 <h1 className="title">{service.title}</h1>    
                                 <h3 className="subtitle">{service.category}</h3>
+                                <p> {service.address} </p>
                             </div> 
                             <div className="detail content">
-                                <div className="columns">
-                                    <div className="column">
-                                        <p><small>Price: </small><strong className="is-size-4">${service.price.toLocaleString()}</strong> <small>{service.currency}</small></p>   
-                                        <span className="tag"><strong>{service.timetaken}</strong>{" "}</span><small> {service.timeunit} </small>          
+                                <div className="columns is-mobile">
+                                    <div className="column">    
+                                        <p>
+                                            <small>Price: </small><strong className="is-size-4">${service.price.toLocaleString()}</strong> <small>{service.currency}</small> &nbsp;
+                                            {service.price_contingency !== "" && <span>per: <b className="is-size-6 tag">{" "}{service.price_contingency} </b></span>}   
+                                        </p>
+                                        <p>
+                                            <span className="tag"><strong>{service.timetaken}</strong>{" "}</span><small> {service.timeunit} </small> &nbsp;
+                                            {service.time_contingency !== "" && <span>per: <strong className="is-size-6 tag">{" "}{service.time_contingency} </strong></span>}   
+                                        
+                                        </p>  
                                     </div>
                                     <div className="column">
                                         <p>
@@ -35,9 +42,9 @@ const ServiceDetail = props =>{
                         </div>
                     </div>
                     <div>
-                        <p className="has-text-centered">
+                        <div className="has-text-centered">
                             <span> <ContactModal /> </span>
-                        </p>
+                        </div>
                     </div>
                     <br />
                     {/*<div className="rows">
@@ -56,18 +63,28 @@ const ServiceDetail = props =>{
                     </div>*/}
                     <div className="procedures">
                         <p className="has-text-centered"><b style={{textDecoration:"underline"}}> Procedures </b></p>
-                        <p style={{fontWeight:"bold"}}> 
+                        <div style={{fontWeight:"bold"}}> 
                             <ul>
-                                {service.procedures.map((procedure, index) => {
-                                    <li key={index}> {procedure} </li>
-                                })} 
+                                {service.procedures.length === 1 && service.procedures[0] === '' ? 
+                                    <li> No specifics </li>:
+                                    <>
+                                        {service.procedures.map((procedure, index) => 
+                                            <li key={index}> {procedure} </li>
+                                        )} 
+                                    </>
+                                    
+                                }
                             </ul>
-                        
-                        </p>
+                        </div>
                     </div>
                     <div className="descript">
                         <p className="has-text-centered"><b style={{textDecoration:"underline"}}> Description</b></p>
                         <p style={{fontStyle:"italic"}}> {service.description} </p>
+                    </div>
+                    <br />
+                    <div className="requirements">
+                        <p className="has-text-centered"><b style={{textDecoration:"underline"}}> Requirements</b></p>
+                        <p style={{fontStyle:"italic"}}> {service.requirements} </p>
                     </div>
                 </div>
             </> 

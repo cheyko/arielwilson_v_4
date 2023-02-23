@@ -95,6 +95,7 @@ def login():
                 'phonenumber' : user.phonenumber,
                 'access_token': access_token,
                 'refresh_token': refresh_token,
+                'access_type': user.accessType,
                 'has_profile' : has_profile,
                 'gender' : user.gender
             }

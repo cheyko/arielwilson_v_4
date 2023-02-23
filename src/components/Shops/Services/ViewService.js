@@ -60,7 +60,7 @@ const ViewService = props => {
     
     const comfort = ["Air Conditioning","Cloth Seats"];
     //////////
-    
+
     return (
         <div className="hero">
             {service ?

@@ -38,7 +38,7 @@ const BickleCourt = props => {
                             <Spot />
                         </div>
                     }
-                    {BCView === "Sell" && 
+                    {BCView === "BickleSell" && 
                         <div className="content">
                             <BCSell />
                         </div>

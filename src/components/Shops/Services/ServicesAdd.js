@@ -35,13 +35,13 @@ const customStyles = {
     }
 };
 
-const ProductsAdd = props => {
+const ServicesAdd = props => {
 
     const [responseMsg, setResponseMsg] = useState("");
     const [modalIsOpen, setModalOpen] = useState(false);
 
     const categories = ["Beauty & Grooming", "Clothing","Construction","Creative", "Electronics","Entertainment","Food & Beverages", "General", "Heath & Wellness", "Household", "Industrial", "I.T", "Landscaping", "Legal", "Medical",  "Religious", "Sports" ];
-    const deliverables = ["Appointment", "Application", "Booking", "Content", "Consultation", "Design", "Evaluation","File","Product", "Repair", "Representation"];
+    const deliverables = ["Appointment", "Application", "Booking", "Content", "Consultation", "Design", "Evaluation","File", "Job","Product", "Repair", "Representation"];
     const testings = ["testing1","testing2", "testing3"];
     const [category, setCategory] = useState("");
     const [deliverable, setDeliverable] = useState("");
@@ -50,7 +50,7 @@ const ProductsAdd = props => {
     const [addProvider, setAddProvider] = useState(false);
     const [contact, setContact] = useState(null);//useState(props.context.user.phonenumber); give option to set another
     const [addContact, setAddContact] = useState(false);
-    const [email, setEmail] = useState(null);//useState(props.context.user.phonenumber); give option to set another
+    const [email, setEmail] = useState(null);//useState(props.context.user.email); give option to set another
     const [addEmail, setAddEmail] = useState(false);
     const [timetaken, setTimeTaken] = useState(0);
     const [timeunit, setTimeUnit] = useState("");
@@ -95,7 +95,8 @@ const ProductsAdd = props => {
             case 'provider-checkbox':
                 if(e.target.value === "self"){
                     setAddProvider(false);
-                    setProvider(e.target.value);
+                    setProvider(props.context.user.fullname);
+                    setAddProvider(false);
                 }else{
                     setAddProvider(true);
                 }
@@ -106,9 +107,10 @@ const ProductsAdd = props => {
             case 'contact-checkbox':
                 if(e.target.value === "self"){
                     setAddContact(false);
-                    setContact(123456789);
+                    setContact(props.context.user.phonenumber);
+                    setAddContact(false);
                 }else{
-                    setAddProvider(true);
+                    setAddContact(true);
                 }
                 break;
             case 'contact':
@@ -117,7 +119,8 @@ const ProductsAdd = props => {
             case 'email-checkbox':
                 if(e.target.value === "self"){
                     setAddEmail(false);
-                    setEmail(e.target.value);
+                    setEmail(props.context.user.email);
+                    setAddEmail(false);
                 }else{
                     setAddEmail(true);
                 }
@@ -240,21 +243,22 @@ const ProductsAdd = props => {
                     <form onSubmit={e => saveService(e)}>
                         <div className="field">
                             <label className="label"> Category: </label>
-                            <select
-                                className="select form-select"
-                                name="category"
-                                id="category"
-                                value={category}
-                                onChange={e => setCategory(e.target.value)}
-                                required
-                                >
-                                <option> Choose... </option>
-                                {categories.map(opt => (
-                                <option key={opt} value={opt}>
-                                    {opt.toUpperCase()}
-                                </option>
-                                ))}
-                            </select>
+                            <div className="select">
+                                <select
+                                    name="category"
+                                    id="category"
+                                    value={category}
+                                    onChange={e => setCategory(e.target.value)}
+                                    required
+                                    >
+                                    <option value=""> Choose... </option>
+                                    {categories.map(opt => (
+                                        <option key={opt} value={opt}>
+                                            {opt.toUpperCase()}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                         
                         <div className="field">
@@ -290,14 +294,14 @@ const ProductsAdd = props => {
                             <label className="label"> Provider: </label>
                             <label className="checkbox-options">
                                 Self {" "}{" "}
-                                <input type="checkbox" name="provider-checkbox" onChange={e => handleChange(e)} value="self" />
+                                <input type="radio" name="provider-checkbox" onChange={e => handleChange(e)} value="self" />
                             </label>
                             <label className="checkbox-options">
                                 Name Provider {" "}
-                                <input type="checkbox" name="provider-checkbox" onChange={e => handleChange(e)} value="another" />
+                                <input type="radio" name="provider-checkbox" onChange={e => handleChange(e)} value="another" />
                             </label>
                             <hr />
-                            {false &&
+                            {addProvider &&
                             <input 
                                 className="input"
                                 type="text"
@@ -310,14 +314,14 @@ const ProductsAdd = props => {
                             <label className="label"> Contact: </label>
                             <label className="checkbox-options">
                                 Use Registered Number {" "}
-                                <input type="checkbox" name="contact-checkbox" onChange={e => handleChange(e)} value="self" />
+                                <input type="radio" name="contact-checkbox" onChange={e => handleChange(e)} value="self" />
                             </label>
                             <label className="checkbox-options">
                                 Enter New Contact {" "}
-                                <input type="checkbox" name="contact-checkbox" onChange={e => handleChange(e)} value="another" />
+                                <input type="radio" name="contact-checkbox" onChange={e => handleChange(e)} value="another" />
                             </label>
                             <hr />
-                            {false &&
+                            {addContact &&
                             <input 
                                 className="input"
                                 type="tele"
@@ -330,14 +334,14 @@ const ProductsAdd = props => {
                             <label className="label"> Email: </label>
                             <label className="checkbox-options">
                                 Use Registered Email {" "}
-                                <input type="checkbox" name="email-checkbox" onChange={e => handleChange(e)} value="self" />
+                                <input type="radio" name="email-checkbox" onChange={e => handleChange(e)} value="self" />
                             </label>
                             <label className="checkbox-options">
                                 Enter New Email {" "}
-                                <input type="checkbox" name="email-checkbox" onChange={e => handleChange(e)} value="another" />
+                                <input type="radio" name="email-checkbox" onChange={e => handleChange(e)} value="another" />
                             </label>
                             <hr />
-                            {false &&
+                            {addEmail &&
                             <input 
                                 className="input"
                                 type="email"
@@ -455,4 +459,4 @@ const ProductsAdd = props => {
         </div>
     )
 }
-export default withContext(ProductsAdd);
+export default withContext(ServicesAdd);
