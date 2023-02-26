@@ -41,7 +41,7 @@ const MediaFooter = props => {
                 }
             );
         }
-    },[ reaction, gotReaction, props.commentscount]);
+    },[ gotReaction]); //, reaction, props.commentscount]);
 
         //PreeReactions Functions
         const likePree = (e, pree_id) => {

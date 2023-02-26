@@ -9,8 +9,13 @@ import $ from "jquery";
 
 const Activities = props => {
     const [theSection, setSection] = useState("actions");
-    const [showDropDown, setShowDropDown] = useState(false);
-    const [showMore, setShowMore] = useState(false);
+    const [subSection, setSubSection] = useState("tasks");
+    const [actionsMenu, showActionsMenu] = useState(false);
+    const [eventsMenu, showEventsMenu] = useState(false);
+    const [jobsMenu, showJobsMenu] = useState(false);
+
+    //const [showDropDown, setShowDropDown] = useState(false);
+    //const [showMore, setShowMore] = useState(false);
 
     const toggleMenu = (e) => {
         e.preventDefault();
@@ -18,7 +23,117 @@ const Activities = props => {
         $(".navbar-menu").toggleClass("is-active");
     }
 
-    return (
+    return(
+        <div className="hero special-nav">
+            <div className="activities-div">
+                <nav className="navbar" role="navigation" aria-label="main navigation">
+                    <div className="navbar-brand">
+                        <span className="navbar-item">
+                            <h1 className="title" style={{fontSize:"1rem"}}><b onClick={e => {setSection('schedule'); toggleMenu(e);}}>Activities </b></h1>
+                        </span>
+
+                        <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
+                        
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <small>sections</small>
+                        </span>
+                    </div>
+
+                    <div id="navbarBasicExample" className="navbar-menu">
+                        <div className="navbar-start">
+
+                            <span className={`navbar-item ${theSection === 'schedule' ? 'is-active' : ''}`} onClick={e => { setSection('schedule');}}>
+                                <i className="fas fa-clock" aria-hidden="true"> &nbsp; Schedule </i> 
+                            </span>
+
+                            <div className={`navbar-item has-dropdown is-hoverable ${theSection === 'actions' ? 'is-active' : ''}`}  onMouseOver={e => showActionsMenu(true)} onMouseOut={ e => showActionsMenu(false)}>
+                                <span id="more-dropdown" className="navbar-link"onClick={ e => showActionsMenu(!actionsMenu)}>
+                                    <i className="fas fa-exclamation" aria-hidden="true"> &nbsp; ACTIONS</i>
+                                </span>
+
+                                <div className="navbar-dropdown" style={actionsMenu ? {display:"block"} : {display: "none"}}>
+                                    <span className={`navbar-item ${subSection === 'tasks' ? 'is-active' : ''}`} onClick={e => { setSubSection('tasks');setSection("actions"); toggleMenu(e); showActionsMenu(!actionsMenu);localStorage.setItem("subSection","tasks");localStorage.setItem("section","actions")}}>
+                                        <i className="fas fa-tasks" aria-hidden="true"> Tasks </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'requests' ? 'is-active' : ''}`} onClick={e => { setSubSection('requests');setSection("actions"); toggleMenu(e);showActionsMenu(!actionsMenu);localStorage.setItem("subSection","requests");localStorage.setItem("section","actions")}}>
+                                        <i className="fas fa-vote-yea" aria-hidden="true"> Requests </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'logistics' ? 'is-active' : ''}`} onClick={e => { setSubSection('logistics');setSection("actions"); toggleMenu(e); showActionsMenu(!actionsMenu);localStorage.setItem("subSection","logistics");localStorage.setItem("section","actions")}}>
+                                        <i className="fas fa-truck" aria-hidden="true"> Logistics </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'polls' ? 'is-active' : ''}`} onClick={e => { setSubSection('polls');setSection("actions"); toggleMenu(e);showActionsMenu(!actionsMenu);localStorage.setItem("subSection","polls");localStorage.setItem("section","actions")}}>
+                                        <i className="fas fa-poll" aria-hidden="true"> Polls </i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className={`navbar-item has-dropdown is-hoverable ${theSection === 'events' ? 'is-active' : ''}`}  onMouseOver={e => showEventsMenu(true)} onMouseOut={ e => showEventsMenu(false)}>
+                                <span id="more-dropdown" className="navbar-link"onClick={ e => showEventsMenu(!eventsMenu)}>
+                                <i className="fas fa-calendar-week" aria-hidden="true"> &nbsp; EVENTS </i> 
+                                </span>
+
+                                <div className="navbar-dropdown" style={eventsMenu ? {display:"block"} : {display: "none"}}>
+                                    <span className={`navbar-item ${subSection === 'meetings' ? 'is-active' : ''}`} onClick={e => { setSubSection('meetings');setSection("events"); toggleMenu(e); showEventsMenu(!eventsMenu);localStorage.setItem("subSection","meetings");localStorage.setItem("section","events")}}>
+                                        <i className="fas fa-users" aria-hidden="true"> Meetings </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'conferences' ? 'is-active' : ''}`} onClick={e => { setSubSection('conferences');setSection("events"); toggleMenu(e);showEventsMenu(!eventsMenu);localStorage.setItem("subSection","conferences");localStorage.setItem("section","events")}}>
+                                        <i className="fas fa-handshake" aria-hidden="true"> Conferences </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'functions' ? 'is-active' : ''}`} onClick={e => { setSubSection('functions');setSection("events"); toggleMenu(e); showEventsMenu(!eventsMenu);localStorage.setItem("subSection","functions");localStorage.setItem("section","events")}}>
+                                        <i className="fas fa-glass-cheers" aria-hidden="true"> Functions </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'concerts' ? 'is-active' : ''}`} onClick={e => { setSubSection('concerts');setSection("events"); toggleMenu(e);showEventsMenu(!eventsMenu);localStorage.setItem("subSection","concerts");localStorage.setItem("section","events")}}>
+                                        <i className="fas fa-theater-masks" aria-hidden="true"> Concerts </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'parties' ? 'is-active' : ''}`} onClick={e => { setSubSection('parties');setSection("events"); toggleMenu(e);showEventsMenu(!eventsMenu);localStorage.setItem("subSection","parties");localStorage.setItem("section","events")}}>
+                                        <i className="fas fa-gifts" aria-hidden="true"> Parties </i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className={`navbar-item has-dropdown is-hoverable ${theSection === 'jobs' ? 'is-active' : ''}`}  onMouseOver={e => showJobsMenu(true)} onMouseOut={ e => showJobsMenu(false)}>
+                                <span id="more-dropdown" className="navbar-link"onClick={ e => showJobsMenu(!jobsMenu)}>
+                                    <i className="fas fa-hard-hat" aria-hidden="true"> &nbsp; JOBS </i>
+                                </span>
+
+                                <div className="navbar-dropdown" style={jobsMenu ? {display:"block"} : {display: "none"}}>
+                                    <span className={`navbar-item ${subSection === 'classifieds' ? 'is-active' : ''}`} onClick={e => { setSubSection('classifieds');setSection("jobs"); toggleMenu(e); showJobsMenu(!jobsMenu);localStorage.setItem("subSection","classifieds");localStorage.setItem("section","jobs")}}>
+                                        <i className="fas fa-newspaper" aria-hidden="true"> Classifieds </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'applications' ? 'is-active' : ''}`} onClick={e => { setSubSection('applications');setSection("jobs"); toggleMenu(e);showJobsMenu(!jobsMenu);localStorage.setItem("subSection","applications");localStorage.setItem("section","jobs")}}>
+                                        <i className="fas fa-flag-checkered" aria-hidden="true"> Applications </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'assignments' ? 'is-active' : ''}`} onClick={e => { setSubSection('assignments');setSection("jobs"); toggleMenu(e); showJobsMenu(!jobsMenu);localStorage.setItem("subSection","assignments");localStorage.setItem("section","jobs")}}>
+                                        <i className="fas fa-thumbtack" aria-hidden="true"> Assignments </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'volunteer' ? 'is-active' : ''}`} onClick={e => { setSubSection('volunteer');setSection("jobs"); toggleMenu(e);showJobsMenu(!jobsMenu);localStorage.setItem("subSection","volunteer");localStorage.setItem("section","jobs")}}>
+                                        <i className="fas fa-hospital-user" aria-hidden="true"> Volunteer </i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <div className="page-content">
+                    {theSection === "actions" &&
+                        <Actions subSection={subSection} />
+                    }
+                    {theSection === "schedule" &&
+                        <Schedule subSection={subSection} />
+                    }
+                    {theSection === "events" &&
+                        <Events subSection={subSection} />
+                    }
+                    {theSection === "jobs" &&
+                        <Jobs subSection={subSection} />
+                    }
+                </div>
+            </div>
+        </div>
+    )
+    /*return (
         <div className="hero">
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
@@ -74,6 +189,6 @@ const Activities = props => {
             </div>
         
         </div>
-    )
+    )*/
 } 
 export default withContext(Activities);

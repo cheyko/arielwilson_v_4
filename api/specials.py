@@ -309,3 +309,14 @@ class Service(db.Model):
 
     def __repr__(self):
         return '<Service %d %r %r %r>' %  (self.service_id, self.title, self.price)
+
+#--- class Actions(db.Model):
+#class Task(db.Model):
+#class Request(db.Model):
+#class Logistics(db.Model):
+#class Poll(db.Model):
+#class Events(db.Model):
+#class Jobs(db.Model):
+#class Applications(db.Model):
+#class Assignments(db.Model):
+#class Volunteer(db.Model):

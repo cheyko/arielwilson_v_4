@@ -93,3 +93,26 @@ input:checked + .slider .off
   .info-seperator{
     margin-block: 0.5rem;
   }
+
+  .results-box{
+    position: relative !important;
+    height: 2.5rem !important;
+    padding: 0.5rem !important;
+  }
+
+  .progress-span{
+    z-index: 0 !important;
+    position: absolute !important;
+    height: 1.5rem !important;
+    padding: inherit !important;
+    background-color:rgb(101, 133, 231)  !important;
+  }
+  .poll-text{
+    z-index: 1 !important;
+    position: absolute !important;
+  }
+
+  .poll-btn{
+    border: solid 3px black !important;
+    margin-block: 5px;
+  }

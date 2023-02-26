@@ -16,6 +16,7 @@ const Religion = props => {
         //isChecked ? console.log(isChecked) : console.log("test") ;
     }
 
+    console.log(props.context.prees);
     return (
         <div className="hero">
             <div className="religion-page">
@@ -160,7 +161,7 @@ const Religion = props => {
                             {products.slice(0,1).map((product, index) => 
                                 (
                                     <ProductItem
-                                        imageUrl={process.env.PUBLIC_URL + "/products/product" + product.product_id + "/0"}
+                                        imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0"}
                                         product={product}
                                         key={index}
                                     />
