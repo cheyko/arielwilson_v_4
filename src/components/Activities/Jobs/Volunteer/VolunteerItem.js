@@ -1,35 +1,10 @@
-import React from "react";
-import withContext from "../../../withContext";
+import withContext from "../../../../withContext"
+
 
 const Volunteer = props => {
 
-    /*const [isChecked, setVal] = useState(false);
-    const isFree = true;
-
-    const handleToggleChange = (e) => {
-        setVal(document.getElementById("response_value").checked);
-        isChecked ? console.log(isChecked) : console.log("test") ;
-    }*/
-
     return (
-        <div className="hero">
-            <div className="container">
-                <div className="is-pulled-right">
-                    <button className="button is-outlined">
-                        Create
-                    </button>{" "}
-                    <button className="button is-outlined">
-                        Updates
-                    </button>{" "}
-                    <button className="button is-outlined">
-                        Filter
-                    </button>
-                </div>
-            </div>
-            <div className="hero">
-                <div className="columns">
-                    <div className="column">
-                        <div class="card">
+        <div class="card">
                             <div class="card-image">
                                 <figure class="image is-4by3">
                                     <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder"/>
@@ -71,16 +46,6 @@ const Volunteer = props => {
                                 <span className="card-footer-item">Contribute</span>
                             </footer>
                         </div>
-                    </div>
-                    <div className="column">
-                        
-                         
-                    </div>
-                </div>
-            </div>
-        </div>
     )
 }
-
-
 export default withContext(Volunteer);

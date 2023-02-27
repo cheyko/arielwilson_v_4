@@ -164,6 +164,9 @@ const AddPoll = props => {
                 onRequestClose={ e => closeModal(e)}
                 style={customStyles}>
                     <div className="hero">
+                        <div className="add-title has-text-centered">
+                            <h1>Add Poll to W@H GW@@N</h1>
+                        </div>
                         <button onClick={e => closeModal(e)} style={{backgroundColor:"red"}} className="button modal-close is-large" aria-label="close"></button>
                         <p className="has-text-centered"> Request Details </p>
                         <form>

@@ -105,7 +105,7 @@ const AddLogistics = props => {
                 style={customStyles}>
                     <div className="hero">
                         <button onClick={e => closeModal(e)} style={{backgroundColor:"red"}} className="button modal-close is-large" aria-label="close"></button>
-                        <p className="has-text-centered"> Request Details </p>
+                        <p className="has-text-centered"> Delivery Details </p>
                         <form>
                             <div className="field">
                                 <label className="label"> Type: </label>

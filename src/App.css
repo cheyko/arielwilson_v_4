@@ -402,6 +402,19 @@ ul .is-active{
   background-color: orange;
 }
 
+.checkbox-options{
+  display: inline-block !important;
+}
+
+.para{
+  white-space: pre-wrap;
+  text-indent: 10px;
+}
+
+ul.list {
+  list-style-type: square;
+}
+
 @media screen and (max-width:1200px) {
   .slick-wrapper{
     max-width: 30rem;

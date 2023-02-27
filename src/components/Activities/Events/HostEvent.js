@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import withContext from "../../../withContext";
 
 const HostEvent = props => {
@@ -6,7 +7,7 @@ const HostEvent = props => {
     const [typeOf, setType] = useState("");
     const types = ["Concert", "Conference" ,"Function", "Meeting", "Party"];
     const [category, setCategory] = useState("");
-    const categories = ["School", "Work", "Religious", "Political", "Other"]; //get from database
+    const categories = ["Sports","School", "Work", "Religious", "Political", "Other"]; //get from database
     const [audience, setAudience] = useState("");
     const audiences = ["Public","Private", "Group"];
     const [where, setWhere] = useState("");
@@ -36,6 +37,7 @@ const HostEvent = props => {
     const [isEditAttraction, setIsEditAttraction] = useState(false);
     const [editAtraction, setEditAttraction] = useState(null);
 
+    let navigate = useNavigate();
     
     const getDateTime = () => {
         const original = new Date();
@@ -177,6 +179,11 @@ const HostEvent = props => {
         <div className="hero">
             <div className="hero-container">
                 <div className="box">
+                    <div className="add-title has-text-centered">
+                        <h1>Add Event to W@H GW@@N</h1>
+                    </div>
+                    <button className="button" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> </button>
+                    <br />
                     <form>
                         <div className="field">
                             <label className="label"> Title: </label>
@@ -223,7 +230,7 @@ const HostEvent = props => {
                         <div className="field">
                             <label className="label"> Audience: </label>
                             {audiences.map((val,index) => 
-                                <label key={index} style={{display:"inline-block"}} className="checkbox-options">
+                                <label key={index} className="checkbox-options">
                                     {val}{" "}
                                     <input type="radio" name="audience-checkbox" onChange={e => handleChange(e)} value={val} />
                                 </label>
@@ -474,14 +481,14 @@ const HostEvent = props => {
                         <br />
                         <div className="field is-clearfix">
                         
-                            <button onClick={e => {clearFunc(e);}} className="button is-warning is-pulled-right give-space">
+                            <button type="button" onClick={e => {clearFunc(e);}} className="button is-warning is-pulled-right give-space">
                                 Cancel
                             </button>
                             
                             <button onClick={e => saveEvent(e)} className="button is-primary is-pulled-right give-space" type="submit">
                                 Submit
                             </button>
-                            &nbsp;
+                           
                         </div>
 
                     </form>

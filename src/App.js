@@ -62,6 +62,7 @@ import Trendy from './components/Images/Trendy';
 import AddService from './components/Shops/Services/AddService';
 import AddVehicle from './components/Shops/WOV/AddVehicle';
 import HostEvent from './components/Activities/Events/HostEvent';
+import AddClassified from './components/Activities/Jobs/Classifieds/AddClassified';
 
 const sign = require('jwt-encode');
 const secret = 'some$3cretKey';
@@ -692,6 +693,7 @@ export default class App extends Component {
                 <Route path="/talkie" element={<Talkie />} />
                 <Route path="/live" element={<Live />} />
                 <Route path="/add-event" element={<HostEvent />} />
+                <Route path="/add-classified" element={<AddClassified />} />
                 {/*<Route path='/trendy' element={<Trendy />} />*/}
                 {/*<Route path="/welcome" component={Welcome} />*/}
               </Route>

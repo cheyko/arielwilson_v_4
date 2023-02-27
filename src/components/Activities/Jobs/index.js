@@ -3,7 +3,7 @@ import withContext from "../../../withContext";
 import Applications from './Applications';
 import Assignments from './Assignments';
 import Classifieds from './Classifieds';
-import Volunteer from './Volunteer';
+import Volunteer from './Volunteer/Volunteer';
 
 const Jobs = props => {
 
