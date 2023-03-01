@@ -20,7 +20,7 @@ class Listing(db.Model):
     baths = db.Column(db.Integer)
     insideSqft = db.Column(db.Integer)
     lotSqft = db.Column(db.Integer)
-    parking = db.Column(MutableList.as_mutable(ARRAY(db.String(100))))
+    parking = db.Column(MutableList.as_mutable(ARRAY(db.String(100)))) #reduce string size
     description = db.Column(db.String(255))
     numOfPics = db.Column(db.Integer)
     dateAdded = db.Column(db.DateTime, default=datetime.utcnow)
@@ -311,12 +311,242 @@ class Service(db.Model):
         return '<Service %d %r %r %r>' %  (self.service_id, self.title, self.price)
 
 #--- class Actions(db.Model):
-#class Task(db.Model):
-#class Request(db.Model):
-#class Logistics(db.Model):
-#class Poll(db.Model):
-#class Events(db.Model):
-#class Jobs(db.Model):
-#class Applications(db.Model):
-#class Assignments(db.Model):
-#class Volunteer(db.Model):
+class Task(db.Model):
+    __tablename__ = 'wg_tasks'
+
+    task_id = db.Column(db.Integer, db.Sequence('wg_tasks_task_id_seq'), primary_key=True)
+    lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    is_for = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    title = db.Column(db.String(80))
+    project = db.Column(db.String(80))
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)
+    description = db.Column(db.String(255))
+    status = db.Column(db.String(80))
+    is_visible = db.Column(db.Boolean, default=True)
+
+    def __init__(self,lister,is_for,title,project,date_added,start_date,end_date,description,status):
+        self.lister = lister
+        self.is_for = is_for
+        self.title = title
+        self.project = project
+        self.date_added = date_added
+        self.start_date = start_date
+        self.end_date = end_date
+        self.description = description
+        self.status = status
+
+    def __repr__(self):
+        return '<Task %d title: %r>' %  (self.task_id,self.title)
+    
+class Request(db.Model):
+    __tablename__ = 'wg_requests'
+
+    request_id = db.Column(db.Integer, db.Sequence('wg_requests_request_id_seq'), primary_key=True)
+    lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    is_for = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)    
+    question = db.Column(db.String(255))
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    choices = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
+    answer = db.Column(db.Integer)
+    is_visible = db.Column(db.Boolean, default=True)
+    
+    def __init__(self,lister,is_for,question,date_added,choices):
+        self.lister = lister
+        self.is_for = is_for
+        self.question = question
+        self.date_added = date_added
+        self.choices = choices
+
+    def __repr__(self):
+        return '<Request %d Question: %r>' %  (self.request_id,self.question)
+
+class Logistic(db.Model):
+    __tablename__ = 'wg_logistics'
+
+    logistic_id = db.Column(db.Integer, db.Sequence('wg_logistics_logistic_id_seq'), primary_key=True)
+    sender = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    receiver = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False) 
+    send_address = db.Column(db.String(255))  
+    recv_address = db.Column(db.String(255))  
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    send_date = db.Column(db.Date)
+    receive_date = db.Column(db.Date)
+    package_type = db.Column(db.String(31))
+    description = db.Column(db.String(255))
+    is_visible = db.Column(db.Boolean, default=True)
+
+    def __init__(self,sender,receiver,send_address,recv_address,date_added,package_type,description):
+        self.sender = sender
+        self.receiver = receiver
+        self.send_address = send_address
+        self.recv_address = recv_address
+        self.date_added = date_added
+        self.package_type = package_type
+        self.description = description
+
+    def __repr__(self):
+        return '<Logistic %d Package: %r>' %  (self.logistic_id,self.package_type)
+    
+class Poll(db.Model):
+    __tablename__ = 'wg_polls'
+
+    poll_id = db.Column(db.Integer, db.Sequence('wg_polls_poll_id_seq'), primary_key=True)
+    lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    question = db.Column(db.String(255))
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    choices = db.Column(MutableList.as_mutable(ARRAY(db.String(31))))
+    results = db.Column(MutableList.as_mutable(ARRAY(db.Integer)))
+    votes = db.Column(db.Integer, default=0)
+    end_date = db.Column(db.Date)
+    end_time = db.Column(db.Time)
+    is_visible = db.Column(db.Boolean, default=True)
+
+    def __init__(self,lister,question,date_added,choices,results, end_date, end_time):
+        self.lister = lister
+        self.question = question
+        self.date_added = date_added
+        self.choices = choices
+        self.results = results #array with zeros
+        self.end_date = end_date
+        self.end_time = end_time
+
+    def __repr__(self):
+        return '<Poll %d Question: %r>' %  (self.poll_id,self.question)
+    
+class Event(db.Model):
+    __tablename__ = 'wg_events'
+
+    event_id = db.Column(db.Integer, db.Sequence('wg_events_event_id_seq'), primary_key=True)
+    lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
+    title = db.Column(db.String(255))
+    host = db.Column(db.String(255))
+    description = db.Column(db.String(255))
+    category = db.Column(db.String(80))
+    typeOf = db.Column(db.String(80))
+    metrics = db.Column(db.String(31))
+    where = db.Column(db.String(80))
+    status = db.Column(db.String(80))
+    dates = db.Column(MutableList.as_mutable(ARRAY(db.Date)))
+    start_times = db.Column(MutableList.as_mutable(ARRAY(db.Time)))
+    end_times = db.Column(MutableList.as_mutable(ARRAY(db.Time)))
+    attendees = db.Column(db.Integer, default=0)
+    confirmations = db.Column(db.Integer, default=0)
+    denials = db.Column(db.Integer, default=0)
+    tickets = db.Column(MutableList.as_mutable(ARRAY(db.String(31))))
+    costs = db.Column(MutableList.as_mutable(ARRAY(db.Integer)))
+    personnel_ids = db.Column(MutableList.as_mutable(ARRAY(db.Integer)))
+    personnel = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
+    attractions = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
+    is_visible = db.Column(db.Boolean, default=True)
+
+    def __init__(self,lister,pree_id,title,description,category,typeOf,metrics,where,status,dates,start_times,end_times,tickets,costs,personnel_ids,personnel,attractions):
+        self.lister = lister
+        self.pree_id = pree_id
+        self.title = title
+        self.description = description
+        self.category = category
+        self.typeOf = typeOf
+        self.metrics = metrics
+        self.where = where
+        self.status = status
+        self.dates = dates
+        self.start_times = start_times
+        self.end_times = end_times
+        self.tickets = tickets
+        self.costs = costs
+        self.personnel_ids = personnel_ids
+        self.personnel = personnel
+        self.attractions = attractions
+
+    def __repr__(self):
+        return '<Event %d title: %r>' %  (self.event_id,self.title)
+
+#save description to file
+class Classified(db.Model):
+    __tablename__ = 'wg_classifieds'
+
+    classified_id = db.Column(db.Integer, db.Sequence('wg_classifieds_classified_id_seq'), primary_key=True)
+    lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
+    title = db.Column(db.String(255))
+    category = db.Column(db.String(80))
+    typeOf = db.Column(db.String(80))
+    metrics = db.Column(db.String(31))
+    location = db.Column(db.String(80))
+    salary = db.Column(db.String(31)) 
+    company = db.Column(db.String(80))
+    description = db.Column(MutableList.as_mutable(ARRAY(db.String(1023))))
+    subtopics = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
+    subcontent = db.Column(MutableList.as_mutable(ARRAY(db.String(1023)))) #review
+    qualifications = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    benefits = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    skills = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    questions = db.Column(MutableList.as_mutable(ARRAY(db.String(255)))) 
+    responses = db.Column(MutableList.as_mutable(ARRAY(db.String(80)))) #review
+    end_date = db.Column(db.Date)
+    is_visible = db.Column(db.Boolean, default=True)
+
+    def __init__(self,lister,pree_id,title,description,category,typeOf,metrics,location,salary,company,subtopics,subcontent,qualifications,benefits,skills,questions,responses,end_date):
+        self.lister = lister
+        self.pree_id = pree_id
+        self.title = title
+        self.description = description
+        self.category = category
+        self.typeOf = typeOf
+        self.metrics = metrics
+        self.location = location
+        self.salary = salary
+        self.company = company
+        self.subtopics = subtopics
+        self.subcontent = subcontent
+        self.qualifications = qualifications
+        self.benefits = benefits
+        self.skills = skills
+        self.questions = questions
+        self.responses = responses
+        self.end_date = end_date
+
+    def __repr__(self):
+        return '<Classified %d title: %r>' %  (self.classified_id,self.title)
+    
+class Volunteer(db.Model):
+    __tablename__ = 'wg_volunteers'
+
+    volunteer_id = db.Column(db.Integer, db.Sequence('wg_volunteers_volunteer_id_seq'), primary_key=True)
+    lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
+    title = db.Column(db.String(255))
+    category = db.Column(db.String(80))
+    venue = db.Column(db.String(80))
+    location = db.Column(db.String(255))
+    description = db.Column(db.String(1023))
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)
+    start_time = db.Column(db.Time)
+    end_time = db.Column(db.Time)
+    contributions = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
+    is_visible = db.Column(db.Boolean, default=True)
+
+    def __init__(self,lister,pree_id,title,category,venue,location,description,start_date,end_date,start_time,end_time,contributions):
+        self.lister = lister
+        self.pree_id = pree_id
+        self.title = title
+        self.category = category
+        self.venue = venue
+        self.location = location
+        self.description = description
+        self.start_date = start_date
+        self.end_date = end_date
+        self.start_time = start_time
+        self.end_time = end_time
+        self.contributions = contributions
+    
+    def __repr__(self):
+        return '<Volunteer %d title: %r>' %  (self.volunteer_id,self.title)
+    
+#class Application(db.Model):
+#class Assignment(db.Model):
+

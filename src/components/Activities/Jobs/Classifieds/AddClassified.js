@@ -16,6 +16,7 @@ const AddClassified = props => {
     const types = ["Full-Time", "Part-Time", "Day-Job", "Contract", "Consultant"];
     const [typeOf, setType] = useState("");
     const [company, setCompany] = useState("");
+    const [salary, setSalary] = useState("");
     const [description, setDescription] = useState("");
     const [viewDesc, setViewDesc] = useState(false);
     const [paragraphs, setParagraphs] = useState([]);
@@ -345,185 +346,227 @@ const AddClassified = props => {
                     <button className="button" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> </button>
                     <br />
                     <form>
-                        <div className="field">
-                            <label className="label"> Job Title: </label>
-                            <input 
-                                className="input"
-                                type="text"
-                                name="title"
-                                value={title}
-                                onChange={e => setTitle(e.target.value)}
-                            />
-                        </div>
-                        <div className="field">
-                            <label className="label">Job Category:</label>
-                            <div className="select">
-                                <select
-                                    id="category"
-                                    name="category"
-                                    value={category}
-                                    onChange={e => setCategory(e.target.value)}>
-                                        <option value="">Choose...</option>
-                                        {categories.map((val,index) => 
-                                            <option value={val} key={index}>{val}</option>
-                                        )}
-                                </select>
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label"> Job Title </label>
                             </div>
-                        </div>
-                        <div className="field">
-                            <label className="label">Location:</label>
-                            <input
-                                className="input"
-                                type="text"
-                                name="location"
-                                value={location}
-                                onChange={e => setLocation(e.target.value)} />
-
-                        </div>
-                        <div className="field">
-                            <label className="label"> Metrics: </label>
-                            <label className="checkbox-options">
-                                Remote {" "}{" "}
-                                <input type="radio" name="metrics-checkbox" onChange={e => setMetrics(e.target.value)} value="remote" />
-                            </label>
-                            <label className="checkbox-options">
-                                On-Site {" "}
-                                <input type="radio" name="metrics-checkbox" onChange={e => setMetrics(e.target.value)} value="on-site" />
-                            </label>
-                        </div>
-                        <div className="field">
-                            <label className="label">Job Type:</label>
-                            <div className="select">
-                                <select
-                                    id="typeOf"
-                                    name="typeOf"
-                                    value={typeOf}
-                                    onChange={e => setType(e.target.value)}>
-                                        <option value="">Choose...</option>
-                                        {types.map((val,index) => 
-                                            <option value={val} key={index}>{val}</option>
-                                        )}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="field">
-                            <label className="label">Company:</label>
-                            <input
-                                className="input"
-                                type="text"
-                                name="company"
-                                value={company}
-                                onChange={e => setCompany(e.target.value)} />
-                        </div>
-                        <div className="field">
-                            <label className="label"> Description: </label>
-                            <button type="button" onClick={e => setViewDesc(!viewDesc)} className="button is-link">View Description</button>
-                            {viewDesc &&
-                            <div>
-                                {paragraphs.length > 0 || topicInfos.length > 0 || subtopics.length > 0 ?
-                                <div>
-                                    {paragraphs.map((val,index) => 
-                                        <p className="para" key={index}>
-                                            <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'paragraph')}><i className="fas fa-edit"></i></span>{" "}
-                                            <span style={{cursor:"pointer"}} onClick={e => deleteParagraph(index)}><i className="fas fa-trash"></i></span>{" "}
-                                            <span className={`give-space ${editParagraph === index ? 'background-warning' : ''}`}>{val}</span>
-                                        </p>
-                                    )}
-                                    
-                                    {topicInfos.map((val, index) => 
-                                        <div key={index}>
-                                            <br/>
-                                            <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'subcontent')}><i className="fas fa-edit"></i></span>{" "}
-                                            <span style={{cursor:"pointer"}} onClick={e => deleteContent(index)}><i className="fas fa-trash"></i></span>{" "}
-                                            <div>
-                                                <h3 className="is-underlined subtitle">{subtopics[index]}</h3>
-                                                {contents[index] === 'fulltext' ?
-                                                    <p className="para">
-                                                        {val}
-                                                    </p>:
-                                                    <ul className="give-space list">
-                                                        {val.map((point, idx) =>
-                                                            <li key={idx}>{point}</li>
-                                                        )}
-                                                    </ul>
-                                                }
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>:
-                                <span>No Description added thus far.</span>
-                                }
-                                <hr />
-                            </div>
-                            }
-                            <textarea
-                                className="textarea"
-                                type="text"
-                                rows="8"
-                                style={{ resize: "none" }}
-                                name="description"
-                                value={description}
-                                onChange={e => setDescription(e.target.value)}
-                            />
-                            {isEditParagraph ?
-                                <div>
-                                    <span onClick={e => reAddChoice('paragraph')} className="button is-small is-link is-underlined">Re-Add Paragraph</span> {" "}
-                                    <span onClick={e => cancelEdit('paragraph')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
-                                </div>:
-                                <button type="button" onClick={e => addChoice('paragraph')} className="button is-primary"> Add Paragraph </button>
-                            }
-                            <label className="checkbox-options">
-                                add more info {" "}{" "}
-                                <input type="checkbox" name="info-checkbox" onChange={e => setMore(!moreinfo)} value={true} />
-                            </label>
-                        </div> 
-                        {moreinfo &&
-                            <div className="field">
+                            <div className="field-body">
                                 <div className="field">
-                                    <label className="label"> Additional Info: </label>
-                                
-                                    <hr/>
-                                    <div className="field is-horizontal">
-                                        <div className="field-label is-normal">
-                                            <label className="label">Sub-Topic: </label>
-                                        </div>
-                                        <div className="field-body">
-                                            <div className="field">
-                                                <p className="control">
-                                                <input 
-                                                    className="input"
-                                                    type="text"
-                                                    name="subtopic"
-                                                    value={subtopic}
-                                                    onChange={e => setSubtopic(e.target.value)}
-                                                />
-                                                </p>
-                                            </div>
-                                            
-                                        </div>
+                                    <div className="control">
+                                        <input 
+                                            className="input"
+                                            type="text"
+                                            name="title"
+                                            value={title}
+                                            onChange={e => setTitle(e.target.value)}
+                                        />
                                     </div>
-                                    <div className="field is-horizontal">
-                                        <div className="field-label is-normal">
-                                            <label className="label">Content: </label>
-                                        </div>
-                                        <div className="field-body">
-                                            <div className="field">
-                                                <p className="control">
-                                                    <label className="checkbox-options">
-                                                        Full Text {" "}{" "}
-                                                        <input type="radio" id="fulltext" name="content-checkbox" onChange={e => setContent(e.target.value)} value="fulltext" />
-                                                    </label>
-                                                    <label className="checkbox-options">
-                                                        Bullet Points {" "}
-                                                        <input type="radio" id="points" name="content-checkbox" onChange={e => setContent(e.target.value)} value="points" />
-                                                    </label>
-                                                
-                                                </p>
-                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label">Job Category</label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <div className="select">
+                                            <select
+                                                id="category"
+                                                name="category"
+                                                value={category}
+                                                onChange={e => setCategory(e.target.value)}>
+                                                    <option value="">Choose...</option>
+                                                    {categories.map((val,index) => 
+                                                        <option value={val} key={index}>{val}</option>
+                                                    )}
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
+                            </div>    
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label">
+                                <label className="label is-normal">Location</label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <p className="control">
+                                        <input
+                                            className="input"
+                                            type="text"
+                                            name="location"
+                                            value={location}
+                                            onChange={e => setLocation(e.target.value)} />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label">
+                                <label className="label"> Metrics </label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <label className="radio">
+                                            <input type="radio" name="metrics-checkbox" onChange={e => setMetrics(e.target.value)} value="remote" />
+                                            Remote
+                                        </label>
+                                        <label className="radio">
+                                            <input type="radio" name="metrics-checkbox" onChange={e => setMetrics(e.target.value)} value="on-site" />
+                                            On-Site
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label">Job Type</label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <div className="select">
+                                            <select
+                                                id="typeOf"
+                                                name="typeOf"
+                                                value={typeOf}
+                                                onChange={e => setType(e.target.value)}>
+                                                    <option value="">Choose...</option>
+                                                    {types.map((val,index) => 
+                                                        <option value={val} key={index}>{val}</option>
+                                                    )}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label">Company</label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <input
+                                            className="input"
+                                            type="text"
+                                            name="company"
+                                            value={company}
+                                            onChange={e => setCompany(e.target.value)} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label"> Salary Range</label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <input 
+                                            className="input"
+                                            type="text"
+                                            name="salary"
+                                            value={salary}
+                                            onChange={e => setSalary(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label"> Description </label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <textarea
+                                            className="textarea"
+                                            type="text"
+                                            rows="8"
+                                            style={{ resize: "none" }}
+                                            name="description"
+                                            value={description}
+                                            onChange={e => setDescription(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label"></div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        {isEditParagraph ?
+                                            <div>
+                                                <span onClick={e => reAddChoice('paragraph')} className="button is-small is-link is-underlined">Re-Add Paragraph</span> {" "}
+                                                <span onClick={e => cancelEdit('paragraph')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
+                                            </div>:
+                                            <button type="button" onClick={e => addChoice('paragraph')} className="button is-primary"> Add Paragraph </button>
+                                        }
+                                        {" "}<button type="button" onClick={e => setViewDesc(!viewDesc)} className="button is-link">View Description</button>
+                                        {" "}
+                                        <label className="checkbox">
+                                            <input type="checkbox" name="info-checkbox" onChange={e => setMore(!moreinfo)} value={true} />
+                                            add more info
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+                        {moreinfo &&
+                            <div className="field">
+                                
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">Sub-Topic: </label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <p className="control">
+                                            <input 
+                                                className="input"
+                                                type="text"
+                                                name="subtopic"
+                                                value={subtopic}
+                                                onChange={e => setSubtopic(e.target.value)}
+                                            />
+                                            </p>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">Content: </label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <p className="control">
+                                                <label className="checkbox-options">
+                                                    Full Text {" "}{" "}
+                                                    <input type="radio" id="fulltext" name="content-checkbox" onChange={e => setContent(e.target.value)} value="fulltext" />
+                                                </label>
+                                                <label className="checkbox-options">
+                                                    Bullet Points {" "}
+                                                    <input type="radio" id="points" name="content-checkbox" onChange={e => setContent(e.target.value)} value="points" />
+                                                </label>
+                                            
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                               
                                {content === "points" ? 
                                     <div className="field is-horizontal">
                                         <div className="field-label is-normal">
@@ -586,116 +629,197 @@ const AddClassified = props => {
                                         </div>
                                     </div>
                                 }
-                                {isEditSubContent ?
-                                    <div>
-                                        <span onClick={e => reAddChoice('subcontent')} className="button is-small is-link is-underlined">Re-Add Info</span> {" "}
-                                        <span onClick={e => cancelEdit('subcontent')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
-                                    </div>:
-                                    <button type="button" onClick={e => addChoice('subcontent')} className="button is-primary"> Add Additional Info </button>
-                                }
+                                <div className="field is-horizontal">
+                                    <div className="field-label"></div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <div className="control">
+                                                {isEditSubContent ?
+                                                    <div>
+                                                        <span onClick={e => reAddChoice('subcontent')} className="button is-small is-link is-underlined">Re-Add Info</span> {" "}
+                                                        <span onClick={e => cancelEdit('subcontent')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
+                                                    </div>:
+                                                    <button type="button" onClick={e => addChoice('subcontent')} className="button is-primary"> Add Additional Info </button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         }
-                        <div className="field">
-                            <label className="label">Qualifications:</label>
-                            <button onClick={e => setViewQuals(!viewQuals)} type="button" className="button is-link">View Qualifications</button>
-                            {viewQuals &&
-                                <div>
-                                    {qualifications.length > 0 ?
-                                    <ul className="give-space list">
-                                        {qualifications.map((val, index) =>
-                                            <li key={index}>
-                                                <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'qualifications')}><i className="fas fa-edit"></i></span>{" "}
-                                                <span style={{cursor:"pointer"}} onClick={e => setQualifications(qualifications.filter((val,idx) => index !== idx))}><i className="fas fa-trash"></i></span>{" "}
-                                                <span className={`${editQualification === index ? 'background-warning' : ''}`}>{val}</span>
-                                            </li>
-                                        )}
-                                    </ul>:
-                                    <span>No Qualifications added thus far.</span>
-                                    }
-                                    <hr />
+                        
+                        {viewDesc &&
+                            <div className="field is-horizontal">
+                                <div className="field-label"></div>
+                                <div className="field-body">
+                                    <div className="field">
+                                        <div className="control is-expanded">
+                                            <div>
+                                                {paragraphs.length > 0 || topicInfos.length > 0 || subtopics.length > 0 ?
+                                                <div>
+                                                    {paragraphs.map((val,index) => 
+                                                        <p className="para" key={index}>
+                                                            <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'paragraph')}><i className="fas fa-edit"></i></span>{" "}
+                                                            <span style={{cursor:"pointer"}} onClick={e => deleteParagraph(index)}><i className="fas fa-trash"></i></span>{" "}
+                                                            <span className={`give-space ${editParagraph === index ? 'background-warning' : ''}`}>{val}</span>
+                                                        </p>
+                                                    )}
+                                                    
+                                                    {topicInfos.map((val, index) => 
+                                                        <div key={index}>
+                                                            <br/>
+                                                            <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'subcontent')}><i className="fas fa-edit"></i></span>{" "}
+                                                            <span style={{cursor:"pointer"}} onClick={e => deleteContent(index)}><i className="fas fa-trash"></i></span>{" "}
+                                                            <div>
+                                                                <h3 className="is-underlined subtitle">{subtopics[index]}</h3>
+                                                                {contents[index] === 'fulltext' ?
+                                                                    <p className="para">
+                                                                        {val}
+                                                                    </p>:
+                                                                    <ul className="give-space list">
+                                                                        {val.map((point, idx) =>
+                                                                            <li key={idx}>{point}</li>
+                                                                        )}
+                                                                    </ul>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>:
+                                                <span>No Description added thus far.</span>
+                                                }
+                                                <hr />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            }
-                            <div>
-                                <br />
-                                <input 
-                                    className="input"
-                                    type="text"
-                                    name="qualification"
-                                    value={qualification}
-                                    onChange={e => setQualification(e.target.value)}
-                                />
                             </div>
-                            {isEditQualification ?
-                                <div>
-                                    <span onClick={e => reAddChoice('qualifications')} className="button is-small is-link is-underlined">Re-Add Qualification</span> {" "}
-                                    <span onClick={e => cancelEdit('qualifications')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
-                                </div>:
-                                <button type="button" onClick={e => addChoice('qualifications')} className="button is-primary"> Add Qualification </button>
-                            }
-                            
-                        </div>
-                        <div className="field">
-                            <label className="label">Benefits:</label>
-                            <button onClick={e => setViewBenefits(!viewBenefits)} type="button" className="button is-link">View Benefits</button>
-                            {viewBenefits &&
-                                <div>
-                                    {benefits.length > 0 ?
-                                    <ul className="give-space list">
-                                        {benefits.map((val, index) =>
-                                            <li key={index}>
-                                                <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'benefits')}><i className="fas fa-edit"></i></span>{" "}
-                                                <span style={{cursor:"pointer"}} onClick={e => setBenefits(benefits.filter((val,idx) => index !== idx))}><i className="fas fa-trash"></i></span>{" "}
-                                                <span className={`${editBenefit === index ? 'background-warning' : ''}`}>{val}</span>
-                                                
-                                            </li>
-                                        )}
-                                    </ul>:
-                                    <span>No Benefits added thus far</span>
-                                    }
-                                    <hr />
-                                </div>
-                            }
-                            <div>
-                                <br />
-                                <input 
-                                    className="input"
-                                    type="text"
-                                    name="benefit"
-                                    value={benefit}
-                                    onChange={e => setBenefit(e.target.value)}
-                                />
+                        }
+
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label">Qualifications</label>
                             </div>
-                            {isEditBenefit ?
-                                <div>
-                                    <span onClick={e => reAddChoice('benefits')} className="button is-small is-link is-underlined">Re-Add Benefits</span> {" "}
-                                    <span onClick={e => cancelEdit('benefits')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
-                                </div>:
-                                <button type="button" onClick={e => addChoice('benefits')} className="button is-primary"> Add Benefits </button>
-                            }
-                            
-                        </div>
-                        <div className="field">
-                            <label className="label">Skills:</label>
-                            <button onClick={e => setViewSkills(!viewSkills)} type="button" className="button is-link">View Skills</button>
-                            {viewSkills &&
-                                <div>
-                                    {skills.length > 0 ?
-                                    <ul className="give-space list">
-                                        {skills.map((val, index) =>
-                                            <li key={index}>
-                                                <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'skills')}><i className="fas fa-edit"></i></span>{" "}
-                                                <span style={{cursor:"pointer"}} onClick={e => setSkills(skills.filter((val,idx) => index !== idx))}><i className="fas fa-trash"></i></span>{" "}
-                                                <span className={`${editSkill === index ? 'background-warning' : ''}`}>{val}</span>
-                                            </li>
-                                        )}
-                                    </ul>:
-                                    <span> No SKills Added thus far.</span>
-                                    }
-                                    <hr />
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <input 
+                                            className="input"
+                                            type="text"
+                                            name="qualification"
+                                            value={qualification}
+                                            onChange={e => setQualification(e.target.value)}
+                                        />
+                                    </div>
                                 </div>
-                            }
-                            <div>
-                                <br />
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label"></div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        {isEditQualification ?
+                                            <div>
+                                                <span onClick={e => reAddChoice('qualifications')} className="button is-small is-link is-underlined">Re-Add Qualification</span> {" "}
+                                                <span onClick={e => cancelEdit('qualifications')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
+                                            </div>:
+                                            <button type="button" onClick={e => addChoice('qualifications')} className="button is-primary"> Add Qualification </button>
+                                        }&nbsp;<button onClick={e => setViewQuals(!viewQuals)} type="button" className="button is-link">View Qualifications</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {viewQuals &&
+                            <div className="field is-horizontal">
+                                <div className="field-label"></div>
+                                <div className="field-body">
+                                    <div className="field">
+                                        <div className="control">
+                                            {qualifications.length > 0 ?
+                                            <ul className="give-space list">
+                                                {qualifications.map((val, index) =>
+                                                    <li key={index}>
+                                                        <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'qualifications')}><i className="fas fa-edit"></i></span>{" "}
+                                                        <span style={{cursor:"pointer"}} onClick={e => setQualifications(qualifications.filter((val,idx) => index !== idx))}><i className="fas fa-trash"></i></span>{" "}
+                                                        <span className={`${editQualification === index ? 'background-warning' : ''}`}>{val}</span>
+                                                    </li>
+                                                )}
+                                            </ul>:
+                                            <span>No Qualifications added thus far.</span>
+                                            }
+                                            <hr />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label">Benefits</label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <input 
+                                            className="input"
+                                            type="text"
+                                            name="benefit"
+                                            value={benefit}
+                                            onChange={e => setBenefit(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label"></div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        {isEditBenefit ?
+                                            <div>
+                                                <span onClick={e => reAddChoice('benefits')} className="button is-small is-link is-underlined">Re-Add Benefits</span> {" "}
+                                                <span onClick={e => cancelEdit('benefits')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
+                                            </div>:
+                                            <button type="button" onClick={e => addChoice('benefits')} className="button is-primary"> Add Benefits </button>
+                                        }&nbsp;
+                                        <button onClick={e => setViewBenefits(!viewBenefits)} type="button" className="button is-link">View Benefits</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {viewBenefits &&
+                            <div className="field is-horizontal">
+                                <div className="field-label"></div>
+                                <div className="field-body">
+                                    <div className="field">
+                                        <div className="control">
+                                            {benefits.length > 0 ?
+                                            <ul className="give-space list">
+                                                {benefits.map((val, index) =>
+                                                    <li key={index}>
+                                                        <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'benefits')}><i className="fas fa-edit"></i></span>{" "}
+                                                        <span style={{cursor:"pointer"}} onClick={e => setBenefits(benefits.filter((val,idx) => index !== idx))}><i className="fas fa-trash"></i></span>{" "}
+                                                        <span className={`${editBenefit === index ? 'background-warning' : ''}`}>{val}</span>
+                                                        
+                                                    </li>
+                                                )}
+                                            </ul>:
+                                            <span>No Benefits added thus far</span>
+                                            }
+                                            <hr />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label">Skills</label>
+                            </div>
+                            <div className="field-body">
                                 <input 
                                     className="input"
                                     type="text"
@@ -704,58 +828,46 @@ const AddClassified = props => {
                                     onChange={e => setSkill(e.target.value)}
                                 />
                             </div>
-                            {isEditSkill ?
-                                <div>
-                                    <span onClick={e => reAddChoice('skills')} className="button is-small is-link is-underlined">Re-Add Skill</span> {" "}
-                                    <span onClick={e => cancelEdit('skills')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
-                                </div>:
-                                <button type="button" onClick={e => addChoice('skills')} className="button is-primary"> Add Skill </button>
-                            }
-                            
                         </div>
-                        <div className="field">
-                            <label className="label">Applicant Questions:</label>
-                            <button onClick={e => setViewQues(!viewQues)} type="button" className="button is-link">View Questions</button>
-                            {viewQues &&
-                                <div>
-                                    {questions.length > 0 ?
-                                        <div>
-                                            {questions.map((val,index) =>
-                                                <div key={index}>
-                                                    <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'questions')}><i className="fas fa-edit"></i></span>{" "}
-                                                    <span style={{cursor:"pointer"}} onClick={e => deleteQuestion(index)}><i className="fas fa-trash"></i></span>{" "}
-                                                    <div className={`${editQuestion === index ? 'background-warning' : ''}`}>
-                                                        <span>{val} <b>?</b></span>
-                                                        <div className="field is-horizontal">
-                                                            <div className="field-label is-normal">
-                                                                <label className="label">Responses: </label>
-                                                            </div>
-                                                            <div className="field-body">
-                                                                <div className="field">
-                                                                    <p>
-                                                                        <ul className="give-space list">
-                                                                            {responsesList[index].map((val, index) =>
-                                                                                <li key={index}>
-                                                                                    {val}
-                                                                                </li>
-                                                                            )}
-                                                                        </ul>
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                        :
-                                    <   span> No Questions Added thus far.</span>
-                                    }
-                                    <hr />
-                                </div>
-                            }
-                            <div>
-                                <br />
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal"></div>
+                            <div className="field-body">
+                                {isEditSkill ?
+                                    <div>
+                                        <span onClick={e => reAddChoice('skills')} className="button is-small is-link is-underlined">Re-Add Skill</span> {" "}
+                                        <span onClick={e => cancelEdit('skills')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
+                                    </div>:
+                                    <button type="button" onClick={e => addChoice('skills')} className="button is-primary"> Add Skill </button>
+                                }&nbsp;
+                                <button onClick={e => setViewSkills(!viewSkills)} type="button" className="button is-link">View Skills</button>
+                            </div>
+                        </div>
+                        {viewSkills &&
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal"></div>
+                            <div className="field-body">
+                                {skills.length > 0 ?
+                                <ul className="give-space list">
+                                    {skills.map((val, index) =>
+                                        <li key={index}>
+                                            <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'skills')}><i className="fas fa-edit"></i></span>{" "}
+                                            <span style={{cursor:"pointer"}} onClick={e => setSkills(skills.filter((val,idx) => index !== idx))}><i className="fas fa-trash"></i></span>{" "}
+                                            <span className={`${editSkill === index ? 'background-warning' : ''}`}>{val}</span>
+                                        </li>
+                                    )}
+                                </ul>:
+                                <span> No SKills Added thus far.</span>
+                                }
+                                <hr />
+                            </div>
+                        </div>
+                        }
+                        
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label">Applicant Questions</label>
+                            </div>
+                            <div className="field-body">
                                 <input 
                                     className="input"
                                     type="text"
@@ -763,66 +875,119 @@ const AddClassified = props => {
                                     value={question}
                                     onChange={e => setQuestion(e.target.value)}
                                 />
-                                <div className="field is-horizontal">
-                                    <div className="field-label is-normal">
-                                        <label className="label">Responses: </label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p>
-                                                <ul className="give-space list">
-                                                    {responses.map((val, index) =>
-                                                        <li key={index}>
-                                                            <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'responses')}><i className="fas fa-edit"></i></span>{" "}
-                                                            <span style={{cursor:"pointer"}} onClick={e => setResponses(responses.filter((val,idx) => index !== idx))}><i className="fas fa-trash"></i></span>{" "}
-                                                            <span className={`${editResponse === index ? 'background-warning' : ''}`}>{val}</span>
-                                                        </li>
-                                                    )}
-                                                </ul>
-                                            </p>
-                                            <p className="control">
-                                            <input 
-                                                className="input"
-                                                type="text"
-                                                name="response"
-                                                value={response}
-                                                onChange={e => setResponse(e.target.value)}
-                                            />
-                                            </p>
-                                            {isEditResponse ?
-                                                <div>
-                                                    <button type="button" onClick={e => {reAddChoice('responses')}} className="button is-info"><i className="fas fa-plus"></i></button>
-                                                    <button type="button" onClick={e => {cancelEdit('responses')}} className="button is-info"><i className="fas fa-times"></i></button>
-                                                </div>
-                                                :
-                                                <button type="button" onClick={e => {addChoice('responses')}} className="button is-info"><i className="fas fa-plus"></i></button>
-                                            }
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label">Responses </label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <p>
+                                        <ul className="give-space list">
+                                            {responses.map((val, index) =>
+                                                <li key={index}>
+                                                    <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'responses')}><i className="fas fa-edit"></i></span>{" "}
+                                                    <span style={{cursor:"pointer"}} onClick={e => setResponses(responses.filter((val,idx) => index !== idx))}><i className="fas fa-trash"></i></span>{" "}
+                                                    <span className={`${editResponse === index ? 'background-warning' : ''}`}>{val}</span>
+                                                </li>
+                                            )}
+                                        </ul>
+                                    </p>
+                                    <p className="control">
+                                    <input 
+                                        className="input"
+                                        type="text"
+                                        name="response"
+                                        value={response}
+                                        onChange={e => setResponse(e.target.value)}
+                                    />
+                                    </p>
+                                    {isEditResponse ?
+                                        <div>
+                                            <button type="button" onClick={e => {reAddChoice('responses')}} className="button is-info"><i className="fas fa-plus"></i></button>
+                                            <button type="button" onClick={e => {cancelEdit('responses')}} className="button is-info"><i className="fas fa-times"></i></button>
                                         </div>
-                                    </div>
+                                        :
+                                        <button type="button" onClick={e => {addChoice('responses')}} className="button is-info"><i className="fas fa-plus"></i></button>
+                                    }
                                 </div>
                             </div>
-                            {isEditQuestion ?
-                                <div>
-                                    <span onClick={e => reAddChoice('questions')} className="button is-small is-link is-underlined">Re-Add Question</span> {" "}
-                                    <span onClick={e => cancelEdit('questions')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
-                                </div>:
-                                <button type="button" onClick={e => addChoice('questions')} className="button is-primary"> Add Question </button>
-                            }   
                         </div>
-                        <div className="field">
-                            <label className="label"> End Date:</label>
-                            <input 
-                                className="input" 
-                                type="date" 
-                                name="end"
-                                value={end}
-                                min={new Date().toISOString().split("T")[0]}
-                                onChange={e => setEndDate(e.target.value)}
-                            />
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal"></div>
+                            <div className="field-body">
+                                {isEditQuestion ?
+                                    <div>
+                                        <span onClick={e => reAddChoice('questions')} className="button is-small is-link is-underlined">Re-Add Question</span> {" "}
+                                        <span onClick={e => cancelEdit('questions')} className="button is-small is-warning is-underlined">Cancel Edit</span> 
+                                    </div>:
+                                    <button type="button" onClick={e => addChoice('questions')} className="button is-primary"> Add Question </button>
+                                }&nbsp;<button onClick={e => setViewQues(!viewQues)} type="button" className="button is-link">View Questions</button>
+                            </div>
                         </div>
-                        <br />
-                        <span>{responseMsg}</span>
-                        <br />
+                        {viewQues &&
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal"></div>
+                            <div className="field-body">
+                                {questions.length > 0 ?
+                                    <div>
+                                        {questions.map((val,index) =>
+                                            <div key={index}>
+                                                <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'questions')}><i className="fas fa-edit"></i></span>{" "}
+                                                <span style={{cursor:"pointer"}} onClick={e => deleteQuestion(index)}><i className="fas fa-trash"></i></span>{" "}
+                                                <div className={`${editQuestion === index ? 'background-warning' : ''}`}>
+                                                    <span>{val} <b>?</b></span>
+                                                    <div className="field is-horizontal">
+                                                        <div className="field-label is-normal">
+                                                            <label className="label">Responses: </label>
+                                                        </div>
+                                                        <div className="field-body">
+                                                            <div className="field">
+                                                                <p>
+                                                                    <ul className="give-space list">
+                                                                        {responsesList[index].map((val, index) =>
+                                                                            <li key={index}>
+                                                                                {val}
+                                                                            </li>
+                                                                        )}
+                                                                    </ul>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    :
+                                    <span> No Questions Added thus far.</span>
+                                }
+                                <hr />
+                            </div>
+                        </div>
+                        }
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label"> End Date</label>
+                            </div>
+                            <div className="field-body">
+                                <input 
+                                    className="input" 
+                                    type="date" 
+                                    name="end"
+                                    value={end}
+                                    min={new Date().toISOString().split("T")[0]}
+                                    onChange={e => setEndDate(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field is-normal"></div>
+                            <div className="field-body">
+                                <span>{responseMsg}</span>
+                            </div>
+                        </div>
                         <div className="field is-clearfix">
                         
                             <button onClick={e => {clearFunc(e);}} className="button is-warning is-pulled-right give-space">

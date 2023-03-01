@@ -7,24 +7,25 @@ from flask import request, jsonify
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree
 from api.specials import Listing, Vehicle, Product, Item, Service
+from datetime import datetime
 
 ###############----shops.py-----##############
 
-@app.route('/api/shops/')
+@app.route('/api/shops')
 def shops():
-    return "shops"
+    return "shops", 200
 
 ## development listings
 @app.route('/api/listings', methods=['GET', 'POST'])
 def listings():
     if request.method == 'GET':
-        result = Listing.query.all()
+        result = Listing.query.filter(Listing.is_visible == True).all()
         listings = []
         for listing in result:
             listingObj = {"listing_id":listing.listing_id,"lister":listing.lister,"pree_id":listing.pree_id,"title":listing.title,"category":listing.category,"typeOf":listing.typeOf,"address":listing.address,"price":listing.price,"currency":listing.currency,"beds":listing.beds, "baths": listing.baths, "insideSqft": listing.insideSqft, "lotSqft": listing.lotSqft, "parking": listing.parking, "description": listing.description, "numOfPics":listing.numOfPics}
             listings.append(listingObj)
         return json.dumps(listings)
-    else:
+    elif request.method == 'POST':
         result = request.form
         photos = request.files.getlist("photos")
         numOfPics = (len(photos))
@@ -63,13 +64,13 @@ def get_listing():
 @app.route('/api/vehicles', methods=['GET', 'POST'])
 def vehicles():
     if request.method == 'GET':
-        result = Vehicle.query.all()
+        result = Vehicle.query.filter(Vehicle.is_visible == True).all()
         vehicles = []
         for vehicle in result:
             vehicleObj = {"vehicle_id":vehicle.vehicle_id,"lister":vehicle.lister,"pree_id":vehicle.pree_id,"make":vehicle.make,"model":vehicle.model,"condition":vehicle.condition,"typeOf":vehicle.typeOf,"fuel":vehicle.fuel,"transmission":vehicle.transmission,"mileage":vehicle.mileage,"location":vehicle.location,"price":vehicle.price,"currency":vehicle.currency,"engine":vehicle.engine, "year": vehicle.year, "color": vehicle.color, "steering": vehicle.steering, "ignition": vehicle.ignition, "seats":vehicle.seats, "description": vehicle.description, "numOfPics":vehicle.numOfPics}
             vehicles.append(vehicleObj)
         return json.dumps(vehicles)
-    else:
+    elif request.method == 'POST':
         result = request.form
         photos = request.files.getlist("photos")
         numOfPics = (len(photos))
@@ -108,13 +109,13 @@ def get_vehicle():
 @app.route('/api/products', methods=['GET', 'POST'])
 def products():
     if request.method == 'GET':
-        result = Product.query.all()
+        result = Product.query.filter(Product.is_visible == True).all()
         products = []
         for product in result:
             productObj = {"product_id":product.product_id,"lister":product.lister,"pree_id":product.pree_id,"brand":product.brand,"name":product.name,"category":product.category,"condition":product.condition,"typeOf":product.typeOf,"location":product.location,"stock":product.stock,"price":product.price,"currency":product.currency, "year": product.year, "colors": product.colors, "package": product.package, "description": product.description, "numOfPics":product.numOfPics}
             products.append(productObj)
         return json.dumps(products)
-    else:
+    elif request.method == 'POST':
         result = request.form
         photos = request.files.getlist("photos")
         numOfPics = (len(photos))
@@ -152,13 +153,13 @@ def get_product():
 @app.route('/api/items', methods=['GET', 'POST'])
 def items():
     if request.method == 'GET':
-        result = Item.query.all()
+        result = Item.query.filter(Item.is_visible == True).all()
         items = []
         for item in result:
             itemObj = {"item_id":item.item_id,"lister":item.lister,"pree_id":item.pree_id,"name":item.name,"category":item.category,"typeOf":item.typeOf,"calories":item.calories,"price":item.price,"currency":item.currency, "ingredients": item.ingredients, "description": item.description, "numOfPics":item.numOfPics}
             items.append(itemObj)
         return json.dumps(items)
-    else:
+    elif request.method == 'POST':
         result = request.form
         media = request.files.getlist("media")
         numOfPics = (len(media))
@@ -196,13 +197,13 @@ def get_item():
 @app.route('/api/services', methods=['GET', 'POST'])
 def services():
     if request.method == 'GET':
-        result = Service.query.all()
+        result = Service.query.filter(Service.is_visible == True).all()
         services = []
         for service in result:
             serviceObj = {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics, "time_contingency" : service.time_contingency, "price_contingency" : service.price_contingency, "requirements" : service.requirements, "address":service.address}
             services.append(serviceObj)
         return json.dumps(services)
-    else:
+    elif request.method == 'POST':
         result = request.form
         photos = request.files.getlist("media")
         numOfPics = (len(photos))
@@ -245,7 +246,10 @@ def test_func():
         result = request.form
         procedures = result["procedures"].split(',')
         print(procedures[0])
-        return {"msg":"procedures sent"}, 200
+        timeobj = datetime.time
+        print(timeobj)
+        print(time.time())
+        return {"msg":"procedures sent", "time":str(timeobj)}, 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 """@app.route('/api/listings', methods=['GET', 'POST'])

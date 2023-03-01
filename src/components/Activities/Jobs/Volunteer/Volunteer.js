@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import withContext from "../../../../withContext";
 import VolunteerItem from "./VolunteerItem";
 
@@ -12,11 +13,13 @@ const Volunteer = props => {
         isChecked ? console.log(isChecked) : console.log("test") ;
     }*/
 
+    let navigate = useNavigate();
+
     return (
         <div className="hero">
             <div className="container">
                 <div className="is-pulled-right">
-                    <button className="button is-outlined">
+                    <button onClick={e => navigate('/add-volunteer')} className="button is-outlined">
                         Create
                     </button>{" "}
                     <button className="button is-outlined">

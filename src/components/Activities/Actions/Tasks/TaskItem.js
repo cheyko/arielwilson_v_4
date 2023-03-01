@@ -36,14 +36,14 @@ const TaskItem = props => {
             </div>
             <br />
             <div className="columns is-multiline is-mobile">
-                <div className="media-left">
+               {/**<div className="media-left">
                     <figure className="image is-128x128">
                         <img
                             src="https://bulma.io/images/placeholders/128x128.png"
                             alt="test"
                         />
                     </figure>
-                </div>
+                </div> */}
                 <div className="media-content">
                     <div className="">
                         <b><em>This is the Title </em> </b>

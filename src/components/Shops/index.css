@@ -263,7 +263,7 @@
 }
 
 .checkbox-options{
-    margin: 1rem !important;
+    margin-inline: 1rem !important;
 }
 
 .filter-list{

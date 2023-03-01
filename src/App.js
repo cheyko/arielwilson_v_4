@@ -58,11 +58,12 @@ import Specials from './components/Specials';
 import Talkie from './components/Talkie';
 import Live from './components/Live';
 import Layout from './components/Layout';
-import Trendy from './components/Images/Trendy';
+//import Trendy from './components/Images/Trendy';
 import AddService from './components/Shops/Services/AddService';
 import AddVehicle from './components/Shops/WOV/AddVehicle';
 import HostEvent from './components/Activities/Events/HostEvent';
 import AddClassified from './components/Activities/Jobs/Classifieds/AddClassified';
+import AddVolunteer from './components/Activities/Jobs/Volunteer/AddVolunteer';
 
 const sign = require('jwt-encode');
 const secret = 'some$3cretKey';
@@ -694,7 +695,8 @@ export default class App extends Component {
                 <Route path="/live" element={<Live />} />
                 <Route path="/add-event" element={<HostEvent />} />
                 <Route path="/add-classified" element={<AddClassified />} />
-                {/*<Route path='/trendy' element={<Trendy />} />*/}
+                <Route path="/add-volunteer" element={<AddVolunteer />} />
+                 {/*<Route path='/trendy' element={<Trendy />} />*/}
                 {/*<Route path="/welcome" component={Welcome} />*/}
               </Route>
               {/*advertising components*/}

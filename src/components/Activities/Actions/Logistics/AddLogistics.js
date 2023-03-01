@@ -48,6 +48,11 @@ const AddLogistics = props => {
 
     const types = ["Envelope", "SmallBox", "LargeBox", "Bag"];
     const [typeOf, setTypeOf] = useState(null);
+    const [sendAddr, setSendAddr] = useState("");
+    const [addSendAddr, setAddSend] = useState(false);
+    const [receiver, setReceiver] = useState(null);
+    const [recvAddr, setRecvAddr] = useState("");
+    const [addRecvAddr, setAddRecv] = useState(false);
     const [description, setDescription] = useState("");
     const [responseMsg, setResponseMsg] = useState("");
     const [modalIsOpen, setModalOpen] = useState(false);
@@ -76,7 +81,27 @@ const AddLogistics = props => {
 
     const handleChange = (e) => {
         switch(e.target.name){
-            case 'projectSelect':
+            case 'send-radio':
+                if(e.target.value === 'self'){
+                    setSendAddr(props.context.user.location);
+                    setAddSend(false);
+                }else{
+                    setAddSend(true);
+                }
+                break;
+            case 'sendAddr':
+                setSendAddr(e.target.value);
+                break;
+            case 'send-radio':
+                if(e.target.value === 'system'){
+                    setSendAddr('system');
+                    setAddRecv(false);
+                }else{
+                    setAddRecv(true);
+                }
+                break;
+            case 'recvAddr':
+                setAddRecv(e.target.value);
                 break;
             default:
                 break;     
@@ -123,6 +148,26 @@ const AddLogistics = props => {
                                 </div>
                             </div>
                             <div className="field">
+                                <label>Send Address</label>
+                                <label className="radio">
+                                    Use Registered Location {" "}
+                                    <input type="radio" name="send-radio" onChange={e => handleChange(e)} value="self" />
+                                </label>
+                                <label className="checkbox-options">
+                                    Enter New Location {" "}
+                                    <input type="radio" name="send-radio" onChange={e => handleChange(e)} value="another" />
+                                </label>
+                                <hr />
+                                {addSendAddr &&
+                                <input 
+                                    className="input"
+                                    type="text"
+                                    name="sendAddr"
+                                    value={sendAddr}
+                                    onChange={e => handleChange(e)}
+                                />}
+                            </div>
+                            <div className="field">
                                 <label className="label"> Receiver: </label>
                                 <div className="control has-icons-left has-icons-right">
                                     <input
@@ -140,9 +185,29 @@ const AddLogistics = props => {
                                         <i className="fas fa-search"></i>
                                     </span>
                                     <div className="card">
-                                       Frat Users
+                                       Users
                                     </div>
                                 </div>
+                            </div>
+                            <div className="field">
+                                <label>Receive Address</label>
+                                <label className="radio">
+                                    Use Registered Location {" "}
+                                    <input type="radio" name="recv-radio" onChange={e => handleChange(e)} value="system" />
+                                </label>
+                                <label className="checkbox-options">
+                                    Enter Location {" "}
+                                    <input type="radio" name="recv-radio" onChange={e => handleChange(e)} value="another" />
+                                </label>
+                                <hr />
+                                {addRecvAddr &&
+                                <input 
+                                    className="input"
+                                    type="text"
+                                    name="recvAddr"
+                                    value={recvAddr}
+                                    onChange={e => handleChange(e)}
+                                />}
                             </div>
                             <div className="field">
                                 <label className="label"> Description: </label>
