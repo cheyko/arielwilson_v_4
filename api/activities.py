@@ -30,15 +30,20 @@ def get_tasks():
 def get_projects():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
-        result = Task.query(Task.project).filter(or_(Task.lister == user_id,Task.is_for == user_id)).all()
-        return result , 200
+        result = db.session.query(Task.project).filter(or_(Task.lister == user_id,Task.is_for == user_id)).distinct()
+        projectlist = []
+        for task in result:
+            project = task.project
+            projectlist.append(project)
+        print(projectlist)
+        return {"projectlist" : projectlist} , 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/tasks', methods=['POST'])
 def tasks():
     if request.method == 'POST':
         result = request.form
-        newTask = Task(lister=result["user_id"],is_for=result["isFor"],title=result["title"],project=result["project"],date_added=result["date_added"],start_date=result["start_date"],end_date=result["end_date"],description=result["description"],status=result["status"])
+        newTask = Task(lister=result["user_id"],is_for=result["isFor"],title=result["title"],project=result["project"],date_added=result["theDateTime"],start_date=result["start_date"],end_date=result["end_date"],description=result["description"],status=result["status"])
         db.session.add(newTask)
         db.session.flush()
         db.session.commit()
@@ -52,7 +57,7 @@ def get_requests():
         result = Request.query.filter(Request.is_visible == True,or_(Request.lister == user_id,Request.is_for == user_id)).all()
         requests = []
         for aRequest in result:
-            requestObj = {"request_id":aRequest.request_id,"lister":aRequest.lister,"is_for":aRequest.is_for,"question":aRequest.question,"choices":aRequest.choices}
+            requestObj = {"request_id":aRequest.request_id,"lister":aRequest.lister,"is_for":aRequest.is_for,"question":aRequest.question,"status":aRequest.status,"choices":aRequest.choices}
             requests.append(requestObj)
         return json.dumps(requests)
     return jsonify({"msg":"There was an error somewhere."}), 400
@@ -61,7 +66,7 @@ def get_requests():
 def requests():
     if request.method == 'POST':
         result = request.form
-        newRequest = Request(lister=result["user_id"],is_for=result["isFor"],question=result["question"],date_added=result["date_added"],choices=result["choices"].split(','))
+        newRequest = Request(lister=result["user_id"],is_for=result["isFor"],question=result["question"],date_added=result["theDateTime"],status=result["status"],choices=result.getlist("choices"))
         db.session.add(newRequest)
         db.session.flush()
         db.session.commit()
@@ -75,13 +80,13 @@ def get_logistics():
         result = Logistic.query.filter(Logistic.is_visible == True,or_(Logistic.sender == user_id,Logistic.receiver == user_id)).all()
         logistics = []
         for logistic in result:
-            logisticObj = {}
+            logisticObj = {"logistic_id":logistic.logistic_id,"sender":logistic.sender,"receiver":logistic.receiver,"send_address":logistic.send_address,"recv_address":logistic.recv_address,"date_added":logistic.date_added,"send_date":logistic.send_date,"receive_date":logistic.receive_date,"package_type":logistic.package_type,"status":logistic.status,"description":logistic.description}
             logistics.append(logisticObj)
         return json.dumps(logistics)
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/logistics', methods=['POST'])
-def requests():
+def logistics():
     if request.method == 'POST':
         result = request.form
         send_address = result["sendAddr"]
@@ -89,7 +94,7 @@ def requests():
             recv_address = get_recv_address(result["receiver"])
         else:
             recv_address = result["recvAddr"]
-        newLogistic = Logistic(sender=result["sender"],receiver=result["receiver"], send_address=send_address,recv_address=recv_address,date_added=result["date_added"],package_type=result["typeOf"],description=result["description"])
+        newLogistic = Logistic(sender=result["sender"],receiver=result["receiver"], send_address=send_address,recv_address=recv_address,date_added=result["theDateTime"],package_type=result["typeOf"], status=result["status"],description=result["description"])
         db.session.add(newLogistic)
         db.session.flush()
         db.session.commit()
@@ -117,9 +122,9 @@ def get_polls():
 def polls():
     if request.method == 'POST':
         result = request.form
-        choices = result["choices"].split(',')
-        zeros = []
-        newPoll = Poll(lister=result["user_id"],question=result["question"],date_added=result["date_added"],choices=choices,results=zeros, end_date=result["end_date"], end_time=result["end_time"])
+        choices = result.getlist("choices")
+        zeros = list(map(lambda x: 0, choices))
+        newPoll = Poll(lister=result["user_id"],question=result["poll"],date_added=result["theDateTime"],choices=choices,results=zeros, end_date=result["end_date"], end_time=result["end_time"])
         db.session.add(newPoll)
         db.session.flush()
         db.session.commit()
@@ -132,25 +137,35 @@ def events():
         result = Event.query.filter(Event.is_visible == True).all()
         events = []
         for event in result:
-            eventObj = {"event_id":event.event_id,"lister":event.lister,"pree_id":event.pree_id,"title":event.title,"host":event.host,"description":event.description,"category":event.category,"typeOf":event.typeOf,"metrics":event.metrics,"where":event.where,"status":event.status,"dates":event.dates,"start_times":event.start_times,"end_times":event.end_times,"tickets":event.tickets,"costs":event.costs,"personnel_ids":event.personnel_ids,"personnel":event.personnel,"attractions":event.attractions}
+            eventObj = {"event_id":event.event_id,"lister":event.lister,"pree_id":event.pree_id,"title":event.title,"host":event.host,"description":event.description,"category":event.category,"typeOf":event.typeOf,"metrics":event.metrics,"venue":event.venue,"where":event.where,"status":event.status,"dates":event.dates,"start_times":event.start_times,"end_times":event.end_times,"tickets":event.tickets,"costs":event.costs,"personnel_ids":event.personnel_ids,"personnel":event.personnel,"attractions":event.attractions, "numOfPics":event.numOfPics}
             events.append(eventObj)
         return json.dumps(events)
     elif request.method == 'POST':
         result = request.form
-        dates = result["dates"].split(",")
-        start_times = result["start_times"].split(",")
-        end_times = result["end_times"].split(",") 
-        tickets = result["tickets"].split(",") 
-        costs = result["costs"].split(",")
-        personnel_ids = result["personnel_ids"].split(",")
-        personnel = result["personnel"].split(",")
-        attractions = result["attractions"].split(",")
+        photos = request.files.getlist("media")
+        numOfPics = (len(photos))
+        dates = result.getlist("dates")
+        start_times = result.getlist("start_times")
+        end_times = result.getlist("end_times")
+        tickets = result.getlist("tickets")
+        costs = result.getlist("costs")
+        currencies = result.getlist("currencies")
+        personnel_ids = result.getlist("personnel_ids")
+        personnel = result.getlist("personnel")
+        attractions = result.getlist("attractions")
         newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="event")
         db.session.add(newPree)
         db.session.flush()
-        newEvent = Event(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"],description=result["description"],category=result["category"],typeOf=result["typeOf"],metrics=result["metrics"],venue=result["venue"],where=result["where"],status=result["status"],dates=dates,start_times=start_times,end_times=end_times,tickets=tickets,costs=costs,personnel_ids=personnel_ids,personnel=personnel,attractions=attractions)
+        newEvent = Event(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"], host=result["host"],description=result["description"],category=result["category"],typeOf=result["typeOf"],metrics=result["metrics"],venue=result["venue"],where=result["where"],status=result["status"],dates=dates,start_times=start_times,end_times=end_times,tickets=tickets,costs=costs, currencies=currencies,personnel_ids=personnel_ids,personnel=personnel,attractions=attractions, numOfPics=numOfPics)
         db.session.add(newEvent)
         db.session.flush()
+        prefix = "event" + str(newEvent.event_id)
+        event_folder = app.config['UPLOAD_FOLDER'] + "events/"
+        os.makedirs(event_folder + prefix)   
+        for index, pic in enumerate(photos):
+            filename = prefix + "/" + str(index)
+            #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
+            pic.save(os.path.join(event_folder , filename))
         db.session.commit()
         return jsonify({"msg": "added successfully", "event_id":newEvent.event_id}), 200
     return jsonify({"msg":"There was an error somewhere."}), 400

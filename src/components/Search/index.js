@@ -47,17 +47,17 @@ const Search = props => {
             if (search.data.userlist){
                 setUserList(Array.from(search.data.userlist));
                 props.context.listSave(Array.from(search.data.userlist),"userlist");
-                console.log("userlist");
+                //console.log("userlist");
             }
             if (search.data.portfoliolist){
                 setPortfolioList(Array.from(search.data.portfoliolist));
-                console.log("portfolios");
+                //console.log("portfolios");
             }
             if (search.data.preepedialist){
-                console.log("preepedia");
+                //console.log("preepedia");
             }
             if (search.data.crawllist){
-                console.log("crawllist");
+                //console.log("crawllist");
             }
         }           
     }

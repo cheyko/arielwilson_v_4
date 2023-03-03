@@ -73,7 +73,8 @@ const ViewUserProfile = props => {
         }
 
         if (isFollower === null){
-            axios.post('/api/is-follower',{user_id,id}).then(
+            const userview_id = id;
+            axios.post('/api/is-follower',{user_id,userview_id}).then(
                 (response) => {
                     if (response.status !== 200){
                         console.log('I need a better error messaging system');
@@ -89,7 +90,8 @@ const ViewUserProfile = props => {
     // have onclick functions for add-follower and unfollow
     
     const follow = () => {
-        axios.post('/api/add-follower',{user_id,id}).then(
+        const userview_id = id;
+        axios.post('/api/add-follower',{user_id,userview_id}).then(
             (dofollow) => {
                 if (dofollow.status !== 200){
                     console.log('User was followed successful.');
@@ -101,7 +103,8 @@ const ViewUserProfile = props => {
     }
 
     const unfollow = () => {
-        axios.put('/api/un-follow',{user_id,id}).then(
+        const userview_id = id;
+        axios.put('/api/un-follow',{user_id,userview_id}).then(
             (unfollow) => {
                 if (unfollow.status !== 200){
                     throw new Error('User was unfollowed succesfully.');
@@ -116,8 +119,8 @@ const ViewUserProfile = props => {
         <Navigate to="/profile" />
     ):(  
         <div className="hero hero-container">
-            <div className="card userview-profile-box">
-                <button className="button return-btn is-info" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+            <div className="card profile-box">
+                 <button className="button is-info" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
                  
                  <ProfileHeader showDropDown={showDropDown} setShowDropDown={setShowDropDown} isFollower={isFollower} follow={follow} unfollow={unfollow} user={userview} imgView={imgView} vidView={vidView} action="read" />
                  <Tabs>

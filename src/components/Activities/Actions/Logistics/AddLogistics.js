@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import withContext from "../../../../withContext";
 //import getDateTime from "../../../../GlobalFunctions";
+import ViewUserCard from "../../../HelperComponents/ViewUserCard";
+import axios from "axios";
 
 Modal.setAppElement('#root');
 
@@ -46,8 +48,9 @@ const AddLogistics = props => {
         return result;
     }
 
-    const types = ["Envelope", "SmallBox", "LargeBox", "Bag"];
-    const [typeOf, setTypeOf] = useState(null);
+    const user_id = props.context.user.id;
+    const types = ["Envelope", "Small Box", "Large Box", "Bag"];
+    const [typeOf, setTypeOf] = useState("");
     const [sendAddr, setSendAddr] = useState("");
     const [addSendAddr, setAddSend] = useState(false);
     const [receiver, setReceiver] = useState(null);
@@ -58,9 +61,16 @@ const AddLogistics = props => {
     const [modalIsOpen, setModalOpen] = useState(false);
     const [searchval, setSearchVal] = useState("");
     const [userlist, setUserList] = useState([]);
+    const [user, setUser] = useState(null);
+    const [status, setStatus] = useState("Pending");
+
 
     const clearFunc = () => {
-        setTypeOf(null);
+        setTypeOf("");
+        setSendAddr("");
+        setReceiver(null);
+        setRecvAddr("");
+        setDescription("");
         setResponseMsg("");
         setSearchVal("");
         setUserList([]);
@@ -69,6 +79,35 @@ const AddLogistics = props => {
     const saveRequest = async(e) => {
         e.preventDefault();
         var theDateTime = getDateTime();
+        if (receiver !== null && sendAddr !== '' && recvAddr !== ''){
+            const formData = new FormData();
+            formData.append('theDateTime',theDateTime);
+            formData.append('sender',user_id);
+            formData.append('receiver',receiver);
+            formData.append('sendAddr',sendAddr);
+            formData.append('recvAddr',recvAddr);
+            formData.append('typeOf',typeOf);
+            formData.append('status',status);
+            formData.append('description',description);
+            await axios.post('/api/logistics',formData, 
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }).then(
+                (result) => {
+                    if (result.status === 200){
+                        const logistic_id = result.data.logistic_id;
+                        clearFunc();
+                        setResponseMsg("Logistic was saved.");
+                    }else{
+                        setResponseMsg("Logistic was not saved, please try again. Contact us for suppport if problem persist.");
+                    }
+                }
+            );
+        }else{
+            setResponseMsg("Logistic is missing some important details.");
+        }
     }
 
     const loadRequest = async(e) => {
@@ -86,22 +125,46 @@ const AddLogistics = props => {
                     setSendAddr(props.context.user.location);
                     setAddSend(false);
                 }else{
+                    setSendAddr("");
                     setAddSend(true);
                 }
                 break;
             case 'sendAddr':
                 setSendAddr(e.target.value);
                 break;
-            case 'send-radio':
+            case 'recv-radio':
                 if(e.target.value === 'system'){
-                    setSendAddr('system');
+                    setRecvAddr('system');
                     setAddRecv(false);
                 }else{
+                    setRecvAddr('');
                     setAddRecv(true);
                 }
                 break;
             case 'recvAddr':
-                setAddRecv(e.target.value);
+                setRecvAddr(e.target.value);
+                break;
+            case 'searchval':
+                setSearchVal(e.target.value);
+                if( e.target.value !== ""){
+                    const searchval = e.target.value;
+                    axios.post('/api/search-users',{searchval, user_id}).then(
+                        (search) => {
+                            if (search.status === 200){
+                                if (search.data.userlist){
+                                    //setUserList(Array.from(search.data.userlist));
+                                    setUserList(search.data.userlist);
+                                }
+                            }else{
+                                setResponseMsg("No user found with that username.")
+                            }
+                        }
+                    ).catch( error => {
+                        console.log(error);
+                    });
+                }else{
+                    setUserList([]);
+                }
                 break;
             default:
                 break;     
@@ -117,6 +180,13 @@ const AddLogistics = props => {
         e.preventDefault();
         setResponseMsg("");
         setModalOpen(false);
+    }
+
+    const selectUser = (index) => {
+        setUser(userlist[index]);
+        setReceiver(userlist[index].user_id)
+        setSearchVal("");
+        setUserList([]);
     }
 
     return(
@@ -148,13 +218,13 @@ const AddLogistics = props => {
                                 </div>
                             </div>
                             <div className="field">
-                                <label>Send Address</label>
+                                <label className="label">Send Address</label>
                                 <label className="radio">
                                     Use Registered Location {" "}
                                     <input type="radio" name="send-radio" onChange={e => handleChange(e)} value="self" />
                                 </label>
                                 <label className="checkbox-options">
-                                    Enter New Location {" "}
+                                    Enter Location {" "}
                                     <input type="radio" name="send-radio" onChange={e => handleChange(e)} value="another" />
                                 </label>
                                 <hr />
@@ -169,6 +239,16 @@ const AddLogistics = props => {
                             </div>
                             <div className="field">
                                 <label className="label"> Receiver: </label>
+                                {user !== null && 
+                                    <article className="message is-primary">
+                                        <div className="message-header">
+                                            <button type="button" onClick={e => setUser(null)} className="delete" aria-label="delete"></button>
+                                        </div>
+                                        <div className="message-body">
+                                            <ViewUserCard user={user} />
+                                        </div>
+                                    </article>
+                                }
                                 <div className="control has-icons-left has-icons-right">
                                     <input
                                         className="input"
@@ -185,12 +265,25 @@ const AddLogistics = props => {
                                         <i className="fas fa-search"></i>
                                     </span>
                                     <div className="card">
-                                       Users
+                                        {userlist && userlist.length > 0 ? (
+                                            userlist.map((aUser, index) => (
+                                                <div onClick={e => selectUser(index)} className="column" key={index}>
+                                                    <ViewUserCard key={index} user={aUser} />
+                                                </div>
+                                            ))
+                                        ):(
+                                            <div className="container">
+                                                {searchval === "" ?
+                                                    <span></span>:
+                                                    <span>No Users found</span>
+                                                }
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
                             <div className="field">
-                                <label>Receive Address</label>
+                                <label className="label">Receive Address</label>
                                 <label className="radio">
                                     Use Registered Location {" "}
                                     <input type="radio" name="recv-radio" onChange={e => handleChange(e)} value="system" />

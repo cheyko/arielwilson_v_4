@@ -244,12 +244,18 @@ def get_service():
 def test_func():
     if request.method == 'POST':
         result = request.form
-        procedures = result["procedures"].split(',')
-        print(procedures[0])
+        choices = result["choices"].split(',')
+        test = request.form.getlist("choices")
+        zeros = list(map(lambda x: 0, test))
+        print(zeros)
+        print(test)
+        print(result["choices"])
+        print(choices)
+        print(choices[0])
         timeobj = datetime.time
         print(timeobj)
         print(time.time())
-        return {"msg":"procedures sent", "time":str(timeobj)}, 200
+        return {"msg":"procedures sent","poll_id":1,"time":str(timeobj)}, 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 """@app.route('/api/listings', methods=['GET', 'POST'])

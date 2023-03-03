@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import withContext from "../../../../withContext";
 //import getDateTime from "../../../../GlobalFunctions";
+import axios from "axios";
+import ViewUserCard from "../../../HelperComponents/ViewUserCard";
 
 Modal.setAppElement('#root');
 
@@ -45,7 +47,7 @@ const AddTask = props => {
         //console.log(result);
         return result;
     }
-
+    const user_id = props.context.user.id;
     const [title, setTitle] = useState("");
     const [start, setStartDate] = useState(new Date().toISOString().split("T")[0]);
     const [description, setDescription] = useState("");
@@ -55,11 +57,14 @@ const AddTask = props => {
     const [modalIsOpen, setModalOpen] = useState(false);
     const [project, setProject] = useState("");
     const [projects, setProjects] = useState([]);
+    const [gotProjects, setGotProjects] = useState(false);
     const [projectSelect, setSelect] = useState("Open")
     const [newProject, showNewProject] = useState(false);
     const [isFor, setFor] = useState(null);
+    const [addFor, setAddFor] = useState(false);
     const [searchval, setSearchVal] = useState("");
     const [userlist, setUserList] = useState([]);
+    const [user, setUser] = useState(null);
 
     const clearFunc = props => {
         setTitle("");
@@ -69,12 +74,44 @@ const AddTask = props => {
         showNewProject(false);
         setSearchVal("");
         setUserList([]);
+        setGotProjects(false);
     }
 
     const saveTask = async(e) => {
         e.preventDefault();
         var theDateTime = getDateTime();
-        console.log(project);
+        if (title !== "" && project !== "" && isFor !== null){
+            const formData = new FormData();
+            formData.append('theDateTime',theDateTime);
+            formData.append('user_id',user_id);
+            formData.append('isFor',isFor);
+            formData.append('title',title);
+            formData.append('project',project);
+            formData.append('description',description);
+            formData.append('start_date',start);
+            formData.append('end_date',end);
+            formData.append('status',status);
+            await axios.post('/api/tasks',formData, 
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }).then(
+                (result) => {
+                    if (result.status === 200){
+                        const task_id = result.data.task_id;
+                        clearFunc();
+                        setResponseMsg("Task was saved.");
+                    }else{
+                        setResponseMsg("Task was not saved, please try again. Contact us for suppport if problem persist.");
+                    }
+                }
+            );
+            //return true;
+        }else{
+            setResponseMsg("Task is missing some important details.");
+            //return false;
+        }
     }
 
     const loadTask = async(e) => {
@@ -82,8 +119,32 @@ const AddTask = props => {
     }
 
     useEffect( () => {
+        if(gotProjects === false){
+            
+            axios.post('/api/get-projects',{user_id}).then(
+                (response) => {
+                    if (response.status === 200){
+                        if (response.data.projectlist){
+                            setProjects(Array.from(response.data.projectlist));
+                            setGotProjects(true);
+                        }
+                    }else{
+                        setResponseMsg("No Projects found.")
+                    }
+                }
+            ).catch( error => {
+                console.log(error);
+            });
+        }
+    },[projects, gotProjects]);
 
-    });
+    const selectUser = (index) => {
+        setUser(userlist[index]);
+        setFor(userlist[index].user_id)
+        setSearchVal("");
+        setUserList([]);
+    
+    }
 
     const handleChange = (e) => {
         switch(e.target.name){
@@ -95,6 +156,37 @@ const AddTask = props => {
                 }else{
                     showNewProject(false);
                     setProject(e.target.value);
+                }
+                break;
+            case 'doing-checkbox':
+                if(e.target.value === 'self'){
+                    setFor(user_id);
+                    setAddFor(false);
+                    setUser(null);
+                }else{
+                    setAddFor(true);
+                    setFor(null);
+                }
+                break;
+            case 'searchval':
+                setSearchVal(e.target.value);
+                if( e.target.value !== ""){
+                    const searchval = e.target.value;
+                    axios.post('/api/search-frat',{searchval, user_id}).then(
+                        (search) => {
+                            if (search.status === 200){
+                                if (search.data.userlist){
+                                    setUserList(Array.from(search.data.userlist));
+                                }
+                            }else{
+                                setResponseMsg("No user found with that username.")
+                            }
+                        }
+                    ).catch( error => {
+                        console.log(error);
+                    });
+                }else{
+                    setUserList([]);
                 }
                 break;
             default:
@@ -146,12 +238,11 @@ const AddTask = props => {
                                         onChange={e => handleChange(e)}>
                                         <option value="Open">Open</option>
                                         <option value="New">New Project</option>
-                                        {projects.map((project, index) => {
+                                        {projects.map((project, index) => 
                                             <option key={index} value={project}>
                                                 {project}
                                             </option>
-                                        })}
-
+                                        )}
                                     </select>
                                 </div>
                                 {newProject &&
@@ -176,22 +267,52 @@ const AddTask = props => {
                                     Choose Frat User {" "}
                                     <input type="radio" name="doing-checkbox" onChange={e => handleChange(e)} value="another" />
                                 </label>
-                                <div className="control has-icons-left has-icons-right">
-                                    <input
-                                        className="input"
-                                        type="text"
-                                        name="searchval"
-                                        value={searchval}
-                                        onChange={e => handleChange(e)}
-                                        placeholder="Search for new recipient"
-                                        />
-                                    <span className="icon is-small is-left">
-                                        <i className="fas fa-user"></i>
-                                    </span>
-                                    <span className="icon is-small is-right">
-                                        <i className="fas fa-search"></i>
-                                    </span>
+                                {user !== null && 
+                                    <article className="message is-primary">
+                                        <div className="message-header">
+                                            <button type="button" onClick={e => setUser(null)} className="delete" aria-label="delete"></button>
+                                        </div>
+                                        <div className="message-body">
+                                            <ViewUserCard user={user} />
+                                        </div>
+                                    </article>
+                                }
+                                {addFor &&
+                                <div>
+                                    <div className="control has-icons-left has-icons-right">
+                                        <input
+                                            className="input"
+                                            type="text"
+                                            name="searchval"
+                                            value={searchval}
+                                            onChange={e => handleChange(e)}
+                                            placeholder="Search for Frat User"
+                                            />
+                                        <span className="icon is-small is-left">
+                                            <i className="fas fa-user"></i>
+                                        </span>
+                                        <span className="icon is-small is-right">
+                                            <i className="fas fa-search"></i>
+                                        </span>
+                                    </div>
+                                    <div className="card">
+                                        {userlist && userlist.length > 0 ? (
+                                            userlist.map((aUser, index) => (
+                                                <div onClick={e => selectUser(index)} className="column" key={index}>
+                                                    {aUser.username}
+                                                </div>
+                                            ))
+                                        ):(
+                                            <div className="container">
+                                                {searchval === "" ?
+                                                    <span></span>:
+                                                    <span>No Frat Users found</span>
+                                                }
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
+                                }
                             </div>
                             <div className="field">
                                 <label className="label"> Start Date:</label>
@@ -201,6 +322,16 @@ const AddTask = props => {
                                     name="start"
                                     value={start}
                                     onChange={e => setStartDate(e.target.value)}
+                                />
+                            </div>
+                            <div className="field">
+                                <label className="label"> End Date:</label>
+                                <input 
+                                    className="input" 
+                                    type="date" 
+                                    name="end"
+                                    value={end}
+                                    onChange={e => setEndDate(e.target.value)}
                                 />
                             </div>
                             <div className="field">
@@ -215,16 +346,6 @@ const AddTask = props => {
                                     onChange={e => setDescription(e.target.value)}
                                 />
                             </div>
-                            <div className="field">
-                                <label className="label"> End Date:</label>
-                                <input 
-                                    className="input" 
-                                    type="date" 
-                                    name="end"
-                                    value={end}
-                                    onChange={e => setEndDate(e.target.value)}
-                                />
-                            </div>
                             <br />
                             <span>{responseMsg}</span>
                             <br />
@@ -234,7 +355,7 @@ const AddTask = props => {
                                     Cancel
                                 </button>
                                 &nbsp;&nbsp;
-                                <button onClick={e => saveTask(e)} className="button is-primary " type="submit">
+                                <button onClick={e => saveTask(e)} className="button is-primary " type="button">
                                     Submit
                                 </button>
                                 &nbsp;

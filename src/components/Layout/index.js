@@ -21,7 +21,7 @@ const Layout = props => {
                         <Navbar />
                       </div>
                     </div>
-                    <div id="app-container" className="column container app-container"> 
+                    <div id="app-container" className="column no-padding pt-3 container app-container"> 
                       <div className={`mobile-menu menu-color reaction-btn ${!props.context.toggle ? "has-text-centered" : "has-text-right"}`} onClick={ e => props.context.toggleMenu(e) }>
                           {!props.context.toggle ?
                             ( <span className="button reverse-colors"><b> Main Menu </b> &nbsp; <FontAwesomeIcon icon={faBars} size="2x" /> </span> )

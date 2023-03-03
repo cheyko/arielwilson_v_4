@@ -36,7 +36,7 @@ const Menu = props => {
                     
                     <hr />
                 </div>
-                <div className="search-menu columns is-multiline">
+                <div className="search-menu columns is-multiline is-mobile">
                     <div className="column is-full-mobile is-half-tablet is-one-third-desktop">
                         <div className="box">
                             <div className="card-image">

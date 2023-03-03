@@ -44,7 +44,7 @@ const ProfileHeader = props => {
                         <div className="column">
                             <div className={`dropdown ${props.showDropDown ? "is-active" : ""}`} >
                                 <div className="dropdown-trigger">
-                                    <button onClick={ e => props.setShowDropDown(!props.showDropDown)} className="button is-info is-rounded" aria-haspopup="true" aria-controls="dropdown-menu">
+                                    <button onClick={ e => props.setShowDropDown(!props.showDropDown)} className="button is-info" aria-haspopup="true" aria-controls="dropdown-menu">
                                         <span style={{fontSize:"x-large"}}> <i className="fas fa-ellipsis-h"></i> </span>
                                     </button>
                                 </div>
@@ -60,20 +60,20 @@ const ProfileHeader = props => {
                                 </div>
                             </div>
                         </div>
-                        <div className="column has-text-centered" style={{padding:"0px"}} onClick={e => localStorage.setItem("msg-view","message")}>
+                        <div className="column has-text-centered" onClick={e => localStorage.setItem("msg-view","message")}>
                             <Link to={`/messages/convo/direct/${user.user_id}`}><button style={{fontSize:"large"}} className="button"> <i className="fas fa-envelope"></i> </button></Link>
                         </div>
-                        <div className="column" style={{padding:"0px"}}>
-                            <button onClick={props.isFollower ? props.unfollow : props.follow } className={`button is-link is-pulled-right ${props.isFollower ? "is-outlined" : ""}`}> {props.isFollower ? "Unfollow" : "Follow"} </button>
+                        <div className="column">
+                            <button onClick={props.isFollower ? props.unfollow : props.follow } className={`button is-link is-pulled-right`}> {props.isFollower ? "Unfollow" : "Follow"} </button>
                         </div>
                     </div>
                 }
                 {action === 'read-write' && 
                     <div className="controls columns is-mobile">
-                        <div className="column" style={{padding:"0px"}}>
+                        <div className="column">
                             <div className={`dropdown ${props.showDropDown ? "is-active" : ""}`} >
                                 <div className="dropdown-trigger">
-                                    <button onClick={ e => props.setShowDropDown(!props.showDropDown)} className="button is-info is-rounded" aria-haspopup="true" aria-controls="dropdown-menu">
+                                    <button onClick={ e => props.setShowDropDown(!props.showDropDown)} className="button is-info" aria-haspopup="true" aria-controls="dropdown-menu">
                                         <span style={{fontSize:"x-large"}}> <i className="fas fa-ellipsis-h"></i> </span>
                                     </button>
                                 </div>
@@ -89,10 +89,10 @@ const ProfileHeader = props => {
                                 </div>
                             </div>
                         </div>
-                        <div className="column" style={{padding:"0px"}}>
+                        <div className="column">
                             {!props.showEdit ?
                             (
-                                <button onClick={ e => props.setShowEdit(!props.showEdit)} className={`button is-link is-pulled-right is-rounded`}> 
+                                <button onClick={ e => props.setShowEdit(!props.showEdit)} className={`button is-link is-pulled-right`}> 
                                     Edit Media 
                                 </button>
                             ):(

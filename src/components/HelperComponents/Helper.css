@@ -35,4 +35,9 @@
 
 .tiled-video .card-content{
     padding : 0 !important;
+    
+}
+
+.image.is-64x64 img{
+    object-fit:cover !important;
 }

@@ -1,14 +1,19 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import withContext from "../../../withContext";
+import ViewUserCard from "../../HelperComponents/ViewUserCard";
+import axios from "axios";
+import $ from "jquery";
 
 const HostEvent = props => {
+
+    const user_id = props.context.user.id;
     const [title, setTitle] = useState("");
     const [host, setHost] = useState("");
     const [typeOf, setType] = useState("");
     const types = ["Concert", "Conference" ,"Function", "Meeting", "Party"];
     const [category, setCategory] = useState("");
-    const categories = ["Sports","School", "Work", "Religious", "Political", "Other"]; //get from database
+    const categories = ["Entertainment","Sports","School", "Work", "Religious", "Political", "Other"]; //get from database
     const [audience, setAudience] = useState("");
     const audiences = ["Public","Private", "Group"];
     const [metrics, setMetrics] = useState("");
@@ -34,9 +39,14 @@ const HostEvent = props => {
     const [aTicket, setATicket] = useState("");
     const [costs, setCosts] = useState([]);
     const [aCost, setACost] = useState(0);
+    const currencies = ["JMD","USD","GBP","EUR"];
+    const [currency, setCurrency] = useState("USD"); //get country's currency
+    const [theCurrencies, setCurrencies] = useState([]);
     const [personnel, setPersonnel] = useState([]);
     const [searchval, setSearchVal] = useState("");
     const [userlist, setUserList] = useState([]);
+    const personnelTypes = ["Host", "Speaker", "Performer", "Presenter", "General"];
+    const [personnelList, setPersonnelList] = useState([]);
     const [attractions, setAttractions] = useState([]);
     const [attraction, setAttraction] = useState("");
     const [responseMsg, setResponseMsg] = useState("");   
@@ -55,8 +65,7 @@ const HostEvent = props => {
         return result;
     }
 
-    const clearFunc = e => {
-        e.preventDefault();
+    const clearFunc = () => {
         setTitle("");
         setHost("");
         setType("");
@@ -79,6 +88,8 @@ const HostEvent = props => {
         setATicket("");
         setCosts([]);
         setACost(0);
+        setCurrency("USD");
+        setCurrencies([]);
         setPersonnel([]);
         setSearchVal("");
         setAttractions([]);
@@ -90,6 +101,70 @@ const HostEvent = props => {
     const saveEvent = async(e) => {
         e.preventDefault();
         var theDateTime = getDateTime();
+        if (title !== "" && host !== "" && typeOf !== "" && category !== "" && audience !== "" && metrics !== "" && (link !== "" || location !== "") 
+        && dates.length > 0 && startTimes.length > 0 && endTimes.length > 0 && entry !== "" ){
+            const formData = new FormData();
+            formData.append('theDateTime',theDateTime);
+            formData.append('user_id',user_id);
+            formData.append('title',title);
+            formData.append('host',host);
+            formData.append('typeOf',typeOf);
+            formData.append('category',category);
+            formData.append('audience',audience);
+            formData.append('description', description);
+            formData.append('metrics',metrics);
+            formData.append('venue',venue);
+            metrics === "virtual" ? formData.append('where',link) : formData.append('where',location);
+            formData.append('status',status);
+            dates.forEach( (date,index) => {
+                formData.append('dates',date);
+                formData.append('start_times', startTimes[index]);
+                formData.append('end_times', endTimes[index]);
+            });
+            formData.append('entry',entry);
+            if (entry === 'Ticket'){
+                tickets.forEach((ticket,index) => {
+                    formData.append('tickets',ticket);
+                    formData.append('costs', costs[index]);
+                    formData.append('currencies',theCurrencies[index]);
+                });
+            }else{
+                formData.append('tickets', '');
+                formData.append('costs', 0);
+                formData.append('currencies', 'none');
+            }
+            personnel.forEach((person,index) => {
+                formData.append('personnel_ids',person.user_id);
+                formData.append('personnel', personnelList[index]);
+            })
+            attractions.forEach((attraction,index) => {
+                formData.append('attractions', attraction);
+            })
+            photos.forEach( (file,index) => {
+                formData.append('media',file);
+            });
+            await axios.post('/api/events',formData, 
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }).then(
+                (result) => {
+                    if (result.status === 200){
+                        const event_id = result.data.event_id;
+                        clearFunc();
+                        console.log(result);
+                        setResponseMsg("Event was saved.");
+                    }else{
+                        setResponseMsg("Event was not saved, please try again. Contact us for suppport if problem persist.");
+                    }
+                }
+            );
+            //return true;
+        }else{
+            setResponseMsg("Request is missing some important details.");
+            //return false;
+        }
     }
 
     const loadEvent = async(e) => {
@@ -108,16 +183,21 @@ const HostEvent = props => {
     }
 
     useEffect( () => {
-
-    });
+        if(dates.length > 0){
+            var new_date = new Date(dates[0]);
+            console.log(new Date(new_date.setDate(new_date.getDate() + 1)).toDateString());
+        }
+    },[dates, personnelList]);
 
     const addChoice = (adding) => {
         if(adding === 'ticket'){
             if(aTicket !== ""){
                 setTickets([...tickets, aTicket]);
                 setCosts([...costs, aCost]);
+                setCurrencies([...theCurrencies, currency]);
                 setATicket("");
                 setACost(0);
+                setCurrency("USD");
             }
         }else if(adding === 'date'){
             setDates([...dates,date]);
@@ -138,6 +218,7 @@ const HostEvent = props => {
         if(editing === 'ticket'){
             setATicket(tickets[index]);
             setACost(costs[index]);
+            setCurrency(theCurrencies[index]);
             setEditTicket(index);
             setIsEditTicket(true);
         }else if(editing === 'date'){
@@ -160,12 +241,16 @@ const HostEvent = props => {
             if(aTicket !== ""){
                 let tempTickets = tickets;
                 let tempCosts = costs;
+                let tempCurrencies = theCurrencies;
                 tempTickets[editTicket] = aTicket;
                 tempCosts[editTicket] = aCost;
+                tempCurrencies[editTicket] = currency;
                 setTickets(tempTickets);
                 setCosts(tempCosts);
+                setCurrencies(tempCurrencies);
                 setATicket("");
                 setACost(0);
+                setCurrency("USD");
                 setIsEditTicket(false);
                 setEditTicket(null);
             }
@@ -201,6 +286,7 @@ const HostEvent = props => {
         if(cancelling === 'ticket'){
             setATicket("");
             setACost(0);
+            setCurrency("USD");
             setIsEditTicket(false);
             setEditTicket(null);
         }else if(cancelling === 'date'){
@@ -219,6 +305,7 @@ const HostEvent = props => {
     const deleteTicket = (index) => {
         setTickets(tickets.filter((val,idx) => index !== idx));
         setCosts(costs.filter((val,idx) => index !== idx));
+        setCurrencies(theCurrencies.filter((val,idx) => index !== idx));
     }
 
     const deleteDate = (index) => {
@@ -231,15 +318,65 @@ const HostEvent = props => {
         setAttractions(attractions.filter((val,idx) => index !== idx));
     }
 
+    const selectUser = (index) => {
+        setPersonnel([...personnel, userlist[index]]);
+        setPersonnelList([...personnelList, ""]);
+        setSearchVal("");
+        setUserList([]);
+    }
+
+    const handleRadioChange = (event,index) => {
+        let tempList = personnelList;
+        tempList[index] = event.target.value;
+        setPersonnelList(tempList);
+    };
+
+    const removePersonnel = (index) => {
+        setPersonnel(personnel.filter((person,idx) => index !== idx));
+        setPersonnelList(personnelList.filter((person,idx) => index !== idx));
+    }
+
     const handleChange = (e) => {
         switch(e.target.name){
             case 'audience-checkbox':
                 setAudience(e.target.value);
                 break;
+            case 'searchval':
+                setSearchVal(e.target.value);
+                if( e.target.value !== ""){
+                    const searchval = e.target.value;
+                    axios.post('/api/search-users',{searchval, user_id}).then(
+                        (search) => {
+                            if (search.status === 200){
+                                if (search.data.userlist){
+                                    //setUserList(Array.from(search.data.userlist));
+                                    setUserList(search.data.userlist);
+                                }
+                            }else{
+                                setResponseMsg("No user found with that username.")
+                            }
+                        }
+                    ).catch( error => {
+                        console.log(error);
+                    });
+                }else{
+                    setUserList([]);
+                }
+                break;
             default:
                 break;     
         } 
     }
+
+    /* Prevent scrolling for number input types*/
+    $('form').on('focus', 'input[type=number]', function (e) {
+        $(this).on('wheel.disableScroll', function (e) {
+            e.preventDefault()
+        })
+    });
+    $('form').on('blur', 'input[type=number]', function (e) {
+        $(this).off('wheel.disableScroll')
+    });
 
     return(
         <div className="hero">
@@ -256,20 +393,43 @@ const HostEvent = props => {
                                 <label className="label"> Photos: </label>
                             </div>
                             <div className="field-body">
-                                <input 
+                                {/*<input 
                                 name="photos"
                                 type="file"
                                 multiple
                                 onChange={e => handlePhotos(e)}
-                                />
+                                />*/}
+                                <div className="file has-name is-boxed">
+                                    <label className="file-label">
+                                        <input 
+                                        className="file-input"
+                                            name="photos"
+                                            type="file"
+                                            multiple
+                                            onChange={e => handlePhotos(e)}
+                                        />
+                                        <span className="file-cta">
+                                        <span className="file-icon">
+                                            <i className="fas fa-upload"></i>
+                                        </span>
+                                        <span className="file-label">
+                                            Choose a file…
+                                        </span>
+                                        </span>
+                                        <span className="file-name">
+                                            {photos.length} picture(s) selected
+                                        </span>
+                                    </label>
+                                </div>
                             </div>
+                            
                         </div>
                         <div className="field is-horizontal">
                             <div className="field-label is-normal"></div>
                             <div className="field-body">
                                 <div className="columns is-multiline">
                                     {photos.map((photo,index) => 
-                                        <div className="column is-half" key={index}>
+                                        <div className="column" key={index}>
                                             <span> {index + 1} </span>
                                             <br />
                                             <img className="is-256x256" src={URL.createObjectURL(photo)} />
@@ -577,7 +737,7 @@ const HostEvent = props => {
                                         <div key={index}>
                                             <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'date')}><i className="fas fa-edit"></i></span>{" "}
                                             <span style={{cursor:"pointer"}} onClick={e => deleteDate(index)}><i className="fas fa-trash"></i></span>{" "}
-                                            <span className={`give-space ${editDate === index ? 'background-warning' : ''}`}><b>{new Date(val).toDateString()}</b>, {convertTime(startTimes[index])} - {convertTime(endTimes[index])} </span>
+                                            <span className={`give-space ${editDate === index ? 'background-warning' : ''}`}><b>{new Date(new Date(val).setDate(new Date(val).getDate() + 1)).toDateString()}</b>, {convertTime(startTimes[index])} - {convertTime(endTimes[index])} </span>
                                         </div>
                                     ))}
                                 </div>
@@ -624,7 +784,7 @@ const HostEvent = props => {
                                             </p>
                                         </div>
                                         <div className="field">
-                                            <p className="control is-expanded has-icons-left">
+                                            <span className="control has-icons-left">
                                                 <input 
                                                     className="input"
                                                     type="number"
@@ -635,7 +795,26 @@ const HostEvent = props => {
                                                 <span className="icon is-small is-left">
                                                     <i className="fas fa-dollar-sign"></i>
                                                 </span>
-                                            </p>
+                                            </span>
+                                        </div>
+                                        <div className="field">
+                                            <span className="control">
+                                                <span className="select">
+                                                    <select
+                                                        id="currency"
+                                                        name="currency"
+                                                        value={currency}
+                                                        onChange={e => setCurrency(e.target.value)}
+                                                        required
+                                                        >
+                                                        {currencies.map(cur => (
+                                                        <option key={cur} value={cur}>
+                                                            {cur}
+                                                        </option>
+                                                        ))}
+                                                    </select>
+                                                </span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -666,7 +845,7 @@ const HostEvent = props => {
                                             <div key={index}>
                                                 <span style={{cursor:"pointer"}} onClick={e => editChoice(index,'ticket')}><i className="fas fa-edit"></i></span>{" "}
                                                 <span style={{cursor:"pointer"}} onClick={e => deleteTicket(index)}><i className="fas fa-trash"></i></span>{" "}
-                                                <span className={`give-space ${editTicket === index ? 'background-warning' : ''}`}><b>{val}</b> : {costs[index]} </span>
+                                                <span className={`give-space ${editTicket === index ? 'background-warning' : ''}`}><b>{val}</b> : {costs[index]}&nbsp;{theCurrencies[index]} </span>
                                             </div>
                                         ))}
                                     </div>
@@ -674,9 +853,10 @@ const HostEvent = props => {
                                 </div>
                             </div>
                         </div>
+
                         <div className="field is-horizontal">
                             <div className="field-label">
-                                <label className="label"> Personel </label>
+                                <label className="label"> Personnel </label>
                             </div>
                             <div className="field-body">
                                 <div className="field is-expanded">
@@ -687,7 +867,7 @@ const HostEvent = props => {
                                             name="searchval"
                                             value={searchval}
                                             onChange={e => handleChange(e)}
-                                            placeholder="Search for new recipient"
+                                            placeholder="Search for User"
                                             />
                                         <span className="icon is-small is-left">
                                             <i className="fas fa-user"></i>
@@ -696,10 +876,68 @@ const HostEvent = props => {
                                             <i className="fas fa-search"></i>
                                         </span>
                                         <div className="card">
-                                            Users(integrate profile..bb)
+                                            {userlist && userlist.length > 0 ? (
+                                                userlist.map((aUser, index) => (
+                                                    <div onClick={e => selectUser(index)} className="column" key={index}>
+                                                        <ViewUserCard key={index} user={aUser} />
+                                                    </div>
+                                                ))
+                                            ):(
+                                                <div className="container">
+                                                    {searchval === "" ?
+                                                        <span></span>:
+                                                        <span>No Users found</span>
+                                                    }
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal"></div>
+                            <div className="field-body">
+                                {personnel.length > 0 && 
+                                    <article className="message is-primary">
+                                        <div className="message-header">
+                                            <button type="button" onClick={e => setPersonnel([])} className="delete" aria-label="delete"></button>
+                                        </div>
+                                        <div className="message-body">
+                                            {personnel.map((val,index) => 
+                                                <div key={index} className="control">
+                                                    <div className="tags has-addons">
+                                                        <ViewUserCard user={val} />
+                                                        <a onClick={e => removePersonnel(index)} className="tag is-large is-delete"></a>
+                                                    </div>
+                                                    <p>
+                                                        <>
+                                                        {personnelList[index] !== "" ?
+                                                            <span>{personnelList[index]}</span>
+                                                            :
+                                                            <span>
+                                                                {personnelTypes.map((option,idx) => (
+                                                                    <label className="checkbox-options" key={idx}>  
+                                                                        <input
+                                                                        value={option}
+                                                                        onChange={e => handleRadioChange(e,index)}
+                                                                        type="radio"
+                                                                        /> 
+                                                                        {option}
+                                                                    </label> 
+                                                                    
+                                                                ))}
+                                                            </span>
+                                                            
+                                                        }
+                                                        </>
+                                                    </p>
+                                                    <hr style={{backgroundColor:"blue"}}/>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </article>
+                                }   
                             </div>
                         </div>
                         <div className="field is-horizontal">
@@ -753,12 +991,13 @@ const HostEvent = props => {
                                 </div>
                             </div>
                         </div>
-                        <br />
-                        <span>{responseMsg}</span>
-                        <br />
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal"></div>
+                            <div className="field-body"><span>{responseMsg}</span></div>
+                        </div>
                         <div className="field is-clearfix">
                         
-                            <button type="button" onClick={e => {clearFunc(e);}} className="button is-warning is-pulled-right give-space">
+                            <button type="button" onClick={e => clearFunc()} className="button is-warning is-pulled-right give-space">
                                 Cancel
                             </button>
                             

@@ -209,7 +209,6 @@
   object-fit:cover;
   cursor: pointer;
 }
-
 /* possibly will have to move app.css */
 .username{
   border-radius: 1rem;
@@ -369,7 +368,7 @@ ul .is-active{
   width: 100%;
   padding: 0.5rem 1rem;
   position: fixed !important;
-  z-index: 6;
+  z-index: 3;
 }
 
 .reverse-colors{
@@ -394,8 +393,9 @@ ul .is-active{
 }
 
 .is-256x256{
-  height: 256px;
-  width: 256px;
+  height: 256px !important;
+  width: 256px !important;
+  max-width: 256px !important;
 }
 
 .background-warning{

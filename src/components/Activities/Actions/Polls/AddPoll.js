@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import Modal from "react-modal";
 import withContext from "../../../../withContext"
+import axios from "axios";
 
 Modal.setAppElement('#root');
 
@@ -45,6 +46,7 @@ const AddPoll = props => {
         return result;
     }
 
+    const user_id = props.context.user.id;
     const [poll, setPoll] = useState("");
     const [status, setStatus] = useState("Open");
     const [responseMsg, setResponseMsg] = useState("");
@@ -68,7 +70,37 @@ const AddPoll = props => {
     const saveRequest = async(e) => {
         e.preventDefault();
         var theDateTime = getDateTime();
-        console.log(choices);
+        if (isValid() && poll && (choices.length > 0)){
+            const formData = new FormData();
+            formData.append('theDateTime',theDateTime);
+            formData.append('user_id',user_id);
+            formData.append('poll',poll);
+            formData.append('end_date',endDate);
+            formData.append('end_time',endTime);
+            choices.forEach( (choice,index) => {
+                formData.append('choices',choice);
+            });
+            await axios.post('/api/polls',formData, 
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }).then(
+                (result) => {
+                    if (result.status === 200){
+                        const poll_id = result.data.poll_id;
+                        clearFunc();
+                        setResponseMsg("Poll was saved.");
+                    }else{
+                        setResponseMsg("Poll was not saved, please try again. Contact us for suppport if problem persist.");
+                    }
+                }
+            );
+            //return true;
+        }else{
+            setResponseMsg("Poll is missing some important details.");
+            //return false;
+        }
     }
 
     const loadRequest = async(e) => {
@@ -110,28 +142,37 @@ const AddPoll = props => {
         setChoices(choices.filter((val,idx) => index !== idx));
     }
 
-    useEffect( () => {
+    const isValid = () => {
         if((parseInt(endDate.split("-")[0]) === (new Date()).getFullYear()) && (parseInt(endDate.split("-")[1]) === (new Date()).getMonth() + 1) && (parseInt(endDate.split("-")[2]) === (new Date()).getDate()) ){
             console.log("today");
             if ((parseInt(endTime.split(':')[0]) == (new Date()).getHours())){
                 if ((parseInt(endTime.split(':')[1]) > (new Date()).getMinutes())){
                     console.log("enough time");
                     setResponseMsg("");
+                    return true;
 
                 }else{
                     console.log("time already passed");
                     setResponseMsg("time already passed");
+                    return false;
                 }
             }else if ((parseInt(endTime.split(':')[0]) < (new Date()).getHours())) {
                 console.log("time already passed");
                 setResponseMsg("time already passed");
+                return false;
             }else{
                 console.log("enough time");
                 setResponseMsg("");
+                return true;
             }
         }else{
-            console.log("not-today")
+            console.log("not-today");
+            return true;
         }
+    }
+
+    useEffect( () => {
+        isValid();
     },[endTime, endDate]);
 
     const handleChange = (e) => {
@@ -244,7 +285,7 @@ const AddPoll = props => {
                                     Cancel
                                 </button>
                                 &nbsp;&nbsp;
-                                <button onClick={e => saveRequest(e)} className="button is-primary " type="submit">
+                                <button onClick={e => saveRequest(e)} className="button is-primary " type="button">
                                     Submit
                                 </button>
                                 &nbsp;

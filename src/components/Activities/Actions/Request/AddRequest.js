@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import withContext from "../../../../withContext";
 //import getDateTime from "../../../../GlobalFunctions";
+import axios from "axios";
+import ViewUserCard from "../../../HelperComponents/ViewUserCard";
 
 Modal.setAppElement('#root');
 
@@ -46,6 +48,7 @@ const AddTask = props => {
         return result;
     }
 
+    const user_id = props.context.user.id;
     const [typeOf, setTypeOf] = useState("Question");
     const [question, setQuestion] = useState("");
     const [status, setStatus] = useState("Sent");
@@ -58,6 +61,7 @@ const AddTask = props => {
     const [isFor, setFor] = useState(null);
     const [isEdit, setEdit] = useState(false);
     const [editVal, setEditVal] = useState(null);
+    const [user, setUser] = useState(null);
 
     const clearFunc = () => {
         setQuestion("");
@@ -73,7 +77,37 @@ const AddTask = props => {
     const saveRequest = async(e) => {
         e.preventDefault();
         var theDateTime = getDateTime();
-        console.log(choices);
+        if (choices.length !== 0 && question !== "" && isFor !== null){
+            const formData = new FormData();
+            formData.append('theDateTime',theDateTime);
+            formData.append('user_id',user_id);
+            formData.append('isFor',isFor);
+            formData.append('question',question);
+            formData.append('status',status);
+            choices.forEach( (choice,index) => {
+                formData.append('choices',choice);
+            });
+            await axios.post('/api/requests',formData, 
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }).then(
+                (result) => {
+                    if (result.status === 200){
+                        const request_id = result.data.request_id;
+                        clearFunc();
+                        setResponseMsg("Request was saved.");
+                    }else{
+                        setResponseMsg("Request was not saved, please try again. Contact us for suppport if problem persist.");
+                    }
+                }
+            );
+            //return true;
+        }else{
+            setResponseMsg("Request is missing some important details.");
+            //return false;
+        }
     }
 
     const loadRequest = async(e) => {
@@ -115,9 +149,36 @@ const AddTask = props => {
 
     });
 
+    const selectUser = (index) => {
+        setUser(userlist[index]);
+        setFor(userlist[index].user_id)
+        setSearchVal("");
+        setUserList([]);
+    }
+
     const handleChange = (e) => {
         switch(e.target.name){
-            case 'projectSelect':
+            case 'searchval':
+                setSearchVal(e.target.value);
+                if( e.target.value !== ""){
+                    const searchval = e.target.value;
+                    axios.post('/api/search-users',{searchval, user_id}).then(
+                        (search) => {
+                            if (search.status === 200){
+                                if (search.data.userlist){
+                                    //setUserList(Array.from(search.data.userlist));
+                                    setUserList(search.data.userlist);
+                                }
+                            }else{
+                                setResponseMsg("No user found with that username.")
+                            }
+                        }
+                    ).catch( error => {
+                        console.log(error);
+                    });
+                }else{
+                    setUserList([]);
+                }
                 break;
             default:
                 break;     
@@ -162,6 +223,16 @@ const AddTask = props => {
                             </div>
                             <div className="field">
                                 <label className="label"> Under Taken By: </label>
+                                {user !== null && 
+                                    <article className="message is-primary">
+                                        <div className="message-header">
+                                            <button type="button" onClick={e => setUser(null)} className="delete" aria-label="delete"></button>
+                                        </div>
+                                        <div className="message-body">
+                                            <ViewUserCard user={user} />
+                                        </div>
+                                    </article>
+                                }
                                 <div className="control has-icons-left has-icons-right">
                                     <input
                                         className="input"
@@ -178,7 +249,20 @@ const AddTask = props => {
                                         <i className="fas fa-search"></i>
                                     </span>
                                     <div className="card">
-                                       Frat Users
+                                        {userlist && userlist.length > 0 ? (
+                                            userlist.map((aUser, index) => (
+                                                <div onClick={e => selectUser(index)} className="column" key={index}>
+                                                    <ViewUserCard key={index} user={aUser} />
+                                                </div>
+                                            ))
+                                        ):(
+                                            <div className="container">
+                                                {searchval === "" ?
+                                                    <span></span>:
+                                                    <span>No Users found</span>
+                                                }
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>

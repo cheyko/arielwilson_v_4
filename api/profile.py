@@ -97,7 +97,8 @@ def login():
                 'refresh_token': refresh_token,
                 'access_type': user.accessType,
                 'has_profile' : has_profile,
-                'gender' : user.gender
+                'gender' : user.gender,
+                'location': profile_record.location
             }
         return jsonify({"msg": "Incorrect email or password"}), 400
     else:

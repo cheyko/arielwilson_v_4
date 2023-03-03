@@ -142,9 +142,10 @@ def is_follower():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
         userview_id = request.json.get('userview_id', None)
-        return {"is_follower" : check_follower(user_id,userview_id)}, 200 
+        return {"is_follower" : check_follower(userview_id,user_id)}, 200 
     return jsonify({"msg":"There was an error somewhere."}), 400
 
+###### not needed, just reverse the parameters of is-follower to get is-following
 @app.route('/api/is-following', methods=['POST'])
 def is_following():
     if request.method == 'POST':

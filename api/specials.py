@@ -350,14 +350,16 @@ class Request(db.Model):
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     choices = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
     answer = db.Column(db.Integer)
+    status = db.Column(db.String(80))
     is_visible = db.Column(db.Boolean, default=True)
     
-    def __init__(self,lister,is_for,question,date_added,choices):
+    def __init__(self,lister,is_for,question,date_added,status,choices):
         self.lister = lister
         self.is_for = is_for
         self.question = question
         self.date_added = date_added
         self.choices = choices
+        self.status = status
 
     def __repr__(self):
         return '<Request %d Question: %r>' %  (self.request_id,self.question)
@@ -374,10 +376,11 @@ class Logistic(db.Model):
     send_date = db.Column(db.Date)
     receive_date = db.Column(db.Date)
     package_type = db.Column(db.String(31))
+    status = db.Column(db.String(80))
     description = db.Column(db.String(255))
     is_visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self,sender,receiver,send_address,recv_address,date_added,package_type,description):
+    def __init__(self,sender,receiver,send_address,recv_address,date_added,package_type,description,status):
         self.sender = sender
         self.receiver = receiver
         self.send_address = send_address
@@ -385,6 +388,7 @@ class Logistic(db.Model):
         self.date_added = date_added
         self.package_type = package_type
         self.description = description
+        self.status = status
 
     def __repr__(self):
         return '<Logistic %d Package: %r>' %  (self.logistic_id,self.package_type)
@@ -427,6 +431,7 @@ class Event(db.Model):
     category = db.Column(db.String(80))
     typeOf = db.Column(db.String(80))
     metrics = db.Column(db.String(31))
+    venue = db.Column(db.String(80))
     where = db.Column(db.String(80))
     status = db.Column(db.String(80))
     dates = db.Column(MutableList.as_mutable(ARRAY(db.Date)))
@@ -437,19 +442,23 @@ class Event(db.Model):
     denials = db.Column(db.Integer, default=0)
     tickets = db.Column(MutableList.as_mutable(ARRAY(db.String(31))))
     costs = db.Column(MutableList.as_mutable(ARRAY(db.Integer)))
+    currencies = db.Column(MutableList.as_mutable(ARRAY(db.String(10))))
     personnel_ids = db.Column(MutableList.as_mutable(ARRAY(db.Integer)))
     personnel = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
     attractions = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
+    numOfPics = db.Column(db.Integer)
     is_visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self,lister,pree_id,title,description,category,typeOf,metrics,where,status,dates,start_times,end_times,tickets,costs,personnel_ids,personnel,attractions):
+    def __init__(self,lister,pree_id,title,host,description,category,typeOf,metrics,venue,where,status,dates,start_times,end_times,tickets,costs, currencies,personnel_ids,personnel,attractions, numOfPics):
         self.lister = lister
         self.pree_id = pree_id
         self.title = title
+        self.host = host
         self.description = description
         self.category = category
         self.typeOf = typeOf
         self.metrics = metrics
+        self.venue = venue
         self.where = where
         self.status = status
         self.dates = dates
@@ -457,9 +466,11 @@ class Event(db.Model):
         self.end_times = end_times
         self.tickets = tickets
         self.costs = costs
+        self.currencies = currencies
         self.personnel_ids = personnel_ids
         self.personnel = personnel
         self.attractions = attractions
+        self.numOfPics = numOfPics
 
     def __repr__(self):
         return '<Event %d title: %r>' %  (self.event_id,self.title)

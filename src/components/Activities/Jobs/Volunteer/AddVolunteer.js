@@ -7,7 +7,7 @@ const AddVolunteer = props => {
     let navigate = useNavigate();
 
     const [title, setTitle] = useState("");
-    const categories = ["Animals","Community","Health and Social Care", "Sports","Environmental"];
+    const categories = ["Animals","Community","Health and Social Care", "Political", "Sports","Environmental"];
     const [category, setCategory] = useState("");
     const [venue, setVenue] = useState("");
     const [location, setLocation] = useState("");

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import withContext from "../../withContext";
 import axios from "axios";
-import {Navigate, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import TrendyControls from "./TrendyControls";
 import TrendyFooter from "./TrendyFooter";
 import TrendyImage from "./TrendyImage";

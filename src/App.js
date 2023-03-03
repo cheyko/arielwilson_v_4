@@ -112,6 +112,7 @@ export default class App extends Component {
     }else{
         boxWidth = "60%";
     }
+
     //if User is logged in
     recent = recent ? parseInt(JSON.parse(recent)) : 0;
     userlist = userlist ? JSON.parse(userlist) : [];
@@ -563,7 +564,8 @@ export default class App extends Component {
         fullname : res.data.firstname + " " + res.data.lastname,
         has_profile : res.data.has_profile,
         phonenumber: res.data.phonenumber,
-        gender : res.data.gender
+        gender : res.data.gender,
+        location : res.data.location
       }
       if (res.data.has_profile === true){
         ready = true;

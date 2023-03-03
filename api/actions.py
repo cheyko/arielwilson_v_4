@@ -199,12 +199,27 @@ def search_users():
     if request.method == 'POST':
         searchval = request.json.get('searchval', None)
         user_id = request.json.get('user_id', None)
-        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%') )).order_by(User.username).all() 
+        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),User.firstname.ilike('%'+searchval+'%'), User.lastname.ilike('%'+searchval+'%') )).order_by(User.username).limit(5) 
         userlist = []
         for user in users:
             is_follower = check_follower(user_id,user.User.user_id)
             aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
             userlist.append(aUserObj)
+        result = {"userlist":userlist}
+        return result , 200
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
+@app.route('/api/search-frat', methods=['POST'])
+def search_frat():
+    if request.method == 'POST':
+        searchval = request.json.get('searchval', None)
+        user_id = request.json.get('user_id', None)
+        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),User.firstname.ilike('%'+searchval+'%'), User.lastname.ilike('%'+searchval+'%') )).limit(5).order_by(User.username).limit(5)
+        userlist = []
+        for user in users:
+            if check_follower(user_id,user.User.user_id) and check_follower(user.User.user_id,user_id):
+                aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp}
+                userlist.append(aUserObj)
         result = {"userlist":userlist}
         return result , 200
     return jsonify({"msg":"There was an error somewhere."}), 400
@@ -221,7 +236,7 @@ def do_search():
         #portfolios
         portfoliolist = [1,2,3,4,5]
         for user in users:
-            is_follower = check_follower(user_id,user.User.user_id)
+            is_follower = check_follower(user.User.user_id,user_id)
             aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "access-type":user.User.accessType, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
             userlist.append(aUserObj)
         result = {"userlist":userlist,"portfoliolist":portfoliolist}
