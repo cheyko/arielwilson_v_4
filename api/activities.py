@@ -113,7 +113,7 @@ def get_polls():
         polls = []
         for poll in result:
             if(check_following(user_id, poll.lister) or poll.lister == user_id):
-                pollObj = {"poll_id":poll.poll_id,"lister":poll.lister,"question":poll.question,"choices":poll.choices,"results":poll.results,"votes":poll.votes,"end_date":poll.end_date,"end_time":poll.end_time}
+                pollObj = {"poll_id":poll.poll_id,"lister":poll.lister,"pree_id":poll.pree_id,"question":poll.question,"choices":poll.choices,"results":poll.results,"votes":poll.votes,"end_date":poll.end_date,"end_time":poll.end_time}
                 polls.append(pollObj)
         return json.dumps(polls)
     return jsonify({"msg":"There was an error somewhere."}), 400
@@ -124,7 +124,10 @@ def polls():
         result = request.form
         choices = result.getlist("choices")
         zeros = list(map(lambda x: 0, choices))
-        newPoll = Poll(lister=result["user_id"],question=result["poll"],date_added=result["theDateTime"],choices=choices,results=zeros, end_date=result["end_date"], end_time=result["end_time"])
+        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=False, pree_type="poll")
+        db.session.add(newPree)
+        db.session.flush()
+        newPoll = Poll(lister=result["user_id"],pree_id=newPree.pree_id,question=result["poll"],date_added=result["theDateTime"],choices=choices,results=zeros, end_date=result["end_date"], end_time=result["end_time"])
         db.session.add(newPoll)
         db.session.flush()
         db.session.commit()
@@ -176,23 +179,51 @@ def classifieds():
         result = Classified.query.filter(Classified.is_visible == True).all()
         classifieds = []
         for job in result:
-            jobObj = {"classified_id":job.classified_id,"lister":job.lister,"pree_id":job.pree_id,"title":job.title,"category":job.category,"typeOf":job.typeOf,"metrics":job.metrics,"location":job.location,"salary":job.salary,"company":job.company,"description":job.description,"subtopics":job.subtopics,"subcontent":job.subcontent,"qualifications":job.qualifications,"benefits":job.benefits,"skills":job.skills,"questions":job.questions,"responses":job.responses,"end_date":job.end_date}
+            jobObj = {"classified_id":job.classified_id,"lister":job.lister,"pree_id":job.pree_id,"title":job.title,"category":job.category,"typeOf":job.typeOf,"metrics":job.metrics,"location":job.location,"salary":job.salary,"company":job.company,"description":job.description,"subtopics":job.subtopics, "contents":job.contents,"subcontent":job.subcontent,"qualifications":job.qualifications,"benefits":job.benefits,"skills":job.skills,"questions":job.questions,"responses":job.responses,"end_date":job.end_date}
             classifieds.append(jobObj)
         return json.dumps(classifieds)
     elif request.method == 'POST':
-        description = result["description"].split(",")
-        subtopics = result["subtopics"].split(",")
-        subcontent = result["subcontent"].split(",")
-        qualifications = result["qualifications"].split(",")
-        benefits = result["benefits"].split(",")
-        skills = result["skills"].split(",")
-        questions = result["questions"].split(",")
-        responses = result["responses"].split(",")
         result = request.form
+        description = result.getlist("description")
+        subtopics = result.getlist("subtopics")
+        contents = result.getlist("contents")
+        #subcontent = result.getlist("subcontent")
+        #responses = result.getlist("responses")
+        qualifications = result.getlist("qualifications")
+        benefits = result.getlist("benefits")
+        skills = result.getlist("skills")
+        questions = result.getlist("questions")
+        subcontent = []
+        responses = []
+        initialRes = []
+        initialContent = []
+        for x in range(len(questions)):
+            aList = result.getlist("responses"+str(x))
+            initialRes.append(aList)
+        mostR = 0
+        for y in initialRes:
+            if len(y) > mostR:
+                mostR = len(y)
+        for z in initialRes:
+            for i in range(len(z),mostR):
+                z.append("")
+            responses.append(z)
+
+        for x in range(len(contents)):
+            aList = result.getlist("subcontent"+str(x))
+            initialContent.append(aList)
+        mostC = 0
+        for y in initialContent:
+            if len(y) > mostC:
+                mostC = len(y)
+        for z in initialContent:
+            for i in range(len(z),mostC):
+                z.append("")
+            subcontent.append(z)
         newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="classified")
         db.session.add(newPree)
         db.session.flush()
-        newJob = Classified(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"],description=description,category=result["category"],typeOf=result["typeOf"],metrics=result["metrics"],location=result["location"],salary=result["salary"],company=result["company"],subtopics=subtopics,subcontent=subcontent,qualifications=qualifications,benefits=benefits,skills=skills,questions=questions,responses=responses,end_date=result["end_date"])
+        newJob = Classified(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"],description=description,category=result["category"],typeOf=result["typeOf"],metrics=result["metrics"],location=result["location"],salary=result["salary"],company=result["company"],subtopics=subtopics,contents=contents,subcontent=subcontent,qualifications=qualifications,benefits=benefits,skills=skills,questions=questions,responses=responses,end_date=str(result["end_date"]))
         db.session.add(newJob)
         db.session.flush()
         db.session.commit()
@@ -210,8 +241,8 @@ def volunteer():
         return json.dumps(volunteering)
     elif request.method == 'POST':
         result = request.form
-        contributions = result["contributions"]
-        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="classified")
+        contributions = result.getlist("contributions")
+        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="volunteer")
         db.session.add(newPree)
         db.session.flush()
         newVolunteer = Volunteer(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"],description=result["description"],category=result["category"],venue=result["venue"],location=result["location"],start_date=result["start_date"],end_date=result["end_date"],start_time=result["start_time"],end_time=result["end_time"],contributions=contributions)

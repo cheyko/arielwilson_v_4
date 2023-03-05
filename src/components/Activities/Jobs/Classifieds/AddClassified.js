@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import withContext from "../../../../withContext"
+import axios from "axios";
 
 const AddClassified = props => {
 
     let navigate = useNavigate();
 
+    const user_id = props.context.user.id;
     const [title, setTitle] = useState("");
     const categories = ["Agriculture, Food, and Natural Resources", "Architecture and Construction", "Arts, Audio/Video Technology, and Communication",
                         "Business and Finance", "Government and Public Administration", "Health Science", "Information Technology", "Law, Public Safety, Corrections, and Security",
@@ -70,8 +72,7 @@ const AddClassified = props => {
         return result;
     }
 
-    const clearFunc = e => {
-        e.preventDefault();
+    const clearFunc = () => {
         setTitle(""); setCategory(""); setLocation("");
         setMetrics(""); setType(""); setCompany("");
         setDescription(""); setViewDesc(false); setParagraphs([]);
@@ -94,6 +95,68 @@ const AddClassified = props => {
     const saveClassified = async(e) => {
         e.preventDefault();
         var theDateTime = getDateTime();
+        if(title !== "" && category !== "" && location !== "" && metrics !== "" && company !== ""){
+            const formData = new FormData();
+            formData.append('theDateTime',theDateTime);
+            formData.append('user_id',user_id);
+            formData.append('title',title);
+            formData.append('category',category);
+            formData.append('location', location);
+            formData.append('metrics', metrics);
+            formData.append('typeOf', typeOf);
+            formData.append('company', company);
+            formData.append('salary', salary);
+            formData.append('end_date', end);
+            paragraphs.forEach((para,index) => {
+                formData.append('description', para);
+            });
+            contents.forEach((val,index) =>{
+                formData.append('contents',val);
+                formData.append('subtopics',subtopics[index]);
+                if (val === 'fulltext'){
+                    formData.append('subcontent'+index, topicInfos[index]);
+                }else{
+                    topicInfos[index].map((info,idx) => {
+                        formData.append('subcontent'+index, info);
+                    })
+                }
+                //formData.append('subcontent',topicInfos[index]);
+            })
+            qualifications.forEach((qual,index) => {
+                formData.append('qualifications', qual);
+            });
+            skills.forEach((val,index) => {
+                formData.append('skills', val);
+            });
+            benefits.forEach((val,index) => {
+                formData.append('benefits', val);
+            });
+            questions.forEach((val, index) => {
+                formData.append('questions', val);
+                responsesList[index].map((res,idx) => {
+                    formData.append('responses'+index, res);
+                })
+                
+            });
+            await axios.post('/api/classifieds',formData, 
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }).then(
+                (result) => {
+                    if (result.status === 200){
+                        const classified_id = result.classified_id;
+                        clearFunc();
+                        setResponseMsg("Job was saved.");
+                    }else{
+                        setResponseMsg("Job was not saved, please try again. Contact us for suppport if problem persist.");
+                    }
+                }
+            );
+        }else{
+            setResponseMsg("Job is missing some important details.");
+        }
     }
 
     const loadClassified = async(e) => {
@@ -325,7 +388,6 @@ const AddClassified = props => {
     }
 
     useEffect( () => {
-        console.log(content);
         var content_checkbox_1 = document.getElementById("fulltext");
         var content_checkbox_2 = document.getElementById("points");
         if (content === "paragraph" && content_checkbox_1){
@@ -868,13 +930,21 @@ const AddClassified = props => {
                                 <label className="label">Applicant Questions</label>
                             </div>
                             <div className="field-body">
-                                <input 
-                                    className="input"
-                                    type="text"
-                                    name="question"
-                                    value={question}
-                                    onChange={e => setQuestion(e.target.value)}
-                                />
+                                <div className="field is-expanded">
+                                    <div className="control has-icons-right">
+                                       <input 
+                                            className="input"
+                                            type="text"
+                                            name="question"
+                                            value={question}
+                                            onChange={e => setQuestion(e.target.value)}
+                                            placeholder="Add Question"
+                                        />
+                                        <span className="icon is-small is-right">
+                                            <i className="fas fa-question"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="field is-horizontal">
@@ -990,11 +1060,11 @@ const AddClassified = props => {
                         </div>
                         <div className="field is-clearfix">
                         
-                            <button onClick={e => {clearFunc(e);}} className="button is-warning is-pulled-right give-space">
+                            <button onClick={e => clearFunc()} className="button is-warning is-pulled-right give-space">
                                 Clear Form
                             </button>
                             
-                            <button onClick={e => saveClassified(e)} className="button is-primary is-pulled-right give-space" type="submit">
+                            <button onClick={e => saveClassified(e)} className="button is-primary is-pulled-right give-space" type="button">
                                 Submit
                             </button>
                            

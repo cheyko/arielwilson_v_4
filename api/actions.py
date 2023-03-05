@@ -9,7 +9,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from flask import request, jsonify
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree, Approvals, Media, Quote, Exclusive, ExclusiveSale, Subscriber, Subscription, GroupPree, Group
-from api.specials import Preepedia, Biography, Product, Listing, Vehicle, Service, Item 
+from api.specials import Preepedia, Biography, Product, Listing, Vehicle, Service, Item, Event, Classified, Volunteer, Poll
 from api.relations import check_follower, check_following
 
 ###############-----actions.py----##############
@@ -140,6 +140,22 @@ def see_the_pree():
                     service = Service.query.filter_by(pree_id = pree.pree_id).first()
                     #reduce return object values
                     attachment =  {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics, "time_contingency" : service.time_contingency, "price_contingency" : service.price_contingency, "requirements" : service.requirements, "address":service.address}
+                elif pree.pree_type == 'poll':
+                    poll = Poll.query.filter_by(pree_id = pree.pree_id).first()
+                    #reduce return object values
+                    attachment =  {"poll_id":poll.poll_id,"lister":poll.lister,"pree_id":poll.pree_id,"question":poll.question,"choices":poll.choices,"results":poll.results,"votes":poll.votes,"end_date":poll.end_date,"end_time":poll.end_time}
+                elif pree.is_media and pree.pree_type == 'event':
+                    event = Event.query.filter_by(pree_id = pree.pree_id).first()
+                    #reduce return object values
+                    attachment =  {"event_id":event.event_id,"lister":event.lister,"pree_id":event.pree_id,"title":event.title,"host":event.host,"description":event.description,"category":event.category,"typeOf":event.typeOf,"metrics":event.metrics,"venue":event.venue,"where":event.where,"status":event.status,"dates":str(event.dates),"start_times":str(event.start_times),"end_times":str(event.end_times),"tickets":event.tickets,"costs":event.costs,"personnel_ids":event.personnel_ids,"personnel":event.personnel,"attractions":event.attractions, "numOfPics":event.numOfPics}
+                elif pree.is_media and pree.pree_type == 'classified':
+                    job = Classified.query.filter_by(pree_id = pree.pree_id).first()
+                    #reduce return object values
+                    attachment =  {"classified_id":job.classified_id,"lister":job.lister,"pree_id":job.pree_id,"title":job.title,"category":job.category,"typeOf":job.typeOf,"metrics":job.metrics,"location":job.location,"salary":job.salary,"company":job.company,"description":job.description,"subtopics":job.subtopics, "contents":job.contents,"subcontent":job.subcontent,"qualifications":job.qualifications,"benefits":job.benefits,"skills":job.skills,"questions":job.questions,"responses":job.responses,"end_date":str(job.end_date)}
+                elif pree.is_media and pree.pree_type == 'volunteer':
+                    volunteer = Volunteer.query.filter_by(pree_id = pree.pree_id).first()
+                    #reduce return object values
+                    attachment =  {"volunteer_id":volunteer.volunteer_id,"lister":volunteer.lister,"pree_id":volunteer.pree_id,"title":volunteer.title,"category":volunteer.category,"venue":volunteer.venue,"location":volunteer.location,"description":volunteer.description,"start_date":str(volunteer.start_date),"end_date":str(volunteer.end_date),"start_time":str(volunteer.start_time),"end_time":str(volunteer.end_time),"contributions":volunteer.contributions}
                 else:
                     theQuote = Quote.query.get(pree.pree_id)
                     attachment = {"the_quote":theQuote.the_quote}

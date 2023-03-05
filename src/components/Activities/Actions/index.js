@@ -13,11 +13,9 @@ const Actions = props => {
         <div>
             <div className="hero-container">
                 <article className="box">
-                    <div className="message">
-                        <div className="message-header">
-                            {subSection.toUpperCase()}
-                        </div>
-                        <div className="message-body">
+                    <div className="">
+                        
+                        <div className="">
                             {subSection === 'tasks' && 
                                 <div className="task-div">
                                     <Tasks />

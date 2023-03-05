@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import withContext from "../../../../withContext"
+import axios from "axios";
 
 const AddVolunteer = props => {
 
     let navigate = useNavigate();
 
+    const user_id = props.context.user.id;
     const [title, setTitle] = useState("");
-    const categories = ["Animals","Community","Health and Social Care", "Political", "Sports","Environmental"];
+    const categories = ["Animals","Community","Education","Health and Social Care", "Political", "Sports","Environmental"];
     const [category, setCategory] = useState("");
     const [venue, setVenue] = useState("");
     const [location, setLocation] = useState("");
@@ -54,6 +56,41 @@ const AddVolunteer = props => {
     const saveVolunteer = async(e) => {
         e.preventDefault();
         var theDateTime = getDateTime();
+        if(title !== "" && category !== "" && venue !== "" && location !== ""){
+            const formData = new FormData();
+            formData.append('theDateTime',theDateTime);
+            formData.append('user_id',user_id);
+            formData.append('title',title);
+            formData.append('category',category);
+            formData.append('venue',venue);
+            formData.append('location', location);
+            formData.append('start_date', start);
+            formData.append('end_date', end);
+            formData.append('start_time', startTime);
+            formData.append('end_time', endTime);
+            formData.append('description', description);
+            contributions.forEach((val,index) => {
+                formData.append('contributions', val);
+            });
+            await axios.post('/api/volunteer',formData, 
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }).then(
+                (result) => {
+                    if (result.status === 200){
+                        const volunteer_id = result.volunteer_id;
+                        clearFunc();
+                        setResponseMsg("Volunteering activity was saved.");
+                    }else{
+                        setResponseMsg("Volunteering activity was not saved, please try again. Contact us for suppport if problem persist.");
+                    }
+                }
+            );
+        }else{
+            setResponseMsg("Volunteering activity is missing some important details.");
+        }
     }
 
     const loadVolunteer = async(e) => {
@@ -176,7 +213,7 @@ const AddVolunteer = props => {
                                 <textarea
                                     className="textarea"
                                     type="text"
-                                    rows="4"
+                                    rows="8"
                                     style={{ resize: "none" }}
                                     name="description"
                                     value={description}

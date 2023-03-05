@@ -406,8 +406,9 @@ class Poll(db.Model):
     end_date = db.Column(db.Date)
     end_time = db.Column(db.Time)
     is_visible = db.Column(db.Boolean, default=True)
+    pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
 
-    def __init__(self,lister,question,date_added,choices,results, end_date, end_time):
+    def __init__(self,lister,question,date_added,choices,results, end_date, end_time, pree_id):
         self.lister = lister
         self.question = question
         self.date_added = date_added
@@ -415,6 +416,7 @@ class Poll(db.Model):
         self.results = results #array with zeros
         self.end_date = end_date
         self.end_time = end_time
+        self.pree_id = pree_id
 
     def __repr__(self):
         return '<Poll %d Question: %r>' %  (self.poll_id,self.question)
@@ -491,6 +493,7 @@ class Classified(db.Model):
     company = db.Column(db.String(80))
     description = db.Column(MutableList.as_mutable(ARRAY(db.String(1023))))
     subtopics = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
+    contents = db.Column(MutableList.as_mutable(ARRAY(db.String(10))))
     subcontent = db.Column(MutableList.as_mutable(ARRAY(db.String(1023)))) #review
     qualifications = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
     benefits = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
@@ -500,7 +503,7 @@ class Classified(db.Model):
     end_date = db.Column(db.Date)
     is_visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self,lister,pree_id,title,description,category,typeOf,metrics,location,salary,company,subtopics,subcontent,qualifications,benefits,skills,questions,responses,end_date):
+    def __init__(self,lister,pree_id,title,description,category,typeOf,metrics,location,salary,company,subtopics,contents,subcontent,qualifications,benefits,skills,questions,responses,end_date):
         self.lister = lister
         self.pree_id = pree_id
         self.title = title
@@ -512,6 +515,7 @@ class Classified(db.Model):
         self.salary = salary
         self.company = company
         self.subtopics = subtopics
+        self.contents = contents
         self.subcontent = subcontent
         self.qualifications = qualifications
         self.benefits = benefits
@@ -533,7 +537,7 @@ class Volunteer(db.Model):
     category = db.Column(db.String(80))
     venue = db.Column(db.String(80))
     location = db.Column(db.String(255))
-    description = db.Column(db.String(1023))
+    description = db.Column(db.String(2047))
     start_date = db.Column(db.Date)
     end_date = db.Column(db.Date)
     start_time = db.Column(db.Time)

@@ -162,7 +162,7 @@ const HostEvent = props => {
             );
             //return true;
         }else{
-            setResponseMsg("Request is missing some important details.");
+            setResponseMsg("Event is missing some important details.");
             //return false;
         }
     }
@@ -512,8 +512,8 @@ const HostEvent = props => {
                                 <label className="label"> Audience </label>
                             </div>
                             <div className="field-body">
-                                <div class="field is-narrow">
-                                    <div class="control">
+                                <div className="field is-narrow">
+                                    <div className="control">
                                         {audiences.map((val,index) => 
                                             <label key={index} className="radio">
                                                 <input type="radio" name="audience-checkbox" onChange={e => handleChange(e)} value={val} />
@@ -529,8 +529,8 @@ const HostEvent = props => {
                                 <label className="label"> Place </label>
                             </div>
                             <div className="field-body">
-                                <div class="field is-narrow">
-                                    <div class="control">
+                                <div className="field is-narrow">
+                                    <div className="control">
                                         <label className="radio">
                                             <input type="radio" name="place-checkbox" onChange={e => setMetrics(e.target.value)} value="virtual" />
                                             Virtual

@@ -6,7 +6,7 @@ import os
 from flask import request, jsonify
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree
-from api.specials import Listing, Vehicle, Product, Item, Service
+from api.specials import Listing, Vehicle, Product, Item, Service, Classified
 from datetime import datetime
 
 ###############----shops.py-----##############
@@ -256,6 +256,15 @@ def test_func():
         print(timeobj)
         print(time.time())
         return {"msg":"procedures sent","poll_id":1,"time":str(timeobj)}, 200
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
+@app.route('/api/test-function2', methods=['POST'])
+def test_func2():
+    if request.method == 'POST':
+        input_id = request.json.get('input_id', None)
+        job = Classified.query.filter_by(classified_id=input_id).first()
+        jobObj = {"classified_id":job.classified_id,"lister":job.lister,"pree_id":job.pree_id,"title":job.title,"category":job.category,"typeOf":job.typeOf,"metrics":job.metrics,"location":job.location,"salary":job.salary,"company":job.company,"description":job.description,"subtopics":job.subtopics,"subcontent":job.subcontent,"qualifications":job.qualifications,"benefits":job.benefits,"skills":job.skills,"questions":job.questions,"responses":job.responses,"end_date":job.end_date}
+        return {"msg":"procedures sent","classified":jobObj}, 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 """@app.route('/api/listings', methods=['GET', 'POST'])
