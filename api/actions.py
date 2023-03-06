@@ -230,7 +230,7 @@ def search_frat():
     if request.method == 'POST':
         searchval = request.json.get('searchval', None)
         user_id = request.json.get('user_id', None)
-        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),User.firstname.ilike('%'+searchval+'%'), User.lastname.ilike('%'+searchval+'%') )).limit(5).order_by(User.username).limit(5)
+        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),User.firstname.ilike('%'+searchval+'%'), User.lastname.ilike('%'+searchval+'%') )).order_by(User.username)
         userlist = []
         for user in users:
             if check_follower(user_id,user.User.user_id) and check_follower(user.User.user_id,user_id):

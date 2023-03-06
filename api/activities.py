@@ -18,10 +18,11 @@ def activities():
 def get_tasks():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
-        result = Task.query.filter(Task.is_visible == True,or_(Task.lister == user_id,Task.is_for == user_id)).all()
+        result = db.session.query(Task, User, Profile).join(User, User.user_id == Task.is_for).join(Profile, Profile.user_id == Task.is_for).filter(Task.is_visible == True,or_(Task.lister == user_id,Task.is_for == user_id)).order_by(Task.task_id).all()
         tasks = []
         for task in result:
-            taskObj = {"task_id":task.task_id,"lister":task.lister,"is_for":task.is_for,"title":task.title,"project":task,"start_date":task.start_date,"end_date":task.end_date,"description":task.description,"status":task.status}
+            done_by = {"user_id":task.User.user_id, "firstname":task.User.firstname, "lastname":task.User.lastname, "username":task.User.username, "tagline":task.Profile.tagline, "location":task.Profile.location, "has_dp":task.Profile.has_dp}
+            taskObj = {"task_id":task.Task.task_id,"lister":task.Task.lister,"is_for":task.Task.is_for, "done_by":done_by,"title":task.Task.title,"project":task.Task.project,"start_date":str(task.Task.start_date),"end_date":str(task.Task.end_date),"description":task.Task.description,"status":task.Task.status}
             tasks.append(taskObj)
         return json.dumps(tasks)
     return jsonify({"msg":"There was an error somewhere."}), 400
@@ -39,7 +40,7 @@ def get_projects():
         return {"projectlist" : projectlist} , 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
-@app.route('/api/tasks', methods=['POST'])
+@app.route('/api/tasks', methods=['POST','PUT'])
 def tasks():
     if request.method == 'POST':
         result = request.form
@@ -48,6 +49,42 @@ def tasks():
         db.session.flush()
         db.session.commit()
         return jsonify({"msg": "added successfully", "task_id":newTask.task_id}), 200
+    elif request.method == 'PUT':
+        result = request.form
+        theTask = Task.query.get(result["task_id"])
+        theTask.is_for=result["isFor"]
+        theTask.title=result["title"]
+        theTask.project=result["project"]
+        theTask.start_date=result["start_date"]
+        theTask.end_date=result["end_date"]
+        theTask.description=result["description"]
+        db.session.commit()
+        return jsonify({"msg":"Task informaiton updated."}), 200
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
+@app.route('/api/update-task', methods=['PUT'])
+def update_task():
+    if request.method == 'PUT':
+        user_id = request.json.get('user_id', None)
+        task_id = request.json.get('task_id', None)
+        status = request.json.get('status', None)
+        theTask = Task.query.get(task_id)
+        if theTask.lister == user_id or theTask.is_for == user_id:
+            theTask.status = status
+        db.session.commit()
+        return jsonify({"msg":"Task informaiton updated."}), 200
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
+@app.route('/api/delete-task', methods=['PUT'])
+def delete_task():
+    if request.method == 'PUT':
+        user_id = request.json.get('user_id', None)
+        task_id = request.json.get('task_id', None)
+        theTask = Task.query.get(task_id)
+        if theTask.lister == user_id or theTask.is_for == user_id:
+            theTask.is_visible = False
+        db.session.commit()
+        return jsonify({"msg":"Task informaiton updated."}), 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/get-requests', methods=['POST'])

@@ -19,7 +19,6 @@ const Actions = props => {
                             {subSection === 'tasks' && 
                                 <div className="task-div">
                                     <Tasks />
-                                    <h1> Task Section </h1> 
                                 </div>
                             }
                             {subSection === 'requests' &&

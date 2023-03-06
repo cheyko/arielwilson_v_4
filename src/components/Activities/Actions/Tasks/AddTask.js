@@ -4,6 +4,7 @@ import withContext from "../../../../withContext";
 //import getDateTime from "../../../../GlobalFunctions";
 import axios from "axios";
 import ViewUserCard from "../../../HelperComponents/ViewUserCard";
+import $ from "jquery";
 
 Modal.setAppElement('#root');
 
@@ -55,9 +56,10 @@ const AddTask = props => {
     const [end, setEndDate] = useState(new Date().toISOString().split("T")[0]);
     const [responseMsg, setResponseMsg] = useState("");
     const [modalIsOpen, setModalOpen] = useState(false);
-    const [project, setProject] = useState("");
-    const [projects, setProjects] = useState([]);
-    const [gotProjects, setGotProjects] = useState(false);
+    const [project, setProject] = useState("Open");
+    const projects = props.projects.filter((project,idx) => project !== "Open");
+    //const [projects, setProjects] = useState([]);
+    //const [gotProjects, setGotProjects] = useState(false);
     const [projectSelect, setSelect] = useState("Open")
     const [newProject, showNewProject] = useState(false);
     const [isFor, setFor] = useState(null);
@@ -74,7 +76,8 @@ const AddTask = props => {
         showNewProject(false);
         setSearchVal("");
         setUserList([]);
-        setGotProjects(false);
+        //setGotProjects(false);
+        setAddFor(false);
     }
 
     const saveTask = async(e) => {
@@ -91,52 +94,67 @@ const AddTask = props => {
             formData.append('start_date',start);
             formData.append('end_date',end);
             formData.append('status',status);
-            await axios.post('/api/tasks',formData, 
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-            }).then(
-                (result) => {
-                    if (result.status === 200){
-                        const task_id = result.data.task_id;
-                        clearFunc();
-                        setResponseMsg("Task was saved.");
-                    }else{
-                        setResponseMsg("Task was not saved, please try again. Contact us for suppport if problem persist.");
+            if(operation === "edit"){
+                formData.append('task_id',props.task.task_id);
+                await axios.put('/api/tasks',formData, 
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                }).then(
+                    (result) => {
+                        if (result.status === 200){
+                            //clearFunc();
+                            setResponseMsg("Task was updated.");
+                        }else{
+                            setResponseMsg("Task was not updated, please try again. Contact us for suppport if problem persist.");
+                        }
                     }
-                }
-            );
-            //return true;
+                );
+            }else{
+                await axios.post('/api/tasks',formData, 
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                }).then(
+                    (result) => {
+                        if (result.status === 200){
+                            const task_id = result.data.task_id;
+                            clearFunc();
+                            setResponseMsg("Task was saved.");
+                        }else{
+                            setResponseMsg("Task was not saved, please try again. Contact us for suppport if problem persist.");
+                        }
+                    }
+                );
+            }
         }else{
             setResponseMsg("Task is missing some important details.");
             //return false;
         }
     }
 
-    const loadTask = async(e) => {
-
+    const loadTask = () => {
+        const task = props.task;
+        setTitle(task.title);
+        setProject(task.project);
+        setSelect(task.project);
+        setDescription(task.description);
+        setStartDate(task.start_date);
+        setEndDate(task.end_date);
+        setFor(task.is_for);
+        if(task.is_for !== user_id){
+            setAddFor(true);
+            setUser(task.done_by);
+        }
     }
 
     useEffect( () => {
-        if(gotProjects === false){
-            
-            axios.post('/api/get-projects',{user_id}).then(
-                (response) => {
-                    if (response.status === 200){
-                        if (response.data.projectlist){
-                            setProjects(Array.from(response.data.projectlist));
-                            setGotProjects(true);
-                        }
-                    }else{
-                        setResponseMsg("No Projects found.")
-                    }
-                }
-            ).catch( error => {
-                console.log(error);
-            });
+        if(operation === 'edit'){
+            loadTask();
         }
-    },[projects, gotProjects]);
+    },[operation,projects]);
 
     const selectUser = (index) => {
         setUser(userlist[index]);
@@ -208,7 +226,7 @@ const AddTask = props => {
     return(
         <>
             {/*<button onClick={e => openModal(e)} className={`button ${operation === "create" ? 'is-outlined':'is-primary'}`}> {operation === "create" ? "Create" : "Update"} </button>*/}
-            <button onClick={e => openModal(e)} className='button is-outlined'> Create </button>
+            <button onClick={e => openModal(e)} className={`button ${operation === "edit" ? 'is-fullwidth is-warning':'is-link'}`}> {operation === 'edit' ? "Edit" : "Create" }</button>
 
             <Modal 
                 isOpen={modalIsOpen}
@@ -261,11 +279,11 @@ const AddTask = props => {
                                 <label className="label"> Under Taken By: </label>
                                 <label className="checkbox-options">
                                     Self {" "}{" "}
-                                    <input type="radio" name="doing-checkbox" onChange={e => handleChange(e)} value="self" />
+                                    <input checked={isFor === user_id ? true : false} id="self-radio" type="radio" name="doing-checkbox" onChange={e => handleChange(e)} value="self" />
                                 </label>
                                 <label className="checkbox-options">
-                                    Choose Frat User {" "}
-                                    <input type="radio" name="doing-checkbox" onChange={e => handleChange(e)} value="another" />
+                                    Frat User {" "}
+                                    <input checked={isFor && isFor !== user_id ? true : false} id="user-radio" type="radio" name="doing-checkbox" onChange={e => handleChange(e)} value="another" />
                                 </label>
                                 {user !== null && 
                                     <article className="message is-primary">
@@ -356,7 +374,7 @@ const AddTask = props => {
                                 </button>
                                 &nbsp;&nbsp;
                                 <button onClick={e => saveTask(e)} className="button is-primary " type="button">
-                                    Submit
+                                    {operation === 'edit' ? "Update" : "Submit" }
                                 </button>
                                 &nbsp;
                             </div>
