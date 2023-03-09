@@ -11,15 +11,16 @@ const HostEvent = props => {
     const [title, setTitle] = useState("");
     const [host, setHost] = useState("");
     const [typeOf, setType] = useState("");
-    const types = ["Concert", "Conference" ,"Function", "Meeting", "Party"];
+    const types = ["Concert", "Conference" ,"Function", "Meeting", "Party", "Show"];
     const [category, setCategory] = useState("");
-    const categories = ["Entertainment","Sports","School", "Work", "Religious", "Political", "Other"]; //get from database
+    const categories = ["Agriculture & Food", "Automobiles","Business", "Climate & Weather", "Education", "Entertainment", "General" , "Historical", "Law", "News", "Personal", "Political", "Religious", "Science & Technology", "Sports"];
     const [audience, setAudience] = useState("");
     const audiences = ["Public","Private", "Group"];
     const [metrics, setMetrics] = useState("");
     const [link, setLink] = useState("");
     const [location, setLocation] = useState("");
     const [venue, setVenue] = useState("");
+    const platforms = ["Google Meets", "Microsoft Teams", "Webex Meeting","Zoom Meetings"];
 
     const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
     const [dates, setDates] = useState([]);
@@ -91,11 +92,24 @@ const HostEvent = props => {
         setCurrency("USD");
         setCurrencies([]);
         setPersonnel([]);
+        setPersonnelList([]);
         setSearchVal("");
         setAttractions([]);
         setAttraction("");
         setPhotos([]);
         setResponseMsg("");
+        $('[name="audience-checkbox"]').each(function(){
+            console.log($(this));
+            $( this ).prop("checked", false );
+        });
+        $('[name="place-checkbox"]').each(function(){
+            console.log($(this));
+            $( this ).prop("checked", false );
+        });
+        $('[name="entry-checkbox"]').each(function(){
+            console.log($(this));
+            $( this ).prop("checked", false );
+        });
     }
 
     const saveEvent = async(e) => {
@@ -129,7 +143,7 @@ const HostEvent = props => {
                     formData.append('currencies',theCurrencies[index]);
                 });
             }else{
-                formData.append('tickets', '');
+                formData.append('tickets', entry);
                 formData.append('costs', 0);
                 formData.append('currencies', 'none');
             }
@@ -319,6 +333,7 @@ const HostEvent = props => {
     }
 
     const selectUser = (index) => {
+        setResponseMsg("");
         setPersonnel([...personnel, userlist[index]]);
         setPersonnelList([...personnelList, ""]);
         setSearchVal("");
@@ -326,12 +341,23 @@ const HostEvent = props => {
     }
 
     const handleRadioChange = (event,index) => {
+        setResponseMsg("");
         let tempList = personnelList;
-        tempList[index] = event.target.value;
+        var previous = personnel.slice(0, -1);
+        let good = true;
+        for (let x = 0; x < previous.length ; x++){
+            if((previous[x].user_id === personnel[index].user_id) && (personnelList[x] === event.target.value)){
+                setResponseMsg("User already selected for this role");
+                event.target.checked = false;
+                good = false;
+            }
+        }
+        good === true ? tempList[index] = event.target.value : tempList[index] = "";
         setPersonnelList(tempList);
     };
 
     const removePersonnel = (index) => {
+        setResponseMsg("");
         setPersonnel(personnel.filter((person,idx) => index !== idx));
         setPersonnelList(personnelList.filter((person,idx) => index !== idx));
     }
@@ -343,6 +369,7 @@ const HostEvent = props => {
                 break;
             case 'searchval':
                 setSearchVal(e.target.value);
+                setUserList([]);
                 if( e.target.value !== ""){
                     const searchval = e.target.value;
                     axios.post('/api/search-users',{searchval, user_id}).then(
@@ -449,7 +476,7 @@ const HostEvent = props => {
                                     type="text"
                                     name="title"
                                     value={title}
-                                    onChange={e => setTitle(e.target.value)}
+                                    onChange={e => {setTitle(e.target.value); setResponseMsg("");}}
                                 />
                             </div>
                         </div>
@@ -532,11 +559,11 @@ const HostEvent = props => {
                                 <div className="field is-narrow">
                                     <div className="control">
                                         <label className="radio">
-                                            <input type="radio" name="place-checkbox" onChange={e => setMetrics(e.target.value)} value="virtual" />
+                                            <input type="radio" name="place-checkbox" onChange={e => {setMetrics(e.target.value);setVenue("");}} value="virtual" />
                                             Virtual
                                         </label>
                                         <label className="radio">  
-                                            <input type="radio" name="place-checkbox" onChange={e => setMetrics(e.target.value)} value="physical" />
+                                            <input type="radio" name="place-checkbox" onChange={e => {setMetrics(e.target.value);setVenue("");}} value="physical" />
                                             Physical
                                         </label>
                                     </div>
@@ -544,28 +571,51 @@ const HostEvent = props => {
                             </div>
                         </div>
                         {metrics === 'virtual' &&
-                            <div className="field is-horizontal">
-                                <div className="field-label is-normal">
-                                    <label className="label">Link </label>
+                            <div>
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">Platform </label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <div className="select">
+                                                <select
+                                                    name="platform"
+                                                    value={venue}
+                                                    onChange={e => setVenue(e.target.value)}>
+                                                        <option value="">Choose ...</option>
+                                                        {platforms.map((plt, idx) => 
+                                                            <option key={idx} value={plt}>{plt}</option>
+                                                        )}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="field-body">
-                                    <div className="field">
-                                        <div className="control has-icons-left">
-                                            <input
-                                                className="input"
-                                                type="text"
-                                                name="link"
-                                                value={link}
-                                                onChange={e => setLink(e.target.value)}
-                                                placeholder="Enter Link"
-                                                />
-                                            <span className="icon is-small is-left">
-                                                <i className="fas fa-link"></i>
-                                            </span>
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">Link </label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <div className="control has-icons-left">
+                                                <input
+                                                    className="input"
+                                                    type="text"
+                                                    name="link"
+                                                    value={link}
+                                                    onChange={e => setLink(e.target.value)}
+                                                    placeholder="Enter Link"
+                                                    />
+                                                <span className="icon is-small is-left">
+                                                    <i className="fas fa-link"></i>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
                             
                         }
                         {metrics === 'physical' &&
@@ -878,7 +928,7 @@ const HostEvent = props => {
                                         <div className="card">
                                             {userlist && userlist.length > 0 ? (
                                                 userlist.map((aUser, index) => (
-                                                    <div onClick={e => selectUser(index)} className="column" key={index}>
+                                                    <div onClick={e => selectUser(index)} key={index}>
                                                         <ViewUserCard key={index} user={aUser} />
                                                     </div>
                                                 ))
@@ -901,7 +951,7 @@ const HostEvent = props => {
                                 {personnel.length > 0 && 
                                     <article className="message is-primary">
                                         <div className="message-header">
-                                            <button type="button" onClick={e => setPersonnel([])} className="delete" aria-label="delete"></button>
+                                            <button type="button" onClick={e => {setPersonnel([]); setPersonnelList([]);}} className="delete" aria-label="delete"></button>
                                         </div>
                                         <div className="message-body">
                                             {personnel.map((val,index) => 
@@ -920,6 +970,7 @@ const HostEvent = props => {
                                                                     <label className="checkbox-options" key={idx}>  
                                                                         <input
                                                                         value={option}
+                                                                        name="personnel-types"
                                                                         onChange={e => handleRadioChange(e,index)}
                                                                         type="radio"
                                                                         /> 
@@ -935,6 +986,7 @@ const HostEvent = props => {
                                                     <hr style={{backgroundColor:"blue"}}/>
                                                 </div>
                                             )}
+                                            {responseMsg}
                                         </div>
                                     </article>
                                 }   

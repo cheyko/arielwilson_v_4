@@ -4,8 +4,8 @@ import withContext from '../../withContext';
 const ViewUserCard = props => {
 
     const {user} = props;
+    const {key} = props;
     const [imgView, setImgView] = useState(null);
-
     const loadMainMedia = useCallback(() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
@@ -25,7 +25,6 @@ const ViewUserCard = props => {
         //if (!gotMedia){
         loadMainMedia();
         //}
-        console.log("done");
     }, [user, loadMainMedia]); 
 
     //console.log(isFollower);
@@ -33,7 +32,7 @@ const ViewUserCard = props => {
 
     return (
         <>
-            <div className="card view-user-card">
+            <div key={key} className="card">
                 <div className="card-content" style={{padding:"0.5rem"}}>
                     <div className="media">
                         <div className="media-left">

@@ -53,9 +53,10 @@ const Tasks = props => {
                     setFullList(res.data);
                     setTasks(res.data);
                     setPageCount( Math.ceil(res.data.length / perPage));
-                    setGotTask(true);
+                    //setGotTask(true);
                 }
             });
+            setGotTask(true);
         }
         if(gotProjects === false){
             
@@ -64,22 +65,24 @@ const Tasks = props => {
                     if (response.status === 200){
                         if (response.data.projectlist){
                             setProjects(Array.from(response.data.projectlist));
-                            setGotProjects(true);
+                            //setGotProjects(true);
                         }
                     }
                 }
             ).catch( error => {
                 console.log(error);
             });
+            setGotProjects(true);
         }
         if(filter){
             filterList();
         }
-    }, [gotTask, filter, filterList, tasks]);
+    }, [gotTask, filter, filterList, gotProjects]);
 
     slice = tasks.slice(offset, offset + perPage); 
 
-    console.log(slice);
+    //console.log(projects);
+    //console.log(slice);
     return (
         <div className="hero">
             <nav className="panel">

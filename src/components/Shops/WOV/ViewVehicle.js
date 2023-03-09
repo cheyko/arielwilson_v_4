@@ -66,8 +66,8 @@ const ViewVehicle = props => {
             {vehicle ? 
             <div className="hero-container market-content">
                 <div className="vehicle-content">
-                    <div className="columns">
-                        <div className="leftContent column ">
+                    <div className="columns no-padding no-margin">
+                        <div className="leftContent column no-padding no-margin">
 
                             <VehicleImageView vehicle={vehicle} thePics={thePics}/>
                         </div>

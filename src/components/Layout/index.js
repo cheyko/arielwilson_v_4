@@ -15,13 +15,13 @@ const Layout = props => {
         <>
         {props.context.ready ? (           
                 <div className="hero main-container">
-                  <div className="columns is-mobile is-multiline">
-                    <div id='nav-column' className="column nav-column is-one-quarter"> 
+                  <div className="columns is-mobile is-multiline no-padding no-margin">
+                    <div id='nav-column' className="column nav-column is-one-quarter  no-padding no-margin"> 
                       <div className="App">
                         <Navbar />
                       </div>
                     </div>
-                    <div id="app-container" className="column no-padding pt-3 container app-container"> 
+                    <div id="app-container" className="column  no-padding no-margin container app-container"> 
                       <div className={`mobile-menu menu-color reaction-btn ${!props.context.toggle ? "has-text-centered" : "has-text-right"}`} onClick={ e => props.context.toggleMenu(e) }>
                           {!props.context.toggle ?
                             ( <span className="button reverse-colors"><b> Main Menu </b> &nbsp; <FontAwesomeIcon icon={faBars} size="2x" /> </span> )

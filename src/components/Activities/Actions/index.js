@@ -24,19 +24,16 @@ const Actions = props => {
                             {subSection === 'requests' &&
                                 <div className="requests-div">
                                     <Requests />
-                                    <h1> Requests Section </h1> 
                                 </div>
                             }
                             {subSection === 'logistics' &&
                                 <div className="logistics-div">
                                     <Logistics />
-                                    <h1> Logistics Section </h1> 
                                 </div>
                             }
                             {subSection === 'polls' &&
                                 <div className="polls-div">
                                     <Polls />
-                                    <h1> Polls Section </h1> 
                                 </div>
                             }
                         </div>

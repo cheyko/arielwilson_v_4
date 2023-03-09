@@ -249,6 +249,7 @@ def bio():
 def get_bio():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
+        #reduce to one query
         user_record = User.query.get(user_id)
         profile_record = Profile.query.get(user_id) 
         if profile_record is not None:

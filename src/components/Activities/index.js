@@ -85,7 +85,10 @@ const Activities = props => {
                                         <i className="fas fa-glass-cheers" aria-hidden="true"> Functions </i>
                                     </span>
                                     <span className={`navbar-item ${subSection === 'concerts' ? 'is-active' : ''}`} onClick={e => { setSubSection('concerts');setSection("events"); toggleMenu(e);showEventsMenu(!eventsMenu);localStorage.setItem("subSection","concerts");localStorage.setItem("section","events")}}>
-                                        <i className="fas fa-theater-masks" aria-hidden="true"> Concerts </i>
+                                        <i className="fas fa-theater-masks" aria-hidden="true"> Concerts  </i>
+                                    </span>
+                                    <span className={`navbar-item ${subSection === 'shows' ? 'is-active' : ''}`} onClick={e => { setSubSection('shows');setSection("events"); toggleMenu(e);showEventsMenu(!eventsMenu);localStorage.setItem("subSection","shows");localStorage.setItem("section","events")}}>
+                                        &nbsp;<i className="fas fa-microphone" aria-hidden="true">&nbsp; Shows </i>
                                     </span>
                                     <span className={`navbar-item ${subSection === 'parties' ? 'is-active' : ''}`} onClick={e => { setSubSection('parties');setSection("events"); toggleMenu(e);showEventsMenu(!eventsMenu);localStorage.setItem("subSection","parties");localStorage.setItem("section","events")}}>
                                         <i className="fas fa-gifts" aria-hidden="true"> Parties </i>

@@ -55,8 +55,8 @@ const ViewItem = props => {
             {item ? 
             <div className="hero-container market-content">
                 <div className="item-content">
-                    <div className="columns is-multiline">
-                        <div className="leftContent column">
+                    <div className="columns is-multiline p-0 m-0">
+                        <div className="leftContent column p-0 m-0">
                             <ItemImageView item={item} thePics={thePics}/>
                         </div>
                         <div className="rightContent column">

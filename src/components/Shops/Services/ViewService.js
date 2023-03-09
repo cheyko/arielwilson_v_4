@@ -66,8 +66,8 @@ const ViewService = props => {
             {service ?
             <div className="hero-container market-content">
                 <div className="vehicle-content">
-                    <div className="columns">
-                        <div className="leftContent column">
+                    <div className="columns no-padding no-margin">
+                        <div className="leftContent column no-padding no-margin">
                             <ServiceImageView service={service} thePics={thePics} />
                         </div>
                         <div className="rightContent column">

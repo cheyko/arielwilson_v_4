@@ -60,8 +60,8 @@ const ViewListing = props => {
             <div className="hero-container market-content">
                 
                 <div className="listing-content">
-                    <div className="columns is-multiline">
-                        <div className="leftContent column">
+                    <div className="columns is-multiline no-padding no-margin">
+                        <div className="leftContent column no-padding no-margin">
                             <ListingImageView listing={listing} thePics={thePics}/>
                         </div>
                         <div className="rightContent column">

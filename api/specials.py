@@ -398,6 +398,7 @@ class Poll(db.Model):
 
     poll_id = db.Column(db.Integer, db.Sequence('wg_polls_poll_id_seq'), primary_key=True)
     lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    category = db.Column(db.String(40))
     question = db.Column(db.String(255))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     choices = db.Column(MutableList.as_mutable(ARRAY(db.String(31))))
@@ -405,22 +406,41 @@ class Poll(db.Model):
     votes = db.Column(db.Integer, default=0)
     end_date = db.Column(db.Date)
     end_time = db.Column(db.Time)
+    status = db.Column(db.String(10))
     is_visible = db.Column(db.Boolean, default=True)
     pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
 
-    def __init__(self,lister,question,date_added,choices,results, end_date, end_time, pree_id):
+    def __init__(self,lister,category,question,date_added,choices,results, end_date, end_time, status, pree_id):
         self.lister = lister
+        self.category = category
         self.question = question
         self.date_added = date_added
         self.choices = choices
         self.results = results #array with zeros
         self.end_date = end_date
         self.end_time = end_time
+        self.status = status
         self.pree_id = pree_id
 
     def __repr__(self):
         return '<Poll %d Question: %r>' %  (self.poll_id,self.question)
-    
+
+class Vote(db.Model):
+    __tablename__ = 'wg_votes'
+
+    vote_id = db.Column(db.Integer, db.Sequence('wg_approvals_approval_id_seq'), primary_key=True) 
+    poll_id = db.Column(db.Integer, db.ForeignKey('wg_polls.poll_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    choice = db.Column(db.Integer)
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, poll_id, user_id, choice):
+        self.poll_id = poll_id
+        self.user_id = user_id
+        self.choice = choice
+
+    def __repr__(self):
+        return '<Vote %d choice %s>' % (self.vote_id, self.choice)  
 class Event(db.Model):
     __tablename__ = 'wg_events'
 
@@ -445,8 +465,8 @@ class Event(db.Model):
     tickets = db.Column(MutableList.as_mutable(ARRAY(db.String(31))))
     costs = db.Column(MutableList.as_mutable(ARRAY(db.Integer)))
     currencies = db.Column(MutableList.as_mutable(ARRAY(db.String(10))))
-    personnel_ids = db.Column(MutableList.as_mutable(ARRAY(db.Integer)))
-    personnel = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
+    personnel_ids = db.Column(MutableList.as_mutable(ARRAY(db.Integer))) #change to personnel
+    personnel = db.Column(MutableList.as_mutable(ARRAY(db.String(80)))) #change to personnel_types
     attractions = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
     numOfPics = db.Column(db.Integer)
     is_visible = db.Column(db.Boolean, default=True)

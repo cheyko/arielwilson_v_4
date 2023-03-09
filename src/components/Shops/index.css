@@ -10,7 +10,7 @@
     width: 17.5rem;
     position: fixed;
     z-index: 4;
-    margin-left: 1rem !important;
+    /*margin-left: 1rem !important;*/
 }
 
 .no-space{
@@ -196,7 +196,7 @@
 
 .imagesContainer {
     height: 100vh;
-    width: 37.5%;
+    width: 36.5%;
     position: fixed;
     padding-inline: 1.75rem !important;
     margin-inline: 0.5rem !important;
@@ -205,6 +205,7 @@
 
 .customSlide {
     height: 20rem !important;
+    width: 100% !important;
     margin: 0 auto !important;
 }
 
@@ -324,8 +325,8 @@
     }
     .ad-bar-container{
         width: 17.5rem;
-        padding-left: 0.5rem !important;
-        margin-left: 0.5rem !important;
+        /*padding-left: 0.5rem !important;
+        margin-left: 0.5rem !important;*/
     }
 
     .market-home .slick-wrapper{
@@ -390,8 +391,8 @@
     }
     .ad-bar-container{
         width: 17.5rem;
-        margin-left: 0.5rem !important;
-        padding-left: 0.5rem !important;
+        /*margin-left: 0.5rem !important;
+        padding-left: 0.5rem !important;*/
     }
 
     .market-home .slick-wrapper{
@@ -462,8 +463,8 @@
     }
     .ad-bar-container{
         width: 75%;
-        margin-left: 0.5rem !important;
-        padding-left: 0.5rem !important;
+        /*margin-left: 0.5rem !important;
+        padding-left: 0.5rem !important;*/
     }
 
     .market-home .slick-wrapper{
@@ -555,7 +556,9 @@
         padding: 0 !important;
         margin-inline: 0 !important;
     }
-    
+    .customSlide {
+        height: 15rem !important;
+    }
 }
 
 @media screen and (max-width:320px){

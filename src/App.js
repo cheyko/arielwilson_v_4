@@ -64,6 +64,7 @@ import AddVehicle from './components/Shops/WOV/AddVehicle';
 import HostEvent from './components/Activities/Events/HostEvent';
 import AddClassified from './components/Activities/Jobs/Classifieds/AddClassified';
 import AddVolunteer from './components/Activities/Jobs/Volunteer/AddVolunteer';
+import ViewEvent from './components/Activities/Events/ViewEvent';
 
 const sign = require('jwt-encode');
 const secret = 'some$3cretKey';
@@ -698,6 +699,7 @@ export default class App extends Component {
                 <Route path="/add-event" element={<HostEvent />} />
                 <Route path="/add-classified" element={<AddClassified />} />
                 <Route path="/add-volunteer" element={<AddVolunteer />} />
+                <Route path="/event-view/:id" element={<ViewEvent />} />
                  {/*<Route path='/trendy' element={<Trendy />} />*/}
                 {/*<Route path="/welcome" component={Welcome} />*/}
               </Route>

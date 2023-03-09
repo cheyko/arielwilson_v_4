@@ -48,7 +48,8 @@ const AddPoll = props => {
 
     const user_id = props.context.user.id;
     const [poll, setPoll] = useState("");
-    const [status, setStatus] = useState("Open");
+    const categories = ["Agriculture & Food", "Automobiles","Business", "Climate & Weather", "Education", "Entertainment", "General" , "Historical", "Law", "News", "Personal", "Political", "Religious", "Science & Technology", "Sports"];
+    const [category, setCategory] = useState("General");
     const [responseMsg, setResponseMsg] = useState("");
     const [endDate, setEndDate] = useState(new Date().toISOString().split("T")[0]);
     const [endTime, setEndTime] = useState("00:00");
@@ -65,6 +66,7 @@ const AddPoll = props => {
         setChoices([]);
         setEdit(false);
         setEditVal(null);
+        setCategory("General");
     }
 
     const saveRequest = async(e) => {
@@ -74,6 +76,7 @@ const AddPoll = props => {
             const formData = new FormData();
             formData.append('theDateTime',theDateTime);
             formData.append('user_id',user_id);
+            formData.append('category',category);
             formData.append('poll',poll);
             formData.append('end_date',endDate);
             formData.append('end_time',endTime);
@@ -167,6 +170,7 @@ const AddPoll = props => {
             }
         }else{
             console.log("not-today");
+            setResponseMsg("");
             return true;
         }
     }
@@ -209,8 +213,21 @@ const AddPoll = props => {
                             <h1>Add Poll to W@H GW@@N</h1>
                         </div>
                         <button onClick={e => closeModal(e)} style={{backgroundColor:"red"}} className="button modal-close is-large" aria-label="close"></button>
-                        <p className="has-text-centered"> Request Details </p>
+                        <p className="has-text-centered"> Poll Details </p>
                         <form>
+                            <div className="field">
+                                <label className="label">Category</label>
+                                <div className="select">
+                                    <select
+                                        value={category}
+                                        name="category"
+                                        onChange={e => setCategory(e.target.value)}>
+                                            {categories.map((cat,idx) => 
+                                                <option value={cat} key={idx}>{cat}</option>
+                                            )}
+                                    </select>
+                                </div>
+                            </div>
                             <div className="field">
                                 <label className="label"> Poll: </label>
                                 <textarea

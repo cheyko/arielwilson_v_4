@@ -143,7 +143,7 @@ def see_the_pree():
                 elif pree.pree_type == 'poll':
                     poll = Poll.query.filter_by(pree_id = pree.pree_id).first()
                     #reduce return object values
-                    attachment =  {"poll_id":poll.poll_id,"lister":poll.lister,"pree_id":poll.pree_id,"question":poll.question,"choices":poll.choices,"results":poll.results,"votes":poll.votes,"end_date":poll.end_date,"end_time":poll.end_time}
+                    attachment =  {"poll_id":poll.poll_id,"lister":poll.lister,"pree_id":poll.pree_id,"question":poll.question,"choices":poll.choices,"results":poll.results,"votes":poll.votes,"end_date":str(poll.end_date),"end_time":str(poll.end_time)}
                 elif pree.is_media and pree.pree_type == 'event':
                     event = Event.query.filter_by(pree_id = pree.pree_id).first()
                     #reduce return object values

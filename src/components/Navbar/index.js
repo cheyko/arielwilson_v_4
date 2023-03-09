@@ -20,6 +20,7 @@ import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { faStore} from '@fortawesome/free-solid-svg-icons';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
+import { useCallback } from "react";
 
 const Navbar = props => {
 
@@ -49,7 +50,7 @@ const Navbar = props => {
     const [openImage, setOpen] = useState(false);
     const [toggleMenu, setToggle] = useState(true);
 
-    const loadMainMedia = async() => {
+    const loadMainMedia = useCallback( async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
@@ -58,17 +59,17 @@ const Navbar = props => {
         await axios.post('/api/get-main-media',{user_id}).then(
             (response) => {
                 if (response.status === 200){
+                    setGetMedia(true);
                     if (response.data.has_dp === true){
                         setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
                     }else{
                         setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
                     }
-                    setGetMedia(true);
                 }
             }
-        )
-        return false;
-    }
+        );
+        return true;
+    },[imgView, gotMedia]);
 
     const activate = (choice) => {
         setClick(true);
@@ -182,7 +183,6 @@ const Navbar = props => {
                 break;
         }
     }
-
     
     useEffect( ()=> {
         //console.log(window.location.href);
@@ -195,14 +195,14 @@ const Navbar = props => {
             //change implementation account for browser navigation.
             activate("timeline");
         }
-        if (!gotMedia){
+        if (gotMedia === false){
             loadMainMedia();
         }
 
         if(selection !== props.context.menuChoice){
             activate(props.context.menuChoice);
         }
-    },[gotMedia, window.location.href, clicked, props.context.menuChoice]);
+    },[gotMedia, window.location.href, clicked, props.context.menuChoice, loadMainMedia]);
 
     return(
         <div className="custom-nav" id="custom-nav">

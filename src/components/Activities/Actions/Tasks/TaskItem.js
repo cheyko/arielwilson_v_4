@@ -38,7 +38,6 @@ const customStyles = {
 
 const TaskItem = props => {
     const {task} = props;
-    const {key} = props;
     const user_id = props.context.user.id;
     const [status, setStatus] = useState(task.status);
     const statuses = ["Pending","In-Progress","Completed"];

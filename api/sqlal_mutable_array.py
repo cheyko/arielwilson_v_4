@@ -10,6 +10,11 @@ class MutableList(Mutable, list):
     self.changed()
     return value
 
+  def set(self, newlist):
+    for i in range(len(self)):
+      self[i] = newlist[i]
+      self.changed()
+
   @classmethod
   def coerce(cls, key, value):
     if not isinstance(value, MutableList):

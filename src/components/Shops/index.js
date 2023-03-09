@@ -364,12 +364,12 @@ const Shops = props => {
                 </nav>
                 <br />
                 <div className="page-content">
-                    <div className='shops-body columns is-mobile'>
+                    <div className='shops-body columns p-0 m-0 is-mobile'>
                         {toggleads &&
                             <div className=''>
                                 <div className='ad-bar-container box no-padding'>
                                     <article className='message'>
-                                        <div className='message-header ads-header'>
+                                        <div className='message-header'>
                                             <h1 className="ads-heading">ADS</h1>&nbsp;
                                             <i onClick={e => console.log("expand")} style={{fontSize:"x-large",cursor:"pointer"}} className="fas fa-external-link-alt" aria-hidden="true"></i>
                                             <span style={{width:"100%"}}>
@@ -400,7 +400,7 @@ const Shops = props => {
                                 </div>
                             </div>
                         }
-                        <div className='column no-padding'>
+                        <div className='column p-0 m-0'>
                             <div className='container'>
                                 {shopView === "grandmarket" &&
                                 <div>

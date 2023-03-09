@@ -1,68 +1,97 @@
-import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const MeetingItem = props => {
 
-    const handleToggleChange = (e) => {
+    const {meeting} = props;
+
+    /*const handleToggleChange = (e) => {
         var isChecked = document.getElementById("response_value").checked;
         console.log(isChecked);
+    }*/
+
+    const convertDate = (val) => {
+        var result;
+        if (new Date().getDate() == new Date(val).getDate() + 1){
+             result = "Today at";
+        }else{
+            result = new Date(new Date(val).setDate(new Date(val).getDate() + 1)).toDateString();
+        }
+        return result;
     }
 
-    return (
-        <div className="box">   
-            <div className="columns">
-                <div className="column">
-                    <b>Status : </b> {" "} <span> On Schedule </span>
-                </div>
-                <div className="column">
-                    <b>Response : </b> {" "} 
-                
-                    <label className="switch">
-                        <input onChange={ e => handleToggleChange(e) } id="response_value" type="checkbox" />
-                        <div className="slider round" >
-                            <span className="on">Attending</span>
-                            <span className="off">Not - Attending</span>
-                        </div>
-                    </label>
+    const convertTime = (aTime) => {
+        var meridian = parseInt(aTime.split(":")[0]) >= 12 ? 'pm' : 'am';
+        var hour = parseInt(aTime.split(":")[0]) % 12 || 12;
+        var minutes = aTime.split(":")[1];
+        return hour + ":" + minutes + meridian;
+    }
+
+    return(
+        <div>
+            <Link onClick={localStorage.setItem("event", JSON.stringify(meeting))} className="service-item" to={`/event-view/${meeting.event_id}`}>
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <img src={process.env.PUBLIC_URL + "/images/events/event" + meeting.event_id + "/0"} alt="Event image" />
+                        </figure>
+                    </div>
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            {meeting.title}
+                        </p>
+                    </header>
+                    <div class="panel">
+                        <a class="panel-block is-active">
+                            <span class="panel-icon">
+                                <i class="fas fa-users" aria-hidden="true"></i>
+                            </span>
+                            {meeting.host}
+                        </a>
+                        <a class="panel-block">
+                            <span class="panel-icon">
+                            {meeting.metrics === "virtual" ? <i class="fas fa-network-wired" aria-hidden="true"></i> : <i class="fas fa-building" aria-hidden="true"></i>}
+                            </span>
+                            {meeting.venue}
+                        </a>
+                        <a class="panel-block">
+                            <span class="panel-icon">
+                                {meeting.metrics === "virtual" ? <i class="fas fa-link" aria-hidden="true"></i> : <i class="fas fa-globe" aria-hidden="true"></i>}
+                            </span>
+                            {meeting.where}
+                        </a>
                         
-                </div>
-            </div>
-            <div className="media">
-                <div className="media-left">
-                    <figure className="image is-64x64">
-                        <img
-                            src="https://bulma.io/images/placeholders/128x128.png"
-                            alt="test"
-                        />
-                    </figure>
-                </div>
-                <div className="media-content">
-                    <p><b><em>This is the Title </em> </b> </p>
-                    <p><small> This is a small description of meeting. </small></p>
-                    <div className="columns">
-                        <div className="column">
-                            <b> Category: </b> <span>Sample</span> <br />
-                            <b> Place: </b> <span>Sample</span>    
-                        </div>
-                        <div className="column">
-                            <b> Date: </b> <span>Sample</span>  <br />
-                            <b> Attendees: </b> <span>Sample</span>    
-                        </div>  
+                        <a class="panel-block">
+                            <span class="panel-icon">
+                            <i class="fas fa-calendar" aria-hidden="true"></i>
+                            </span>
+                            {meeting.dates.map((date,idx) => 
+                                <span key={idx}>
+                                    <span>{convertDate(date)} {convertTime(meeting.start_times[idx])} - {convertTime(meeting.end_times[idx])} </span>{idx > 0 ? ", ":""}
+                                </span>
+                            )}
+                        </a>
+
+                        <a class="panel-block">
+                            <span class="panel-icon">
+                            <i class="fas fa-money-bill" aria-hidden="true"></i>
+                            </span>
+                            
+                            {meeting.tickets.map((ticket,idx) => 
+                                <span key={idx}>
+                                    {ticket === 'Free' || ticket === 'Invitation' ?
+                                        <span>{ticket}</span>:
+                                        <span>
+                                            <span>{ticket} : {meeting.cost[idx]} {meeting.currencies[idx]} </span> {idx > 0 ? ", ":""}
+                                        </span>
+                                    }
+                                </span> 
+                            )}
+                        </a>
                     </div>
                 </div>
-            </div>
-            {/*<div class="media">
-                <b> Host : </b> &nbsp;
-                <div class="media-left">
-                    <figure class="image is-48x48">
-                        <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image" />
-                    </figure>
-                </div>
-                <div class="media-content">
-                    <span class="title is-4">John Smith</span> {" "}
-                    <span class="subtitle is-6">@johnsmith</span>
-                </div>
-            </div>*/}
+            </Link>
         </div>
     )
+   
 }
 export default MeetingItem;

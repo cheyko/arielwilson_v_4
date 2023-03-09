@@ -6,8 +6,8 @@
 .switch {
     position: relative;
     display: inline-block;
-    width: 150px;
-    height: 34px;
+    width: 12rem;
+    height: 2rem;
     color: black;
   }
   
@@ -50,9 +50,9 @@
   }
   
   input:checked + .slider:before {
-    -webkit-transform: translateX(110px);
-    -ms-transform: translateX(110px);
-    transform: translateX(110px);
+    -webkit-transform: translateX(10rem);
+    -ms-transform: translateX(10rem);
+    transform: translateX(10rem);
   }
   
   /*------ ADDED CSS ---------*/
@@ -98,6 +98,7 @@ input:checked + .slider .off
     position: relative !important;
     height: 2.5rem !important;
     padding: 0.5rem !important;
+    width: 100% !important;
   }
 
   .progress-span{
@@ -115,4 +116,8 @@ input:checked + .slider .off
   .poll-btn{
     border: solid 3px black !important;
     margin-block: 5px;
+  }
+
+  .event-item{
+    cursor: pointer;
   }
