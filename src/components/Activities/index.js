@@ -119,6 +119,7 @@ const Activities = props => {
                         </div>
                     </div>
                 </nav>
+                <br/>
                 <div className="page-content">
                     {theSection === "actions" &&
                         <Actions subSection={subSection} />

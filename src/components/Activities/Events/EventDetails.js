@@ -49,7 +49,7 @@ const EventDetails = props => {
             <div>
                 <b>
                     {event.metrics === "virtual" ? <i className="fas fa-link" aria-hidden="true"></i> : <i className="fas fa-globe" aria-hidden="true"></i>}
-                    {" "}{event.where}
+                    {" "}{event.metrics === "virtual" ? <a href={event.where}>{event.where} </a> : <span>{event.where}</span>}
                 </b> 
                 {event.metrics === "physical" && 
                     <div className="container listing-map">
@@ -63,7 +63,7 @@ const EventDetails = props => {
                 <i className="fas fa-calendar" aria-hidden="true"></i>{" "}
                 {event.dates.map((date,idx) => 
                     <span key={idx}>
-                        <span>{convertDate(date)} {" "}<i className="fas fa-dot-circle" aria-hidden="true"></i>{" "} {convertTime(event.start_times[idx])} - {convertTime(event.end_times[idx])} </span>{idx > 0 ? ", ":""}
+                        {idx > 0 ? <span>&nbsp;|&nbsp;</span>:""}<span>{convertDate(date)} {" "}<i className="fas fa-dot-circle" aria-hidden="true"></i>{" "} {convertTime(event.start_times[idx])} - {convertTime(event.end_times[idx])} </span> 
                     </span>
                 )}
             </div>
@@ -75,7 +75,7 @@ const EventDetails = props => {
                         {ticket === 'Free' || ticket === 'Invitation' ?
                             <span>{ticket}</span>:
                             <span>
-                                <span>{ticket} : {event.cost[idx]} {event.currencies[idx]} </span> {idx > 0 ? ", ":""}
+                                {idx > 0 ? <span>&nbsp;|&nbsp;</span>:""}<span>{ticket} : {event.costs[idx]}{event.currencies[idx]} </span>
                             </span>
                         }
                     </span> 
@@ -83,7 +83,7 @@ const EventDetails = props => {
             </div>
             <br />
             <div className="descript">
-                <p className="has-text-centered"><b><h3 className="title">DESCRIPTION</h3></b></p>
+                <div className="has-text-centered"><b><h3 className="title">DESCRIPTION</h3></b></div>
                 <p style={{fontStyle:"italic"}}> {event.description}</p>
             </div>
             <br />
@@ -92,73 +92,99 @@ const EventDetails = props => {
                     {event.personnel_type.filter((atype) => atype === "Host").length > 0 &&
                         <div className="has-text-centered"><b><h3 className="title">HOSTS</h3></b></div>
                     }
-                    {event.personnel_type.map((aType,idx) =>
-                        <div key={idx}>
-                            {aType === "Host" && 
-                                <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
-                                    <ViewUserCard user={event.personnel[idx]} />
-                                </Link>
-                            }
-                        </div>
-                    )}
+                    {event.personnel_type.map((aType,idx) => {
+                        if (aType === "Host"){
+                            return(
+                                <div key={idx}>
+                                    <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
+                                        <ViewUserCard user={event.personnel[idx]} />
+                                    </Link>
+                                    <br />
+                                </div>
+                            )
+                        }
+                    })}
                 </div>
                 <div className="speakers">
                     {event.personnel_type.filter((atype) => atype === "Speaker").length > 0 &&
                         <div className="has-text-centered"><br /><b><h3 className="title">SPEAKERS</h3></b></div>
                     }
-                    {event.personnel_type.map((aType,idx) =>
-                        <div key={idx}>
-                            {aType === "Speaker" && 
-                                <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
-                                    <ViewUserCard user={event.personnel[idx]} />
-                                </Link>
-                            }
-                        </div>
-                    )}
+                    {event.personnel_type.map((aType,idx) => {
+                        if (aType === "Speaker"){
+                            return(
+                                <div key={idx}>
+                                    <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
+                                        <ViewUserCard user={event.personnel[idx]} />
+                                    </Link>
+                                    <br />
+                                </div>
+                            )
+                        }
+                    })}
                 </div>
                 <div className="performers">
                     {event.personnel_type.filter((atype) => atype === "Performer").length > 0 &&
                         <div className="has-text-centered"><br /><b><h3 className="title">PERFORMERS</h3></b></div>
                     }
-                    {event.personnel_type.map((aType,idx) =>
-                        <div key={idx}>
-                            {aType === "Performer" && 
-                                <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
-                                    <ViewUserCard user={event.personnel[idx]} />
-                                </Link>
-                            }
-                        </div>
-                    )}
+                    {event.personnel_type.map((aType,idx) => {
+                        if (aType === "Performer"){
+                            return(
+                                <div key={idx}>
+                                    <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
+                                        <ViewUserCard user={event.personnel[idx]} />
+                                    </Link>
+                                    <br />
+                                </div>
+                            )
+                        }
+                    })}
                 </div>
                 <div className="presenters">
                     {event.personnel_type.filter((atype) => atype === "Presenters").length > 0 &&
                         <div className="has-text-centered"><br/><b><h3 className="title">PRESENTERS</h3></b></div>
                     }
-                    {event.personnel_type.map((aType,idx) =>
-                        <div key={idx}>
-                            {aType === "Presenters" && 
-                                <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
-                                    <ViewUserCard user={event.personnel[idx]} />
-                                </Link>
-                            }
-                        </div>
-                    )}
+                    {event.personnel_type.map((aType,idx) => {
+                        if (aType === "Presenter"){
+                            return(
+                                <div key={idx}>
+                                    <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
+                                        <ViewUserCard user={event.personnel[idx]} />
+                                    </Link>
+                                    <br />
+                                </div>
+                            )
+                        }
+                    })}
                 </div>
                 <div className="general">
                     {event.personnel_type.filter((atype) => atype === "General").length > 0 &&
                         <div className="has-text-centered"><br/><b><h3 className="title">PERSONNEL</h3></b></div>
                     }
-                    {event.personnel_type.map((aType,idx) =>
-                        <div key={idx}>
-                            {aType === "General" && 
-                                <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
-                                    <ViewUserCard user={event.personnel[idx]} />
-                                </Link>
-                            }
-                        </div>
-                    )}
+                    {event.personnel_type.map((aType,idx) => {
+                        if (aType === "General") {
+                            return( 
+                                <div key={idx}>
+                                    <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
+                                        <ViewUserCard user={event.personnel[idx]} />
+                                    </Link>
+                                    <br />
+                                </div>
+                            )
+                        }
+                    })}
                 </div>
             </div>
+            <br />
+            {event.attractions.length > 0 &&
+            <div className="attractions">
+                <div className="has-text-centered"><b><h3 className="title">ATTRACTIONS</h3></b></div>
+                <ul>
+                    {event.attractions.map((attr,idx) =>
+                        <li key={idx}>{attr}</li>
+                    )}
+                </ul>
+            </div>
+            }
         </div>
     )
 

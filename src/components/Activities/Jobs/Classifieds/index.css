@@ -1,0 +1,36 @@
+.job-heading{
+    /*box-shadow: 0 0em 0em 0.1em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 7%);*/
+    /*box-shadow: 1px 1px 1px 1px #888888;
+    border-bottom: 1px solid grey;*/
+    padding: 1em;
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    background-color: white;
+    margin: 0px !important;
+    /*margin: -1px !important;*/
+}
+
+@media screen and (max-width:1023px) {
+    .job-heading{
+        top:4.5em !important
+        /*position: fixed !important;
+        width: 100% !important;
+        z-index: 1 !important;
+        margin-top: 5.5rem !important;*/
+
+    }
+
+    .job-controls{
+        width: 100% !important;
+        position: fixed !important;
+        z-index: 3 !important;
+    }
+
+    #first-content{
+        margin-top: 3rem !important;
+    }
+    .company-profile{
+        top : 2.5em !important;
+    }
+}

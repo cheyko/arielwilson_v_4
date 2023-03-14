@@ -65,6 +65,8 @@ import HostEvent from './components/Activities/Events/HostEvent';
 import AddClassified from './components/Activities/Jobs/Classifieds/AddClassified';
 import AddVolunteer from './components/Activities/Jobs/Volunteer/AddVolunteer';
 import ViewEvent from './components/Activities/Events/ViewEvent';
+import ViewClassified from './components/Activities/Jobs/Classifieds/ViewClassified';
+import ViewVolunteer from './components/Activities/Jobs/Volunteer/ViewVolunteer';
 
 const sign = require('jwt-encode');
 const secret = 'some$3cretKey';
@@ -605,13 +607,13 @@ export default class App extends Component {
   }
 
   toggleMenu = e => {
-    if(this.state.toggle && window.screen.width < 1000){
+    if(this.state.toggle && window.screen.width < 1024){
       $(".custom-nav").animate({
           width: 0,
           left: "-25px"
       });
       this.setState({toggle:false});
-    }else if(!this.state.toggle && window.screen.width < 1000){
+    }else if(!this.state.toggle && window.screen.width < 1024){
       $(".custom-nav").animate({
         width: this.state.boxWidth,
         left: 0,
@@ -688,6 +690,7 @@ export default class App extends Component {
                 <Route path="/vehicle-view/:id" element={<ViewVehicle />} />
                 <Route path="/product-view/:id" element={<ViewProduct />} />
                 <Route path="/service-view/:id" element={<ViewService />} />
+                <Route path="/volunteer-view/:id" element={<ViewVolunteer />} />
                 <Route path="/service-add" element={<AddService />} />
                 <Route path="/vehicle-add" element={<AddVehicle />} />
                 <Route path="/item-view/:id" element={<ViewItem />} />
@@ -700,6 +703,7 @@ export default class App extends Component {
                 <Route path="/add-classified" element={<AddClassified />} />
                 <Route path="/add-volunteer" element={<AddVolunteer />} />
                 <Route path="/event-view/:id" element={<ViewEvent />} />
+                <Route path="/classified-view/:id" element={<ViewClassified />} />
                  {/*<Route path='/trendy' element={<Trendy />} />*/}
                 {/*<Route path="/welcome" component={Welcome} />*/}
               </Route>

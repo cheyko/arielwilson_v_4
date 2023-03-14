@@ -1,63 +1,76 @@
 import withContext from "../../../../withContext"
+import { Link } from "react-router-dom";
 
 
 const ClassifiedItem = props => {
+    
+    const {job} = props;
+
+    const convertDate = (val) => {
+        var result;
+        if (new Date().getDate() == new Date(val).getDate() + 1){
+             result = "Today at";
+        }else{
+            result = new Date(new Date(val).setDate(new Date(val).getDate() + 1)).toDateString();
+        }
+        return result;
+    }
 
     return(
-        <div className="box">
-        <div className="columns">
-            <div className="column is-5">
-                <div className="card-image">
-                    <figure className="image is-4by3">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder" />
-                    </figure>
+        <Link className="service-item" to={`/classified-view/${job.classified_id}`}>
+            <div className="card" style={{fontSize:"large"}}>
+                <div class="media py-1 px-3">
+                    <div class="media-left">
+                        <figure class="image is-96x96">
+                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder"/>
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <b><em>{job.title} </em> </b> 
+                        <p> {job.company} </p>
+                        {/*<p>
+                            <span className="is-medium tag">{job.typeOf}</span>
+                            &nbsp;<span className="is-medium tag" style={{textTransform:"capitalize"}}>{job.metrics}</span>
+                        </p>*/}
+                    </div>
                 </div>
-                <hr className="info-seperator" />
-                <div className="columns">
-                    <div className="column">
-                        <button className="button is-outlined"> Apply !</button>
-                    </div>
-                    <div className="column">
-                        <button className="button is-outlined"> View Company </button>
-                    </div>
+                {/*<div className="card-content py-1 px-3">
+                    <b><em>{job.title} </em> </b> 
+                    <p> {job.company} </p>
+                </div>*/}
+
+                <div className="panel">
+                    <span className="panel-block">
+                        <span className="is-medium tag">{job.typeOf}</span>
+                        &nbsp;<span className="is-medium tag" style={{textTransform:"capitalize"}}>{job.metrics}</span>
+                    </span>
+                    <span className="panel-block is-active">
+                        <span className="panel-icon">
+                            <i className="fas fa-list" aria-hidden="true"></i>
+                        </span>
+                        {job.category}
+                    </span>
+                    <span className="panel-block">
+                        <span className="panel-icon">
+                            <i className="fas fa-map-location-dot" aria-hidden="true"></i>
+                        </span>
+                        <span>{job.location}</span>
+                    </span>
+                    <span className="panel-block">
+                        <span className="panel-icon">
+                            <i className="fas fa-money-bill" aria-hidden="true"></i>
+                        </span>
+                        <span>{job.salary}</span>
+                    </span>
+                    <span className="panel-block">
+                        <span className="panel-icon">
+                            <i className="fas fa-calendar" aria-hidden="true"></i>
+                        </span>
+                        <span>{convertDate(job.end_date)}</span>
+                    </span>
                 </div>
             </div>
-            <div className="column"> 
-                <div className="content">
-                    <b><em>Techinical Support Agent </em> </b> 
-                    <p><small> Ibex</small></p>
-                </div>
-                
-                <div class="content">
-                    <div className="rows">
-                        <div className="row">
-                            <div className="columns">
-                                <b className="column">Full-time </b> 
-                                <small className="column"> Entry Level </small>
-                                <span className="column"> <span className="tag is-success"> $300,000 </span></span>
-                            </div>
-                        </div>
-                        <hr className="info-seperator" />
-                        <div className="row">
-                            <b>Address: </b> <small>10 New Street, Kingston 6.</small>
-                        </div>
-                        <hr className="info-seperator" />
-                        <div className="row">
-                            <b>TimeSpan: </b><time datetime="2016-1-1">19 Dec 2021 - 10 Jan 2022 </time>
-                        </div>
-                        <hr className="info-seperator" />
-                        <div className="row">
-                            <b>Applicants : </b> <small> 1 </small>
-                        </div>
-                        <hr className="info-seperator" />
-                        <div className="row">
-                            <b>Connections : </b> <small> .... </small>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        </div>
-    </div>
+        </Link>
     )
 }
 export default withContext(ClassifiedItem);

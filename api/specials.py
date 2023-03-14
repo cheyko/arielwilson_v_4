@@ -507,7 +507,7 @@ class Classified(db.Model):
     title = db.Column(db.String(255))
     category = db.Column(db.String(80))
     typeOf = db.Column(db.String(80))
-    metrics = db.Column(db.String(31))
+    metrics = db.Column(db.String(31)) #reduce to 10
     location = db.Column(db.String(80))
     salary = db.Column(db.String(31)) 
     company = db.Column(db.String(80))
@@ -521,7 +521,9 @@ class Classified(db.Model):
     questions = db.Column(MutableList.as_mutable(ARRAY(db.String(255)))) 
     responses = db.Column(MutableList.as_mutable(ARRAY(db.String(80)))) #review
     end_date = db.Column(db.Date)
+    is_available = db.Column(db.Boolean, default=True)
     is_visible = db.Column(db.Boolean, default=True)
+
 
     def __init__(self,lister,pree_id,title,description,category,typeOf,metrics,location,salary,company,subtopics,contents,subcontent,qualifications,benefits,skills,questions,responses,end_date):
         self.lister = lister
@@ -555,6 +557,7 @@ class Volunteer(db.Model):
     pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
     title = db.Column(db.String(255))
     category = db.Column(db.String(80))
+    metrics = db.Column(db.String(10))
     venue = db.Column(db.String(80))
     location = db.Column(db.String(255))
     description = db.Column(db.String(2047))
@@ -562,10 +565,11 @@ class Volunteer(db.Model):
     end_date = db.Column(db.Date)
     start_time = db.Column(db.Time)
     end_time = db.Column(db.Time)
-    contributions = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
+    contributions = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    numOfPics = db.Column(db.Integer)
     is_visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self,lister,pree_id,title,category,venue,location,description,start_date,end_date,start_time,end_time,contributions):
+    def __init__(self,lister,pree_id,title,category,venue,location,description,start_date,end_date,start_time,end_time,contributions,metrics, numOfPics):
         self.lister = lister
         self.pree_id = pree_id
         self.title = title
@@ -578,6 +582,8 @@ class Volunteer(db.Model):
         self.start_time = start_time
         self.end_time = end_time
         self.contributions = contributions
+        self.numOfPics = numOfPics
+        self.metrics = metrics
     
     def __repr__(self):
         return '<Volunteer %d title: %r>' %  (self.volunteer_id,self.title)

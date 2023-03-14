@@ -121,3 +121,13 @@ input:checked + .slider .off
   .event-item{
     cursor: pointer;
   }
+
+  .control-card{
+    display: none !important;
+  }
+
+@media screen and (max-width:1023px){
+  .control-card{
+    display: block !important;
+  }
+}

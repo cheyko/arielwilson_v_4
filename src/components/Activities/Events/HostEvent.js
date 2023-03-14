@@ -151,10 +151,10 @@ const HostEvent = props => {
                 formData.append('personnel_ids',person.user_id);
                 formData.append('personnel', personnelList[index]);
             })
-            attractions.forEach((attraction,index) => {
+            attractions.forEach((attraction) => {
                 formData.append('attractions', attraction);
             })
-            photos.forEach( (file,index) => {
+            photos.forEach( (file) => {
                 formData.append('media',file);
             });
             await axios.post('/api/events',formData, 

@@ -18,7 +18,7 @@
     background-color: royalblue !important;
     position: fixed !important;
     padding-inline: 1rem !important;
-    width: -webkit-fill-available !important;
+    width: 73.9% !important;
 }
 
 .navbar-dropdown{
@@ -112,7 +112,7 @@
     margin: 1rem !important;
 }
 
-@media screen and (max-width: 1200px) and (min-width:1000px){
+@media screen and (max-width: 1200px) and (min-width:1023px){
     .control-btn{
         border: none;
         padding: 0px;
@@ -159,9 +159,7 @@
 
     .not-mobile{
         display: block;
-    }
-    
- 
+    } 
 }
 
 @media screen and (min-width:2400px){
@@ -189,7 +187,7 @@
     }
 }
 
-@media screen and (max-width:1000px) and (min-width:770px){
+@media screen and (max-width:1023px) and (min-width:770px){
     .control-btn{
         border: none;
         padding: 5px;

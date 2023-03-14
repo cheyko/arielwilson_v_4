@@ -62,7 +62,6 @@ const AddClassified = props => {
     const [editResponse, setEditResponse] = useState(null);
     const [isEditResponse,setIsEditResponse] = useState(false);
     const [end, setEndDate] = useState(new Date().toISOString().split("T")[0]);
-
     const [responseMsg, setResponseMsg] = useState("");   
 
     const getDateTime = () => {
@@ -89,7 +88,7 @@ const AddClassified = props => {
         setQuestions([]);   setResponsesList([]);   setViewQues(false);
         setResponse("");    setResponses([]); setEditQuestion(null);  
         setIsEditQuestion(false); setEditResponse(null);    setIsEditResponse(false);
-        setEndDate(new Date().toISOString().split("T")[0]); setResponseMsg("");   
+        setEndDate(new Date().toISOString().split("T")[0]); setResponseMsg("");
     }
 
     const saveClassified = async(e) => {
@@ -107,7 +106,7 @@ const AddClassified = props => {
             formData.append('company', company);
             formData.append('salary', salary);
             formData.append('end_date', end);
-            paragraphs.forEach((para,index) => {
+            paragraphs.forEach((para) => {
                 formData.append('description', para);
             });
             contents.forEach((val,index) =>{
@@ -122,13 +121,13 @@ const AddClassified = props => {
                 }
                 //formData.append('subcontent',topicInfos[index]);
             })
-            qualifications.forEach((qual,index) => {
+            qualifications.forEach((qual) => {
                 formData.append('qualifications', qual);
             });
-            skills.forEach((val,index) => {
+            skills.forEach((val) => {
                 formData.append('skills', val);
             });
-            benefits.forEach((val,index) => {
+            benefits.forEach((val) => {
                 formData.append('benefits', val);
             });
             questions.forEach((val, index) => {
@@ -408,6 +407,7 @@ const AddClassified = props => {
                     <button className="button" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> </button>
                     <br />
                     <form>
+                        
                         <div className="field is-horizontal">
                             <div className="field-label is-normal">
                                 <label className="label"> Job Title </label>

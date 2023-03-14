@@ -1,7 +1,7 @@
 import React from 'react';
 import withContext from '../../../withContext';
 import Slider from "react-slick";
-import MeetingItem from "./Meetings/MeetingItem";
+import EventItem from "./EventItem";
 
 const SimilarEvents = (props) => {
     const settingsSlider = {
@@ -53,8 +53,8 @@ const SimilarEvents = (props) => {
     const carousel = matches && matches.length ?
         matches.slice(0,6).map((match, index) => (
             <div onClick={ e => window.scrollTo(0,0)} key={index}>
-                <MeetingItem 
-                    meeting={event}
+                <EventItem 
+                    event={event}
                     key={index}
                 />
             </div>

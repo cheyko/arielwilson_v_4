@@ -22,6 +22,7 @@ def get_tasks():
         result = db.session.query(Task, User, Profile).join(User, User.user_id == Task.is_for).join(Profile, Profile.user_id == Task.is_for).filter(Task.is_visible == True,or_(Task.lister == user_id,Task.is_for == user_id)).order_by(Task.task_id).all()
         tasks = []
         for task in result:
+            #reduce payload
             done_by = {"user_id":task.User.user_id, "firstname":task.User.firstname, "lastname":task.User.lastname, "username":task.User.username, "tagline":task.Profile.tagline, "location":task.Profile.location, "has_dp":task.Profile.has_dp}
             taskObj = {"task_id":task.Task.task_id,"lister":task.Task.lister,"is_for":task.Task.is_for, "done_by":done_by,"title":task.Task.title,"project":task.Task.project,"start_date":str(task.Task.start_date),"end_date":str(task.Task.end_date),"description":task.Task.description,"status":task.Task.status}
             tasks.append(taskObj)
@@ -94,6 +95,7 @@ def get_requests():
         result = Request.query.filter(Request.is_visible == True,or_(Request.lister == user_id,Request.is_for == user_id)).all()
         requests = []
         for aRequest in result:
+            #reduce payload
             lister = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter_by(user_id=aRequest.lister).first()
             listerObj = {"user_id":lister.User.user_id, "firstname":lister.User.firstname, "lastname":lister.User.lastname, "username":lister.User.username, "tagline":lister.Profile.tagline, "location":lister.Profile.location, "has_dp":lister.Profile.has_dp}
             is_for = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter_by(user_id=aRequest.is_for).first()
@@ -145,6 +147,7 @@ def get_logistics():
         result = Logistic.query.filter(Logistic.is_visible == True,or_(Logistic.sender == user_id,Logistic.receiver == user_id)).all()
         logistics = []
         for logistic in result:
+            #reduce payload
             logisticObj = {"logistic_id":logistic.logistic_id,"sender":logistic.sender,"receiver":logistic.receiver,"send_address":logistic.send_address,"recv_address":logistic.recv_address,"date_added":logistic.date_added,"send_date":logistic.send_date,"receive_date":logistic.receive_date,"package_type":logistic.package_type,"status":logistic.status,"description":logistic.description}
             logistics.append(logisticObj)
         return json.dumps(logistics)
@@ -186,6 +189,7 @@ def get_polls():
             else:
                 didVote = False
             #if(check_following(user_id, poll.lister) or poll.lister == user_id):
+            #reduce payload
             lister = {"user_id":poll.User.user_id, "firstname":poll.User.firstname, "lastname":poll.User.lastname, "username":poll.User.username, "tagline":poll.Profile.tagline, "location":poll.Profile.location, "has_dp":poll.Profile.has_dp}
             pollObj = {"poll_id":poll.Poll.poll_id,"lister":lister,"pree_id":poll.Poll.pree_id,"category":poll.Poll.category,"question":poll.Poll.question,"choices":poll.Poll.choices,"results":poll.Poll.results,"votes":poll.Poll.votes,"end_date":str(poll.Poll.end_date),"end_time":str(poll.Poll.end_time), "status" : poll.Poll.status, "did_vote":didVote}
             polls.append(pollObj)
@@ -244,14 +248,7 @@ def delete_poll():
 
 @app.route('/api/events', methods=['GET','POST'])
 def events():
-    if request.method == 'GET':
-        result = Event.query.filter(Event.is_visible == True).all()
-        events = []
-        for event in result:
-            eventObj = {"event_id":event.event_id,"lister":event.lister,"pree_id":event.pree_id,"title":event.title,"host":event.host,"description":event.description,"category":event.category,"typeOf":event.typeOf,"metrics":event.metrics,"venue":event.venue,"where":event.where,"status":event.status,"dates":event.dates,"start_times":event.start_times,"end_times":event.end_times,"tickets":event.tickets,"costs":event.costs,"personnel_ids":event.personnel_ids,"personnel":event.personnel,"attractions":event.attractions, "numOfPics":event.numOfPics}
-            events.append(eventObj)
-        return json.dumps(events)
-    elif request.method == 'POST':
+    if request.method == 'POST':
         result = request.form
         photos = request.files.getlist("media")
         numOfPics = (len(photos))
@@ -289,8 +286,9 @@ def get_events():
         result = db.session.query(Event, User, Profile).join(User, User.user_id == Event.lister).join(Profile, Profile.user_id == Event.lister).filter(Event.is_visible == True, Event.typeOf == typeOf).order_by(Event.event_id.desc()).all()
         events = []
         for event in result:
+            #reduce payload
             lister = {"user_id":event.User.user_id, "firstname":event.User.firstname, "lastname":event.User.lastname, "username":event.User.username, "tagline":event.Profile.tagline, "location":event.Profile.location, "has_dp":event.Profile.has_dp}
-            eventObj = {"event_id":event.Event.event_id,"lister":lister,"pree_id":event.Event.pree_id,"title":event.Event.title,"host":event.Event.host,"description":event.Event.description,"category":event.Event.category,"typeOf":event.Event.typeOf,"metrics":event.Event.metrics,"venue":event.Event.venue,"where":event.Event.where,"status":event.Event.status,"dates":list(map(lambda x: str(x), event.Event.dates)),"start_times":list(map(lambda x: str(x), event.Event.start_times)),"end_times":list(map(lambda x:str(x), event.Event.end_times)),"tickets":event.Event.tickets,"costs":event.Event.costs,"personnel_ids":event.Event.personnel_ids,"personnel":event.Event.personnel,"attractions":event.Event.attractions, "numOfPics":event.Event.numOfPics}
+            eventObj = {"event_id":event.Event.event_id,"lister":lister,"pree_id":event.Event.pree_id,"title":event.Event.title,"host":event.Event.host,"description":event.Event.description,"category":event.Event.category,"typeOf":event.Event.typeOf,"metrics":event.Event.metrics,"venue":event.Event.venue,"where":event.Event.where,"status":event.Event.status,"dates":list(map(lambda x: str(x), event.Event.dates)),"start_times":list(map(lambda x: str(x), event.Event.start_times)),"end_times":list(map(lambda x:str(x), event.Event.end_times)),"tickets":event.Event.tickets,"costs":event.Event.costs,"currencies":event.Event.currencies,"personnel_ids":event.Event.personnel_ids,"personnel":event.Event.personnel,"attractions":event.Event.attractions, "numOfPics":event.Event.numOfPics}
             events.append(eventObj)
         return json.dumps(events)
     return jsonify({"msg":"There was an error somewhere."}), 400
@@ -307,7 +305,7 @@ def get_event():
                 #result = User.query.get(int(i))
                 obj = {"user_id":result.User.user_id, "firstname":result.User.firstname, "lastname":result.User.lastname, "username":result.User.username, "has_dp":result.Profile.has_dp}
                 personnel.append(obj)
-            eventObj = {"event_id":event.event_id,"lister":event.lister,"pree_id":event.pree_id,"title":event.title,"host":event.host,"description":event.description,"category":event.category,"typeOf":event.typeOf,"metrics":event.metrics,"venue":event.venue,"where":event.where,"status":event.status,"dates":list(map(lambda x: str(x), event.dates)),"start_times":list(map(lambda x: str(x), event.start_times)),"end_times":list(map(lambda x:str(x), event.end_times)),"tickets":event.tickets,"costs":event.costs,"personnel":personnel,"personnel_type":event.personnel,"attractions":event.attractions, "numOfPics":event.numOfPics}
+            eventObj = {"event_id":event.event_id,"lister":event.lister,"pree_id":event.pree_id,"title":event.title,"host":event.host,"description":event.description,"category":event.category,"typeOf":event.typeOf,"metrics":event.metrics,"venue":event.venue,"where":event.where,"status":event.status,"dates":list(map(lambda x: str(x), event.dates)),"start_times":list(map(lambda x: str(x), event.start_times)),"end_times":list(map(lambda x:str(x), event.end_times)),"tickets":event.tickets,"costs":event.costs,"currencies":event.currencies,"personnel":personnel,"personnel_type":event.personnel,"attractions":event.attractions, "numOfPics":event.numOfPics}
             return eventObj, 200
         else:
             return {"msg":"event no longer is visible"}, 201
@@ -319,7 +317,8 @@ def classifieds():
         result = Classified.query.filter(Classified.is_visible == True).all()
         classifieds = []
         for job in result:
-            jobObj = {"classified_id":job.classified_id,"lister":job.lister,"pree_id":job.pree_id,"title":job.title,"category":job.category,"typeOf":job.typeOf,"metrics":job.metrics,"location":job.location,"salary":job.salary,"company":job.company,"description":job.description,"subtopics":job.subtopics, "contents":job.contents,"subcontent":job.subcontent,"qualifications":job.qualifications,"benefits":job.benefits,"skills":job.skills,"questions":job.questions,"responses":job.responses,"end_date":job.end_date}
+            #reduce payload
+            jobObj = {"classified_id":job.classified_id,"lister":job.lister,"pree_id":job.pree_id,"title":job.title,"category":job.category,"typeOf":job.typeOf,"metrics":job.metrics,"location":job.location,"salary":job.salary,"company":job.company,"description":job.description,"subtopics":job.subtopics, "contents":job.contents,"subcontent":job.subcontent,"qualifications":job.qualifications,"benefits":job.benefits,"skills":job.skills,"questions":job.questions,"responses":job.responses,"end_date":str(job.end_date)}
             classifieds.append(jobObj)
         return json.dumps(classifieds)
     elif request.method == 'POST':
@@ -370,24 +369,57 @@ def classifieds():
         return jsonify({"msg": "added successfully", "classified_id":newJob.classified_id}), 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
+@app.route('/api/get-classified', methods=['POST'])
+def get_classified():
+    if request.method == 'POST':
+        classified_id = request.json.get('classified_id', None)
+        job = Classified.query.get(classified_id)
+        if job != None and job.is_visible == True:
+            jobObj = {"classified_id":job.classified_id,"lister":job.lister,"pree_id":job.pree_id,"title":job.title,"category":job.category,"typeOf":job.typeOf,"metrics":job.metrics,"location":job.location,"salary":job.salary,"company":job.company,"description":job.description,"subtopics":job.subtopics, "contents":job.contents,"subcontent":job.subcontent,"qualifications":job.qualifications,"benefits":job.benefits,"skills":job.skills,"questions":job.questions,"responses":job.responses,"end_date":str(job.end_date)}
+            return jobObj, 200
+        else:
+            return {"msg":"event no longer is visible"}, 201
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
 @app.route('/api/volunteer', methods=['GET','POST'])
 def volunteer():
     if request.method == 'GET':
         result = Volunteer.query.filter(Volunteer.is_visible == True).all()
         volunteering = []
         for volunteer in result:
-            volunteerObj = {"volunteer_id":volunteer.volunteer_id,"lister":volunteer.lister,"pree_id":volunteer.pree_id,"title":volunteer.title,"category":volunteer.category,"venue":volunteer.venue,"location":volunteer.location,"description":volunteer.description,"start_date":volunteer.start_date,"end_date":volunteer.end_date,"start_time":volunteer.start_time,"end_time":volunteer.end_time,"contributions":volunteer.contributions}
+            volunteerObj = {"volunteer_id":volunteer.volunteer_id,"lister":volunteer.lister,"pree_id":volunteer.pree_id,"title":volunteer.title,"category":volunteer.category,"venue":volunteer.venue,"location":volunteer.location,"description":volunteer.description,"start_date":str(volunteer.start_date),"end_date":str(volunteer.end_date),"start_time":str(volunteer.start_time),"end_time":str(volunteer.end_time),"metrics":volunteer.metrics,"numOfPics":volunteer.numOfPics,"contributions":volunteer.contributions}
             volunteering.append(volunteerObj)
         return json.dumps(volunteering)
     elif request.method == 'POST':
         result = request.form
+        photos = request.files.getlist("media")
+        numOfPics = (len(photos))
         contributions = result.getlist("contributions")
         newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="volunteer")
         db.session.add(newPree)
         db.session.flush()
-        newVolunteer = Volunteer(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"],description=result["description"],category=result["category"],venue=result["venue"],location=result["location"],start_date=result["start_date"],end_date=result["end_date"],start_time=result["start_time"],end_time=result["end_time"],contributions=contributions)
+        newVolunteer = Volunteer(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"],description=result["description"],category=result["category"],venue=result["venue"],location=result["location"],start_date=result["start_date"],end_date=result["end_date"],start_time=result["start_time"],end_time=result["end_time"],contributions=contributions,metrics=result["metrics"],numOfPics=numOfPics)
         db.session.add(newVolunteer)
         db.session.flush()
+        prefix = "volunteer" + str(newVolunteer.volunteer_id)
+        event_folder = app.config['UPLOAD_FOLDER'] + "volunteers/"
+        os.makedirs(event_folder + prefix)   
+        for index, pic in enumerate(photos):
+            filename = prefix + "/" + str(index)
+            #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
+            pic.save(os.path.join(event_folder , filename))
         db.session.commit()
         return jsonify({"msg": "added successfully", "volunteer_id":newVolunteer.volunteer_id}), 200
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
+@app.route('/api/get-volunteer', methods=['POST'])
+def get_volunteer():
+    if request.method == 'POST':
+        volunteer_id = request.json.get('volunteer_id', None)
+        volunteer = Volunteer.query.get(volunteer_id)
+        if volunteer != None and volunteer.is_visible == True:
+            volunteerObj = {"volunteer_id":volunteer.volunteer_id,"lister":volunteer.lister,"pree_id":volunteer.pree_id,"title":volunteer.title,"category":volunteer.category,"venue":volunteer.venue,"location":volunteer.location,"description":volunteer.description,"start_date":str(volunteer.start_date),"end_date":str(volunteer.end_date),"start_time":str(volunteer.start_time),"end_time":str(volunteer.end_time),"metrics":volunteer.metrics,"numOfPics":volunteer.numOfPics,"contributions":volunteer.contributions}
+            return volunteerObj, 200
+        else:
+            return {"msg":"Activity no longer is visible"}, 201
     return jsonify({"msg":"There was an error somewhere."}), 400

@@ -1,10 +1,12 @@
+html{
+  overflow-y: hidden !important;
+}
+
 .hero-contain{
   padding: 3rem !important;
   text-align:left;
   text-justify:inter-word;
 }
-
-
 .tabs-bg {
   background-color: lemonchiffon !important;
   padding: 0.5rem;
@@ -425,7 +427,7 @@ ul.list {
   }
 }
 
-@media screen and (min-width:1000px){
+@media screen and (min-width:1023px){
   .tile-column{
     margin-inline: 0 !important;
   }
@@ -438,7 +440,7 @@ ul.list {
   }
 }
 
-@media screen and (max-width:768px){
+@media screen and (max-width:1023px){
   .tile-column{
     margin-inline: 3rem !important;
   }
@@ -465,7 +467,7 @@ ul.list {
   }*/
 }
 
-@media screen and (max-width:768px) and (min-width:600px){
+@media screen and (max-width:1023px) and (min-width:600px){
   /*.app-container{
     width: 50rem !important;
     padding: 1rem;
@@ -547,6 +549,7 @@ ul.list {
   }
   .display-image-small{
     height:70px;
+    width: 70px;
   }
 }
 

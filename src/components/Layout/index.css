@@ -19,7 +19,7 @@
   }
   
 
-@media screen and (max-width:1000px) and (min-width:770px){
+@media screen and (max-width:1023px) and (min-width:770px){
     #nav-column{
         width: 0 !important;
         position:absolute;
@@ -27,15 +27,15 @@
     }
 }
 
-@media screen and (min-width:1000px){
+@media screen and (min-width:1024px){
     .nav-column{
         width: 25% !important;
     }
 }
 
-@media screen and (max-width:1300px) and (min-width:768px){
+@media screen and (max-width:1300px) and (min-width:1024px){
     .app-container{
-        width: 35rem !important;
+        width: 75% !important;
     }
 }
 

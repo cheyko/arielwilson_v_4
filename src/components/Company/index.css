@@ -1,0 +1,49 @@
+.company-profile {
+    max-height: 100% !important;
+    width: 37%;
+    position: fixed;
+    padding-inline: 1.75rem !important;
+    cursor: pointer;
+    overflow-y: scroll !important;
+}
+
+@media screen and (max-width:1023px) and (min-width:769px){
+    .company-profile {
+        height: auto;
+        width: auto;
+        position: relative;
+    }
+}
+
+@media screen and (max-width:768px) and (min-width:425px){
+
+    .company-profile {
+        height: auto;
+        width: auto;
+        position: relative;
+        margin: 0 auto !important;
+    }
+
+}
+
+@media screen and (max-width:425px) and (min-width:375px){
+
+    .company-profile {
+        height: auto;
+        width: auto;
+        position: relative;
+        margin: 0 auto !important;
+    }
+
+}
+
+@media screen and (max-width:375px){
+
+    .company-profile {
+        height: auto;
+        width: auto;
+        position: relative;
+        margin: 0 auto !important;
+    }
+
+}

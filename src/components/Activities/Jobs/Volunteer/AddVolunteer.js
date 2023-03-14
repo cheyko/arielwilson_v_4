@@ -16,6 +16,7 @@ const AddVolunteer = props => {
     const [start, setStartDate] = useState(new Date().toISOString().split("T")[0]);
     const [description, setDescription] = useState("");
     const [startTime, setStartTime] = useState("00:00");
+    const [metrics, setMetrics] = useState("");
     const [status, setStatus] = useState("On-Schedule");
     const [endTime, setEndTime] = useState("00:00");
     const [end, setEndDate] = useState(new Date().toISOString().split("T")[0]);
@@ -24,7 +25,9 @@ const AddVolunteer = props => {
     const [editContribution, setEditContribution] = useState(null);
     const [isEditContribution, setIsEditContribution] = useState(false);
     const [viewCon, setViewCon] = useState(false);
+    const [photos, setPhotos] = useState([]);
     const [responseMsg, setResponseMsg] = useState("");   
+    const [viewUpload, setViewUpload] = useState("");
 
     const getDateTime = () => {
         const original = new Date();
@@ -50,7 +53,9 @@ const AddVolunteer = props => {
         setEditContribution(null);
         setIsEditContribution(false);
         setViewCon(false);
+        setPhotos([]);
         setResponseMsg("");
+        setMetrics("");
     }
 
     const saveVolunteer = async(e) => {
@@ -62,6 +67,7 @@ const AddVolunteer = props => {
             formData.append('user_id',user_id);
             formData.append('title',title);
             formData.append('category',category);
+            formData.append('metrics', metrics);
             formData.append('venue',venue);
             formData.append('location', location);
             formData.append('start_date', start);
@@ -69,8 +75,11 @@ const AddVolunteer = props => {
             formData.append('start_time', startTime);
             formData.append('end_time', endTime);
             formData.append('description', description);
-            contributions.forEach((val,index) => {
+            contributions.forEach((val) => {
                 formData.append('contributions', val);
+            });
+            photos.forEach( (file) => {
+                formData.append('media',file);
             });
             await axios.post('/api/volunteer',formData, 
             {
@@ -83,6 +92,7 @@ const AddVolunteer = props => {
                         const volunteer_id = result.volunteer_id;
                         clearFunc();
                         setResponseMsg("Volunteering activity was saved.");
+                        setViewUpload('/volunteer-view/'+volunteer_id);
                     }else{
                         setResponseMsg("Volunteering activity was not saved, please try again. Contact us for suppport if problem persist.");
                     }
@@ -98,6 +108,11 @@ const AddVolunteer = props => {
     }
 
     //const []
+    
+    const handlePhotos = e => {
+        setPhotos(Array.from(e.target.files));
+    }
+
     const addChoice = () => {
         setContributions([...contributions, contribution]);
         setContribution("");
@@ -138,9 +153,56 @@ const AddVolunteer = props => {
                     <button className="button" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> </button>
                     <br />
                     <form>
+                    <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label"> Photos: </label>
+                            </div>
+                            <div className="field-body">
+                                {/*<input 
+                                name="photos"
+                                type="file"
+                                multiple
+                                onChange={e => handlePhotos(e)}
+                                />*/}
+                                <div className="file has-name is-boxed">
+                                    <label className="file-label">
+                                        <input 
+                                        className="file-input"
+                                            name="photos"
+                                            type="file"
+                                            multiple
+                                            onChange={e => handlePhotos(e)}
+                                        />
+                                        <span className="file-cta">
+                                        <span className="file-icon">
+                                            <i className="fas fa-upload"></i>
+                                        </span>
+                                        <span className="file-label">
+                                            Choose a file…
+                                        </span>
+                                        </span>
+                                        <span className="file-name">
+                                            {photos.length} picture(s) selected
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                        </div>
                         <div className="field is-horizontal">
                             <div className="field-label is-normal"></div>
-                            <div className="field-body"></div>
+                            <div className="field-body">
+                                <div className="columns is-multiline is-mobile">
+                                    {photos.map((photo,index) => 
+                                        <div className="column is-half-tablet" key={index}>
+                                            <span> {index + 1} </span>
+                                            <br />
+                                            <img className="is-256x256" src={URL.createObjectURL(photo)} />
+                                        </div>
+                                    )}
+
+                                </div>
+                            </div>
                         </div>
                         <div className="field is-horizontal">
                             <div className="field-label is-normal">
@@ -177,6 +239,26 @@ const AddVolunteer = props => {
                             </div>
                         </div>
                         <div className="field is-horizontal">
+                            <div className="field-label">
+                                <label className="label"> Metrics </label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <label className="radio">
+                                            <input type="radio" name="metrics-checkbox" onChange={e => setMetrics(e.target.value)} value="remote" />
+                                            Remote
+                                        </label>
+                                        <label className="radio">
+                                            <input type="radio" name="metrics-checkbox" onChange={e => setMetrics(e.target.value)} value="on-site" />
+                                            On-Site
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="field is-horizontal">
                             <div className="field-label is-normal">
                                 <label className="label">Venue</label>
                             </div>
@@ -189,6 +271,7 @@ const AddVolunteer = props => {
                                     onChange={e => setVenue(e.target.value)} />
                             </div>
                         </div>
+                        
 
                         <div className="field is-horizontal">
                             <div className="field-label is-normal">
@@ -333,6 +416,11 @@ const AddVolunteer = props => {
                             <div className="field-label is-normal"></div>
                             <div className="field-body">
                                 <span>{responseMsg}</span>
+                                {viewUpload !== "" &&
+                                    <p>
+                                        <button className="button is-link" onClick={() => navigate(viewUpload)}>View Upload</button>
+                                    </p>
+                                }
                             </div>
                         </div>
                         

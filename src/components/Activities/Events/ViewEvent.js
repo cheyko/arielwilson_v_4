@@ -45,13 +45,13 @@ const ViewEvent = props => {
     return (
         <div className="hero">
             {event ?
-            <div className="hero-container content">
+            <div className="hero-container">
                 <div className="event-content">
                     <div className="columns no-padding no-margin">
                         <div className="leftContent column no-padding no-margin">
                             <ImagesView thePics={thePics} />
                         </div>
-                        <div className="rightContent column">
+                        <div className="rightContent column content">
                             <EventDetails event={event} />
                             <hr />
                             <SimilarEvents event={event} />

@@ -3,7 +3,7 @@ import withContext from "../../../withContext";
 import Applications from './Applications';
 import Assignments from './Assignments';
 import Classifieds from './Classifieds';
-import Volunteer from './Volunteer/Volunteer';
+import Volunteer from './Volunteer';
 
 const Jobs = props => {
 
@@ -13,37 +13,27 @@ const Jobs = props => {
         <div>
             <div className="hero-container">
                 <article className="box">
-                    <div className="message">
-                        <div className="message-header">
-                            {subSection.toUpperCase()}
+                        
+                    {subSection === 'classifieds' && 
+                        <div className="classifieds-div">
+                            <Classifieds />
                         </div>
-                        <div className="message-body">
-                            {subSection === 'classifieds' && 
-                                <div className="classifieds-div">
-                                    <Classifieds />
-                                    <h1> Classifieds Section </h1> 
-                                </div>
-                            }
-                            {subSection === 'applications' &&
-                                <div className="applications-div">
-                                    <Applications />
-                                    <h1> Applications Section </h1> 
-                                </div>
-                            }
-                            {subSection === 'assignments' &&
-                                <div className="assigments-div">
-                                    <Assignments />
-                                    <h1> Assignments Section </h1> 
-                                </div>
-                            }
-                            {subSection === 'volunteer' &&
-                                <div className="volunteer-div">
-                                    <Volunteer />
-                                    <h1> Volunteer Section </h1> 
-                                </div>
-                            }
+                    }
+                    {subSection === 'applications' &&
+                        <div className="applications-div">
+                            <Applications />
                         </div>
-                    </div>
+                    }
+                    {subSection === 'assignments' &&
+                        <div className="assigments-div">
+                            <Assignments />
+                        </div>
+                    }
+                    {subSection === 'volunteer' &&
+                        <div className="volunteer-div">
+                            <Volunteer />
+                        </div>
+                    }
                 </article>
             </div>    
         </div>

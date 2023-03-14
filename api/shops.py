@@ -240,33 +240,6 @@ def get_service():
 
 ## Production listings
 
-@app.route('/api/test-function', methods=['POST'])
-def test_func():
-    if request.method == 'POST':
-        result = request.form
-        choices = result["choices"].split(',')
-        test = request.form.getlist("choices")
-        zeros = list(map(lambda x: 0, test))
-        print(zeros)
-        print(test)
-        print(result["choices"])
-        print(choices)
-        print(choices[0])
-        timeobj = datetime.time
-        print(timeobj)
-        print(time.time())
-        return {"msg":"procedures sent","poll_id":1,"time":str(timeobj)}, 200
-    return jsonify({"msg":"There was an error somewhere."}), 400
-
-@app.route('/api/test-function2', methods=['POST'])
-def test_func2():
-    if request.method == 'POST':
-        input_id = request.json.get('input_id', None)
-        job = Classified.query.filter_by(classified_id=input_id).first()
-        jobObj = {"classified_id":job.classified_id,"lister":job.lister,"pree_id":job.pree_id,"title":job.title,"category":job.category,"typeOf":job.typeOf,"metrics":job.metrics,"location":job.location,"salary":job.salary,"company":job.company,"description":job.description,"subtopics":job.subtopics,"subcontent":job.subcontent,"qualifications":job.qualifications,"benefits":job.benefits,"skills":job.skills,"questions":job.questions,"responses":job.responses,"end_date":job.end_date}
-        return {"msg":"procedures sent","classified":jobObj}, 200
-    return jsonify({"msg":"There was an error somewhere."}), 400
-
 """@app.route('/api/listings', methods=['GET', 'POST'])
 def listings():
     if request.method == 'GET':

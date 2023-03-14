@@ -12,7 +12,7 @@ const Item = props => {
         <Link onClick={localStorage.setItem("item", JSON.stringify(item))} className="service-item" to={`/item-view/${item.item_id}`}>
           <div className="card-content">
               
-              <div className="content">
+              <div className="content market-title">
                 <b style={{ fontStyle:"italic" }}>
                   {item.name}
                 </b>

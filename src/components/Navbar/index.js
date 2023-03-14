@@ -205,7 +205,7 @@ const Navbar = props => {
     },[gotMedia, window.location.href, clicked, props.context.menuChoice, loadMainMedia]);
 
     return(
-        <div className="custom-nav" id="custom-nav">
+        <div className="custom-nav has-text-centered" id="custom-nav">
             <div className="nav-container">
                 <div className="navbar-header">
                     <div className="columns no-padding no-margin">
