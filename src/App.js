@@ -660,7 +660,7 @@ export default class App extends Component {
                 {/*<Route path="/home" element={<Homepage />} />*/}
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/audios" element={<Audios />} />
-                <Route path="/audios/stereo" element={<Audios />} />
+                {/*<Route path="/audios/stereo" element={<Audios />} />*/}
                 <Route path="/images" element={<Images />} />
                 {/*<Route path="/follower" component={Follower} />
                 <Route path="/following" component={Following} />*/}
@@ -707,6 +707,7 @@ export default class App extends Component {
                  {/*<Route path='/trendy' element={<Trendy />} />*/}
                 {/*<Route path="/welcome" component={Welcome} />*/}
               </Route>
+              <Route path='/about/test' element={<Test />} />
               {/*advertising components*/}
               {/* about W@H-GW@@N */}
               {/* about Trendy */}

@@ -1,11 +1,11 @@
+.App{
+    overflow-y: hidden !important;
+}
+
 .main-container{
     background-color:wheat;
     width: 100% !important;
 }
-
-.App {
-    text-align: center !important;
-  }
 
 #app-container{
     height: 101.5vh !important;
