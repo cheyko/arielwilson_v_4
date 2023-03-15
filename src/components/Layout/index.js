@@ -7,12 +7,19 @@ import Homepage from '../Homepage';
 import "./index.css";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';;
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useEffect } from 'react';
+
 
 const Layout = props => {
 
+  /*useEffect(() => {
+      document.getElementsByTagName('html')[0].style.overflowY = "scroll";
+  
+  },[]);*/
+
     return(
-        <div className='App'>
+        <>
         {props.context.ready ? (           
                 <div className="hero main-container">
                   <div className="columns is-mobile is-multiline no-padding no-margin">
@@ -44,7 +51,7 @@ const Layout = props => {
                   </div>
                 )                
                 )}
-        </div>
+        </>
     );
 
 }

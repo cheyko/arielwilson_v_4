@@ -1,3 +1,7 @@
+html{
+  overflow-y: scroll !important;
+}
+
 .hero-contain{
   padding: 3rem !important;
   text-align:left;
@@ -195,8 +199,8 @@
 
 .display-image-small{
   border-radius:50%;
-  height:100px;
-  width:100px;
+  height:64px;
+  width:64px;
   object-fit:cover;
   margin: 0 auto;
 }
@@ -453,21 +457,9 @@ ul.list {
     padding: 1rem !important;
   }
 
-  /*.app-container{
-    width: 100% !important;
-    padding: 1rem;
-  }*/
-
-  /*.special-header .tag{
-    font-size: 26px !important;
-  }*/
 }
 
 @media screen and (max-width:1023px) and (min-width:600px){
-  /*.app-container{
-    width: 50rem !important;
-    padding: 1rem;
-  }*/
 
   .column.is-half-tablet {
     width: 50% !important;
@@ -490,14 +482,6 @@ ul.list {
 }
 
 @media screen and (max-width:424px) and (min-width:375px){
-  /*.app-container{
-    width: 27.5rem !important;
-    padding: 1rem;
-  }*/
-
-  /*.pree-item .is-fullwidth{
-    width: auto !important;
-  }*/
 
   .mobile-menu{
     display: block !important;
@@ -511,21 +495,9 @@ ul.list {
   .slick-wrapper{
     max-width: 18rem;
   }
-
-  .display-image-small{
-    height:70px;
-  }
 }
 
 @media screen and (max-width:375px){
-  /*.app-container{
-    width: 25rem !important;
-    padding: 1rem;
-  }*/
-
-  /*.pree-item .is-fullwidth{
-    width: auto !important;
-  }*/
 
   .mobile-menu{
     display: block !important;
@@ -550,9 +522,6 @@ ul.list {
 }
 
 @media screen and (max-width:320px){
-  /*.mobile-menu{
-    width: 100% !important;
-  }*/
 
   .slick-wrapper{
     max-width: 16rem !important;

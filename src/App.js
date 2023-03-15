@@ -607,13 +607,13 @@ export default class App extends Component {
   }
 
   toggleMenu = e => {
-    if(this.state.toggle && window.screen.width < 1024){
+    if(this.state.toggle && window.innerWidth < 1024){
       $(".custom-nav").animate({
           width: 0,
           left: "-25px"
       });
       this.setState({toggle:false});
-    }else if(!this.state.toggle && window.screen.width < 1024){
+    }else if(!this.state.toggle && window.innerWidth < 1024){
       $(".custom-nav").animate({
         width: this.state.boxWidth,
         left: 0,

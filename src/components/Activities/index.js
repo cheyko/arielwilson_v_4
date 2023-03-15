@@ -32,12 +32,11 @@ const Activities = props => {
                             <h1 className="title" style={{fontSize:"1rem"}}><b onClick={e => {setSection('schedule'); toggleMenu(e);}}>Activities </b></h1>
                         </span>
 
-                        <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
-                        
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <small>sections</small>
+                        <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>                    
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <small>sections</small>
                         </span>
                     </div>
 

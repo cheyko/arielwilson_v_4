@@ -8,7 +8,7 @@
     box-sizing: border-box !important;
     display: flex ;
     flex-direction: column !important;
-    overflow: hidden;
+    overflow-x: hidden;
     max-height: inherit !important;
     padding: 0.5rem;
 }
@@ -18,7 +18,7 @@
     background-color: royalblue !important;
     position: fixed !important;
     padding-inline: 1rem !important;
-    width: 73.9% !important;
+    width: 75% !important;
 }
 
 .navbar-dropdown{
@@ -207,7 +207,6 @@
     .navbar{    
         margin-top: 3.5rem !important;
         width: 100% !important;
-        
     }
     .control-btn svg{
         font-size: 3em;

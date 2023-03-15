@@ -5,22 +5,25 @@ h1 {
 .timeline-container{
     padding: 0 !important;
     overflow-x: auto !important;
-    margin: 0 auto!important;
+    overflow-y: hidden !important;
+    margin: 0 auto !important;
+    width: 100% !important;
 }
+.live-prees .column{
+    flex-grow: 0 !important;
+}
+
+.live-prees .column image{
+    margin: 0 auto !important;
+}
+
 .timeline-box{
-    padding: 1rem;
+    padding-inline: 1rem;
 }
+
 .exclusive-content{
     margin-top: 1rem;
     padding: 1rem;
-}
-
-.live-dps{
-    padding: 1rem;
-}
-
-.a-live{
-    margin: 0 auto !important;
 }
 
 .image-upload>input {
@@ -85,10 +88,6 @@ h1 {
     background-color: tan;
     padding: 1rem;
 }
-
-/*.image-container, .audio-container, .video-container, .quote-container{
-    border: solid black 2px;
-}*/
 
 /* return for future attempt at styling different media files */
 .audio-container{
@@ -209,14 +208,13 @@ padding-top: 60px !important;
     padding-block: 0.5rem !important;
 }
 
-.th-divs{
+/*.th-divs{
     display: flex;
 }
 
 .th-div{
-    margin-inline : 1rem;
-    width: 33%;
-}
+    width: auto;
+}*/
 
 @media screen and (max-width:1300px) and (min-width:1024px){
     /*.timeline-container{
@@ -289,19 +287,12 @@ padding-top: 60px !important;
     }
     .pree-item{
         width: -webkit-fill-available !important;
+        margin-inline: 5px !important;
         /*font-size: 25px !important;*/
-    }
-    .th-div{
-        margin-inline: 10px;
-        width: auto;
     }
 }
 
 @media screen and (max-width:375px){
-    /*.display-pic{
-        height: 10rem !important;
-        width: 10rem !important;
-    }*/
     .exclusive-content{
         margin-top: 4rem;
         padding: 0;
@@ -315,6 +306,7 @@ padding-top: 60px !important;
     }*/
     .pree-item{
         width: -webkit-fill-available !important;
+        margin-inline: 5px !important;
         /*font-size: 30px !important;*/
     }
 
@@ -327,10 +319,6 @@ padding-top: 60px !important;
     }
     .reaction-txt{
         display: none !important;
-    }
-    .th-div{
-        margin-inline : 0rem;
-        width: auto;
     }
 }
 

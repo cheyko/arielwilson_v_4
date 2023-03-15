@@ -1,22 +1,16 @@
-.App{
-    overflow-y: hidden !important;
-}
-
 .main-container{
     background-color:wheat;
     width: 100% !important;
 }
 
-#app-container{
-    height: 101.5vh !important;
-    overflow-y: scroll;
-    padding-left: 0;
-}
-
 .app-container{
     background-color:wheat;
-    width: max-content !important;
-  }
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    height: 100% !important;
+    min-height: 100vh !important;
+    padding-left: 0;
+}
   
 
 @media screen and (max-width:1023px) and (min-width:770px){
@@ -47,9 +41,3 @@
         max-width: 75% !important;
     }
 }
-
-/*@media screen and (max-width:1000px) {
-    #app-container{
-        padding-left: 0.5rem !important;
-    }
-}*/

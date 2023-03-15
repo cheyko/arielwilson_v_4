@@ -25,9 +25,9 @@ const PreeHeader = props => {
         }else if (seconds > 5 && seconds < 60){
             answer = Math.round(seconds) + " secs ago";
         }else if(seconds > 60 && seconds < 3600){
-            answer = Math.round(seconds / 60) + (Math.round(seconds / 60) > 1 ? "mins ago" : "min ago");
+            answer = Math.round(seconds / 60) + (Math.round(seconds / 60) > 1 ? "mins" : "min");
         }else if(seconds > 3600 && seconds < 86400){
-            answer = Math.round(seconds / 3600) + ( Math.round(seconds / 3600) > 1 ?  "hrs ago" : "hr ago" );
+            answer = Math.round(seconds / 3600) + ( Math.round(seconds / 3600) > 1 ?  "hrs" : "hr" );
         }else{
             answer = months[before.getMonth()] + " " + before.getDate() + " at " + getFullTime(before); 
         }
@@ -46,22 +46,22 @@ const PreeHeader = props => {
     }
     
     return(
-        <div className="message-header">
-            <div className="th-divs has-text-centered is-fullwidth is-multiline is-mobile">
-                <div className="th-div">
+        <div className="message-header p-1">
+            <div className="columns has-text-centered p-0 m-0 is-mobile is-fullwidth">
+                <div className="column p-0 is-one-quarter">
                     <Link to={`/view-user-profile/${aPree.user.user_id}`}>
-                        <figure className="display-figure">
+                        <span className="display-figure">
                             <img alt="display" className="display-image-small" src={props.imgView} />
-                        </figure>
+                        </span>
                     </Link>
                 </div>
-                <div className="th-div">
+                <div className="column p-0">
                     <Link to={`/view-user-profile/${aPree.user.user_id}`}>
                         <b> @{aPree.user.username} </b>
                         <b> Rank </b>
                     </Link>
                 </div>
-                <div className="th-div">
+                <div className="column p-0 is-one-quarter">
                     <b> {formatTime(aPree.date_added)} </b>
                 </div>
                 

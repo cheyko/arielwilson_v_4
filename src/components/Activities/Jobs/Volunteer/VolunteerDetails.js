@@ -20,8 +20,8 @@ const VolunteerDetails = props => {
     }
 
     return(
-        <div className="card">
-            <div className="job-heading subtitle">
+        <div className="box">
+            <div className="activity-heading subtitle">
                 <span className="tag is-large is-info">{activity.category}</span>
                 <strong style={{textDecoration:"underline"}}>
                         <h3><b style={{ textTransform: "capitalize" }}>{activity.title}</b></h3>
@@ -36,7 +36,7 @@ const VolunteerDetails = props => {
                 </div>
             </div>
             
-            <div id="first-content" className="content px-4">
+            <div id="first-content" className="content">
                 <h5>
                     <i className="fas fa-globe" aria-hidden="true"></i>
                     {" "}{activity.location}
@@ -51,7 +51,7 @@ const VolunteerDetails = props => {
                     {" "}{convertTime(activity.start_time)} - {convertTime(activity.end_time)}
                 </h5>         
             </div>
-            <div className="content px-4">
+            <div className="content">
                 <div className="descript">
                     <div className="has-text-centered"><b><h3 className="title">DESCRIPTION</h3></b></div>
                     <p>

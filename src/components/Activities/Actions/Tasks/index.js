@@ -139,7 +139,7 @@ const Tasks = props => {
                 <div className="columns is-multiline is-mobile">
                     {slice && slice.length > 0 ? (
                         slice.map((task, index) => (
-                            <div key={index} className="column is-half-desktop is-full-mobile">
+                            <div key={index} className="column is-half-desktop is-half-tablet is-full-mobile">
                                 <TaskItem
                                     task={task}
                                     key={index}

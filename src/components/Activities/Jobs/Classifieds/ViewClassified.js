@@ -35,7 +35,10 @@ const ViewClassified = (props) => {
            setShow('job');
         }
         window.addEventListener('resize', updateSize);
-        
+        /*document.getElementsByTagName('html')[0].style.overflowY = "hidden";
+        if (document.getElementById("job-content")){
+            document.getElementById("job-content").style.overflowY = "scroll";
+        }*/
 
     }, [classified, window.screen.width]);
 
@@ -51,7 +54,7 @@ const ViewClassified = (props) => {
         <div className="hero">
             {classified ?
             <div className="hero-container">
-                <div className="job-content">
+                <div id="job-content" className="job-content">
                     <div className="control-card card job-controls">
                         <div className="card-content columns is-mobile p-0 m-0">
                             <button className="column is-2 button" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i>  </button>
@@ -71,7 +74,7 @@ const ViewClassified = (props) => {
                             </div>
                         }
                         {show !== "company" &&
-                            <div id="job" className="rightContent column p-0 m-0">
+                            <div id="job" className="rightContent column">
                                 <ClassifiedDetails classified={classified} />
                                 <hr />
                                 <SimilarClassifieds classified={classified} />

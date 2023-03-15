@@ -10,7 +10,7 @@
 
 # production
 /node_modules
-/api/venv
+/api/venv/
 
 # misc
 .DS_Store

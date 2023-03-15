@@ -30,7 +30,7 @@
     width: 17.5rem;
     position: fixed !important;
     z-index: 4;
-    right:1px;
+    right:15px;
 }
 
 #cart, .cart-body{
@@ -38,6 +38,10 @@
     width: inherit !important;
     background-color: rgb(255,255,255) !important;
     display: block !important;
+}
+
+.react-tabs__tab-list {
+    margin: 0 !important;
 }
 
 /*.self-column{
@@ -144,7 +148,7 @@
     margin: 0.5rem;
 }
 
-.listing-card, .vehicle-card, .product-card, .service-card, .item-card {
+.shops-body .listing-card, .shops-body .vehicle-card, .shops-body .product-card, .shops-body .service-card, .shops-body .item-card {
     margin-inline: 5px !important;
     height: 100% !important;
 }

@@ -42,6 +42,7 @@ const ViewVolunteer = props => {
                 }
             });
         }
+        //document.getElementsByTagName('html')[0].style.overflowY = "scroll";
 
     }, [activity]);
 
@@ -49,12 +50,12 @@ const ViewVolunteer = props => {
         <div className="hero">
             {activity ?
             <div className="hero-container">
-                <div className="event-content">
+                <div className="job-content">
                     <div className="columns no-padding no-margin">
                         <div className="leftContent column no-padding no-margin">
                             <ImagesView thePics={thePics} />
                         </div>
-                        <div className="rightContent column content">
+                        <div className="rightContent column">
                             <VolunteerDetails activity={activity} />
                             <hr />
                             <SimilarVolunteers activity={activity} />

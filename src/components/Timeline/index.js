@@ -52,11 +52,15 @@ const Timeline = props => {
     },[props.context.user]);*/
 
     const handleScroll = e => {
+        //let page = document.getElementById("app-container");
         // Get the make-pree btn
         let makePree = document.getElementById("make-pree");
-
         // Get the sort-pree btn
         let filterPrees = document.getElementById("filter-prees");
+        
+        //console.log(page.pageYOffset);
+        //console.log(makePree.offsetTop);
+        //console.log(window.pageYOffset);
         
         if (makePree !== null && filterPrees !== null){
 
@@ -123,6 +127,7 @@ const Timeline = props => {
     }
 
     useEffect( () => {
+        //document.getElementById("app-container").addEventListener('scroll', e => handleScroll(e));
         window.addEventListener('scroll', e => handleScroll(e));
         /*if (!gotMedia){
             loadMainMedia();
@@ -165,13 +170,13 @@ const Timeline = props => {
     return (
         <div id="timeline-div" className="hero">
             <div className="hero-container">
-                <div className="box timeline-container">
-                    <div className="columns live-dps is-mobile">    
+                <div className="box timeline-container live-prees">
+                    <div className="columns is-mobile p-0 m-0">    
                         {[0,1,2,3,4,5,6,7,8,9,10,11].map( (item,index) => (
-                            <div key={index} className="a-live">
-                                <figure className="display-pic image is-128x128">
+                            <div key={index} className="column px-0 py-1 mx-1 my-1">
+                                <span className="image is-64x64">
                                     <img className="is-rounded" alt="display" src={process.env.PUBLIC_URL + "/images/default-dp.jpeg"} />
-                                </figure>
+                                </span>
                             </div>
                         ))}                             
                     </div>

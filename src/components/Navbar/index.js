@@ -202,6 +202,9 @@ const Navbar = props => {
         if(selection !== props.context.menuChoice){
             activate(props.context.menuChoice);
         }
+        
+        //document.getElementsByTagName('html')[0].style.overflowY = "scroll";
+
     },[gotMedia, window.location.href, clicked, props.context.menuChoice, loadMainMedia]);
 
     return(

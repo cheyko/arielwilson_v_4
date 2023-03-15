@@ -14,7 +14,7 @@ const ClassifiedDetails = props => {
     }
     
     return(
-        <div className="card">
+        <div className="box">
             <div className="job-heading subtitle">
                 <span className="tag is-large is-info">{classified.category}</span>
                 <strong style={{textDecoration:"underline"}}>
@@ -31,7 +31,7 @@ const ClassifiedDetails = props => {
                 </div>
             </div>
             
-            <div id="first-content" className="content px-4">
+            <div id="first-content" className="content">
                 <h5>
                     <i className="fas fa-globe" aria-hidden="true"></i>
                     {" "}{classified.location}
@@ -45,7 +45,7 @@ const ClassifiedDetails = props => {
                     {" "}{convertDate(classified.end_date)}
                 </h5>           
             </div>
-            <div className="content px-4">
+            <div className="content">
                 <div className="descript">
                     <div className="has-text-centered"><b><h3 className="title">DESCRIPTION</h3></b></div>
                     {classified.description.map((para,idx) =>

@@ -74,7 +74,7 @@ const CompanyProfile = props => {
             <div className='has-text-centered'>
               <b>{company}</b>
             </div>
-            <div> 
+            <div className='has-text-centered'> 
               <video className='slick-slide-video customSlide'controls>
                   <source src={thePics[3]} type="video/mp4"/>
               </video>
