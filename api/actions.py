@@ -142,7 +142,7 @@ def see_the_pree():
                     attachment =  {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics, "time_contingency" : service.time_contingency, "price_contingency" : service.price_contingency, "requirements" : service.requirements, "address":service.address}
                 elif pree.pree_type == 'poll':
                     #poll = Poll.query.filter_by(pree_id = pree.pree_id).first()
-                    poll = db.session.query(Poll, User, Profile, Vote).join(User, User.user_id == Poll.lister).join(Profile, Profile.user_id == Poll.lister).join(Vote, Vote.poll_id == Poll.poll_id, isouter=True).filter(Poll.is_visible == True, Poll.pree_id == pree.pree_id).first()
+                    poll = db.session.query(Poll, User, Profile, Vote).join(User, User.user_id == Poll.lister).join(Profile, Profile.user_id == Poll.lister).join(Vote, (Vote.poll_id == Poll.poll_id) & (Vote.user_id == user_id), isouter=True).filter(Poll.is_visible == True, Poll.pree_id == pree.pree_id).first()
                     print(poll)
                     #reduce return object values
                     if (poll.Vote == None):

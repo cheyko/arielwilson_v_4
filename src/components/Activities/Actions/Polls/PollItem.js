@@ -89,6 +89,7 @@ const PollItem = props => {
         return (poll_end.getTime() > now.getTime());
     }
 
+    console.log(poll);
     return(
         <div className="card">
             <header className="card-header">
