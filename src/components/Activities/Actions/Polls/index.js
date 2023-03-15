@@ -81,7 +81,7 @@ const Polls = props => {
                 <div className="panel-heading">
                     Polls
                     <div className="is-pulled-right"><button onClick={e => setShowFilter(!showFilter)} className="button">Filter</button></div>
-                    <div className="is-pulled-right"><AddPoll /></div>
+                    <div className="is-pulled-right"><AddPoll setGotPolls={setGotPolls}/></div>
                 </div>
                 {showFilter && 
                     <>
@@ -147,6 +147,7 @@ const Polls = props => {
                                     poll={poll}
                                     key={index}
                                     setGotPolls={setGotPolls}
+                                    page={"list"}
                                 />
                             </div>
                         ))

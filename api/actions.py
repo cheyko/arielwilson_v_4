@@ -9,7 +9,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from flask import request, jsonify
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree, Approvals, Media, Quote, Exclusive, ExclusiveSale, Subscriber, Subscription, GroupPree, Group
-from api.specials import Preepedia, Biography, Product, Listing, Vehicle, Service, Item, Event, Classified, Volunteer, Poll
+from api.specials import Preepedia, Biography, Product, Listing, Vehicle, Service, Item, Event, Classified, Volunteer, Poll, Vote
 from api.relations import check_follower, check_following
 
 ###############-----actions.py----##############
@@ -141,13 +141,21 @@ def see_the_pree():
                     #reduce return object values
                     attachment =  {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics, "time_contingency" : service.time_contingency, "price_contingency" : service.price_contingency, "requirements" : service.requirements, "address":service.address}
                 elif pree.pree_type == 'poll':
-                    poll = Poll.query.filter_by(pree_id = pree.pree_id).first()
+                    #poll = Poll.query.filter_by(pree_id = pree.pree_id).first()
+                    poll = db.session.query(Poll, User, Profile, Vote).join(User, User.user_id == Poll.lister).join(Profile, Profile.user_id == Poll.lister).join(Vote, Vote.poll_id == Poll.poll_id, isouter=True).filter(Poll.is_visible == True, Poll.pree_id == pree.pree_id).first()
+                    print(poll)
                     #reduce return object values
-                    attachment =  {"poll_id":poll.poll_id,"lister":poll.lister,"pree_id":poll.pree_id,"question":poll.question,"choices":poll.choices,"results":poll.results,"votes":poll.votes,"end_date":str(poll.end_date),"end_time":str(poll.end_time)}
+                    if (poll.Vote == None):
+                        didVote = False
+                    else:
+                        didVote = True
+                    lister = {"user_id":poll.User.user_id, "firstname":poll.User.firstname, "lastname":poll.User.lastname, "username":poll.User.username, "tagline":poll.Profile.tagline, "location":poll.Profile.location, "has_dp":poll.Profile.has_dp}
+                    attachment = {"poll_id":poll.Poll.poll_id,"lister":lister,"pree_id":poll.Poll.pree_id,"category":poll.Poll.category,"question":poll.Poll.question,"choices":poll.Poll.choices,"results":poll.Poll.results,"votes":poll.Poll.votes,"end_date":str(poll.Poll.end_date),"end_time":str(poll.Poll.end_time), "status" : poll.Poll.status, "did_vote":didVote}
+                    #attachment =  {"poll_id":poll.poll_id,"lister":poll.lister,"pree_id":poll.pree_id,"question":poll.question,"choices":poll.choices,"results":poll.results,"votes":poll.votes,"end_date":str(poll.end_date),"end_time":str(poll.end_time)}
                 elif pree.is_media and pree.pree_type == 'event':
                     event = Event.query.filter_by(pree_id = pree.pree_id).first()
                     #reduce return object values
-                    attachment =  {"event_id":event.event_id,"lister":event.lister,"pree_id":event.pree_id,"title":event.title,"host":event.host,"description":event.description,"category":event.category,"typeOf":event.typeOf,"metrics":event.metrics,"venue":event.venue,"where":event.where,"status":event.status,"dates":str(event.dates),"start_times":str(event.start_times),"end_times":str(event.end_times),"tickets":event.tickets,"costs":event.costs,"personnel_ids":event.personnel_ids,"personnel":event.personnel,"attractions":event.attractions, "numOfPics":event.numOfPics}
+                    attachment =  {"event_id":event.event_id,"lister":event.lister,"pree_id":event.pree_id,"title":event.title,"host":event.host,"category":event.category,"typeOf":event.typeOf,"metrics":event.metrics,"venue":event.venue,"where":event.where,"status":event.status,"dates":list(map(lambda x: str(x), event.dates)),"start_times":list(map(lambda x: str(x), event.start_times)),"end_times":list(map(lambda x:str(x), event.end_times)),"tickets":event.tickets,"costs":event.costs,"currencies":event.currencies, "numOfPics":event.numOfPics}
                 elif pree.is_media and pree.pree_type == 'classified':
                     job = Classified.query.filter_by(pree_id = pree.pree_id).first()
                     #reduce return object values
@@ -155,7 +163,7 @@ def see_the_pree():
                 elif pree.is_media and pree.pree_type == 'volunteer':
                     volunteer = Volunteer.query.filter_by(pree_id = pree.pree_id).first()
                     #reduce return object values
-                    attachment =  {"volunteer_id":volunteer.volunteer_id,"lister":volunteer.lister,"pree_id":volunteer.pree_id,"title":volunteer.title,"category":volunteer.category,"venue":volunteer.venue,"location":volunteer.location,"description":volunteer.description,"start_date":str(volunteer.start_date),"end_date":str(volunteer.end_date),"start_time":str(volunteer.start_time),"end_time":str(volunteer.end_time),"contributions":volunteer.contributions}
+                    attachment =  {"volunteer_id":volunteer.volunteer_id,"lister":volunteer.lister,"pree_id":volunteer.pree_id,"title":volunteer.title,"category":volunteer.category,"venue":volunteer.venue,"location":volunteer.location,"start_date":str(volunteer.start_date),"end_date":str(volunteer.end_date),"start_time":str(volunteer.start_time),"end_time":str(volunteer.end_time),"metrics":volunteer.metrics}
                 else:
                     theQuote = Quote.query.get(pree.pree_id)
                     attachment = {"the_quote":theQuote.the_quote}

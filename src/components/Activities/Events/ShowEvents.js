@@ -221,6 +221,7 @@ const ShowEvents = props => {
                                     event={event}
                                     key={index}
                                     setGotEvents={setGotEvents}
+                                    page={"list"}
                                 />
                             </div>
                         ))

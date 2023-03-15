@@ -19,13 +19,13 @@ const ClassifiedItem = props => {
     return(
         <Link className="service-item" to={`/classified-view/${job.classified_id}`}>
             <div className="card" style={{fontSize:"large"}}>
-                <div class="media py-1 px-3">
-                    <div class="media-left">
-                        <figure class="image is-96x96">
+                <div className="media py-1 px-3">
+                    <div className="media-left">
+                        <figure className="image is-96x96">
                             <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder"/>
                         </figure>
                     </div>
-                    <div class="media-content">
+                    <div className="media-content">
                         <b><em>{job.title} </em> </b> 
                         <p> {job.company} </p>
                         {/*<p>

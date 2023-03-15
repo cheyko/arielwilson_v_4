@@ -69,7 +69,7 @@ const AddPoll = props => {
         setCategory("General");
     }
 
-    const saveRequest = async(e) => {
+    const savePoll = async(e) => {
         e.preventDefault();
         var theDateTime = getDateTime();
         if (isValid() && poll && (choices.length > 0)){
@@ -93,6 +93,7 @@ const AddPoll = props => {
                     if (result.status === 200){
                         const poll_id = result.data.poll_id;
                         clearFunc();
+                        props.setGotPolls(false);
                         setResponseMsg("Poll was saved.");
                     }else{
                         setResponseMsg("Poll was not saved, please try again. Contact us for suppport if problem persist.");
@@ -147,29 +148,23 @@ const AddPoll = props => {
 
     const isValid = () => {
         if((parseInt(endDate.split("-")[0]) === (new Date()).getFullYear()) && (parseInt(endDate.split("-")[1]) === (new Date()).getMonth() + 1) && (parseInt(endDate.split("-")[2]) === (new Date()).getDate()) ){
-            console.log("today");
             if ((parseInt(endTime.split(':')[0]) == (new Date()).getHours())){
                 if ((parseInt(endTime.split(':')[1]) > (new Date()).getMinutes())){
-                    console.log("enough time");
                     setResponseMsg("");
                     return true;
 
                 }else{
-                    console.log("time already passed");
                     setResponseMsg("time already passed");
                     return false;
                 }
             }else if ((parseInt(endTime.split(':')[0]) < (new Date()).getHours())) {
-                console.log("time already passed");
                 setResponseMsg("time already passed");
                 return false;
             }else{
-                console.log("enough time");
                 setResponseMsg("");
                 return true;
             }
         }else{
-            console.log("not-today");
             setResponseMsg("");
             return true;
         }
@@ -299,10 +294,10 @@ const AddPoll = props => {
                             <div className="field is-clearfix is-pulled-right">
                                 &nbsp;
                                 <button onClick={e => {clearFunc();closeModal(e);}} className="button is-warning">
-                                    Cancel
+                                    {responseMsg === "Poll was saved." ? "Ok" : "Cancel"}
                                 </button>
                                 &nbsp;&nbsp;
-                                <button onClick={e => saveRequest(e)} className="button is-primary " type="button">
+                                <button onClick={e => savePoll(e)} className="button is-primary " type="button">
                                     Submit
                                 </button>
                                 &nbsp;

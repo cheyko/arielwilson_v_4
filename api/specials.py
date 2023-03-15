@@ -428,7 +428,7 @@ class Poll(db.Model):
 class Vote(db.Model):
     __tablename__ = 'wg_votes'
 
-    vote_id = db.Column(db.Integer, db.Sequence('wg_approvals_approval_id_seq'), primary_key=True) 
+    vote_id = db.Column(db.Integer, db.Sequence('wg_votes_vote_id_seq'), primary_key=True) 
     poll_id = db.Column(db.Integer, db.ForeignKey('wg_polls.poll_id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
     choice = db.Column(db.Integer)

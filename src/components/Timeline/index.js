@@ -7,6 +7,7 @@ import axios, { all } from "axios";
 import TimelineExclusive from "./TimelineExclusive";
 import { render } from "@testing-library/react";
 import MarketPree from "./MarketPree";
+import ActivityPree from "./ActivityPree";
 
 const Timeline = props => {
 
@@ -161,6 +162,8 @@ const Timeline = props => {
                 return <TimelineExclusive aPree={aPree} key={index}  />
             }else if(aPree.pree_type === 'product' || aPree.pree_type === 'listing' || aPree.pree_type === 'service' || aPree.pree_type === 'vehicle' || aPree.pree_type === 'item'){
                 return <MarketPree aPree={aPree} key={index} index={index}  />
+            }else if(aPree.pree_type === 'poll' || aPree.pree_type === 'event' || aPree.pree_type === 'classified' || aPree.pree_type === 'volunteer'){
+                return <ActivityPree aPree={aPree} key={index} index={index}  />
             }else{
                 return <PreeItem aPree={aPree} key={index} showComments={false} clickable={"expand"} />
             }

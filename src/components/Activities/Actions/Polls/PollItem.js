@@ -8,9 +8,9 @@ import axios from "axios";
 
 const PollItem = props => {
 
-    const {poll} = props;
+    const {poll, page} = props;
     const user_id = props.context.user.id;
-    const [showPoll, setShowPoll] = useState(false);
+    const [showPoll, setShowPoll] = useState(true);
     const [voted, setVoted] = useState(poll.did_vote);
     const [theWidth, setWidth] = useState(0);
     const [votes, setVotes] = useState(poll.votes);
@@ -29,7 +29,9 @@ const PollItem = props => {
                     setVoted(true);
                     setVotes(parseInt(result1.data.votes));
                     setResults(result1.data.results);
-                    props.setGotPolls(false);
+                    if (page !== "timeline"){
+                        props.setGotPolls(false);
+                    }
                 }else{
                     //setResponseMsg("There was an issue, Task status was not changed.");
                 }
@@ -41,12 +43,10 @@ const PollItem = props => {
         if($('#result0') && (theWidth === 0 || theWidth === undefined)){
             if ($('#result0').width() > 0){
                 setWidth($('#result0').width());  
-                console.log($('#result0').width()); 
             }           
         }
         if(isOpen === null){
             setOpen(checkPoll());
-            console.log("test");
         }
     },[voted, results, theWidth, boxwidth, isOpen]);
 
@@ -93,7 +93,7 @@ const PollItem = props => {
         <div className="card">
             <header className="card-header">
                 <p className="card-header-title">
-                    {poll.category}
+                    {poll.category} Poll
                 </p>
             </header>
             <header className="card-header">
@@ -115,7 +115,7 @@ const PollItem = props => {
                                 {voted || (poll.lister.user_id === user_id) || isOpen === false ?
                                 <>
                                     {poll.choices.map((choice,index) => 
-                                        <div key={index} className="panel-block">
+                                        <div key={index} className="panel-block p-0">
                                             <span id={"result"+index} className="results-box">
                                                 <span style={{width:calWidth(results[index])}} className="progress-span"></span> 
                                                 <small className="poll-text"><strong>{choice}</strong></small> 
@@ -124,8 +124,8 @@ const PollItem = props => {
                                         </div>
                                     )}
                                     <div className="panel-block">
-                                        <span><b> {votes} </b>  votes </span> &nbsp; - &nbsp; 
-                                        <span><b> {poll.status === "Open" ? "Ends" : "Ended"} : </b>{convertDate(poll.end_date)}, {convertTime(poll.end_time)}  </span>
+                                        <span><b> {votes} </b>  {votes === 1 ? "vote" : "votes"} </span> &nbsp; - &nbsp; 
+                                        <span><b> {isOpen === true ? "Ends" : "Ended"} : </b>{convertDate(poll.end_date)}, {convertTime(poll.end_time)}  </span>
                                     </div>
                                 </>
                                 :
