@@ -127,7 +127,7 @@ const WGR = props => {
 
                             <div className={`navbar-item has-dropdown is-hoverable ${(rView === 'business' || rView === 'sci-tech' || rView === 'culture' || rView === 'exclusives' || rView === 'archives') ? 'is-active' : ''}`} onMouseOver={e => setShowMore(true)} onMouseOut={ e => setShowMore(false)}>
                                 <span id="more-dropdown" className="navbar-link" onClick={e => setShowMore(!showMore)}>
-                                    <i className="fas fa-plus"> More </i> 
+                                    <i className="fas fa-plus">  </i> &nbsp; More
                                 </span>
 
                                 <div className="navbar-dropdown" style={showMore ? {display:"block"} : {display: "none"}}>

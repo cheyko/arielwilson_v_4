@@ -2,6 +2,10 @@ html{
   overflow-y: scroll !important;
 }
 
+.hide-scroll{
+  overflow: hidden !important;
+}
+
 .hero-contain{
   padding: 3rem !important;
   text-align:left;

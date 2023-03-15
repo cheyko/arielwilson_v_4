@@ -42,7 +42,9 @@ const ViewVolunteer = props => {
                 }
             });
         }
-        //document.getElementsByTagName('html')[0].style.overflowY = "scroll";
+        if (document.documentElement.classList.contains("hide-scroll") === false){
+            document.documentElement.classList.add("hide-scroll");
+        }
 
     }, [activity]);
 

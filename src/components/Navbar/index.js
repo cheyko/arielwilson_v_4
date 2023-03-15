@@ -203,8 +203,9 @@ const Navbar = props => {
             activate(props.context.menuChoice);
         }
         
-        //document.getElementsByTagName('html')[0].style.overflowY = "scroll";
-
+        if (document.documentElement.classList.contains("hide-scroll") === true){
+            document.documentElement.classList.remove("hide-scroll");
+        }
     },[gotMedia, window.location.href, clicked, props.context.menuChoice, loadMainMedia]);
 
     return(

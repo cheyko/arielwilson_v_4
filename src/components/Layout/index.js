@@ -13,10 +13,11 @@ import { useEffect } from 'react';
 
 const Layout = props => {
 
-  /*useEffect(() => {
-      document.getElementsByTagName('html')[0].style.overflowY = "scroll";
-  
-  },[]);*/
+  useEffect(() => {
+      if (document.documentElement.classList.contains("hide-scroll") === true){
+        document.documentElement.classList.remove("hide-scroll");
+    }
+  },[document]);
 
     return(
         <>

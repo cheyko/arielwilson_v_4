@@ -35,12 +35,10 @@ const ViewClassified = (props) => {
            setShow('job');
         }
         window.addEventListener('resize', updateSize);
-        /*document.getElementsByTagName('html')[0].style.overflowY = "hidden";
-        if (document.getElementById("job-content")){
-            document.getElementById("job-content").style.overflowY = "scroll";
-        }*/
-
-    }, [classified, window.screen.width]);
+        if (document.documentElement.classList.contains("hide-scroll") === false){
+            document.documentElement.classList.add("hide-scroll");
+        }
+    }, [classified, window.screen.width, document]);
 
     const updateSize = () => {
         if (window.screen.width > 1022){
