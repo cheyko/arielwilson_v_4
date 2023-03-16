@@ -25,23 +25,25 @@ const PreeReaction = props => {
             const pree_id = aPree.pree_id;
             
             //PreeReaction onload
-            axios.post("/api/get-reaction",{user_id,pree_id}).then(
-                (getReaction) => {
-                    if (getReaction.status === 200){
-                        setReaction(getReaction.data.is_approved);
-                        setLikes(getReaction.data.likedcount);
-                        setDislikes(getReaction.data.dislikedcount);
-                        setCommentsCount(getReaction.data.commentscount);
-                    }else if(getReaction.status === 201){
-                        setReaction(null);
-                        setLikes(getReaction.data.likedcount);
-                        setDislikes(getReaction.data.dislikedcount);
-                        setCommentsCount(getReaction.data.commentscount);
-                    }else{
-                        throw new Error("Error while Reacting to Pree");
+            if(user_id !== 0){
+                axios.post("/api/get-reaction",{user_id,pree_id}).then(
+                    (getReaction) => {
+                        if (getReaction.status === 200){
+                            setReaction(getReaction.data.is_approved);
+                            setLikes(getReaction.data.likedcount);
+                            setDislikes(getReaction.data.dislikedcount);
+                            setCommentsCount(getReaction.data.commentscount);
+                        }else if(getReaction.status === 201){
+                            setReaction(null);
+                            setLikes(getReaction.data.likedcount);
+                            setDislikes(getReaction.data.dislikedcount);
+                            setCommentsCount(getReaction.data.commentscount);
+                        }else{
+                            throw new Error("Error while Reacting to Pree");
+                        }
                     }
-                }
-            );
+                );
+            }
            // setReaction(aPree.is_approved);
             if (clickable === "view"){
                 axios.post("/api/get-comments", {pree_id}).then(
@@ -56,11 +58,11 @@ const PreeReaction = props => {
             //console.log(comments);
             setLoad(false);
         }
-    },[load]);
+    },[load, aPree, clickable]);
     
     //PreeReactions Functions
     const likePree = (e, pree_id) => {
-        const user_id = props.context.user.id;
+        const user_id = props.context.user ? props.context.user.id : 0;
         if (reaction !== true){
             axios.post("/api/like-pree",{user_id,pree_id}).then(
                 (addlike) => {
@@ -88,7 +90,7 @@ const PreeReaction = props => {
     }
 
     const dislikePree = (e, pree_id) => {
-        const user_id = props.context.user.id;
+        const user_id = props.context.user ? props.context.user.id : 0;
         if (reaction !== false){
             axios.post("/api/dislike-pree",{user_id,pree_id}).then(
                 (dislike) => {
@@ -116,7 +118,7 @@ const PreeReaction = props => {
     }
 
     const sendComment = (e) => {
-        const user_id = props.context.user.id;
+        const user_id = props.context.user ? props.context.user.id : 0;
         const pree_id = aPree.pree_id;
         axios.post("/api/handle-comments", {user_id, pree_id, comment}).then(
             (send) => {
@@ -135,11 +137,6 @@ const PreeReaction = props => {
         return true;
     }
 
-    /*const getCommentsUserDetails = () => {
-        return true;
-    }*/
-
-    //console.log(comments);
     return (
         <div className="reactions">
             <div className="columns is-mobile has-text-centered">
@@ -178,7 +175,7 @@ const PreeReaction = props => {
                                 <button onClick={e => sendComment(e)} className="button is-success is-pulled-left">
                                     Make &nbsp; <i className="fas fa-share"></i>
                                 </button>
-                                <div className="dropdown is-hoverable is-pulled-right">
+                                <div className="dropdown is-hoverable is-pulled-right is-right">
                                     <div className="dropdown-trigger">
                                         <button className="button is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
                                             <span>Filter </span>
@@ -207,11 +204,11 @@ const PreeReaction = props => {
                             </div>
                         </div>
                         <hr />
-                        <div className="list-comments is-centered">
+                        <div className="list-comments card">
                             {comments && comments.length > 0 ?
                                 comments.map((aComment, index) => {
                                     return(
-                                        <div key={index} className="box comment-box">
+                                        <div key={index} className="comment-box">
                                             <Comment aPree={aPree} comment={aComment} />
                                         </div>
                                     )}

@@ -38,7 +38,7 @@ const Reply = props => {
     const {reply} = props;
     const {comment} = props;
     const {index} = props;
-    const user_id = props.context ? props.context.user.id : 0;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const reply_id = reply.reply_id;
     const [replyStatus, setStatus] = useState(true);
     const [likedcount, setLikes] = useState(reply.r_approvals);

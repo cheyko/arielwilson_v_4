@@ -15,7 +15,7 @@ const customStyles = {
         right: 0,
         bottom: 0,
         backgroundColor: 'rgba(255, 255, 255, 0.75)',
-        zIndex:'3'
+        zIndex:'7'
     },
     content : {
       width: '30rem',
@@ -33,7 +33,7 @@ const customStyles = {
       borderRadius: '0.5rem',
       outline: 'none',
       padding: '20px',
-      zIndex:'3'
+      zIndex:'7'
     }
 };
 

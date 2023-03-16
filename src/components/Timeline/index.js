@@ -170,8 +170,7 @@ const Timeline = props => {
             }
         })
     }
-
-    console.log(user);
+    //console.log(user);
     //console.log(props.context.user);
     //console.log(allPrees);
     return (

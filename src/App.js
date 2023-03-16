@@ -112,7 +112,6 @@ export default class App extends Component {
     user = user ? JSON.parse(user) : null;
     ready = ready ? JSON.parse(ready) : null;
     welcome = welcome ? JSON.parse(welcome) : null;
-    console.log(user);
     let val = window.screen.width;
     let boxWidth;
     if (val < 500){
@@ -124,16 +123,16 @@ export default class App extends Component {
     //if User is logged in
     recent = recent ? parseInt(JSON.parse(recent)) : 0;
     userlist = userlist ? JSON.parse(userlist) : [];
-    const user_id = user ? user.id : null;
+    const user_id = user ? user.id : 0;
     //const prees = ready ? await axios.post("/api/see-the-pree",{user_id}) : {"data":null}; //add reactions to the prees from the backend before response to request.
     const messages = ready ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
     //console.log(prees);
     this.setState({user, ready, welcome, userlist, menuChoice, recent, messages, boxWidth:boxWidth}); //, 
   }
 
-  setMenuChoice = (choice) => {
+  /*setMenuChoice = (choice) => {
       this.setState({menuChoice:choice});
-  }
+  }*/
 
   getTargetPhotos = (theElement, contextType) => {
     const targetPhotos = [];
@@ -485,7 +484,7 @@ export default class App extends Component {
     //console.log(pree === undefined);
     let result;
     if (pree === undefined){
-      const user_id = this.state.user.id;
+      const user_id = this.state.user ? this.state.user.id : 0;
       const val = await axios.post("/api/get-pree",{pree_id, user_id}).catch(error => {console.log(error)});
       if (val.status === 200){
         result = val.data;
@@ -673,7 +672,7 @@ export default class App extends Component {
                 {/*<Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />*/}
                 <Route path="/videos" element={<Videos />} />
-                <Route path="/notifications" element={<Notifications />} />
+                {/*<Route path="/notifications" element={<Notifications />} />*/}
                 <Route path="/social" element={<Social />} />
                 <Route path="/messages/:category/:msgtype/:id" element={<Messages />} />
                 <Route path="/search" element={<Search />} />
@@ -689,7 +688,7 @@ export default class App extends Component {
                 <Route path="/view-user-list/:id/:action" element={<ViewUserList />} />
                 <Route path="/groups/:id/:action" element={<Groups />} />
                 <Route path="/view-group/:id/" element={<ViewGroup />} />
-                <Route path="/shops/propfinder" element={<PropFinder />} />
+                {/*<Route path="/shops/propfinder" element={<PropFinder />} />*/}
                 <Route path="/listing-view/:id" element={<ViewListing />} />
                 <Route path="/vehicle-view/:id" element={<ViewVehicle />} />
                 <Route path="/product-view/:id" element={<ViewProduct />} />
@@ -708,7 +707,7 @@ export default class App extends Component {
                 <Route path="/add-volunteer" element={<AddVolunteer />} />
                 <Route path="/event-view/:id" element={<ViewEvent />} />
                 <Route path="/classified-view/:id" element={<ViewClassified />} />
-                 {/*<Route path='/trendy' element={<Trendy />} />*/}
+                {/*<Route path='/trendy' element={<Trendy />} />*/}
                 {/*<Route path="/welcome" component={Welcome} />*/}
               </Route>
               <Route path="/home" element={<Homepage />} />

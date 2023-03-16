@@ -45,9 +45,6 @@ const PollItem = props => {
     }
 
     useEffect(() => {
-        console.log(windowSize);
-        console.log(window.innerWidth);    
-
         if(theWidth === 0){
             window.addEventListener("resize", runWindow);
         }

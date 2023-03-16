@@ -7,6 +7,8 @@ import {Link, useParams} from "react-router-dom";
 
 import Messaging from "./Messaging";
 import Convos from "./Convos";
+import NewConvo from "./NewConvo";
+import Encourage from "../HelperComponents/Encourage";
 
 const Messages = props => {
 
@@ -18,14 +20,19 @@ const Messages = props => {
     const [userview, setUserview] = useState("");
     const [convo, setConvo] = useState([]);
     const [count, setCount] = useState(0);
-
+    const [modalIsOpen, setModalOpen] = useState(false);
+    const [msgSection, setMsgSection] = useState("all-convo");
     //const [convoView, setConvoView] = useState([]);
 
     const allmessages = props.context.messages ? props.context.messages : []; 
     const people = props.context.viewlist ? props.context.viewlist : [];
     const [showMore, setShowMore] = useState(false);
+    const [convosMenu, showConvosMenu] = useState(false);
+    const [notificationsMenu, showNotificationsMenu] = useState(false);
+
     let sessionVar = localStorage.getItem("msg-view") ? localStorage.getItem("msg-view") : "message";
     const [tab, setTab] = useState(sessionVar);
+    let wanted = "Send & Receive Messages, View Happenings, See Mentions and Get Recommendations";
 
     useEffect((convo) => {
        
@@ -87,11 +94,11 @@ const Messages = props => {
     }
 
     return(
-        <div className="hero">
+        <div className="card" style={{minHeight:"100vh"}}>
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
                     <span className="navbar-item">
-                        <h1 className="subtitle"><b>W@H GW@@N !!! </b></h1>
+                        <h1 className="title" style={{fontSize:"1rem"}}><b>W@H GW@@N !!! </b></h1>
                     </span>
 
                     <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
@@ -105,118 +112,61 @@ const Messages = props => {
 
                 <div id="navbarBasicExample" className="navbar-menu">
                     <div className="navbar-start">
-                        <span className="navbar-item">
-                            Home
+                        <span className={`navbar-item ${tab === "message" ? 'is-active' : ''}`} onClick={e => {setTab("message");localStorage.setItem("msg-view","message"); setMsgSection('');}}>
+                            <i className="fas fa-paper-plane" aria-hidden="true">  </i> &nbsp; Message-App
                         </span>
 
-                        <span className="navbar-item">
-                            Documentation
-                        </span>
-
-                        <div className="navbar-item has-dropdown is-hoverable">
-                            <span className="navbar-link" onClick={e => setShowMore(!showMore)}>
-                                More
+                        <div className={`navbar-item has-dropdown is-hoverable ${tab === 'convos' ? 'is-active' : ''}`}  onMouseOver={e => showConvosMenu(true)} onMouseOut={ e => showConvosMenu(false)}>
+                            <span id="more-dropdown" className="navbar-link" onClick={ e => showConvosMenu(!convosMenu)}>
+                                <i className="fas fa-message" aria-hidden="true"> </i> &nbsp; Convos
                             </span>
 
-                            <div className="navbar-dropdown" style={showMore ? {display: "block"} : {display: "none"}}>
-                                <span className="navbar-item">
-                                    About
+                            <div className="navbar-dropdown" style={convosMenu ? {display:"block"} : {display: "none"}}>
+                                <NewConvo  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} setTab={props.setTab} />
+                                <span className={`navbar-item ${msgSection === 'new-convo' ? 'is-active' : ''}`} onClick={e => {setModalOpen(true); /*setMsgSection('new-convo');setTab("convos"); toggleMenu(e); showConvosMenu(!convosMenu);localStorage.setItem("msgSection","new-convo");localStorage.setItem("msg-view","convos")*/}}>
+                                    <i className="fas fa-plus" aria-hidden="true">  </i> &nbsp; New
                                 </span>
-                                <span className="navbar-item">
-                                    Jobs
+                                <span className={`navbar-item ${msgSection === 'all-convo' ? 'is-active' : ''}`} onClick={e => { setMsgSection('all-convo');setTab("convos"); toggleMenu(e);showConvosMenu(!convosMenu);localStorage.setItem("msgSection","all-convo");localStorage.setItem("msg-view","convos")}}>
+                                    <i className="fas fa-list" aria-hidden="true"> </i> &nbsp; All
                                 </span>
-                                <span className="navbar-item">
-                                    Contact
+                                <span className={`navbar-item ${msgSection === 'single-convo' ? 'is-active' : ''}`} onClick={e => { setMsgSection('single-convo');setTab("convos"); toggleMenu(e); showConvosMenu(!convosMenu);localStorage.setItem("msgSection","single-convo");localStorage.setItem("msg-view","convos")}}>
+                                    <i className="fas fa-user" aria-hidden="true">  </i> &nbsp; Tête-à-Tête
                                 </span>
-                                <hr className="navbar-divider" />
-                                <span className="navbar-item">
-                                    Report an issue
+                                <span className={`navbar-item ${msgSection === 'group-convo' ? 'is-active' : ''}`} onClick={e => { setMsgSection('group-convo');setTab("convos"); toggleMenu(e);showConvosMenu(!convosMenu);localStorage.setItem("msgSection","group-convo");localStorage.setItem("msg-view","convos")}}>
+                                    <i className="fas fa-users" aria-hidden="true">  </i> &nbsp; Group
                                 </span>
                             </div>
                         </div>
+
+                        <div className={`navbar-item has-dropdown is-hoverable ${tab === 'happenings' || tab === 'mentions' || tab === 'recommendations' ? 'is-active' : ''}`}  onMouseOver={e => showNotificationsMenu(true)} onMouseOut={ e => showNotificationsMenu(false)}>
+                            <span id="more-dropdown" className="navbar-link" onClick={ e => showNotificationsMenu(!notificationsMenu)}>
+                                <i className="fas fa-bell" aria-hidden="true"> </i> &nbsp; Notifications
+                            </span>
+
+                            <div className="navbar-dropdown" style={notificationsMenu ? {display:"block"} : {display: "none"}}>
+                                <span className={`navbar-item ${tab === 'happenings' ? 'is-active' : ''}`} onClick={e => {setTab("happenings");localStorage.setItem("msg-view","happenings");setMsgSection('');}}>
+                                    <i className="fas fa-hand-point-up" aria-hidden="true">  </i> &nbsp; Happenings
+                                </span>
+                                <span className={`navbar-item ${tab === 'mentions' ? 'is-active' : ''}`} onClick={e => {setTab("mentions");localStorage.setItem("msg-view","mentions");setMsgSection('');}}>
+                                    <i className="fas fa-at" aria-hidden="true">  </i> &nbsp; Mentions
+                                </span>
+                                <span className={`navbar-item ${tab === 'recommendations' ? 'is-active' : ''}`} onClick={e => {setTab("recommendations");localStorage.setItem("msg-view","recommendations");setMsgSection('');}}>
+                                    <i className="fas fa-note-sticky" aria-hidden="true">  </i> &nbsp; Recommendations
+                                </span>
+                            </div>
+                        </div>
+
+                        <span className={`navbar-item ${tab === 'wg-mail' ? 'is-active' : ''}`} onClick={e => {setTab("wg-mail");localStorage.setItem("msg-view","wg-mail"); setMsgSection('');}}>
+                            <i className="fas fa-inbox" aria-hidden="true">  </i> &nbsp; WG-Mail
+                        </span>   
                     </div>
                 </div>
             </nav>
+            <br />
             <div className="page-content">
                 <div className="container">
-                    <div className="message">
-                        <div className="message-header">
-                            <div className="tabs is-boxed is-fullwidth">  
-                                <ul>
-                                    <li className={`button ${tab === "message" ? "is-active" : "is-not-active"}`}
-                                        onClick={ e => {
-                                            setTab("message");
-                                            localStorage.setItem("msg-view","message")
-                                        }}
-                                    >
-                                        <span className="reaction-btn">
-                                            <span className="icon is-small"><i style={{fontSize:"x-large"}} className="fas fa-paper-plane" aria-hidden="true"></i></span>
-                                            <span className="tabs-title"> MESSAGE-APP </span>
-                                        </span>
-                                    </li>
-                                    <li className={`button ${tab === "convos" ? "is-active" : "is-not-active"}`}
-                                        onClick={ e => {
-                                            setTab("convos");
-                                            localStorage.setItem("msg-view","convos")
-                                        }}
-                                    >
-                                        <span className="reaction-btn">
-                                            <span className="icon is-small"><i style={{fontSize:"x-large"}} className="fas fa-clipboard-list" aria-hidden="true"></i></span>
-                                            <span className="tabs-title"> CONVOS </span>
-                                        </span>
-                                    </li>
-                                                
-                                    <li className={`button ${tab === "wg-mail" ? "is-active" : "is-not-active"}`}
-                                        onClick={ e => {
-                                            setTab("wg-mail"); 
-                                            localStorage.setItem("msg-view","wg-mail")
-                                        }}
-                                    >
-                                        <span className="reaction-btn">
-                                            <span className="icon is-small"><i className="fas fa-vote-yea" aria-hidden="true"></i></span>
-                                            <span className="tabs-title"> WG-MAIL </span>
-                                        </span>
-                                    </li>
-
-                                    <li className={`button ${tab === "happenings" ? "is-active" : "is-not-active"}`}
-                                        onClick={ e => {
-                                            setTab("happenings");
-                                            localStorage.setItem("msg-view","happenings")
-                                        }}
-                                    >
-                                        <span className="reaction-btn">
-                                            <span className="icon is-small"><i className="fas fa-truck" aria-hidden="true"></i></span>
-                                            <span className="tabs-title"> HAPPENINGS </span>
-                                        </span>
-                                    </li>
-
-                                    <li className={`button ${tab === "mentions" ? "is-active" : "is-not-active"}`}
-                                        onClick={ e => {
-                                            setTab("mentions");
-                                            localStorage.setItem("msg-view","mentions")
-                                        }}
-                                    >
-                                        <span className="reaction-btn">
-                                            <span className="icon is-small"><i className="fas fa-poll" aria-hidden="true"></i></span>
-                                            <span className="tabs-title"> MENTIONS </span>
-                                        </span>
-                                    </li>  
-
-                                    <li className={`button ${tab === "recommendations" ? "is-active" : "is-not-active"}`}
-                                        onClick={ e => {
-                                            setTab("recommendations");
-                                            localStorage.setItem("msg-view","recommendations")
-                                        }}
-                                    >
-                                        <span className="reaction-btn">
-                                            <span className="icon is-small"><i className="fas fa-poll" aria-hidden="true"></i></span>
-                                            <span className="tabs-title"> RECOMMENDATIONS </span>
-                                        </span>
-                                    </li>               
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="message-body no-padding no-margin">
+                    {props.context.user ? 
+                        <div className="card">
                             {tab === "message" && 
                                 <Messaging id={id} userview={userview} user_id={user_id} convo={convo} setConvo={setConvo} />
                             }
@@ -247,8 +197,9 @@ const Messages = props => {
                                     <h1> RECOMMENDATIONS </h1> 
                                 </div>
                             }
-                        </div>
-                    </div>
+                        </div>:
+                        <Encourage wanted={wanted} />
+                    }
                 </div>
             </div>        
         </div>

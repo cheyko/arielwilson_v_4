@@ -45,39 +45,6 @@ const Convos = props => {
         <div className="timeline-container">
             <div id="messages-view">
                 <div id="message-list" className="msg-section">
-                    <div className="message-tabs">
-                        <div className="message-tabs-container">
-                            <div className="sub-tabs tabs card is-centered">
-                                <ul>
-                                    <li>
-                                        <NewConvo  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} setTab={props.setTab} />
-                                        <span onClick={e => setModalOpen(true)}  className="button reaction-btn">
-                                            <span className="icon is-small"><i className="fas fa-plus" aria-hidden="true"></i></span>
-                                            <span>New</span> &nbsp; &nbsp;
-                                        </span>
-                                    </li>
-                                    <li className="is-active">
-                                        <span className="button reaction-btn is-active">
-                                            <span className="icon is-small"><i className="fas fa-inbox" aria-hidden="true"></i></span>
-                                            <span>All</span> &nbsp; &nbsp;
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span className="button reaction-btn">
-                                            <span className="icon is-small"><i className="fas fa-user" aria-hidden="true"></i></span>
-                                            <span>Tête-à-Tête</span> &nbsp; &nbsp;
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span className="button reaction-btn">
-                                            <span className="icon is-small"><i className="fas fa-users" aria-hidden="true"></i></span>
-                                            <span>Group</span> &nbsp; &nbsp;
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                     <div className="messages-div">
                         {people && people.length > 0 ? 
                         (

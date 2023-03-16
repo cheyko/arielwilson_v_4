@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import withContext from "../../withContext";
 import Modal from "react-modal";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement('#root');
 
@@ -38,7 +38,6 @@ const customStyles = {
 const UserCog = props => {
 
     let navigate = useNavigate();
-    let location = useLocation();
     const [modalIsOpen, setModalOpen] = useState(false);
     const username = props.context.user ? props.context.user.username : "" ;
 
@@ -54,11 +53,7 @@ const UserCog = props => {
 
     const logout = e => {
         props.context.logout(e);
-        if(location.pathname === '/'){
-            window.location.reload();
-        }else{
-            navigate("/");
-        }
+        navigate("/home");
     }
 
     return(
@@ -79,7 +74,6 @@ const UserCog = props => {
                     </div>
                 </div>
             </Modal>
-
         </span>
     )
 }

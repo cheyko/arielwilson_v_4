@@ -64,12 +64,14 @@ def get_pree():
     if request.method == 'POST':
         pree_id = request.json.get('pree_id', None)
         user_id = request.json.get('user_id', None)
+        print(user_id)
+        print(pree_id)
         #users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+checkwg+'%'), User.firstname.ilike('%'+checkwg+'%'), User.lastname.ilike('%'+checkwg+'%') )).all() 
         #results = db.session.query(Pree, Approvals).join(Approvals, Pree.pree_id == Approvals.pree_id).order_by(Pree.pree_id.desc()).all()
         pree = Pree.query.get(pree_id)
         if pree.is_visible == True:
-            theUser = User.query.get(pree.user_id)
-            userObj = {"user_id":theUser.user_id, "username":theUser.username,"access-type":theUser.accessType}
+            theUser = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == pree.user_id).first()
+            userObj = {"user_id":theUser.User.user_id, "username":theUser.User.username,"access-type":theUser.User.accessType, "has_dp":theUser.Profile.has_dp}
             if pree.is_media and pree.pree_type == 'individual':
                 theMedia = Media.query.get(pree.pree_id)
                 attachment = {"caption":theMedia.caption, "no_of_media":theMedia.no_of_media, "has_image":theMedia.has_image, "has_audio":theMedia.has_audio, "has_video":theMedia.has_video}

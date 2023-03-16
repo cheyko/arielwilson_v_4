@@ -26,7 +26,7 @@ const customStyles = {
       transform             : 'translate(-50%, -50%)',
       border: '1px solid #ccc',
       background: 'white',
-      overflow: 'auto',
+      overflow: 'hidden',
       WebkitOverflowScrolling: 'touch',
       borderRadius: '0.5rem',
       outline: 'none',
@@ -38,7 +38,7 @@ const Comment = props => {
 
     const {comment} = props;
     const {aPree} = props;
-    const user_id = props.context ? props.context.user.id : 0;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const comment_id = comment.comment_id;
     const [comment_text, setText] = useState(comment.comment_text);
     const [likedcount, setLikes] = useState(comment.c_approvals);
@@ -55,19 +55,19 @@ const Comment = props => {
 
 
     useEffect( () => {
-        const user_id = props.context.user.id;
-
-        axios.post("/api/get-c-reaction",{user_id,comment_id}).then(
-            (getCReaction) => {
-                if (getCReaction.status === 200){
-                    setCReaction(getCReaction.data.is_c_approved);
-                }else if(getCReaction.status === 201){
-                    setCReaction(null);
-                }else{
-                    throw new Error("Error while Reacting to Pree");
+        if (user_id !== 0){
+            axios.post("/api/get-c-reaction",{user_id,comment_id}).then(
+                (getCReaction) => {
+                    if (getCReaction.status === 200){
+                        setCReaction(getCReaction.data.is_c_approved);
+                    }else if(getCReaction.status === 201){
+                        setCReaction(null);
+                    }else{
+                        throw new Error("Error while Reacting to Pree");
+                    }
                 }
-            }
-        )
+            );
+        }
     
         axios.post("/api/get-replies", {comment_id}).then(
            (getReplies) => {
@@ -149,7 +149,6 @@ const Comment = props => {
     }
 
     const sendReply = (e) => {
-        const user_id = props.context.user.id;
         axios.post("/api/handle-replies", {user_id, comment_id, reply}).then(
             (send) => {
                 if (send.status === 200){
@@ -201,7 +200,7 @@ const Comment = props => {
             {commentStatus ? (
                 <>
                     <div className="column is-3 has-text-centered" style={{padding:"0.5rem"}}>
-                        <figure className="display-pic image is-64x64" style={{margin:"0 auto"}}>
+                        <figure className="image is-64x64" style={{margin:"0 auto"}}>
                             <img alt="display" className="is-rounded" src={process.env.PUBLIC_URL + "/images/default-dp.jpeg"} />
                         </figure>
                     </div>

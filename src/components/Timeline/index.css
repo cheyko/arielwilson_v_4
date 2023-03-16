@@ -104,11 +104,12 @@ h1 {
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
-    height: 30rem !important;
+    height: 52rem !important;
 }
 
 .list-comments{
-    max-height: 40rem !important;
+    height: 40rem !important;
+    overflow-x: hidden !important;
     overflow-y: auto !important;
 }
 
