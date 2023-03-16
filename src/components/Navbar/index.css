@@ -140,7 +140,7 @@
 @media screen and (min-width:1200px){
     .control-btn{
         border: none;
-        padding: 1.5rem;
+        padding: 0.5rem;
         border-radius: 50%;
     }
     .custom-nav{

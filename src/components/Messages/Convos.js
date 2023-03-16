@@ -49,7 +49,7 @@ const Convos = props => {
                         {people && people.length > 0 ? 
                         (
                             people.map((person, index) => (
-                                <Link key={index} className="convo-link" onClick={(e) => { loadConvo(e,person.user_id);props.setTab("message"); }} to={`/messages/convo/direct/${person.user_id}`}>
+                                <Link key={index} className="convo-link" onClick={(e) => { loadConvo(e,person.user_id);props.setTab("message");localStorage.setItem("msg-view","message"); }} to={`/messages/convo/direct/${person.user_id}`}>
                                     <article className="media">
                                         <figure className="media-left">
                                             <small>31m</small>

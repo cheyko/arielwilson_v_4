@@ -121,11 +121,12 @@ export default class App extends Component {
     }
 
     //if User is logged in
-    recent = recent ? parseInt(JSON.parse(recent)) : 0;
+    recent = recent ? parseInt(recent) : 0;
     userlist = userlist ? JSON.parse(userlist) : [];
     const user_id = user ? user.id : 0;
     //const prees = ready ? await axios.post("/api/see-the-pree",{user_id}) : {"data":null}; //add reactions to the prees from the backend before response to request.
-    const messages = ready ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
+    console.log(user);
+    const messages = user ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
     //console.log(prees);
     this.setState({user, ready, welcome, userlist, menuChoice, recent, messages, boxWidth:boxWidth}); //, 
   }
@@ -306,9 +307,10 @@ export default class App extends Component {
 
   //method to set most recent correspondent implement with group later
   setRecent = (userview_id) => {
+    console.log(userview_id);
     const recent = userview_id;
     this.setState({recent});
-    localStorage.setItem("recent", JSON.stringify(this.state.recent));
+    localStorage.setItem("recent", userview_id);
   }
 
   //get all user's messages 

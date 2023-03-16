@@ -21,7 +21,7 @@ const Messages = props => {
     const [convo, setConvo] = useState([]);
     const [count, setCount] = useState(0);
     const [modalIsOpen, setModalOpen] = useState(false);
-    const [msgSection, setMsgSection] = useState("all-convo");
+    const [msgSection, setMsgSection] = useState("");
     //const [convoView, setConvoView] = useState([]);
 
     const allmessages = props.context.messages ? props.context.messages : []; 
@@ -34,8 +34,7 @@ const Messages = props => {
     const [tab, setTab] = useState(sessionVar);
     let wanted = "Send & Receive Messages, View Happenings, See Mentions and Get Recommendations";
 
-    useEffect((convo) => {
-       
+    useEffect(() => {
         let interval = null;
         //let convoMsgs = null;
         const userview_id = id;
@@ -81,11 +80,8 @@ const Messages = props => {
                 }
                 return () => clearInterval(interval);
             }
-        }else{
-           // props.context.getMessages(user_id);
         }
-        ///console.log(document.getElementById("app-container").offsetHeight);
-    },[tab, userview, id, convo, setConvo, props.context, user_id]);
+    },[tab, userview, id, setConvo, user_id]);
 
     const toggleMenu = (e) => {
         e.preventDefault();
@@ -126,13 +122,13 @@ const Messages = props => {
                                 <span className={`navbar-item ${msgSection === 'new-convo' ? 'is-active' : ''}`} onClick={e => {setModalOpen(true); /*setMsgSection('new-convo');setTab("convos"); toggleMenu(e); showConvosMenu(!convosMenu);localStorage.setItem("msgSection","new-convo");localStorage.setItem("msg-view","convos")*/}}>
                                     <i className="fas fa-plus" aria-hidden="true">  </i> &nbsp; New
                                 </span>
-                                <span className={`navbar-item ${msgSection === 'all-convo' ? 'is-active' : ''}`} onClick={e => { setMsgSection('all-convo');setTab("convos"); toggleMenu(e);showConvosMenu(!convosMenu);localStorage.setItem("msgSection","all-convo");localStorage.setItem("msg-view","convos")}}>
+                                <span className={`navbar-item ${msgSection === 'all-convo' && tab === 'convos' ? 'is-active' : ''}`} onClick={e => { setMsgSection('all-convo');setTab("convos"); toggleMenu(e);showConvosMenu(!convosMenu);localStorage.setItem("msgSection","all-convo");localStorage.setItem("msg-view","convos")}}>
                                     <i className="fas fa-list" aria-hidden="true"> </i> &nbsp; All
                                 </span>
-                                <span className={`navbar-item ${msgSection === 'single-convo' ? 'is-active' : ''}`} onClick={e => { setMsgSection('single-convo');setTab("convos"); toggleMenu(e); showConvosMenu(!convosMenu);localStorage.setItem("msgSection","single-convo");localStorage.setItem("msg-view","convos")}}>
+                                <span className={`navbar-item ${msgSection === 'single-convo' && tab === 'convos' ? 'is-active' : ''}`} onClick={e => { setMsgSection('single-convo');setTab("convos"); toggleMenu(e); showConvosMenu(!convosMenu);localStorage.setItem("msgSection","single-convo");localStorage.setItem("msg-view","convos")}}>
                                     <i className="fas fa-user" aria-hidden="true">  </i> &nbsp; Tête-à-Tête
                                 </span>
-                                <span className={`navbar-item ${msgSection === 'group-convo' ? 'is-active' : ''}`} onClick={e => { setMsgSection('group-convo');setTab("convos"); toggleMenu(e);showConvosMenu(!convosMenu);localStorage.setItem("msgSection","group-convo");localStorage.setItem("msg-view","convos")}}>
+                                <span className={`navbar-item ${msgSection === 'group-convo' && tab === 'convos' ? 'is-active' : ''}`} onClick={e => { setMsgSection('group-convo');setTab("convos"); toggleMenu(e);showConvosMenu(!convosMenu);localStorage.setItem("msgSection","group-convo");localStorage.setItem("msg-view","convos")}}>
                                     <i className="fas fa-users" aria-hidden="true">  </i> &nbsp; Group
                                 </span>
                             </div>
