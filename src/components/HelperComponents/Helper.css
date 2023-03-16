@@ -1,4 +1,4 @@
-.tiled-quote .card{
+.tile-item, .tile-item .card img, .img-holder{
     height: 16rem !important;
     line-height: 16rem !important;
 }
@@ -7,10 +7,15 @@
     padding: 1.5rem 0.5rem !important;
 }
 
+.tile-item .card, .tile-item .card img{
+    border-radius: 0 !important;
+}
+
 .tile-item .card .card-content{
     display: inline-block;
     vertical-align: middle;
     line-height: normal;
+    border-radius: 0 !important;
 }
 
 .img-holder{
@@ -40,4 +45,36 @@
 
 .image.is-64x64 img{
     object-fit:cover !important;
+}
+
+@media screen and (max-width:1023px) and (min-width:600px){
+    .tile-item, .tile-item .card img, .img-holder{
+        height: 13rem !important;
+        line-height: 13rem !important;
+
+    }
+}
+
+@media screen and (max-width:599px) and (min-width:375px){
+    .tile-item, .tile-item .card img, .img-holder{
+        height: 10rem !important;
+        line-height: 10rem !important;
+
+    }
+}
+
+@media screen and (max-width:375px){
+    .tile-item, .tile-item .card img, .img-holder{
+        height: 10rem !important;
+        line-height: 10rem !important;
+
+    }
+}
+
+@media screen and (max-width:320px){
+    .tile-item, .tile-item .card img, .img-holder{
+        height: 8rem !important;
+        line-height: 8rem !important;
+
+    }
 }

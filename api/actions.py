@@ -64,8 +64,6 @@ def get_pree():
     if request.method == 'POST':
         pree_id = request.json.get('pree_id', None)
         user_id = request.json.get('user_id', None)
-        print(user_id)
-        print(pree_id)
         #users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+checkwg+'%'), User.firstname.ilike('%'+checkwg+'%'), User.lastname.ilike('%'+checkwg+'%') )).all() 
         #results = db.session.query(Pree, Approvals).join(Approvals, Pree.pree_id == Approvals.pree_id).order_by(Pree.pree_id.desc()).all()
         pree = Pree.query.get(pree_id)
@@ -145,7 +143,6 @@ def see_the_pree():
                 elif pree.pree_type == 'poll':
                     #poll = Poll.query.filter_by(pree_id = pree.pree_id).first()
                     poll = db.session.query(Poll, User, Profile, Vote).join(User, User.user_id == Poll.lister).join(Profile, Profile.user_id == Poll.lister).join(Vote, (Vote.poll_id == Poll.poll_id) & (Vote.user_id == user_id), isouter=True).filter(Poll.is_visible == True, Poll.pree_id == pree.pree_id).first()
-                    print(poll)
                     #reduce return object values
                     if (poll.Vote == None):
                         didVote = False

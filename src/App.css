@@ -477,6 +477,11 @@ ul.list {
   .column.is-half-tablet {
     width: 50% !important;
   }
+
+  .column.is-one-third-tablet {
+    width: 33.33% !important;
+  }
+
   .mobile-menu{
     display: block !important;
   }

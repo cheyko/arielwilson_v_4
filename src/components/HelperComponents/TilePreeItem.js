@@ -45,84 +45,75 @@ const TilePreeItem = props => {
     }
     
     return (
-        <div className="hero">
-            <div className="tile-item">
-                <Link to={`/view-pree/${aPree.pree_id}`}>
-                    <div className="rows">
-                        <div className="row">
-                            {aPree.is_media === true ? (
-                                <div className="tiled-media">
-                                    <div className="media-types">
-                                        {aPree.attachment.has_image === true && 
-                                        (
-                                            <div className="tiled-image">
-                                                <div className="card">
-                                                    <div className="card-image">
-                                                        <figure className="image is-5by4 img-holder">
-                                                            <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post0`} />
-                                                            <small className="tag caption-tag"> 
-                                                                <span className="tag date-caption">{formatTime(aPree.date_added)}</span> 
-                                                            </small>
-                                                        </figure>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                        {aPree.attachment.has_audio === true && (
-                                            <div className="tiled-audio">
-                                                <div className="card">
-                                                    <div className="card-content">
-                                                        <audio className="audio-playback" controls>
-                                                            <source src={`${process.env.PUBLIC_URL}/media/pree${aPree.pree_id}/post0`} type="audio/mp3"/>
-                                                        </audio>
-                                                        <small className="tag caption-tag"> 
-                                                            <span className="tag date-caption">{formatTime(aPree.date_added)}</span> 
-                                                        </small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                        {aPree.attachment.has_video === true && (
-                                            <div className="tiled-video">
-                                                <div className="card">
-                                                    <div className="card-content">
-                                                        <video width="320" height="240" controls>
-                                                            <source src={`${process.env.PUBLIC_URL}/media/pree${aPree.pree_id}/post0`} type="video/mp4"/>
-                                                        </video>
-                                                        <small className="tag caption-tag"> 
-                                                            <span className="tag date-caption">{formatTime(aPree.date_added)}</span> 
-                                                        </small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>      
-                                </div>
-                            ):(
-                                <div className="tiled-quote has-text-centered">
-                                    <div className="a-quote">
-                                        <div className="card">
-                                            <div className="card-content">
-                                                <b> 
-                                                    <FontAwesomeIcon icon={faQuoteLeft} size="1x" /> 
-                                                        &nbsp; {aPree.attachment.the_quote} &nbsp;
-                                                    <FontAwesomeIcon icon={faQuoteRight} size="1x" />  
-                                                </b>
+        <div className="tile-item">
+            <Link to={`/view-pree/${aPree.pree_id}`}>
+                {aPree.is_media === true ? (
+                    <div className="tiled-media">
+                        <div className="media-types">
+                            {aPree.attachment.has_image === true && 
+                            (
+                                <div className="tiled-image">
+                                    <div className="card">
+                                        <div className="card-image">
+                                            <figure className="img-holder">
+                                                <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post0`} />
                                                 <small className="tag caption-tag"> 
                                                     <span className="tag date-caption">{formatTime(aPree.date_added)}</span> 
                                                 </small>
-                                            </div>
+                                            </figure>
                                         </div>
                                     </div>
                                 </div>
                             )}
-                        </div>
-                        {/*<div className="row has-text-right">
-                            <small className="tag"> {formatTime(aPree.date_added)} </small>
-                            </div>*/}
+                            {aPree.attachment.has_audio === true && (
+                                <div className="tiled-audio">
+                                    <div className="card">
+                                        <div className="card-content">
+                                            <audio className="audio-playback" controls>
+                                                <source src={`${process.env.PUBLIC_URL}/media/pree${aPree.pree_id}/post0`} type="audio/mp3"/>
+                                            </audio>
+                                            <small className="tag caption-tag"> 
+                                                <span className="tag date-caption">{formatTime(aPree.date_added)}</span> 
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            {aPree.attachment.has_video === true && (
+                                <div className="tiled-video">
+                                    <div className="card">
+                                        <div className="card-content">
+                                            <video width="320" height="240" controls>
+                                                <source src={`${process.env.PUBLIC_URL}/media/pree${aPree.pree_id}/post0`} type="video/mp4"/>
+                                            </video>
+                                            <small className="tag caption-tag"> 
+                                                <span className="tag date-caption">{formatTime(aPree.date_added)}</span> 
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>      
                     </div>
-                </Link>
-            </div>
+                ):(
+                    <div className="tiled-quote has-text-centered">
+                        <div className="a-quote">
+                            <div className="card">
+                                <div className="card-content">
+                                    <b> 
+                                        <FontAwesomeIcon icon={faQuoteLeft} size="1x" /> 
+                                            &nbsp; {aPree.attachment.the_quote} &nbsp;
+                                        <FontAwesomeIcon icon={faQuoteRight} size="1x" />  
+                                    </b>
+                                    <small className="tag caption-tag"> 
+                                        <span className="tag date-caption">{formatTime(aPree.date_added)}</span> 
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </Link>
         </div>
     )
 }

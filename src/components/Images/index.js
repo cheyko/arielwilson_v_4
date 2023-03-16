@@ -8,6 +8,7 @@ import $ from 'jquery';
 
 const Images = props => {
 
+    console.log(props.context.prees)
     const loadImages = useMemo(() => props.context.prees ? props.context.prees.filter(pree => (pree.is_media === true && pree.attachment.has_image === true) || pree.is_media === false) : [],[props.context.prees]);
     const [images, renderImages] = useState([]);
     let sessionVar = localStorage.getItem("mag-section") ? localStorage.getItem("mag-section") : "all";
@@ -92,8 +93,8 @@ const Images = props => {
                     </div>
                 </div>
             </nav>
-        
-            <div className="page-content hero-contain">
+            <br />
+            <div className="page-content">
                 <div className="images-div">
                     {section === "all" &&
                         (
@@ -125,10 +126,10 @@ const Images = props => {
                     {section === "yours" &&
                         (
                             <div className="your-images">
-                                <div className="columns is-multiline is-mobile">
+                                <div className="columns is-multiline is-mobile p-0 m-0">
                                     {images && images.length > 0 ? (
                                         images.map((quote, index) => (
-                                            <div key={index} className="column tile-column is-one-third">
+                                            <div key={index} className="column p-0 m-0 tile-column is-one-third-desktop is-one-third-tablet is-half-mobile">
                                                 <TilePreeItem
                                                     aPree={quote}
                                                     key={index}
