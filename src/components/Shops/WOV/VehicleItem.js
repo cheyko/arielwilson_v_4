@@ -35,6 +35,7 @@ const VehicleItem = props => {
   }
 
   return (
+    <div className="market-card">
       <div className="card vehicle-card">
         <Link onClick={localStorage.setItem("vehicle", JSON.stringify(vehicle))} className="vehicle-item" to={`/vehicle-view/${vehicle.vehicle_id}`}>
           <div className="card-image">
@@ -55,6 +56,7 @@ const VehicleItem = props => {
           </div>                 
         </Link>
       </div>
+    </div>
   );
 };
 

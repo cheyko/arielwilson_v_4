@@ -3,6 +3,7 @@ import withContext from "../../withContext";
 import Modal from "react-modal";
 import axios from "axios";
 import "./index.css";
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement('#root');
 
@@ -39,6 +40,7 @@ const customStyles = {
 const Signup = props => {
     //let history = useHistory();
 
+    let navigate = useNavigate();
     const [firstname, setFname] = useState("");
     const [lastname, setLname] = useState("");
     const [email, setEmail] = useState("");
@@ -127,6 +129,7 @@ const Signup = props => {
                             
                             props.context.welcomeFunc(email,password);
                             setModalOpen(false);
+                            navigate('/');
                             return true;
                         }else{
                             setModalOpen(true);

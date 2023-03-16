@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import withContext from "../../../withContext";
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
+import { useNavigate } from "react-router-dom";
 
 import '../index.css';
 //import { Steps, Step } from "react-step-builder";
@@ -17,6 +18,7 @@ const Welcome = props => {
     //then accept bio details or allow user to skip 
     //then if uname is true : login user 
 
+    let navigate = useNavigate();
     let new_id = localStorage.getItem("user_id");
     const [uname, setUname] = useState("");
     const [val, setVal] = useState("");
@@ -282,6 +284,12 @@ const Welcome = props => {
         setResponseMsg("");
         return true;
     }
+
+    const logout = e => {
+        props.context.logout(e);
+        navigate("/");
+    }
+
     useEffect( () => {
         //console.log(val);
         if (val === ""){
@@ -309,6 +317,9 @@ const Welcome = props => {
         <div className="hero">
             <div className="hero-body">
                 <div className="page-header">
+                    <div className="box logout">
+                        <button className="button is-dark" onClick={e => logout(e)}>Logout</button>
+                    </div>
                     <h1 className="title"> Welcome to W@H GW@@N </h1>
                     
                     <br />

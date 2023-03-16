@@ -72,7 +72,7 @@ const AddPoll = props => {
     const savePoll = async(e) => {
         e.preventDefault();
         var theDateTime = getDateTime();
-        if (isValid() && poll && (choices.length > 0)){
+        if (isValid() && poll && (choices.length > 1)){
             const formData = new FormData();
             formData.append('theDateTime',theDateTime);
             formData.append('user_id',user_id);

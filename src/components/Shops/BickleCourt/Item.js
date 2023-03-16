@@ -8,6 +8,7 @@ const Item = props => {
   //let imageUrl = props.imageUrl === undefined ? ["default","https://bulma.io/images/placeholders/128x128.png"] : props.imageUrl;
   //const url = imageUrl[1];
   return (
+    <div className="market-card">
       <div className="card item-card">
         <Link onClick={localStorage.setItem("item", JSON.stringify(item))} className="service-item" to={`/item-view/${item.item_id}`}>
           <div className="card-content">
@@ -44,6 +45,7 @@ const Item = props => {
             </footer>
         </Link>
       </div>
+    </div>
   );
 };
 

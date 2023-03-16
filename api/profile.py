@@ -84,8 +84,10 @@ def login():
             profile_record = Profile.query.get(user.user_id)
             if profile_record is None:
                 has_profile = False
+                location = ""
             else:
                 has_profile = True
+                location = profile_record.location
                 update_stats(user.user_id)
             return {
                 'user_id' : user.user_id,
@@ -98,7 +100,7 @@ def login():
                 'access_type': user.accessType,
                 'has_profile' : has_profile,
                 'gender' : user.gender,
-                'location': profile_record.location
+                'location': location
             }
         return jsonify({"msg": "Incorrect email or password"}), 400
     else:

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
 import "./index.css";
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import Lightbox from 'react-image-lightbox';
 
 import UserCog from "./UserCog";
@@ -24,6 +24,8 @@ import { useCallback } from "react";
 
 const Navbar = props => {
 
+    let navigate = useNavigate();
+    //let location = useLocation();
     const uname = props.context.user ? props.context.user.username : "";
     //const user = props.context.user;
     const gender = props.context.user ? props.context.user.gender : "";
@@ -56,18 +58,22 @@ const Navbar = props => {
         //if false load a placeholder image and placeholder video
         const user_id = props.context.user ? props.context.user.id : 0;
         //console.log(user_id);
-        await axios.post('/api/get-main-media',{user_id}).then(
-            (response) => {
-                if (response.status === 200){
-                    setGetMedia(true);
-                    if (response.data.has_dp === true){
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
-                    }else{
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+        if (user_id === 0){
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+        }else{
+            await axios.post('/api/get-main-media',{user_id}).then(
+                (response) => {
+                    if (response.status === 200){
+                        setGetMedia(true);
+                        if (response.data.has_dp === true){
+                            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+                        }else{
+                            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+                        }
                     }
                 }
-            }
-        );
+            );
+        }
         return true;
     },[imgView, gotMedia]);
 
@@ -258,11 +264,17 @@ const Navbar = props => {
                             </div>
                         </div>
                     </div>
+                    {props.context.user ? 
                     <div className="username tag" style={{fontSize:"medium", width:"100%"}}> 
                         <span> {uname} </span>&nbsp;
                         <span> (rank) </span>&nbsp;
                         <span> <UserCog /> </span>&nbsp;
+                    </div>:
+                    <div className='card p-1'>
+                        <p>Login to do more on W@H GW@@N</p>
+                        <button onClick={e => navigate("/home")} className='button is-link'>Login / Signup</button>
                     </div>
+                    }
                 </div>
                 {toggleMenu && 
                     <div className="navbar-body">

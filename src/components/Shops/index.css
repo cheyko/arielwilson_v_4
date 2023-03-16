@@ -148,10 +148,15 @@
     margin: 0.5rem;
 }
 
-.shops-body .listing-card, .shops-body .vehicle-card, .shops-body .product-card, .shops-body .service-card, .shops-body .item-card {
+.shops-body .market-card , .similar-container .market-card{
     margin-inline: 5px !important;
     height: 100% !important;
 }
+
+/*.shops-body .listing-card, .shops-body .vehicle-card, .shops-body .product-card, .shops-body .service-card, .shops-body .item-card {
+    margin-inline: 5px !important;
+    height: 100% !important;
+}*/
 
 /*.listing-card{
     height: 100% !important;

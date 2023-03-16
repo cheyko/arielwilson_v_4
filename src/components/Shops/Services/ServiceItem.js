@@ -35,6 +35,7 @@ const ServiceItem = props => {
   }
 
   return (
+    <div className="market-card">
       <div className="card service-card">
         <Link onClick={localStorage.setItem("item", JSON.stringify(service))} className="service-item" to={`/service-view/${service.service_id}`}>
           <div className="card-content">
@@ -90,6 +91,7 @@ const ServiceItem = props => {
                   </footer>*/}
         </Link>
       </div>
+    </div>
   );
 };
 

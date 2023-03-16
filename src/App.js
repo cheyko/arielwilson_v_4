@@ -23,6 +23,7 @@ import Messages from './components/Messages';
 import Images from './components/Images';
 import Videos from './components/Videos';
 import Settings from './components/Settings';
+import Homepage from './components/Homepage';
 
 //import Follower from './components/Follower';
 //import Following from './components/Following';
@@ -78,9 +79,13 @@ const data = {
 
 export default class App extends Component {
   constructor(props){
+    console.log("first");
     super(props);
+    let user = localStorage.getItem("user-context");
+    user = user ? JSON.parse(user) : null;
+    
     this.state = {
-      user: null,
+      user: user,
       prees: [],
       menuChoice: "",
       jwt : sign(data, secret, algorithm), // creation of the JSON Web Token which is placed in the API request headers.
@@ -107,7 +112,7 @@ export default class App extends Component {
     user = user ? JSON.parse(user) : null;
     ready = ready ? JSON.parse(ready) : null;
     welcome = welcome ? JSON.parse(welcome) : null;
-
+    console.log(user);
     let val = window.screen.width;
     let boxWidth;
     if (val < 500){
@@ -120,10 +125,10 @@ export default class App extends Component {
     recent = recent ? parseInt(JSON.parse(recent)) : 0;
     userlist = userlist ? JSON.parse(userlist) : [];
     const user_id = user ? user.id : null;
-    const prees = ready ? await axios.post("/api/see-the-pree",{user_id}) : {"data":null}; //add reactions to the prees from the backend before response to request.
+    //const prees = ready ? await axios.post("/api/see-the-pree",{user_id}) : {"data":null}; //add reactions to the prees from the backend before response to request.
     const messages = ready ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
     //console.log(prees);
-    this.setState({user,prees:prees.data, ready, welcome, userlist, menuChoice, recent, messages, boxWidth:boxWidth}); //, 
+    this.setState({user, ready, welcome, userlist, menuChoice, recent, messages, boxWidth:boxWidth}); //, 
   }
 
   setMenuChoice = (choice) => {
@@ -511,7 +516,6 @@ export default class App extends Component {
   //welcome
   welcomeFunc = (email, password) => {
     const welcome = true;
-    console.log("test2");
     this.setState({email,password,welcome}); 
     localStorage.setItem("welcome", JSON.stringify(welcome));
     localStorage.setItem("email", email);
@@ -576,10 +580,11 @@ export default class App extends Component {
         user_id = res.data.user_id;
         const prees = await axios.post("/api/see-the-pree",{user_id});
         const messages = await this.getMessages(user_id);
-        this.setState({prees:prees.data,toggle:toggle,messages:messages});
+        this.setState({prees:prees.data,messages:messages});
       }else{
         ready = false;
         welcome = true;
+        user_id = res.data.user_id;
         this.setState({email,password});
       }
       
@@ -588,7 +593,7 @@ export default class App extends Component {
       localStorage.setItem("ready", JSON.stringify(ready));
       localStorage.setItem("welcome", JSON.stringify(welcome));
       localStorage.setItem("user_id", JSON.stringify(user_id));
-      this.setState({user,welcome,ready});
+      this.setState({user,welcome,ready,toggle:toggle,user_id});
       return true;
     }else{
       return false;
@@ -603,7 +608,7 @@ export default class App extends Component {
     localStorage.removeItem("user-context");
     localStorage.removeItem("ready");
     localStorage.removeItem("welcome");
-    return <Navigate to="/" />;
+    return <Navigate to="/home" replace={true}/>;
   }
 
   toggleMenu = e => {
@@ -657,7 +662,6 @@ export default class App extends Component {
             <Routes>
               <Route path="/" element={<Layout />}>
                 <Route index element={<Timeline />} />
-                {/*<Route path="/home" element={<Homepage />} />*/}
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/audios" element={<Audios />} />
                 {/*<Route path="/audios/stereo" element={<Audios />} />*/}
@@ -707,6 +711,7 @@ export default class App extends Component {
                  {/*<Route path='/trendy' element={<Trendy />} />*/}
                 {/*<Route path="/welcome" component={Welcome} />*/}
               </Route>
+              <Route path="/home" element={<Homepage />} />
               <Route path='/about/test' element={<Test />} />
               {/*advertising components*/}
               {/* about W@H-GW@@N */}

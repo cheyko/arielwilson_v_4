@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
 import AddPree from "./AddPree";
 import PreeItem from "./PreeItem";
 import "./index.css";
-import axios, { all } from "axios";
+import axios from "axios";
 import TimelineExclusive from "./TimelineExclusive";
-import { render } from "@testing-library/react";
 import MarketPree from "./MarketPree";
 import ActivityPree from "./ActivityPree";
 
@@ -14,15 +13,16 @@ const Timeline = props => {
     /*const allPrees = props.context.prees.sort((a,b) => {
         return a.pree_id - b.pree_id;
     });*/
-
-    const loadPrees = props.context.prees ? props.context.prees : [];
+    //console.log(props.context.user);
+    const [user, setUser] = useState(props.context.user);
+    //const loadPrees = props.context.prees ? props.context.prees : [];
     //console.log(loadPrees);
     //const loadPrees = axios.post("/api/see-the-pree",{user_id})
     const [showDropDown, setShowDropDown] = useState(false);
-    const [allPrees, renderPrees] = useState(loadPrees);
+    const [allPrees, renderPrees] = useState([]);
     const [filterText, setFilterText] = useState("all");
     const [loadNew, setLoadNew] = useState(true);
-
+    
     /*const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);*/
 
@@ -106,7 +106,7 @@ const Timeline = props => {
                 renderPrees(allPrees.filter((aPree) => yesterday === aPree.date_added.split(" ")[0]));
                 break;
             case 'week':
-                val = (newDate.getDate() - 7) > 0 ? new Date(newDate.setDate(newDate.getDate() - 7)) : new Date(newDate.setMonth(newDate.getMonth() - 1)).setDate((lastday[newDate.getMonth() - 1]) + (newDate.getDate() - 7))
+                val = (newDate.getDate() - 7) > 0 ? new Date(newDate.setDate(newDate.getDate() - 7)) : new Date(newDate.setMonth(newDate.getMonth() - 1)).setDate((lastday[newDate.getMonth() - 1]) + (newDate.getDate() - 7));
                 const lastweek = val.toISOString().split("T")[0];
                 setFilterText("lastweek");
                 renderPrees(allPrees.filter((aPree) => lastweek < aPree.date_added.split(" ")[0]));
@@ -142,8 +142,9 @@ const Timeline = props => {
 
         //sortPrees();
         //get reactions to prees --> getlist of prees ids from from allPrees = (param) ?
-        const user_id = props.context.user.id;
+        const user_id = props.context.user ? props.context.user.id : 0;
         if(loadNew === true){
+            //setUser(props.context.user);
             axios.post("/api/see-the-pree",{user_id}).then(
                 result => {
                     renderPrees(result.data);
@@ -153,7 +154,7 @@ const Timeline = props => {
                 console.log(error);
             });
         }
-    },[allPrees,loadNew]);//, gotMedia, loadMainMedia]);
+    },[allPrees, loadNew]);//, gotMedia, loadMainMedia]);
 
     let timeline;
     if(allPrees.length > 0){
@@ -170,6 +171,9 @@ const Timeline = props => {
         })
     }
 
+    console.log(user);
+    //console.log(props.context.user);
+    //console.log(allPrees);
     return (
         <div id="timeline-div" className="hero">
             <div className="hero-container">
@@ -248,11 +252,16 @@ const Timeline = props => {
                     )) 
                     
                 ) : (
-                    <div className="container" style={{ padding:"3rem"}}>
-                        <span className="is-size-3" style={{color:"blue"}}>
-                            Follow Figures, Make Prees and see 'WAH REALLY A GWAAN'
-                        </span>
-                    </div>
+                    <>
+                    {loadNew ? 
+                        <div></div>:
+                        <div className="container" style={{ padding:"3rem"}}>
+                            <span className="is-size-3" style={{color:"blue"}}>
+                                Follow Figures, Make Prees and see 'WAH REALLY A GWAAN'
+                            </span>
+                        </div>
+                        }
+                    </>
                 )}
             </div>
             

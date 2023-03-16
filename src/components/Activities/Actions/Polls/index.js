@@ -73,8 +73,6 @@ const Polls = props => {
 
     slice = polls.slice(offset, offset + perPage); 
 
-    console.log(slice);
-
     return(
         <div className="hero">
             <nav className="panel">
@@ -142,7 +140,7 @@ const Polls = props => {
                 <div className="columns is-multiline is-mobile">
                     {slice && slice.length > 0 ? (
                         slice.map((poll, index) => (
-                            <div key={index} className="column is-half-desktop is-full-mobile">
+                            <div key={index} className="column is-half-desktop is-half-tablet is-full-mobile">
                                 <PollItem 
                                     poll={poll}
                                     key={index}

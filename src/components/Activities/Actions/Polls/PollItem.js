@@ -17,7 +17,8 @@ const PollItem = props => {
     const [results, setResults] = useState(poll.results);
     //let val = poll.status === 'Open' ? true : false;
     const [isOpen, setOpen] = useState(null);
-    let boxwidth = $('#result0');
+    //let boxwidth = $('#result0');
+    const [windowSize, setSize] = useState(0);
 
     const vote = async(index) => {
         const poll_id = poll.poll_id;
@@ -39,8 +40,18 @@ const PollItem = props => {
         );
     }
 
+    const runWindow = () => {
+        setSize(window.innerWidth);
+    }
+
     useEffect(() => {
-        if($('#result0') && (theWidth === 0 || theWidth === undefined)){
+        console.log(windowSize);
+        console.log(window.innerWidth);    
+
+        if(theWidth === 0){
+            window.addEventListener("resize", runWindow);
+        }
+        if($('#result0')){
             if ($('#result0').width() > 0){
                 setWidth($('#result0').width());  
             }           
@@ -48,7 +59,8 @@ const PollItem = props => {
         if(isOpen === null){
             setOpen(checkPoll());
         }
-    },[voted, results, theWidth, boxwidth, isOpen]);
+    },[voted, results, theWidth, windowSize, isOpen]);
+
 
     const calWidth = (result) => {
         const total = votes;
@@ -89,7 +101,6 @@ const PollItem = props => {
         return (poll_end.getTime() > now.getTime());
     }
 
-    console.log(poll);
     return(
         <div className="card">
             <header className="card-header">

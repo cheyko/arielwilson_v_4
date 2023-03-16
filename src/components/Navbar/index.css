@@ -239,9 +239,6 @@
         left: -25px;
     }
 
-    .nav-container{
-        padding: 1rem !important;
-    }
     .navbar{    
         margin-top: 3.25rem !important;
         width: 100% !important;
@@ -269,10 +266,7 @@
         width: 0px ;
         left: -25px;
     }
-
-    .nav-container{
-        padding: 1rem !important;
-    }
+    
     .navbar{
         width: 100% !important;
     }
