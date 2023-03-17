@@ -101,6 +101,7 @@ def get_pree():
             return {"msg":"pree no longer is visible"}, 201
     return jsonify({"msg":"There was an error somewhere."}), 400
 #api method for prees of figures -- standard
+
 @app.route('/api/see-the-pree', methods=['GET','POST'])
 def see_the_pree():
     if request.method == 'POST':         
@@ -110,10 +111,8 @@ def see_the_pree():
         for pree in results:
             if(check_following(user_id, pree.user_id) or pree.user_id == user_id):
                 #reduce to a join query
-                theUser = User.query.get(pree.user_id)
-                theProfile = Profile.query.get(pree.user_id)
-                #theUsers = User.query.join(Profile, User.user_id == Profile.user_id).filter(User.user_id == pree.user_id)
-                userObj = {"user_id":theUser.user_id, "username":theUser.username,"access-type":theUser.accessType, "has_dp":theProfile.has_dp}
+                theUser = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == pree.user_id).first()
+                userObj = {"user_id":theUser.User.user_id, "username":theUser.User.username,"access-type":theUser.User.accessType, "has_dp":theUser.Profile.has_dp}
                 if pree.is_media and pree.pree_type == 'individual':
                     theMedia = Media.query.get(pree.pree_id)
                     attachment = {"caption":theMedia.caption, "no_of_media":theMedia.no_of_media, "has_image":theMedia.has_image, "has_audio":theMedia.has_audio, "has_video":theMedia.has_video}

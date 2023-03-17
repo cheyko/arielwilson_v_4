@@ -174,7 +174,7 @@ const Timeline = props => {
     //console.log(props.context.user);
     //console.log(allPrees);
     return (
-        <div id="timeline-div" className="hero">
+        <div id="timeline-div" className="hero">            
             <div className="hero-container">
                 <div className="box timeline-container live-prees">
                     <div className="columns is-mobile p-0 m-0">    

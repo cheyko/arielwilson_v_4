@@ -216,6 +216,10 @@ html{
   object-fit:cover;
   cursor: pointer;
 }
+
+.image img{
+  height: 100% !important;
+}
 /* possibly will have to move app.css */
 .username{
   border-radius: 1rem;

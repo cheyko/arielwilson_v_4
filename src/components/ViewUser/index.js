@@ -3,6 +3,7 @@ import './index.css'
 import axios from 'axios';
 import withContext from '../../withContext';
 import {Link} from "react-router-dom";
+import EncourageModal from "../HelperComponents/EncourageModal";
 
 const ViewUser = props => {
 
@@ -14,6 +15,8 @@ const ViewUser = props => {
     const [isFollower, setIsFollower] = useState(null);
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
+    const [modalIsOpen, setModalOpen] = useState(false);
+    const [wanted, setWanted] = useState("");
 
     const loadMainMedia = () => {
         //check if cv and dp is available (database check):
@@ -42,15 +45,20 @@ const ViewUser = props => {
 
     const follow = () => {
         console.log("follow function");
-        axios.post('/api/add-follower',{user_id,userview_id}).then(
-            (dofollow) => {
-                if (dofollow.status !== 200){
-                    console.log('User was followed successful.');
-                }else{
-                    setIsFollower(dofollow.data.is_follower);
+        if (props.context.user){
+            axios.post('/api/add-follower',{user_id,userview_id}).then(
+                (dofollow) => {
+                    if (dofollow.status !== 200){
+                        console.log('User was followed successful.');
+                    }else{
+                        setIsFollower(dofollow.data.is_follower);
+                    }
                 }
-            }
-        );
+            );
+        }else{
+            setWanted("follow Users so you can keep up with their prees on your timeline.");
+            setModalOpen(true);
+        }
         //isFollower(true);
     }
 
@@ -73,13 +81,14 @@ const ViewUser = props => {
 
     return (
         <>
+            <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
             <div className="card view-user-card">
                 <div className="card-content" style={{padding:"0.5rem"}}>
                     <Link className="user-item" to={`/view-user-profile/${user.user_id}`}>
                         <div className="media">
                             <div className="media-left">
-                                <figure className="image is-96x96">
-                                    <img src={imgView} alt="display" />
+                                <figure className="image is-64x64">
+                                    <img className="is-rounded" src={imgView} alt="display" />
                                 </figure>
                             </div>
                             <div className="media-content">

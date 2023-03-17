@@ -79,7 +79,6 @@ const data = {
 
 export default class App extends Component {
   constructor(props){
-    console.log("first");
     super(props);
     let user = localStorage.getItem("user-context");
     user = user ? JSON.parse(user) : null;
@@ -125,7 +124,6 @@ export default class App extends Component {
     userlist = userlist ? JSON.parse(userlist) : [];
     const user_id = user ? user.id : 0;
     const prees = user ? await axios.post("/api/see-the-pree",{user_id}) : {"data":null}; //add reactions to the prees from the backend before response to request.
-    console.log(user);
     const messages = user ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
     //console.log(prees);
     this.setState({user, ready, welcome, prees:prees.data, userlist, menuChoice, recent, messages, boxWidth:boxWidth}); //, 

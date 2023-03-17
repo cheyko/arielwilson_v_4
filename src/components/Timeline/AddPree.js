@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import withContext from "../../withContext";
 import Slider from "react-slick";
 import axios from "axios";
+import EncourageModal from "../HelperComponents/EncourageModal";
 
 const AddPree = props => {
 
@@ -20,6 +21,9 @@ const AddPree = props => {
     const [temp_urls, setUrls] = useState([]);
     const [error, setError] = useState("");
     const [confirmMsg,setConfirmMsg] = useState("");
+    const [modalIsOpen, setModalOpen] = useState(false);
+    const [wanted, setWanted] = useState("");
+
 
     const handleChange = e => {
         setQuote(e.target.value);
@@ -42,90 +46,99 @@ const AddPree = props => {
         return result;
     }
 
-    const makePost = async (e) => {
-        let type_of;
-        let setType = false;
-        e.preventDefault();
+    const clearFunc = () => {
+        setCaption("");
         setError("");
-        const formData = new FormData();
-        var theDateTime = getDateTime();
-        
-        formData.append('theDateTime',theDateTime);
-        formData.append('user_id',props.context.user.id);
-        formData.append('pree_type', props.preetype)
-        if (props.preetype === "group") {formData.append('group_id', props.group_id)}
-        while(setType === false){   
-            if (media){ 
-                type_of = "media";
-                formData.append('type_of',type_of);
-                formData.append('caption',caption);
-                media.forEach( (aFile,index) => {
-                    formData.append('media',aFile);
-                    formData.set('has_image',false);
-                    formData.set('has_audio',false);
-                    formData.set('has_video',false);
-                    switch(aFile.type.split('/')[0]){
-                        case 'image':
-                            formData.set('has_image',true);
-                            break;
-                        case 'audio':
-                            formData.set('has_audio',true);
-                            break;
-                        case 'video':
-                            formData.set('has_video',true)
-                            break;
-                        default:
-                            break;
-                    }
-                });
-                //setConfirmMsg("Media Posted")
-                setType = true;
-                //window.location.reload();
-            }else if(a_quote){
-                type_of = "quote";
-                formData.append('type_of',type_of);
-                formData.append('a_quote', a_quote);
-                //setConfirmMsg("Quote made.");
-                document.getElementById("ypree").value = "";
-                setType = true;
-                //window.location.reload();
-            }else if (!media && !a_quote){
-                setError("Nothing to Post")
-            }
-        }
+        setMedia(null);
+        setQuote(null);
+    }
 
-        if(type_of !== ""){
-            const result = await axios.post('/api/ypree', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                maxContentLength: 100000000,
-                maxBodyLength: 1000000000
-            }).catch( (result => {
-                if (result.status !== 200) { return { status: result.status, message: 'Not successful' } }
-            }))
-
-            if (result.status === 200){
-                //reset all values
-                
-                setCaption("");
-                setError("");
-                setMedia(null);
-                setQuote(null);
-                type_of === "quote" ? setConfirmMsg("Quote made.") : setConfirmMsg("Media Posted");
-                props.setLoadNew(true); 
-                //add pree to list inside context using ypree func in App.js
-                return true;
-            }else{
-                type_of === "quote" ? setConfirmMsg("Quote was not made.") : setConfirmMsg("Media was not Posted.");
+    const makePost = async (e) => {
+        e.preventDefault();
+        if (props.context.user){
+            let type_of;
+            let setType = false;
+            e.preventDefault();
+            setError("");
+            const formData = new FormData();
+            var theDateTime = getDateTime();
+            
+            formData.append('theDateTime',theDateTime);
+            formData.append('user_id',props.context.user.id);
+            formData.append('pree_type', props.preetype)
+            if (props.preetype === "group") {formData.append('group_id', props.group_id)}
+            while(setType === false){   
+                if (media){ 
+                    type_of = "media";
+                    formData.append('type_of',type_of);
+                    formData.append('caption',caption);
+                    media.forEach( (aFile,index) => {
+                        formData.append('media',aFile);
+                        formData.set('has_image',false);
+                        formData.set('has_audio',false);
+                        formData.set('has_video',false);
+                        switch(aFile.type.split('/')[0]){
+                            case 'image':
+                                formData.set('has_image',true);
+                                break;
+                            case 'audio':
+                                formData.set('has_audio',true);
+                                break;
+                            case 'video':
+                                formData.set('has_video',true)
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                    //setConfirmMsg("Media Posted")
+                    setType = true;
+                    //window.location.reload();
+                }else if(a_quote){
+                    type_of = "quote";
+                    formData.append('type_of',type_of);
+                    formData.append('a_quote', a_quote);
+                    //setConfirmMsg("Quote made.");
+                    document.getElementById("ypree").value = "";
+                    setType = true;
+                    //window.location.reload();
+                }else if (!media && !a_quote){
+                    setError("Nothing to Post")
+                }   
             }
+
+            if(type_of !== ""){
+                const result = await axios.post('/api/ypree', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                    maxContentLength: 100000000,
+                    maxBodyLength: 1000000000
+                }).catch( (result => {
+                    if (result.status !== 200) { return { status: result.status, message: 'Not successful' } }
+                }))
+
+                if (result.status === 200){
+                    clearFunc();
+                    type_of === "quote" ? setConfirmMsg("Quote made.") : setConfirmMsg("Media Posted");
+                    props.setLoadNew(true); 
+                    //add pree to list inside context using ypree func in App.js
+                    return true;
+                }else{
+                    type_of === "quote" ? setConfirmMsg("Quote was not made.") : setConfirmMsg("Media was not Posted.");
+                }
+            }
+        }else{
+            setWanted("make Prees on your timeline so that all the world can see.");
+            setModalOpen(true);
         }
-        
         return false;
     }
 
     return (
         <div className="px-3">
+            <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
+
             <div className="card">
                 <div className="container" style={{padding:"1rem"}}>  
                     <div className="columns is-mobile">                                 

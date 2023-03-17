@@ -8,34 +8,7 @@ const Menu = props => {
 
     return (
         <div className="hero">
-            <div className="hero-body">
-                <div className="search-header">
-                    <div className="has-text-centered">
-                        <h1 className="subtitle"><b>SEARCH</b></h1>
-                    </div>
-                    <div className="card">
-                        <div className="card-content">
-                            <form onSubmit={ e => props.doSearch(e)} action="/do-search" method="POST">
-                             
-                                <div className="columns">                                 
-                                    <div className="column">
-                                        <input onChange={ e => props.handleChange(e)} className="input" placeholder="CHECK W@H GW@@N" type="text" name="checkwg" />
-                                    </div>
-                                    <div className="column is-one-fifth">
-                                        <button type="submit" className="button is-normal">
-                                            <span className="icon">
-                                            <i className="fas fa-search"></i>
-                                            </span>
-                                            <span>Search</span>
-                                        </button>
-                                    </div>
-                                </div> 
-                            </form> 
-                        </div>
-                    </div>
-                    
-                    <hr />
-                </div>
+            <div className="container">
                 <div className="search-menu columns is-multiline is-mobile">
                     <div className="column is-full-mobile is-half-tablet is-one-third-desktop">
                         <div className="box">

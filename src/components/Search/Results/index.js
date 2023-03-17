@@ -40,23 +40,9 @@ const Results = props => {
         arrows: true,
     };
 */  
+    console.log(userlist);
     return(
         <div className="hero">
-            <div className="return-div">
-                <button className="button" 
-                    onClick={e => {
-                        props.setCheckWG(props.checkwg);
-                        props.setView("menu");
-
-                    }}> 
-                    <i className="fas fa-arrow-circle-left"></i> &nbsp; Return 
-                </button>
-            </div>
-            <div className="contianer has-text-centered">
-                <h1>Search Results</h1>
-
-            </div>
-            <hr />
             {userlist && userlist.length > 0 &&
                 <div className="box">
                     <div className="search-content content"> 

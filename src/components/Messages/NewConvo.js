@@ -124,7 +124,7 @@ const NewConvo = props => {
                     <div style={{width:"100%"}} className="modal-footer container">
                         <button onClick={e => closeModal(e)} style={{backgroundColor:"red"}} className="button modal-close is-large" aria-label="close"></button>
                     </div>
-                </Modal>
+            </Modal>
         </div>
     );
 }

@@ -5,20 +5,23 @@ const Encourage = props => {
     let navigate = useNavigate();
 
     return(
-        <div className="hero">
-            <div className="box">
-                <article className="message is-info">
+        <div className="hero" style={{height:"100%"}}>
+            <div className="card" style={{height:"100%"}}>
+                <article className="message is-info" style={{height:"100%"}}>
                     <div className="message-header">
                         <p>W@H GW@@N</p>
-                        <button className="info" aria-label="info"></button>
+                        {props.use === "modal" ? 
+                            <button onClick={ e => props.closeModal(e)} className="is-large delete" aria-label="delete"></button>:
+                            <button className="is-large info" aria-label="info"></button>
+                        }
                     </div>
                     <div className="message-body">
                         <h1 className="title">
                             Welcome to W@H GW@@N
                         </h1>
-                        <p className="info">
+                        <div className="info">
                             <h3>Login or Sign Up to {wanted} </h3>
-                        </p>  
+                        </div>  
                         <br />
                         <div>
                             <button onClick={e => navigate("/home")} className='button is-link'>Login / Signup</button>

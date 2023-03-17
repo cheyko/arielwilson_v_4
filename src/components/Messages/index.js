@@ -90,7 +90,7 @@ const Messages = props => {
     }
 
     return(
-        <div className="card" style={{minHeight:"100vh"}}>
+        <div>
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
                     <span className="navbar-item">
@@ -118,7 +118,7 @@ const Messages = props => {
                             </span>
 
                             <div className="navbar-dropdown" style={convosMenu ? {display:"block"} : {display: "none"}}>
-                                <NewConvo  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} setTab={props.setTab} />
+                                {props.context.user && <NewConvo  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} setTab={props.setTab} /> }
                                 <span className={`navbar-item ${msgSection === 'new-convo' ? 'is-active' : ''}`} onClick={e => {setModalOpen(true); /*setMsgSection('new-convo');setTab("convos"); toggleMenu(e); showConvosMenu(!convosMenu);localStorage.setItem("msgSection","new-convo");localStorage.setItem("msg-view","convos")*/}}>
                                     <i className="fas fa-plus" aria-hidden="true">  </i> &nbsp; New
                                 </span>
@@ -194,7 +194,7 @@ const Messages = props => {
                                 </div>
                             }
                         </div>:
-                        <Encourage wanted={wanted} />
+                        <Encourage wanted={wanted} use={"page"} />
                     }
                 </div>
             </div>        
