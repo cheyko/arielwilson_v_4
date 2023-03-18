@@ -15,8 +15,8 @@ def authenticate_token(t):
             try:
                 result = jwt.decode(auth, app.config['SECRET_KEY'],algorithms=['HS256'])
             except jwt.exceptions.InvalidSignatureError as e:
-                return jsonify({'error':'Invalid Token'})
+                return jsonify({'error':'Invalid Token'}), 201
             except jwt.exceptions.DecodeError as e:
-                return jsonify({'error': 'Invalid Token'})
+                return jsonify({'error': 'Invalid Token'}), 201
             return t(*args, **kwargs)
     return decorated_func

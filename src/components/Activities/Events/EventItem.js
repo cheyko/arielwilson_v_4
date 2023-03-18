@@ -28,7 +28,7 @@ const EventItem = props => {
 
     return(
         <div>
-            <Link onClick={localStorage.setItem("event", JSON.stringify(event))} className="service-item" to={`/event-view/${event.event_id}`}>
+            <Link className="service-item" to={`/event-view/${event.event_id}`}>
                 <div className="card">
                     <div className="card-image">
                         <figure className="image is-4by3">

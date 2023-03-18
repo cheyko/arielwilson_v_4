@@ -67,10 +67,11 @@ const Search = props => {
             <div className="hero-container p-1">
                 <div className="has-text-centered">
                     <div className="search-header">
-                        <div className="has-text-centered">
-                            <h1 className="subtitle"><b>SEARCH</b></h1>
-                        </div>
+                        
                         <div className="card p-1">
+                            <div className="has-text-centered">
+                                <h1 className="subtitle"><b>SEARCH</b></h1>
+                            </div>
                             <form onSubmit={ e => doSearch(e)} action="/do-search" method="POST">
                             
                                 <div className="media">  

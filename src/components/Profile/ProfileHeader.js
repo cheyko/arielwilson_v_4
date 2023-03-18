@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import withContext from "../../withContext";
 import {Link} from "react-router-dom";
 import Lightbox from 'react-image-lightbox';
+import EncourageModal from "../HelperComponents/EncourageModal";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
@@ -14,11 +15,14 @@ const ProfileHeader = props => {
     const user = props.user ? props.user : "";
 
     const [openImage, setOpen] = useState(false);
+    const [modalIsOpen, setModalOpen] = useState(false);
+    const [wanted, setWanted] = useState("");
 
     //const videoUrl = props.vidView;
 
     return(
         <>
+            <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
             <div className="top-div hero-contain">  
                 <div className="main-media-video">
                     <div className="container has-text-centered">
@@ -61,10 +65,18 @@ const ProfileHeader = props => {
                             </div>
                         </div>
                         <div className="column has-text-centered" onClick={e => localStorage.setItem("msg-view","message")}>
-                            <Link to={`/messages/convo/direct/${user.user_id}`}><button style={{fontSize:"large"}} className="button"> <i className="fas fa-envelope"></i> </button></Link>
+                            {props.context.user ? 
+                                <Link to={`/messages/convo/direct/${user.user_id}`}><button style={{fontSize:"large"}} className="button"> <i className="fas fa-envelope"></i> </button></Link>
+                                :
+                                <button style={{fontSize:"large"}} onClick={e => {setWanted("message this user");setModalOpen(true);}} className="button"> <i className="fas fa-envelope"></i> </button> 
+                            }
                         </div>
                         <div className="column">
-                            <button onClick={props.isFollower ? props.unfollow : props.follow } className={`button is-link is-pulled-right`}> {props.isFollower ? "Unfollow" : "Follow"} </button>
+                            {props.context.user ? 
+                                <button onClick={props.isFollower ? props.unfollow : props.follow } className={`button is-link is-pulled-right`}> {props.isFollower ? "Unfollow" : "Follow"} </button>
+                                :
+                                <button onClick={e => {setWanted("follow this user and others");setModalOpen(true);}} className={`button is-link is-pulled-right`}> Follow </button>
+                            }
                         </div>
                     </div>
                 }
@@ -92,7 +104,7 @@ const ProfileHeader = props => {
                         <div className="column">
                             {!props.showEdit ?
                             (
-                                <button onClick={ e => props.setShowEdit(!props.showEdit)} className={`button is-link is-pulled-right`}> 
+                                <button onClick={ e => {props.context.user ? props.setShowEdit(!props.showEdit) : setWanted("Edit Your Profile Media");setModalOpen(true);}} className={`button is-link is-pulled-right`}> 
                                     Edit Media 
                                 </button>
                             ):(
@@ -130,10 +142,10 @@ const ProfileHeader = props => {
                         )}
                     </figure>
                     <div className="username tag" style={{fontWeight:"bold",fontSize:"large"}}>
-                        @{user.username} 
+                        {action === "read-write" && !props.context.user ? "Guest" : "@" + user.username} 
                     </div>
                     <div className="card tagline has-text-centered" >
-                        #{user.tagline} 
+                        {action === "read-write" && !props.context.user ? "Welcome Guest, create a profile to have a tagline" : "#" + user.tagline} 
                     </div>
                 </div>
                 <br/>{props.responseMsg}<br/>

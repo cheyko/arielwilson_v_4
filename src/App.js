@@ -7,7 +7,7 @@ import 'react-tabs/style/react-tabs.css';
 
 //Helpers
 import React, { Component } from "react";
-import { Routes, Route, Navigate, BrowserRouter as Router} from "react-router-dom";
+import { Routes, Route, Navigate, BrowserRouter as Router, redirect} from "react-router-dom";
 import axios from "axios";
 import Context from "./Context";
 import jwt_decode from 'jwt-decode';
@@ -38,7 +38,7 @@ import Shops from './components/Shops';
 import WGR from './components/WGR';
 import ViewUserProfile from './components/ViewUserProfile';
 import ViewUserList from './components/ViewUserList';
-import PropFinder from './components/Shops/PropFinder';
+//import PropFinder from './components/Shops/PropFinder';
 import Social from './components/Social';
 import ViewPree from './components/Timeline/ViewPree';
 import ViewListing from './components/Shops/PropFinder/ViewListing';
@@ -82,7 +82,6 @@ export default class App extends Component {
     super(props);
     let user = localStorage.getItem("user-context");
     user = user ? JSON.parse(user) : null;
-    
     this.state = {
       user: user,
       prees: [],
@@ -103,30 +102,53 @@ export default class App extends Component {
     });
 
     let user = localStorage.getItem("user-context");
-    let ready = localStorage.getItem("ready");
-    let welcome = localStorage.getItem("welcome");
+    //let ready = localStorage.getItem("ready");
+    let welcome = localStorage.getItem("aic123");
     let userlist = localStorage.getItem("userlist");
     let recent = localStorage.getItem("recent");
-    let menuChoice = JSON.parse(localStorage.getItem("choice"));
+    //let menuChoice = JSON.parse(localStorage.getItem("choice"));
     user = user ? JSON.parse(user) : null;
-    ready = ready ? JSON.parse(ready) : null;
+    //ready = ready ? JSON.parse(ready) : null;
     welcome = welcome ? JSON.parse(welcome) : null;
-    let val = window.screen.width;
-    let boxWidth;
-    if (val < 500){
-       boxWidth = "80%";
-    }else{
-        boxWidth = "60%";
-    }
+    window.addEventListener("resize", event => {
+      let val = window.screen.width;
+      let boxWidth;
+      if (val < 500){
+         boxWidth = "80%";
+      }else{
+          boxWidth = "60%";
+      }
+      this.setState({boxWidth});
+    });
 
     //if User is logged in
     recent = recent ? parseInt(recent) : 0;
+    //recent = this.state.recent ? this.state.recent : 0;
     userlist = userlist ? JSON.parse(userlist) : [];
+    //userlist = this.state.userlist ? this.state.userlist : [];
     const user_id = user ? user.id : 0;
-    const prees = user ? await axios.post("/api/see-the-pree",{user_id}) : {"data":null}; //add reactions to the prees from the backend before response to request.
+    const prees = user ? await axios.post("/api/see-the-pree",{user_id}) : {"data":[]}; //add reactions to the prees from the backend before response to request.
     const messages = user ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
     //console.log(prees);
-    this.setState({user, ready, welcome, prees:prees.data, userlist, menuChoice, recent, messages, boxWidth:boxWidth}); //, 
+    //this.setState({user, ready, welcome, prees:prees.data, userlist, menuChoice, recent, messages, boxWidth:boxWidth}); //, 
+    this.setState({user, prees:prees.data, messages, recent, userlist, welcome});
+    window.addEventListener('storage', event => {
+      if(event.key){
+        if (event.key != 'user-context') return;
+        if (event.oldValue === null){
+          alert('New user signed in');
+        }else{
+          alert("User details were tampered with");
+          this.logout(event);
+          window.location.reload();
+        }
+      }else{
+        if(!localStorage.getItem("user-context")){
+          this.logout(event);
+          window.location.reload();
+        }
+      }
+    });
   }
 
   /*setMenuChoice = (choice) => {
@@ -293,7 +315,7 @@ export default class App extends Component {
     this.setState({ listings }, () => callback && callback());
   };
 
-  //method to populate shops
+  //method to populate shops move to individual files
   setShops = async () => {
     const listings = await axios.get("/api/listings");
     const vehicles = await axios.get("/api/vehicles");
@@ -305,7 +327,7 @@ export default class App extends Component {
 
   //method to set most recent correspondent implement with group later
   setRecent = (userview_id) => {
-    console.log(userview_id);
+    //console.log(userview_id);
     const recent = userview_id;
     this.setState({recent});
     localStorage.setItem("recent", userview_id);
@@ -389,7 +411,7 @@ export default class App extends Component {
         case 'userlist':
           const userlist = alist;
           this.setState({userlist});
-          localStorage.setItem("userlist", JSON.stringify(this.state.userlist));
+          //localStorage.setItem("userlist", JSON.stringify(this.state.userlist));
           break;
         case 'portfolios':
           this.setState({"portfolios":alist});
@@ -505,25 +527,43 @@ export default class App extends Component {
 
   //clear password and set application to ready state
   clearCred = () => {
-    this.setState({email:"", password:"", welcome: false, ready:true});
-    localStorage.setItem("ready", JSON.stringify(this.state.ready));
-    localStorage.setItem("welcome", JSON.stringify(this.state.welcome));
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
+    this.setState({email:"", password:"", welcome: false});
+    //localStorage.setItem("ready", JSON.stringify(this.state.ready));
+    localStorage.setItem("aic123", JSON.stringify(this.state.welcome));
+    localStorage.removeItem("xyz784");
+    localStorage.removeItem("zyx340");
+    localStorage.removeItem("user_id");
+
   }
 
   //welcome
   welcomeFunc = (email, password) => {
     const welcome = true;
-    this.setState({email,password,welcome}); 
-    localStorage.setItem("welcome", JSON.stringify(welcome));
-    localStorage.setItem("email", email);
-    localStorage.setItem("password", CryptoJS.AES.encrypt(password, this.state.secret));
+    const lkjhg1 = CryptoJS.AES.encrypt(email, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    const lkjhg2 = CryptoJS.AES.encrypt(password, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    this.setState({lkjhg1,lkjhg2,welcome}); 
+    localStorage.setItem("aic123", JSON.stringify(welcome));
+    localStorage.setItem("xyz784", lkjhg1);
+    localStorage.setItem("zyx340", lkjhg2);
   }
 
   //sign-up
   signUp = async (firstname,lastname,gender,email,password,phonenumber) => {
-    const res = await axios.post('/api/signup', {firstname,lastname,gender,email,password,phonenumber}).catch((res) => {
+    const lkjhg1 = CryptoJS.AES.encrypt(firstname, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    const lkjhg2 = CryptoJS.AES.encrypt(lastname, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    const lkjhg3 = CryptoJS.AES.encrypt(gender, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    const lkjhg4 = CryptoJS.AES.encrypt(phonenumber, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    const lkjhg5 = CryptoJS.AES.encrypt(email, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    const lkjhg6 = CryptoJS.AES.encrypt(password, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    const formData = new FormData();
+    formData.append('lkjhg1',lkjhg1);
+    formData.append('lkjhg2',lkjhg2);
+    formData.append('lkjhg3',lkjhg3);
+    formData.append('lkjhg4',lkjhg4);
+    formData.append('lkjhg5',lkjhg5);
+    formData.append('lkjhg6',lkjhg6);
+
+    const res = await axios.post('/api/signup', formData).catch((res) => {
       return { status: 401, message: 'Unauthorized' }
     });
 
@@ -539,8 +579,15 @@ export default class App extends Component {
 
   //login
   login = async (email, password) => {
+    const lkjhg1 = CryptoJS.AES.encrypt(email, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    const lkjhg2 = CryptoJS.AES.encrypt(password, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
 
-    const res = await axios.post("/api/login",{email,password},{
+    const formData = new FormData();
+    formData.append('lkjhg1',lkjhg1);
+    formData.append('lkjhg2',lkjhg2);
+
+    //const res = await axios.post("/api/login",{email,password},{
+    const res = await axios.post("/api/login",formData,{
       headers: {
         'Authorization' : this.state.jwt
       }
@@ -550,15 +597,10 @@ export default class App extends Component {
       }
     )
     if (res.status === 200){
-      //console.log("test4");
-      //let email = jwt_decode(res.data.access_token).identity;
-      //console.log(email);
       let welcome;
       let user;
-      let ready;
       let toggle = false;
       let user_id;
-      //console.log(jwt_decode(res.data.access_token));
 
       // get access level from database
       user = {
@@ -574,26 +616,25 @@ export default class App extends Component {
         location : res.data.location
       }
       if (res.data.has_profile === true){
-        ready = true;
         welcome = false;
         user_id = res.data.user_id;
         const prees = await axios.post("/api/see-the-pree",{user_id});
         const messages = await this.getMessages(user_id);
         this.setState({prees:prees.data,messages:messages});
       }else{
-        ready = false;
         welcome = true;
         user_id = res.data.user_id;
-        this.setState({email,password});
+        this.setState({lkjhg1,lkjhg2});
       }
       
       //replace the implementations that used user_id with user.id inside the welcome features
       localStorage.setItem("user-context", JSON.stringify(user));
-      localStorage.setItem("ready", JSON.stringify(ready));
-      localStorage.setItem("welcome", JSON.stringify(welcome));
+      localStorage.setItem("aic123", JSON.stringify(welcome));
       localStorage.setItem("user_id", JSON.stringify(user_id));
-      this.setState({user,welcome,ready,toggle:toggle,user_id});
+      this.setState({user,welcome,toggle:toggle,user_id});
       return true;
+    }else if (res.status === 201){
+      return null;
     }else{
       return false;
     }
@@ -601,11 +642,11 @@ export default class App extends Component {
 
   //logout
   logout = e => {
-    e.preventDefault();
+    //e.preventDefault();
     this.setState({user : null, ready : false, welcome: false, recent:0, prees:null});
     localStorage.setItem("recent", JSON.stringify(this.state.recent));
     localStorage.removeItem("user-context");
-    localStorage.removeItem("ready");
+    //localStorage.removeItem("ready");
     localStorage.removeItem("welcome");
     return <Navigate to="/home" replace={true}/>;
   }

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import withContext from "../../withContext";
 import Slider from "react-slick";
 import axios from "axios";
@@ -15,7 +15,7 @@ const AddPree = props => {
         arrows: true,
     };
 
-    const [a_quote, setQuote] = useState(null);
+    const [a_quote, setQuote] = useState("");
     const [media, setMedia] = useState(null);
     const [caption, setCaption] = useState("");
     const [temp_urls, setUrls] = useState([]);
@@ -27,6 +27,7 @@ const AddPree = props => {
 
     const handleChange = e => {
         setQuote(e.target.value);
+        //console.log("Change");
     }
     
     const handleMedia = e => {
@@ -135,6 +136,14 @@ const AddPree = props => {
         return false;
     }
 
+    useEffect( () => {
+        if(media === null && a_quote === ""){
+            document.getElementById("post-btn").setAttribute("disabled", true);
+        }else{
+            document.getElementById("post-btn").removeAttribute("disabled");
+        }
+    },[media, a_quote]);
+
     return (
         <div className="px-3">
             <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
@@ -157,7 +166,7 @@ const AddPree = props => {
                                 ):("")
                                 }
                                 <div className="column image-upload">
-                                    <button type="submit" className="button is-rounded post-btn is-primary is-pulled-right"> <b> Post </b>  </button>
+                                    <button id="post-btn" type="submit" className="button is-rounded post-btn is-primary is-pulled-right"> <b> Post </b>  </button>
                                     <label className="media-select" htmlFor="media">
                                         <i style={{fontSize:"xx-large"}} className="fas fa-photo-video"></i> 
                                         <small>Add <br /> Multimedia</small> {media ? (<i style={{color:"green"}} className="fas fa-check-circle"></i>) : ("")}

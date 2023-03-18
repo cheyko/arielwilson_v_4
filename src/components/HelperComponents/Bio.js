@@ -74,7 +74,6 @@ const Bio = props => {
         e.preventDefault();
         props.setResponseMsg("");
         const user_id = props.context.user_id ? props.context.user_id : new_id;
-        console.log(user_id);
         
         if (props.func === 'create'){
             await axios.post('/api/bio',{user_id,dob,tagline,description,location}).then(
@@ -111,75 +110,72 @@ const Bio = props => {
 
     return(
         <div className="hero">
-            <div className="hero-body">
-                <div className="bio-form is-centered">
-                    <form onSubmit={e => saveBio(e)}>
-                        {props.func === 'edit' &&
-                            <div className="field">
-                                <label className="label"> Edit your username </label>
-                                <input 
-                                    className="input"
-                                    type="text"
-                                    name="uname"
-                                    value={uname}
-                                    onChange={e => handleChange(e)}
-                                />
-                            </div>
-                        }
-                        <div className="field">
-                            <label className="label"> Enter your Date of Birth </label>
-                            <input
+            <form onSubmit={e => saveBio(e)}>
+                {props.func === 'edit' &&
+                    <div className="field">
+                        <label className="label"> Edit your username </label>
+                        <input 
                             className="input"
-                            type="date"
-                            name="dob"
-                            value={dob}
-                            max={new Date().toISOString().split("T")[0]}
+                            type="text"
+                            name="uname"
+                            value={uname}
                             onChange={e => handleChange(e)}
-                            />
-                        </div>
-                        <div className="field">
-                            <label className="label"> Set your tagline (#) </label>
-                            <input 
-                                className="input"
-                                type="text"
-                                name="tagline"
-                                value={tagline}
-                                onChange={e => handleChange(e)}
-                            />
-                        </div>
-                        <div className="field">
-                            <label className="label"> Drop your Description </label>
-                            <textarea
-                                className="textarea"
-                                type="text"
-                                rows="4"
-                                style={{ resize: "none" }}
-                                name="description"
-                                value={description}
-                                onChange={e => handleChange(e)}
-                                />
-                        </div>
-                        <div className="field">
-                            <label className="label"> Set your Location </label>
-                            <input 
-                                className="input"
-                                type="text"
-                                name="location"
-                                value={location}
-                                onChange={e => handleChange(e)}
-                            />
-                        </div>
-                        <br />
-                        <span>{props.responseMsg}</span>
-                        <br />
-                        <div className="field is-clearfix">
-                            <button className="button is-primary is-outlined is-pulled-right" type="submit">
-                                {props.func === 'edit' ? "Update" : "Submit" } 
-                            </button>
-                        </div>
-                    </form>
+                        />
+                    </div>
+                }
+                <div className="field">
+                    <label className="label"> Enter your Date of Birth </label>
+                    <input
+                    className="input"
+                    type="date"
+                    name="dob"
+                    value={dob}
+                    max={new Date().toISOString().split("T")[0]}
+                    onChange={e => handleChange(e)}
+                    />
                 </div>
-            </div>
+                <div className="field">
+                    <label className="label"> Set your tagline (#) </label>
+                    <input 
+                        className="input"
+                        type="text"
+                        name="tagline"
+                        value={tagline}
+                        onChange={e => handleChange(e)}
+                    />
+                </div>
+                <div className="field">
+                    <label className="label"> Drop your Description </label>
+                    <textarea
+                        className="textarea"
+                        type="text"
+                        rows="4"
+                        style={{ resize: "none" }}
+                        name="description"
+                        value={description}
+                        onChange={e => handleChange(e)}
+                        />
+                </div>
+                <div className="field">
+                    <label className="label"> Set your Location </label>
+                    <input 
+                        className="input"
+                        type="text"
+                        name="location"
+                        value={location}
+                        onChange={e => handleChange(e)}
+                    />
+                </div>
+                <br />
+                <span>{props.responseMsg}</span>
+                <br />
+                <div className="field is-clearfix">
+                    <button className="button is-primary is-outlined is-pulled-right" type="submit">
+                        {props.func === 'edit' ? "Update" : "Submit" } 
+                    </button>
+                </div>
+            </form>
+       
         </div>
     );
 }

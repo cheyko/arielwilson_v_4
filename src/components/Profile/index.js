@@ -7,6 +7,7 @@ import './index.css';
 import ProfileBio from './ProfileBio';
 import ProfileHeader from './ProfileHeader';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Encourage from "../HelperComponents/Encourage";
 
 // main difference between user profile and viewing other profiles is that user profile is editable
 // while viewing other users profile is read only as well as viewing attributes(privacy)
@@ -32,24 +33,29 @@ const Profile = props => {
         //if false load a placeholder image and placeholder video
         const user_id = props.context.user ? props.context.user.id : 0;
 
-        await axios.post('/api/get-main-media',{user_id}).then(
-            (response) => {
-                if (response.status === 200){
-                    if (response.data.has_cv === true){
-                        setVidView(process.env.PUBLIC_URL + "/images/bio/cover/" + user_id +".mp4");
-                    }else{
-                        setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
-                    }
+        if (user_id === 0){
+            setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+        }else{
+            await axios.post('/api/get-main-media',{user_id}).then(
+                (response) => {
+                    if (response.status === 200){
+                        if (response.data.has_cv === true){
+                            setVidView(process.env.PUBLIC_URL + "/images/bio/cover/" + user_id +".mp4");
+                        }else{
+                            setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
+                        }
 
-                    if (response.data.has_dp === true){
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
-                    }else{
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+                        if (response.data.has_dp === true){
+                            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+                        }else{
+                            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+                        }
+                        
                     }
-                    
                 }
-            }
-        )
+            );
+        }
         return true;
     },[props.context]);
 
@@ -60,7 +66,7 @@ const Profile = props => {
             loadMainMedia();
         }
 
-        if (myView === null){
+        if (myView === null && props.context.user){
             props.context.getMyView().then(
                 (result) => {
                     if (!result){
@@ -170,54 +176,61 @@ const Profile = props => {
                         </TabList>
                     </div>
                     <TabPanel>
-                        <ProfileBio user={myView} action="read-write" />
+                        {props.context.user ?
+                            <>
+                                <ProfileBio user={myView} action="read-write" />
+                                <hr />
+                                <div className="multimedia-div">
+                                    <article className="profile-container">
+                                        <div className="message">
+                                            <div className="message-header">
+                                                <div className="has-text-centered">
+                                                    <p className="subtitle has-text-weight-bold profile-title"> Prees </p>
+                                                </div>
+                                                <div className="tabs is-boxed">
+                                                    <ul>
+                                                        <li className="button">
+                                                        <span>
+                                                            <span className="icon is-small"><i className="fas fa-upload" aria-hidden="true"></i></span>
+                                                            <span>All</span>
+                                                        </span>
+                                                        </li>
 
-                        <hr />
-                        
-                        <div className="multimedia-div">
-                            <article className="profile-container">
-                                <div className="message">
-                                    <div className="message-header">
-                                        <div className="has-text-centered">
-                                            <p className="subtitle has-text-weight-bold profile-title"> Prees </p>
-                                        </div>
-                                        <div className="tabs is-boxed">
-                                            <ul>
-                                                <li className="button">
-                                                <span>
-                                                    <span className="icon is-small"><i className="fas fa-upload" aria-hidden="true"></i></span>
-                                                    <span>All</span>
-                                                </span>
-                                                </li>
-
-                                                <li className="button is-active">
-                                                <span>
-                                                    <span className="icon is-small"><i className="far fa-images" aria-hidden="true"></i></span>
-                                                    <span>Magazine</span>
-                                                </span>
-                                                </li>
-                                                
-                                                <li className="button">
-                                                <span>
-                                                    <span className="icon is-small"><i className="fas fa-play-circle" aria-hidden="true"></i></span>
-                                                    <span>AV</span>
-                                                </span>
-                                                </li>
+                                                        <li className="button is-active">
+                                                        <span>
+                                                            <span className="icon is-small"><i className="far fa-images" aria-hidden="true"></i></span>
+                                                            <span>Magazine</span>
+                                                        </span>
+                                                        </li>
+                                                        
+                                                        <li className="button">
+                                                        <span>
+                                                            <span className="icon is-small"><i className="fas fa-play-circle" aria-hidden="true"></i></span>
+                                                            <span>AV</span>
+                                                        </span>
+                                                        </li>
+                                                    
+                                                    </ul>
+                                                </div>
+                                                    
+                                            </div>
                                             
-                                            </ul>
+                                            <div className="message-body">
+                                                <h1>Content</h1>
+                                            </div>
                                         </div>
-                                            
-                                    </div>
-                                    
-                                    <div className="message-body">
-                                        <h1>Content</h1>
-                                    </div>
+                                    </article>
                                 </div>
-                            </article>
-                        </div>
+                            </>
+                            :
+                            <Encourage wanted={"Create a profile Bio and have your own prees"}/>
+                        }
+
+                        
                     </TabPanel>
                     <TabPanel>
                         <div className="professional-div">
+                        {props.context.user ?
                             <article className="profile-container">
                                 <div className="message">
                                     <div className="message-header">
@@ -241,10 +254,14 @@ const Profile = props => {
                                     </div>
                                 </div>
                             </article>
+                            :
+                            <Encourage wanted={"have a professional listing"}/>
+                        }
                         </div>
                     </TabPanel>
                     <TabPanel>                            
                         <div className="portfolio-div">
+                        {props.context.user ?
                             <article className="profile-container">
                                 <div className="message">
                                     <div className="message-header">
@@ -292,10 +309,14 @@ const Profile = props => {
                                     </div>
                                 </div>
                             </article>
+                            :
+                            <Encourage wanted={"have a portfolio listing"}/>
+                        }
                         </div>
                     </TabPanel>
                     <TabPanel>
                         <div className="preepedia-div">
+                        {props.context.user ?
                             <article className="profile-container">
                                 <div className="message">
                                     <div className="message-header">
@@ -333,10 +354,14 @@ const Profile = props => {
                                     </div>
                                 </div>
                             </article>
+                            :
+                            <Encourage wanted={"have a Glossa listing"}/>
+                        }
                         </div>
                     </TabPanel>
                     <TabPanel>
                         <div className="reactions-div">
+                        {props.context.user ?
                             <article className="profile-container">
                                 <div className="message">
                                     <div className="message-header">
@@ -371,6 +396,9 @@ const Profile = props => {
                                     </div>
                                 </div>
                             </article>
+                            :
+                            <Encourage wanted={"have a comments and approvals"}/>
+                        }
                         </div>      
                     </TabPanel>
                     <br/>

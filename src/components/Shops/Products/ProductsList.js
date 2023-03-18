@@ -261,7 +261,6 @@ const ProductsList = props => {
                                                         setFilter(true);
                                                     }}>
                                                     <option value="all"> All </option>
-                                                    <hr></hr>
                                                     <optgroup label="Consumer Brands">
                                                         {consumerBrands.map(opt => (
                                                             <option key={opt} value={opt}>
@@ -269,7 +268,6 @@ const ProductsList = props => {
                                                             </option>
                                                         ))}
                                                     </optgroup>
-                                                    <hr></hr>
                                                     <optgroup label="Beverages Brands">
                                                         {beverageBrands.map(opt => (
                                                             <option key={opt} value={opt}>
@@ -277,7 +275,6 @@ const ProductsList = props => {
                                                             </option>
                                                         ))}
                                                     </optgroup>
-                                                    <hr></hr>
                                                     <optgroup label="Tech Brands">
                                                         {techBrands.map(opt => (
                                                             <option key={opt} value={opt}>
@@ -285,7 +282,6 @@ const ProductsList = props => {
                                                             </option>
                                                         ))}
                                                     </optgroup>
-                                                    <hr></hr>
                                                     <optgroup label="Industrial Brands">
                                                         {industrialBrands.map(opt => (
                                                             <option key={opt} value={opt}>
@@ -293,7 +289,6 @@ const ProductsList = props => {
                                                             </option>
                                                         ))}
                                                     </optgroup>
-                                                    <hr></hr>
                                                     <optgroup label="Sports Brands">
                                                         {sportwearBrands.map(opt => (
                                                             <option key={opt} value={opt}>
@@ -302,7 +297,6 @@ const ProductsList = props => {
                                                         ))}
                                                     </optgroup>
                                                     
-                                                    <hr></hr>
                                                     <optgroup label="Clothing Brands"> 
                                                         {clothingBrands.map(opt => (
                                                             <option key={opt} value={opt}>
@@ -311,7 +305,6 @@ const ProductsList = props => {
                                                         ))}
                                                     </optgroup>
 
-                                                    <hr></hr>
                                                     <optgroup label="Designer Brands"> 
                                                         {designerBrands.map(opt => (
                                                             <option key={opt} value={opt}>
@@ -320,7 +313,6 @@ const ProductsList = props => {
                                                         ))}
                                                     </optgroup>
 
-                                                    <hr></hr>
                                                     <optgroup label="Family Brands"> 
                                                         {familyBrands.map(opt => (
                                                             <option key={opt} value={opt}>

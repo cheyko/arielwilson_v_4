@@ -17,8 +17,10 @@ const Login = props => {
             return setError("Fill all fields!");
         }
         props.context.login(email, password).then((loggedIn) => {
-            if (!loggedIn) {
+            if (loggedIn === false) {
                 setError("Invalid Credentails!");
+            }else if(loggedIn === null){
+                setError("Invalid Token, not a valid login!");
             }
         });
     }

@@ -30,7 +30,7 @@ const Messages = props => {
     const [convosMenu, showConvosMenu] = useState(false);
     const [notificationsMenu, showNotificationsMenu] = useState(false);
 
-    let sessionVar = localStorage.getItem("msg-view") ? localStorage.getItem("msg-view") : "message";
+    let sessionVar = localStorage.getItem("msg-view") ? localStorage.getItem("msg-view") : "convos";
     const [tab, setTab] = useState(sessionVar);
     let wanted = "Send & Receive Messages, View Happenings, See Mentions and Get Recommendations";
 

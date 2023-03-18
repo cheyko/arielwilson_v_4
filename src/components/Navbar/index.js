@@ -24,30 +24,29 @@ const Navbar = props => {
     const [openImage, setOpen] = useState(false);
     const [path, setPath] = useState("");
 
-    const loadMainMedia = useCallback( async() => {
+    const loadMainMedia = async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
         const user_id = props.context.user ? props.context.user.id : 0;
-        //console.log(user_id);
         if (user_id === 0){
             setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
         }else{
             await axios.post('/api/get-main-media',{user_id}).then(
                 (response) => {
                     if (response.status === 200){
-                        setGetMedia(true);
                         if (response.data.has_dp === true){
                             setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
                         }else{
                             setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
                         }
+                        setGetMedia(true);
                     }
                 }
             );
         }
         return true;
-    },[imgView, gotMedia]);
+    }
 
     const activate = (choice) => {
         setClick(true);

@@ -10,8 +10,6 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 
-const secret = 'some$3cretKey';
-
 const Welcome = props => {
     
     //accept username and check if username is available
@@ -232,8 +230,8 @@ const Welcome = props => {
 
     //call login funtion and place in onclick on last btn
     const endWelcome = () => {
-        const email = props.context.email ? props.context.email : localStorage.getItem("email");
-        const password = props.context.password ? props.context.password : CryptoJS.AES.decrypt(localStorage.getItem("password"), secret).toString(CryptoJS.enc.Utf8);
+        const email = props.context.email ? CryptoJS.AES.decrypt(props.context.lkjhg1, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB}).toString(CryptoJS.enc.Utf8) : CryptoJS.AES.decrypt(localStorage.getItem("xyz784"),CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB}).toString(CryptoJS.enc.Utf8);
+        const password = props.context.password ? CryptoJS.AES.decrypt(props.context.lkjhg2, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB}).toString(CryptoJS.enc.Utf8) : CryptoJS.AES.decrypt(localStorage.getItem("zyx340"), CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB}).toString(CryptoJS.enc.Utf8);
         props.context.clearCred();
         props.context.login(email,password).then(
             (loggedIn) => {
@@ -242,10 +240,11 @@ const Welcome = props => {
                 //create a flash message for when user does not signs in, it displays an error message
             }else{
                 console.log("Welcome to W@H GW@@N.");
+                //window.location.reload();
                 //create a flash message for when user signs in, it displays a welcome message
             }
         });
-        
+        //navigate("/");       
     }
 
     const next = (e,num) => {
@@ -286,8 +285,9 @@ const Welcome = props => {
     }
 
     const logout = e => {
+        props.context.clearCred();
         props.context.logout(e);
-        navigate("/");
+        navigate("/home");
     }
 
     useEffect( () => {
@@ -307,7 +307,7 @@ const Welcome = props => {
                 console.log(error);
             });
         }
-        if (!gotMedia){
+        if (!gotMedia && showStep3){
             loadMainMedia();
         }
         //setResponseMsg(responseMsg);
@@ -315,17 +315,13 @@ const Welcome = props => {
 
     return (
         <div className="hero">
-            <div className="hero-body">
+            <div className="hero-contain">
                 <div className="page-header">
                     <div className="box logout">
                         <button className="button is-dark" onClick={e => logout(e)}>Logout</button>
                     </div>
                     <h1 className="title"> Welcome to W@H GW@@N </h1>
-                    
-                    <br />
-
                     <h3 className="subtitle"> You can now experience all the world has to offer. </h3>
-
                     <br />
                 </div>
                 <div className="page-body">

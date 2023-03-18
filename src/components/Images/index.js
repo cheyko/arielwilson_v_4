@@ -8,7 +8,6 @@ import $ from 'jquery';
 
 const Images = props => {
 
-    console.log(props.context.prees)
     const loadImages = useMemo(() => props.context.prees ? props.context.prees.filter(pree => (pree.is_media === true && pree.attachment.has_image === true) || pree.is_media === false) : [],[props.context.prees]);
     const [images, renderImages] = useState([]);
     let sessionVar = localStorage.getItem("mag-section") ? localStorage.getItem("mag-section") : "all";
@@ -17,24 +16,26 @@ const Images = props => {
     //const [showMore, setShowMore] = useState(false);
 
     const showImages = useCallback( () => {
-        let results;
-        switch(section){
-            case "all":
-                results = loadImages;
-                renderImages(results);
-                break;
-            case "yours":
-                results = loadImages.filter( (pree) => pree.user.user_id === props.context.user.id);
-                renderImages(results);
-                break;
-            case "tagged":
-                results = loadImages.filter( (pree) => pree.user.user_id === props.context.user.id);
-                renderImages(results);
-                break;
-            default:
-                break;
+        if (props.context.user){
+            let results;
+            switch(section){
+                case "all":
+                    results = loadImages;
+                    renderImages(results);
+                    break;
+                case "yours":
+                    results = loadImages.filter( (pree) => pree.user.user_id === props.context.user.id);
+                    renderImages(results);
+                    break;
+                case "tagged":
+                    results = loadImages.filter( (pree) => pree.user.user_id === props.context.user.id);
+                    renderImages(results);
+                    break;
+                default:
+                    break;
+            }
         }
-    },[loadImages, props.context.user.id,section]);
+    },[loadImages, props.context.user,section]);
 
     useEffect( () => {
         if (section === "all" || section === "yours"){

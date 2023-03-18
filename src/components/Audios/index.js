@@ -14,26 +14,28 @@ const Audios = props => {
     const [showMore, setShowMore] = useState(false);
 
     const showAudios = useCallback( () => {
-        let results;
-        const loadAudios = props.context.prees ? props.context.prees.filter(pree => pree.is_media === true && (pree.attachment.has_audio === true || pree.attachment.has_video === true)) : [];
+        if (props.context.user){
+            let results;
+            const loadAudios = props.context.prees ? props.context.prees.filter(pree => pree.is_media === true && (pree.attachment.has_audio === true || pree.attachment.has_video === true)) : [];
 
-        switch(section){
-            case "all":
-                results = loadAudios;
-                renderAudios(results);
-                break;
-            case "yours":
-                results = loadAudios.filter( (pree) => pree.user.user_id === props.context.user.id);
-                renderAudios(results);
-                break;
-            case "tagged":
-                results = loadAudios.filter( (pree) => pree.user.user_id === props.context.user.id);
-                renderAudios(results);
-                break;
-            default:
-                break;
+            switch(section){
+                case "all":
+                    results = loadAudios;
+                    renderAudios(results);
+                    break;
+                case "yours":
+                    results = loadAudios.filter( (pree) => pree.user.user_id === props.context.user.id);
+                    renderAudios(results);
+                    break;
+                case "tagged":
+                    results = loadAudios.filter( (pree) => pree.user.user_id === props.context.user.id);
+                    renderAudios(results);
+                    break;
+                default:
+                    break;
+            }
         }
-    }, [section, props]);
+    }, [section, props.context.user]);
 
     useEffect( () => {
         if (section === "all" || section === "yours"){

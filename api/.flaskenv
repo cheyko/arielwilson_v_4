@@ -1,2 +1,5 @@
 FLASK_APP=__init__.py
 FLASK_ENV=development
+
+OPENAI_API_KEY=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
+AES_KEY=some$3cretKeyAAA

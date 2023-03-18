@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import withContext from '../../withContext';
 import Welcome from '../Homepage/Welcome';
 import Navbar from "../Navbar";
-import Homepage from '../Homepage';
+//import Homepage from '../Homepage';
 
 import "./index.css";
 

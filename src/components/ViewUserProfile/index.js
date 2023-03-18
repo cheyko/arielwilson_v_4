@@ -120,7 +120,7 @@ const ViewUserProfile = props => {
     ):(  
         <div className="hero hero-container">
             <div className="card profile-box">
-                 <button className="button is-info" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> &nbsp; Return </button>
+                 <button className="button is-info" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i> </button>
                  
                  <ProfileHeader showDropDown={showDropDown} setShowDropDown={setShowDropDown} isFollower={isFollower} follow={follow} unfollow={unfollow} user={userview} imgView={imgView} vidView={vidView} action="read" />
                  <Tabs>

@@ -3,6 +3,7 @@ import time
 import json
 import os
 import pathlib
+import jwt
 
 #from flask import send_from_directory
 from lib2to3.refactor import _identity
@@ -15,6 +16,9 @@ from api.relations import update_stats
 from flask_cors import CORS, cross_origin
 from os import walk
 from api.security import authenticate_token
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+import base64 
 
 ###############----profile.py-----##############
 
@@ -29,14 +33,14 @@ def get_current_time():
 
 @app.route('/api/signup', methods=['POST'])
 def signup():
-    if request.method == 'POST' and request.is_json:
-        firstname = request.json.get('firstname', None)
-        lastname = request.json.get('lastname',None)
-        gender = request.json.get('gender', None)
-        email = request.json.get('email', None)
-        password = request.json.get('password', None)
-        phonenumber = request.json.get('phonenumber', None)
-        
+    if request.method == 'POST':     
+        cipher = AES.new((str(os.getenv("AES_KEY"))).encode('utf-8'), AES.MODE_ECB)
+        firstname = unpad(cipher.decrypt(base64.b64decode(request.form["lkjhg1"])),AES.block_size).decode("utf-8", "ignore")
+        lastname = unpad(cipher.decrypt(base64.b64decode(request.form["lkjhg2"])),AES.block_size).decode("utf-8", "ignore")
+        gender = unpad(cipher.decrypt(base64.b64decode(request.form["lkjhg3"])),AES.block_size).decode("utf-8", "ignore")
+        phonenumber = unpad(cipher.decrypt(base64.b64decode(request.form["lkjhg4"])),AES.block_size).decode("utf-8", "ignore")
+        email = unpad(cipher.decrypt(base64.b64decode(request.form["lkjhg5"])),AES.block_size).decode("utf-8", "ignore")
+        password = unpad(cipher.decrypt(base64.b64decode(request.form["lkjhg6"])),AES.block_size).decode("utf-8", "ignore")
         if not firstname:
             return jsonify({"msg": "Missing firstname parameter"}), 400
         if not lastname:
@@ -60,7 +64,6 @@ def signup():
         #welcomeEmail = MIMEText(welcomeEmailTemp.format(firstname), "html")
         #subject = "Welcome Message from thaKKB.com"
         #sendEmail(email,subject,welcomeEmail)
-
     return jsonify({"msg": "New User added","user_id":newuser.user_id}), 200
 
 #api method for Login
@@ -68,9 +71,12 @@ def signup():
 @app.route('/api/login', methods=['GET','POST'])
 @authenticate_token
 def login():
-    if request.method == 'POST':    
-        email = request.json.get('email', None)
-        password = request.json.get('password', None)
+    if request.method == 'POST':
+        enc1 = base64.b64decode(request.form["lkjhg1"])
+        enc2 = base64.b64decode(request.form["lkjhg2"])
+        cipher = AES.new((str(os.getenv("AES_KEY"))).encode('utf-8'), AES.MODE_ECB)
+        email = unpad(cipher.decrypt(enc1),AES.block_size).decode("utf-8", "ignore")
+        password = unpad(cipher.decrypt(enc2),AES.block_size).decode("utf-8", "ignore")
 
         if not email:
             return jsonify({"msg": "Missing username parameter"}), 400
@@ -183,9 +189,7 @@ def main_media():
         user_id = result["user_id"]
         has_cover = result["has_cover"]
         has_display = result["has_display"]
-        print(user_id)
         profile_record = Profile.query.get(user_id) 
-        print(profile_record)
         #mypath = pathlib.Path(__file__).parent.resolve()
         parentpath = pathlib.Path().resolve()
         #filenames = next(walk(parentpath), (None, None, []))[2]  # [] if no file
