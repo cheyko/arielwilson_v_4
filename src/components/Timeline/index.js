@@ -7,6 +7,7 @@ import axios from "axios";
 import TimelineExclusive from "./TimelineExclusive";
 import MarketPree from "./MarketPree";
 import ActivityPree from "./ActivityPree";
+import EncourageModal from "../HelperComponents/EncourageModal";
 
 const Timeline = props => {
 
@@ -22,6 +23,8 @@ const Timeline = props => {
     const [allPrees, renderPrees] = useState([]);
     const [filterText, setFilterText] = useState("all");
     const [loadNew, setLoadNew] = useState(true);
+    const [modalIsOpen, setModalOpen] = useState(false);
+    const [wanted, setWanted] = useState("");
     
     /*const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);*/
@@ -174,7 +177,8 @@ const Timeline = props => {
     //console.log(props.context.user);
     //console.log(allPrees);
     return (
-        <div id="timeline-div" className="hero">            
+        <div id="timeline-div" className="hero">  
+            <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
             <div className="hero-container">
                 <div className="box timeline-container live-prees">
                     <div className="columns is-mobile p-0 m-0">    
@@ -191,7 +195,7 @@ const Timeline = props => {
                 <br />
                 
                 <div className="timeline-container">
-                    <AddPree setLoadNew={setLoadNew} renderPrees={renderPrees} preetype={"individual"}/>
+                    <AddPree setWanted={setWanted} setModalOpen={setModalOpen} setWa setLoadNew={setLoadNew} renderPrees={renderPrees} preetype={"individual"}/>
                 </div>
 
                 <div id="make-pree" className="hero">

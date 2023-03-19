@@ -19,7 +19,7 @@ const Volunteer = props => {
     let navigate = useNavigate();
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user.id;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const [activities, setActivities] = useState([]);
     const [gotActivities, setGotActivities] = useState(false);
     const [pageCount, setPageCount] = useState(0);

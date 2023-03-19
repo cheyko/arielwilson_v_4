@@ -7,7 +7,7 @@ import $ from "jquery";
 
 const HostEvent = props => {
 
-    const user_id = props.context.user.id;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const [title, setTitle] = useState("");
     const [host, setHost] = useState("");
     const [typeOf, setType] = useState("");

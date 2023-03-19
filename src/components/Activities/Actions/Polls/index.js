@@ -4,12 +4,13 @@ import AddPoll from "./AddPoll";
 import PollItem from "./PollItem";
 import axios from "axios";
 import ReactPaginate from 'react-paginate';
+import EncourageModal from "../../../HelperComponents/EncourageModal";
 
 const Polls = props => {
 
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user.id;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const [polls, setPolls] = useState([]);
     const [gotPolls, setGotPolls] = useState(false);
     const [pageCount, setPageCount] = useState(0);
@@ -19,6 +20,8 @@ const Polls = props => {
     const categories = ["Agriculture & Food", "Automobiles","Business", "Climate & Weather", "Education", "Entertainment", "General" , "Historical", "Law", "News", "Personal", "Political", "Religious", "Science & Technology", "Sports"];
     const [searchval, setSearchVal] = useState("");
     const [filter, setFilter] = useState(null);
+    const [modalIsOpen, setModalOpen] = useState(false);
+    const [wanted, setWanted] = useState("");
     const perPage = 12;
 
     let slice;
@@ -79,7 +82,8 @@ const Polls = props => {
                 <div className="panel-heading">
                     Polls
                     <div className="is-pulled-right"><button onClick={e => setShowFilter(!showFilter)} className="button">Filter</button></div>
-                    <div className="is-pulled-right"><AddPoll setGotPolls={setGotPolls}/></div>
+                    <div className="is-pulled-right">{props.context.user ? <AddPoll setGotPolls={setGotPolls}/> : <button onClick={e => {setWanted("to create new Polls.");setModalOpen(true)}} className="button">Create</button> }</div>
+                    <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
                 </div>
                 {showFilter && 
                     <>
@@ -146,6 +150,8 @@ const Polls = props => {
                                     key={index}
                                     setGotPolls={setGotPolls}
                                     page={"list"}
+                                    setModalOpen={setModalOpen}
+                                    setWanted={setWanted}
                                 />
                             </div>
                         ))

@@ -4,17 +4,20 @@ import AddRequest from "./AddRequest";
 import RequestItem from "./RequestItem";
 import axios from "axios";
 import ReactPaginate from 'react-paginate';
+import EncourageModal from "../../../HelperComponents/EncourageModal";
+import Encourage from "../../../HelperComponents/Encourage";
 
 const Requests = props => {
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user.id;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const [requests, setRequests] = useState([]);
     const [gotRequest, setGotRequest] = useState(false);
     const [pageCount, setPageCount] = useState(0);
     const [status, setStatus] = useState("All");
     const [searchval, setSearchVal] = useState("");
     const [filter, setFilter] = useState(null);
+    const [modalIsOpen, setModalOpen] = useState(false);
     const perPage = 12;
 
     let slice;
@@ -39,31 +42,32 @@ const Requests = props => {
     },[fullList, searchval, status, requests]);
 
     useEffect(() => {
-        if (gotRequest === false){
-            axios.post("/api/get-requests",{user_id}).then(res => {
-                if (res.status === 200){
-                    setFullList(res.data);
-                    setRequests(res.data);
-                    setPageCount( Math.ceil(res.data.length / perPage));
-                    setGotRequest(true);
-                }
-            });
+        if (user_id !== 0){
+            if (gotRequest === false){
+                axios.post("/api/get-requests",{user_id}).then(res => {
+                    if (res.status === 200){
+                        setFullList(res.data);
+                        setRequests(res.data);
+                        setPageCount( Math.ceil(res.data.length / perPage));
+                        setGotRequest(true);
+                    }
+                });
+            }
+            if(filter){
+                filterList();
+            }
         }
-        if(filter){
-            filterList();
-        }
-    }, [gotRequest, filter, filterList, requests]);
+    }, [gotRequest, filter, user_id, filterList, requests]);
 
     slice = requests.slice(offset, offset + perPage); 
-    console.log(slice);
-
     return (
         <div className="hero">
             <nav className="panel">
                 <div className="panel-heading">
                     Request
                     <div className="is-pulled-right"><button onClick={e => setShowFilter(!showFilter)} className="button">Filter</button></div>
-                    <div className="is-pulled-right"><AddRequest /></div>
+                    <div className="is-pulled-right">{props.context.user ? <AddRequest /> : <button onClick={e => setModalOpen(true)} className="button">Create</button> }</div>
+                    <EncourageModal wanted={"to create new Request."}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
                 </div>
                 {showFilter && 
                     <>
@@ -93,6 +97,7 @@ const Requests = props => {
                     </>
                 }
             </nav>
+            {props.context.user ? 
             <div className="hero">
                 <div className="columns is-multiline is-mobile">
                     {slice && slice.length > 0 ? (
@@ -131,6 +136,9 @@ const Requests = props => {
                         />
                 </div>
             </div>
+            :
+            <Encourage wanted={"View Request which are sent to you and Request which you sent others."} use={"page"} />
+            }
         </div>
     )
 }

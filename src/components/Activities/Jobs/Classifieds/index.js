@@ -10,7 +10,7 @@ const Classifieds = props => {
     let navigate = useNavigate();
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user.id;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const [classifieds, setClassifieds] = useState([]);
     const [gotClassifieds, setGotClassifieds] = useState(false);
     const [pageCount, setPageCount] = useState(0);

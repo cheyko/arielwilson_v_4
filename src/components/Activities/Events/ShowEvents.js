@@ -11,7 +11,7 @@ const ShowEvents = props => {
     const {typeOf} = props;
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user.id;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const [events, setEvents] = useState([]);
     const [gotEvents, setGotEvents] = useState(false);
     const [pageCount, setPageCount] = useState(0);
@@ -110,7 +110,6 @@ const ShowEvents = props => {
 
     slice = events.slice(offset, offset + perPage); 
     
-    console.log(slice);
     return(
         <div className="hero">
             <nav className="panel">

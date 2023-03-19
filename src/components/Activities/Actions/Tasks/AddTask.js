@@ -48,7 +48,7 @@ const AddTask = props => {
         //console.log(result);
         return result;
     }
-    const user_id = props.context.user.id;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const [title, setTitle] = useState("");
     const [start, setStartDate] = useState(new Date().toISOString().split("T")[0]);
     const [description, setDescription] = useState("");

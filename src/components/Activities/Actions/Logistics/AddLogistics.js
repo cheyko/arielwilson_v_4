@@ -48,7 +48,7 @@ const AddLogistics = props => {
         return result;
     }
 
-    const user_id = props.context.user.id;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const types = ["Envelope", "Small Box", "Large Box", "Bag"];
     const [typeOf, setTypeOf] = useState("");
     const [sendAddr, setSendAddr] = useState("");

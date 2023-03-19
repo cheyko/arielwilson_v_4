@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import withContext from "../../withContext";
 import Slider from "react-slick";
 import axios from "axios";
-import EncourageModal from "../HelperComponents/EncourageModal";
 
 const AddPree = props => {
 
@@ -21,9 +20,6 @@ const AddPree = props => {
     const [temp_urls, setUrls] = useState([]);
     const [error, setError] = useState("");
     const [confirmMsg,setConfirmMsg] = useState("");
-    const [modalIsOpen, setModalOpen] = useState(false);
-    const [wanted, setWanted] = useState("");
-
 
     const handleChange = e => {
         setQuote(e.target.value);
@@ -130,8 +126,8 @@ const AddPree = props => {
                 }
             }
         }else{
-            setWanted("make Prees on your timeline so that all the world can see.");
-            setModalOpen(true);
+            props.setWanted("make Prees on your timeline so that all the world can see.");
+            props.setModalOpen(true);
         }
         return false;
     }
@@ -146,8 +142,6 @@ const AddPree = props => {
 
     return (
         <div className="px-3">
-            <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
-
             <div className="card">
                 <div className="container" style={{padding:"1rem"}}>  
                     <div className="columns is-mobile">                                 

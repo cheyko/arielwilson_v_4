@@ -5,7 +5,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import Lightbox from 'react-image-lightbox';
 import UserCog from "./UserCog";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookOpen, faClipboardList, faCog, faPaperPlane, faPlayCircle, faCalendarAlt, faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { faBookOpen, faClipboardList, faCog, faPaperPlane, faPlayCircle, faCalendarAlt, faGlobe, faShoppingBag } from '@fortawesome/free-solid-svg-icons';
 import { faIdCard, faPhone, faImages, faVideo, faSearch, faWallet, faLandmark, faStore } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
@@ -292,15 +292,30 @@ const Navbar = props => {
                                     props.context.toggleMenu(e);
                                 }} to="/wallet">
                                 <div className={selection === "wallet" ? "is-active" : "is-not-active"}> 
-                                    <FontAwesomeIcon icon={faWallet}  /> 
-                                    {" "}<span className="badge-length">0</span>
-                                    <p> {gender === "male" ?  "BillFold" : "Purse" }</p> 
+                                    {props.context.user ? 
+                                    <div>
+                                        {gender === "male" ?
+                                        <div>
+                                            <FontAwesomeIcon icon={faWallet}  /> 
+                                            {" "}<span className="badge-length">0</span>
+                                            <p> BillFold </p> 
+                                        </div>:
+                                        <div>
+                                            <FontAwesomeIcon icon={faShoppingBag}  /> 
+                                            {" "}<span className="badge-length">0</span>
+                                            <p> Purse </p> 
+                                        </div>
+                                        }
+                                    </div>:
+                                    <div>
+                                        <FontAwesomeIcon icon={faWallet}  /> 
+                                        {" "}<span className="badge-length">0</span>
+                                        <p> Wallet </p> 
+                                    </div>
+                                    }
                                 </div>
-                                
                             </Link>
                         </div>
-
-                        
                     </div>
                     
                     <div className="columns is-mobile">

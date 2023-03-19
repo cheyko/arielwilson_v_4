@@ -31,7 +31,6 @@ const ViewEvent = props => {
             const event_id = id;
             axios.post("/api/get-event",{event_id}).then(res => {
                 if (res.status === 200){
-                    console.log(res.data);
                     setEvent(res.data);
                     setPics(getTargetPhotos(res.data));
                 }else{

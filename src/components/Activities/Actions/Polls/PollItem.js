@@ -9,7 +9,7 @@ import axios from "axios";
 const PollItem = props => {
 
     const {poll, page} = props;
-    const user_id = props.context.user.id;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const [showPoll, setShowPoll] = useState(true);
     const [voted, setVoted] = useState(poll.did_vote);
     const [theWidth, setWidth] = useState(0);
@@ -21,23 +21,28 @@ const PollItem = props => {
     const [windowSize, setSize] = useState(0);
 
     const vote = async(index) => {
-        const poll_id = poll.poll_id;
-        const choice = index;
-        await axios.post('/api/vote-poll',{user_id, poll_id, choice}).then(
-            (result1) => {
-                if (result1.status === 200){
-                    //setResponseMsg("Task status was changed.");
-                    setVoted(true);
-                    setVotes(parseInt(result1.data.votes));
-                    setResults(result1.data.results);
-                    if (page !== "timeline"){
-                        props.setGotPolls(false);
+        if (props.context.user){
+            const poll_id = poll.poll_id;
+            const choice = index;
+            await axios.post('/api/vote-poll',{user_id, poll_id, choice}).then(
+                (result1) => {
+                    if (result1.status === 200){
+                        //setResponseMsg("Task status was changed.");
+                        setVoted(true);
+                        setVotes(parseInt(result1.data.votes));
+                        setResults(result1.data.results);
+                        if (page !== "timeline"){
+                            props.setGotPolls(false);
+                        }
+                    }else{
+                        //setResponseMsg("There was an issue, Task status was not changed.");
                     }
-                }else{
-                    //setResponseMsg("There was an issue, Task status was not changed.");
                 }
-            }
-        );
+            );
+        }else{
+            props.setWanted("to Vote in this poll.")
+            props.setModalOpen(true);
+        }
     }
 
     const runWindow = () => {

@@ -5,16 +5,6 @@ import News from "./News";
 import './index.css';
 import $ from 'jquery';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRss } from '@fortawesome/free-solid-svg-icons';
-import { faAd } from '@fortawesome/free-solid-svg-icons';
-import Sports from './Sports';
-import Weather from './Weather';
-import Entertainment from './Entertainment';
-import Archives from './Archives';
-import Business from './Business';
-import WGRFooter from "./WGRFooter";
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 
 const WGR = props => {
@@ -22,8 +12,6 @@ const WGR = props => {
     const [start, setStart] = useState(true);
     const [toggleads , setToggleAds] = useState(true);
     const [togglebn , setToggleBN] = useState(false);
-
-    const [showDropDown, setShowDropDown] = useState(false);
     const [rView, setView] = useState('highlights');
     const [showMore, setShowMore] = useState(false);
 
@@ -168,7 +156,7 @@ const WGR = props => {
                 </nav>
                 <br />
                 <div className="page-content">
-                    <div className='columns is-mobile'>
+                    <div className='columns p-0 m-0 is-mobile'>
                         {toggleads &&
                             <div className='column no-padding is-one-quarter'>
                                 <div className='ad-bar-container box no-padding'>

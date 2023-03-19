@@ -51,7 +51,7 @@ const Schedule = props => {
     
     return (
         <div className="hero">
-            <div className="hero-contain">
+            <div className="card">
                 <Tabs>
                     <div className="message">
                         <div className="message-header">
@@ -83,7 +83,6 @@ const Schedule = props => {
                         </div>
                     </div>
                 </Tabs>
-                <h1>Schedule</h1>
             </div>
         </div>
     )

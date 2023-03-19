@@ -4,12 +4,15 @@ import AddTask from "./AddTask";
 import TaskItem from "./TaskItem";
 import axios from "axios";
 import ReactPaginate from 'react-paginate';
+import Encourage from "../../../HelperComponents/Encourage";
+import EncourageModal from "../../../HelperComponents/EncourageModal";
+
 
 const Tasks = props => {
 
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user.id;
+    const user_id = props.context.user ? props.context.user.id : 0;
     const [tasks, setTasks] = useState([]);
     const [gotTask, setGotTask] = useState(false);
     const [pageCount, setPageCount] = useState(0);
@@ -19,6 +22,7 @@ const Tasks = props => {
     const [gotProjects, setGotProjects] = useState(false);
     const [searchval, setSearchVal] = useState("");
     const [filter, setFilter] = useState(null);
+    const [modalIsOpen, setModalOpen] = useState(false);
     const perPage = 12;
     //const pageCount = tasks ? Math.ceil(services.length / perPage) : 0;
     let slice;
@@ -47,37 +51,39 @@ const Tasks = props => {
     },[fullList, searchval, status, project, tasks]);
 
     useEffect(() => {
-        if (gotTask === false){
-            axios.post("/api/get-tasks",{user_id}).then(res => {
-                if (res.status === 200){
-                    setFullList(res.data);
-                    setTasks(res.data);
-                    setPageCount( Math.ceil(res.data.length / perPage));
-                    //setGotTask(true);
-                }
-            });
-            setGotTask(true);
-        }
-        if(gotProjects === false){
-            
-            axios.post('/api/get-projects',{user_id}).then(
-                (response) => {
-                    if (response.status === 200){
-                        if (response.data.projectlist){
-                            setProjects(Array.from(response.data.projectlist));
-                            //setGotProjects(true);
+        if (user_id !== 0){
+            if (gotTask === false){
+                axios.post("/api/get-tasks",{user_id}).then(res => {
+                    if (res.status === 200){
+                        setFullList(res.data);
+                        setTasks(res.data);
+                        setPageCount( Math.ceil(res.data.length / perPage));
+                        //setGotTask(true);
+                    }
+                });
+                setGotTask(true);
+            }
+            if(gotProjects === false){
+                
+                axios.post('/api/get-projects',{user_id}).then(
+                    (response) => {
+                        if (response.status === 200){
+                            if (response.data.projectlist){
+                                setProjects(Array.from(response.data.projectlist));
+                                //setGotProjects(true);
+                            }
                         }
                     }
-                }
-            ).catch( error => {
-                console.log(error);
-            });
-            setGotProjects(true);
+                ).catch( error => {
+                    console.log(error);
+                });
+                setGotProjects(true);
+            }
+            if(filter){
+                filterList();
+            }
         }
-        if(filter){
-            filterList();
-        }
-    }, [gotTask, filter, filterList, gotProjects]);
+    }, [gotTask, filter, filterList, user_id, gotProjects]);
 
     slice = tasks.slice(offset, offset + perPage); 
 
@@ -89,7 +95,8 @@ const Tasks = props => {
                 <div className="panel-heading">
                     Tasks
                     <div className="is-pulled-right"><button onClick={e => setShowFilter(!showFilter)} className="button">Filter</button></div>
-                    <div className="is-pulled-right"><AddTask projects={projects}/></div>
+                    <div className="is-pulled-right">{props.context.user ? <AddTask projects={projects}/> : <button onClick={e => setModalOpen(true)} className="button">Create</button> }</div>
+                    <EncourageModal wanted={"to create new Task."}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
                 </div>
                 {showFilter && 
                     <>
@@ -135,6 +142,7 @@ const Tasks = props => {
                     </>
                 }
             </nav>
+            {props.context.user ? 
             <div className="hero">
                 <div className="columns is-multiline is-mobile">
                     {slice && slice.length > 0 ? (
@@ -173,7 +181,9 @@ const Tasks = props => {
                         activeClassName={'active'}
                         />
                 </div>
-            </div>
+            </div>:
+            <Encourage wanted={"View Task which are created by you and others for you."} use={"page"} />
+            }
         </div>
     )
 }

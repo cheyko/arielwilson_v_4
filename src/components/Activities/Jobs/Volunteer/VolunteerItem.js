@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 const Volunteer = props => {
 
     const {activity} = props;
-    const imgUrl = activity.numOfPics > 0 ? process.env.PUBLIC_URL + "/images/volunteers/volunteer" + activity.volunteer_id + "/0" : process.env.PUBLIC_URL + "/images/defaults/volunteers/" + activity.category + ".jpg";
+    console.log(activity.numOfPics);
+    const imgUrl = activity.numOfPics > 0 ? (process.env.PUBLIC_URL + "/images/volunteers/volunteer" + activity.volunteer_id + "/0") : (process.env.PUBLIC_URL + "/images/defaults/volunteers/" + activity.category + ".jpg");
 
     const convertDate = (val) => {
         var result;

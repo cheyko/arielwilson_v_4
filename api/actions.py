@@ -161,7 +161,7 @@ def see_the_pree():
                 elif pree.is_media and pree.pree_type == 'volunteer':
                     volunteer = Volunteer.query.filter_by(pree_id = pree.pree_id).first()
                     #reduce return object values
-                    attachment =  {"volunteer_id":volunteer.volunteer_id,"lister":volunteer.lister,"pree_id":volunteer.pree_id,"title":volunteer.title,"category":volunteer.category,"venue":volunteer.venue,"location":volunteer.location,"start_date":str(volunteer.start_date),"end_date":str(volunteer.end_date),"start_time":str(volunteer.start_time),"end_time":str(volunteer.end_time),"metrics":volunteer.metrics}
+                    attachment =  {"volunteer_id":volunteer.volunteer_id,"lister":volunteer.lister,"pree_id":volunteer.pree_id,"title":volunteer.title,"category":volunteer.category,"venue":volunteer.venue,"location":volunteer.location,"start_date":str(volunteer.start_date),"end_date":str(volunteer.end_date),"start_time":str(volunteer.start_time),"end_time":str(volunteer.end_time),"metrics":volunteer.metrics,"numOfPics":volunteer.numOfPics}
                 else:
                     theQuote = Quote.query.get(pree.pree_id)
                     attachment = {"the_quote":theQuote.the_quote}

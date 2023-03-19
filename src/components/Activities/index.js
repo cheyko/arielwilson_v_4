@@ -6,10 +6,11 @@ import './index.css';
 import Jobs from './Jobs';
 import Schedule from './Schedule';
 import $ from "jquery";
+import { useEffect } from 'react';
 
 const Activities = props => {
-    const [theSection, setSection] = useState("actions");
-    const [subSection, setSubSection] = useState("tasks");
+    const [theSection, setSection] = useState("");
+    const [subSection, setSubSection] = useState("");
     const [actionsMenu, showActionsMenu] = useState(false);
     const [eventsMenu, showEventsMenu] = useState(false);
     const [jobsMenu, showJobsMenu] = useState(false);
@@ -22,6 +23,20 @@ const Activities = props => {
         $(".navbar-burger").toggleClass("is-active");
         $(".navbar-menu").toggleClass("is-active");
     }
+
+    useEffect( () => {
+
+        if (theSection === ""){
+            let reloadView = localStorage.getItem("section");
+            let reloadSubView = localStorage.getItem("subSection");
+            if(reloadView){
+                setSection(reloadView);
+                setSubSection(reloadSubView);
+            }else{
+                setSection("schedule");
+            }
+        } 
+    },[theSection]);
 
     return(
         <div className="hero special-nav">
