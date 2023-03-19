@@ -37,7 +37,7 @@ const PFLItem = props => {
   return (
     <div className="market-card">
       <div className="card listing-card">
-        <Link onClick={localStorage.setItem("listing", JSON.stringify(listing))} className="listing-item" to={`/listing-view/${listing.listing_id}`}>
+        <Link className="listing-item" to={`/listing-view/${listing.listing_id}`}>
           <div className="card-image">
               <figure className="image is-1by1">
                 <img

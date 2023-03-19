@@ -10,7 +10,7 @@ const Item = props => {
   return (
     <div className="market-card">
       <div className="card item-card">
-        <Link onClick={localStorage.setItem("item", JSON.stringify(item))} className="service-item" to={`/item-view/${item.item_id}`}>
+        <Link className="service-item" to={`/item-view/${item.item_id}`}>
           <div className="card-content">
               
               <div className="content market-title">

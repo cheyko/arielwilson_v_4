@@ -37,7 +37,7 @@ const VehicleItem = props => {
   return (
     <div className="market-card">
       <div className="card vehicle-card">
-        <Link onClick={localStorage.setItem("vehicle", JSON.stringify(vehicle))} className="vehicle-item" to={`/vehicle-view/${vehicle.vehicle_id}`}>
+        <Link className="vehicle-item" to={`/vehicle-view/${vehicle.vehicle_id}`}>
           <div className="card-image">
               <figure className="image is-5by3">
                 <img

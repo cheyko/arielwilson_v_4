@@ -95,7 +95,7 @@ const ProductItem = props => {
   return (
     <div className="market-card">
       <div className="card product-card">
-        <Link onClick={localStorage.setItem("product", JSON.stringify(product))} className="product-item" to={`/product-view/${product.product_id}`}>
+        <Link className="product-item" to={`/product-view/${product.product_id}`}>
           <div className="card-content">
               
               <div className="content">
