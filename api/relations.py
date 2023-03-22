@@ -14,23 +14,23 @@ def relations():
 
 #helper method to compute count of followers
 def get_count_followers(user_id):
-    count = len(Follower.query.filter(Follower.user_id==user_id, Follower.is_following==True).all())
+    count = len(Follower.query.filter(Follower.figure_id==user_id, Follower.is_following==True).all())
     return count
 
 #helper method to compute count of following
-def get_count_following(user_id):
+def get_count_figures(user_id):
     count = len(Follower.query.filter(Follower.follower_id==user_id, Follower.is_following==True).all())
     return count
 
 #helper method to compute count of fraternity
 def get_count_fraternity(user_id):
-    followers = Follower.query.filter(Follower.user_id==user_id, Follower.is_following==True).all()
-    followings = Follower.query.filter(Follower.follower_id==user_id, Follower.is_following==True).all() 
+    followers = Follower.query.filter(Follower.figure_id==user_id, Follower.is_following==True).all()
+    figures = Follower.query.filter(Follower.follower_id==user_id, Follower.is_following==True).all() 
     fraternity = []
     for follower in followers:
-        for following in followings:
-            if (follower.follower_id == following.user_id):
-                fraternity.append(following)
+        for figure in figures:
+            if (follower.follower_id == figure.figure_id):
+                fraternity.append(figure)
     count = len(fraternity)
     return count
 
@@ -49,10 +49,10 @@ def update_stats(user_id):
     user_profile = Profile.query.get(user_id)
     if(user_profile.followers != get_count_followers(user_id)):
         user_profile.followers = get_count_followers(user_id)
-    if(user_profile.following != get_count_following(user_id)):
-        user_profile.following = get_count_following(user_id)
-    if(user_profile.linkages != get_count_fraternity(user_id)):
-        user_profile.linkages = get_count_fraternity(user_id)
+    if(user_profile.figures != get_count_figures(user_id)):
+        user_profile.figures = get_count_figures(user_id)
+    if(user_profile.fraternity != get_count_fraternity(user_id)):
+        user_profile.fraternity = get_count_fraternity(user_id)
     if(user_profile.groups != get_count_groups(user_id)):
         user_profile.groups = get_count_groups(user_id)
     db.session.commit()
@@ -63,7 +63,7 @@ def update_stats(user_id):
 def get_followers():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
-        followers = Follower.query.filter(Follower.user_id == user_id).all()#, Follower.is_following == True).all()
+        followers = Follower.query.filter(Follower.figure_id == user_id, Follower.is_following==True).all()#, Follower.is_following == True).all()
         followerslist = []
         for follower in followers:
             user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == follower.follower_id).first()
@@ -77,13 +77,13 @@ def get_followers():
 def get_figures():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
-        followings = Follower.query.filter(Follower.follower_id == user_id).all()
-        followingslist = []
-        for following in followings:
-            user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == following.user_id).first()
+        figures = Follower.query.filter(Follower.follower_id == user_id, Follower.is_following==True).all()
+        figureslist = []
+        for figure in figures:
+            user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == figure.figure_id).first()
             aUserObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "access-type":user_details.User.accessType, "tagline":user_details.Profile.tagline, "location":user_details.Profile.location, "has_dp":user_details.Profile.has_dp}
-            followingslist.append(aUserObj)
-        return {"followingslist":followingslist} , 200
+            figureslist.append(aUserObj)
+        return {"figureslist":figureslist} , 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 #api method to get fraternity
@@ -91,33 +91,33 @@ def get_figures():
 def get_fraternity():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None) 
-        followers = Follower.query.filter(Follower.user_id == user_id).all() 
-        followings = Follower.query.filter(Follower.follower_id == user_id).all()
+        followers = Follower.query.filter(Follower.figure_id == user_id, Follower.is_following==True).all() 
+        figures = Follower.query.filter(Follower.follower_id == user_id, Follower.is_following==True).all()
         fraternity = []
         for follower in followers:
-            for following in followings:
-                if (follower.follower_id == following.user_id):
-                    fraternity.append(following)
+            for figure in figures:
+                if (follower.follower_id == figure.figure_id):
+                    fraternity.append(figure)
         fraternitylist = []
         for linkage in fraternity:
-            user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == linkage.user_id).first()
+            user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == linkage.figure_id).first()
             aUserObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "access-type":user_details.User.accessType, "tagline":user_details.Profile.tagline, "location":user_details.Profile.location, "has_dp":user_details.Profile.has_dp}
             fraternitylist.append(aUserObj)
         return {"fraternitylist":fraternitylist} , 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 #helper method to see if this match is in Follower table
-def was_recorded(following_id, follower_id):
-    wasRecorded = Follower.query.filter_by(user_id=following_id,follower_id=follower_id).first()
+def was_recorded(figure_id, follower_id):
+    wasRecorded = Follower.query.filter_by(figure_id=figure_id,follower_id=follower_id).first()
     if wasRecorded is not None:
         return True
     else:
         return False
 
-def check_follower(following_id, follower_id):
-    wasRecorded = was_recorded(following_id, follower_id)
+def check_follower(figure_id, follower_id):
+    wasRecorded = was_recorded(figure_id, follower_id)
     if wasRecorded is not None:
-        isFollow = Follower.query.filter_by(user_id=following_id,follower_id=follower_id, is_following=True).first()
+        isFollow = Follower.query.filter_by(figure_id=figure_id,follower_id=follower_id, is_following=True).first()
         if isFollow is not None:
             return True
         else:
@@ -125,7 +125,7 @@ def check_follower(following_id, follower_id):
     else:
         return False
 
-def check_following(follower_id, following_id):
+"""def check_following(follower_id, following_id):
     wasRecorded = was_recorded(following_id, follower_id)
     if wasRecorded is not None:
         isFollow = Follower.query.filter_by(user_id=following_id,follower_id=follower_id, is_following=True).first()
@@ -134,7 +134,7 @@ def check_following(follower_id, following_id):
         else:
             return False
     else:
-        return False
+        return False"""
 
 #api method to see check if this is a match in Follower Table
 @app.route('/api/is-follower', methods=['POST'])
@@ -142,16 +142,16 @@ def is_follower():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
         userview_id = request.json.get('userview_id', None)
-        return {"is_follower" : check_follower(userview_id,user_id)}, 200 
+        return {"is_follower" : check_follower(user_id,userview_id)}, 200 
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 ###### not needed, just reverse the parameters of is-follower to get is-following
-@app.route('/api/is-following', methods=['POST'])
+@app.route('/api/is-figure', methods=['POST'])
 def is_following():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
         userview_id = request.json.get('userview_id', None)
-        return {"is_figure" : check_following(user_id,userview_id)}, 200 
+        return {"is_figure" : check_follower(userview_id,user_id)}, 200 
     return jsonify({"msg":"There was an error somewhere."}), 400
    
 #api method to see check if this is a match and match reverse (is-linkage) in Follower Table
@@ -161,22 +161,22 @@ def is_following():
 def add_follower():
     if request.method == 'POST':
         follower_id = request.json.get('user_id', None)
-        following_id = request.json.get('userview_id', None)
-        wasRecorded = was_recorded(following_id,follower_id)
+        figure_id = request.json.get('userview_id', None)
+        wasRecorded = was_recorded(figure_id,follower_id)
         print(wasRecorded)
         if wasRecorded == True:
-            record = Follower.query.filter_by(user_id=following_id,follower_id=follower_id).first()
+            record = Follower.query.filter_by(figure_id=figure_id,follower_id=follower_id).first()
             record.is_following = True
         else:
-            newFollow = Follower(user_id=following_id,follower_id=follower_id,is_following=True)
+            newFollow = Follower(figure_id=figure_id,follower_id=follower_id,is_following=True)
             db.session.add(newFollow)
 
-        user_profile = Profile.query.get(following_id)
-        followercount = user_profile.followers + 1
-        user_profile.followers = followercount
+        figure_profile = Profile.query.get(figure_id)
+        followercount = figure_profile.followers + 1
+        figure_profile.followers = followercount
         follower_profile = Profile.query.get(follower_id)
-        followingcount = follower_profile.following + 1
-        follower_profile.following = followingcount
+        figurecount = follower_profile.following + 1
+        follower_profile.following = figurecount
 
         db.session.commit()
         return jsonify({"msg":"Follower added.","is_follower":True}) , 200
@@ -187,26 +187,30 @@ def add_follower():
 def un_follow():
     if request.method == 'PUT':
         follower_id = request.json.get('user_id', None)
-        following_id = request.json.get('userview_id', None)
-        record = Follower.query.filter_by(user_id=following_id,follower_id=follower_id).first()
+        figure_id = request.json.get('userview_id', None)
+        record = Follower.query.filter_by(figure_id=figure_id,follower_id=follower_id).first()
         record.is_following = False
 
-        user_profile = Profile.query.get(following_id)
-        followercount = user_profile.followers - 1
-        user_profile.followers = followercount
+        figure_profile = Profile.query.get(figure_id)
+        followercount = figure_profile.followers - 1
+        figure_profile.followers = followercount
         follower_profile = Profile.query.get(follower_id)
-        followingcount = follower_profile.following - 1
-        follower_profile.following = followingcount
+        figurecount = follower_profile.following - 1
+        follower_profile.following = figurecount
 
         db.session.commit()
         return jsonify({"msg":"User unfollowed succesfully.","is_follower":False}) , 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
-#api method to add closest
+
+############################################
+##### to be reviewed ###################
+############################################
+#api method to add closest not being used as yet
 @app.route('/api/add-closest', methods=['POST'])
 def add_closest():
     if request.method == 'POST':
-        follower_id = request.json.get('user_id', None)
+        """follower_id = request.json.get('user_id', None)
         following_id = request.json.get('userview_id', None)
         wasRecorded = was_recorded(following_id,follower_id)
         print(wasRecorded)
@@ -224,7 +228,7 @@ def add_closest():
         followingcount = follower_profile.following + 1
         follower_profile.following = followingcount
 
-        db.session.commit()
+        db.session.commit()"""
         return jsonify({"msg":"Follower added.","is_follower":True}) , 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 

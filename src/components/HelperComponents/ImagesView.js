@@ -64,7 +64,7 @@ const ImagesView = props => {
 
       return(
           <div className="box imagesContainer">
-            <button className="button" onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i>  </button>
+            <button className="button" type='button' title='return-btn' onClick={() => navigate(-1)}> <i className="fas fa-arrow-circle-left"></i>  </button>
             <br/>
             <div className="wrapper">
                 <div className="currentSlide">

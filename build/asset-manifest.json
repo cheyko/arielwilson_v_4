@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.117687a9.chunk.css",
-    "main.js": "/static/js/main.e22f6eb0.chunk.js",
-    "main.js.map": "/static/js/main.e22f6eb0.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.b77bf25e.js",
-    "runtime-main.js.map": "/static/js/runtime-main.b77bf25e.js.map",
-    "static/css/2.5eac686d.chunk.css": "/static/css/2.5eac686d.chunk.css",
-    "static/js/2.ef556966.chunk.js": "/static/js/2.ef556966.chunk.js",
-    "static/js/2.ef556966.chunk.js.map": "/static/js/2.ef556966.chunk.js.map",
-    "static/js/3.c3b946f5.chunk.js": "/static/js/3.c3b946f5.chunk.js",
-    "static/js/3.c3b946f5.chunk.js.map": "/static/js/3.c3b946f5.chunk.js.map",
+    "main.css": "/static/css/main.87c02f0f.css",
+    "main.js": "/static/js/main.4fb822ea.js",
+    "static/js/787.5ff03247.chunk.js": "/static/js/787.5ff03247.chunk.js",
+    "static/media/realestate.jpeg": "/static/media/realestate.c8806a94c138ccbccdae.jpeg",
+    "static/media/carsales.jpeg": "/static/media/carsales.85f246c5dd625c2133ec.jpeg",
+    "static/media/chateau.jpeg": "/static/media/chateau.51995c02ca0f502030c7.jpeg",
+    "static/media/shopping.jpeg": "/static/media/shopping.14169c43e551f4633a89.jpeg",
+    "static/media/bicklecourt.jpeg": "/static/media/bicklecourt.8f5df814db755f0f686d.jpeg",
+    "static/media/services.jpeg": "/static/media/services.2759232837bf784e37c2.jpeg",
+    "static/media/default.jpeg": "/static/media/default.54b3a7694758cf934e41.jpeg",
+    "static/media/music.jpeg": "/static/media/music.eb31387525046a4c7b38.jpeg",
+    "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/index.html",
-    "static/css/2.5eac686d.chunk.css.map": "/static/css/2.5eac686d.chunk.css.map",
-    "static/css/main.117687a9.chunk.css.map": "/static/css/main.117687a9.chunk.css.map",
-    "static/js/2.ef556966.chunk.js.LICENSE.txt": "/static/js/2.ef556966.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/static/media/shopping.14169c43.jpeg",
-    "static/media/slick-theme.css": "/static/media/slick.c94f7671.ttf"
+    "main.87c02f0f.css.map": "/static/css/main.87c02f0f.css.map",
+    "main.4fb822ea.js.map": "/static/js/main.4fb822ea.js.map",
+    "787.5ff03247.chunk.js.map": "/static/js/787.5ff03247.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.b77bf25e.js",
-    "static/css/2.5eac686d.chunk.css",
-    "static/js/2.ef556966.chunk.js",
-    "static/css/main.117687a9.chunk.css",
-    "static/js/main.e22f6eb0.chunk.js"
+    "static/css/main.87c02f0f.css",
+    "static/js/main.4fb822ea.js"
   ]
 }

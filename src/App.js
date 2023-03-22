@@ -76,7 +76,6 @@ const data = {
   token : 'Required'
 };
 
-
 export default class App extends Component {
   constructor(props){
     super(props);
@@ -334,7 +333,7 @@ export default class App extends Component {
   }
 
   //get all user's messages 
-  getMessages = async (user_id) => {
+  /*getMessages = async (user_id) => {
     //const user_id = this.state.user ? this.state.user.id : 0;
     if (user_id){
       const messages = await axios.post('/api/get-messages',{user_id}).catch(
@@ -376,6 +375,34 @@ export default class App extends Component {
       }else{
         return [];
       }
+    }
+  }*/
+
+  getMessages = async (user_id) => {
+    //const user_id = this.state.user ? this.state.user.id : 0;
+    if (user_id){
+      const messages = await axios.post('/api/get-messages',{user_id}).catch(
+        (messages) => {
+          if (messages.status !== 200){ 
+            return false;
+          }
+        }
+      ); 
+
+      const allmessages = messages.data.messages;
+      const correspondents = allmessages ? [...new Set(allmessages.map((unique)=> ((unique.sender_id === user_id) && unique.receiver_id) || unique.sender_id ))] : [];
+      this.getUsers(correspondents).then(
+        (y) => {
+          console.log(y);
+          this.setState({viewlist:y});
+        }
+      ).catch( error => {
+        console.log(error);
+      }); 
+      this.setState({correspondents});
+      console.log(allmessages);
+      console.log(correspondents);
+      return allmessages;
     }
   }
 
@@ -444,6 +471,17 @@ export default class App extends Component {
     }else{
       return false;
     }
+  }
+
+  getUsers = async(userlist) => {
+    const result = await axios.post('/api/users-view',{userlist}).catch(
+      (result) => {
+        if(result.status !== 200){
+          return false;
+        }
+      }
+    )
+    return result.data.users;
   }
   
   //pull all and find specific user from list or do request with return of specific user from query ?
@@ -647,7 +685,7 @@ export default class App extends Component {
     localStorage.setItem("recent", JSON.stringify(this.state.recent));
     localStorage.removeItem("user-context");
     //localStorage.removeItem("ready");
-    localStorage.removeItem("welcome");
+    localStorage.removeItem("aic123");
     return <Navigate to="/home" replace={true}/>;
   }
 
@@ -716,6 +754,7 @@ export default class App extends Component {
                 {/*<Route path="/notifications" element={<Notifications />} />*/}
                 <Route path="/social" element={<Social />} />
                 <Route path="/messages/:category/:msgtype/:id" element={<Messages />} />
+                <Route path="/messages" element={<Messages />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/test" element={<Test />} />
                 <Route path="/wallet" element={<Wallet />} />

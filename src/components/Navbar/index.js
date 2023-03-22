@@ -121,7 +121,7 @@ const Navbar = props => {
                                         activate('messages'); 
                                         props.context.toggleMenu(e);
                                     }} 
-                                    to={`/messages/convo/direct/${props.context.recent}`}>
+                                    to={'/messages'/*`/messages/convo/direct/${props.context.recent}`*/}>
                                     <div className={selection === "messages" ? "is-active" : "is-not-active"}> 
                                         <FontAwesomeIcon icon={faPaperPlane} size="1x" /> 
                                             {" "}<span className="badge-length">0</span><br/>

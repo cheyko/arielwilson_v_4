@@ -15,12 +15,13 @@ const Timeline = props => {
         return a.pree_id - b.pree_id;
     });*/
     //console.log(props.context.user);
-    const [user, setUser] = useState(props.context.user);
+    //const [user, setUser] = useState(props.context.user);
     //const loadPrees = props.context.prees ? props.context.prees : [];
     //console.log(loadPrees);
     //const loadPrees = axios.post("/api/see-the-pree",{user_id})
+    let newArray = [];
     const [showDropDown, setShowDropDown] = useState(false);
-    const [allPrees, renderPrees] = useState([]);
+    const [allPrees, renderPrees] = useState(newArray);
     const [filterText, setFilterText] = useState("all");
     const [loadNew, setLoadNew] = useState(true);
     const [modalIsOpen, setModalOpen] = useState(false);
@@ -157,7 +158,7 @@ const Timeline = props => {
                 console.log(error);
             });
         }
-    },[allPrees, loadNew]);//, gotMedia, loadMainMedia]);
+    },[allPrees, loadNew, props.context.user]);//, gotMedia, loadMainMedia]);
 
     let timeline;
     if(allPrees.length > 0){

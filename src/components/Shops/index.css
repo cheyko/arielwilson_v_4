@@ -30,7 +30,7 @@
     width: 17.5rem;
     position: fixed !important;
     z-index: 4;
-    right:15px;
+    right:1px;
 }
 
 #cart, .cart-body{

@@ -79,8 +79,8 @@ class Profile(db.Model):
     description = db.Column(db.String(255))
     location = db.Column(db.String(255))
     followers = db.Column(db.Integer, default=0)
-    following = db.Column(db.Integer, default=0) #on production database change to followings ?? would require many changes in api functions as well as potential foreign keys
-    linkages = db.Column(db.Integer, default=0) #on production database change to fraternity
+    figures = db.Column(db.Integer, default=0) #on production database change to followings ?? would require many changes in api functions as well as potential foreign keys
+    fraternity = db.Column(db.Integer, default=0) #on production database change to fraternity
     groups = db.Column(db.Integer, default=0)
     family = db.Column(db.Integer, default=0)
     closest = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'))
@@ -427,14 +427,17 @@ class Follower(db.Model):
     __tablename__ = 'wg_followers'
 
     match_id = db.Column(db.Integer, db.Sequence('wg_followers_match_id_seq'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    figure_id = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)  
     follower_id = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
     is_following = db.Column(db.Boolean)
 
-    def __init__(self, user_id, follower_id, is_following):
-        self.user_id = user_id
+    def __init__(self, figure_id, follower_id, is_following):
+        self.figure_id = figure_id
         self.follower_id = follower_id
         self.is_following = is_following
+
+    def __repr__(self):
+        return '<Match %d ; figure : %d , follower :  %d>' % (self.match_id, self.figure_id, self.follower_id)
 
 class Block(db.Model):
     __tablename__ = 'wg_blocks'

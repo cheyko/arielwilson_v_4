@@ -99,9 +99,9 @@ const ProfileBio = props => {
                                     </div> 
                                     <div className="follow-details">
                                         <div className="columns is-mobile">
-                                            <span className="column"> <Link className="link-to-viewlist" to={`/view-user-list/${user.user_id}/figures`}><strong> <i className="fas fa-address-book"> </i> Figures </strong></Link> {user.following} </span>
+                                            <span className="column"> <Link className="link-to-viewlist" to={`/view-user-list/${user.user_id}/figures`}><strong> <i className="fas fa-address-book"> </i> Figures </strong></Link> {user.figures} </span>
                                             <span className="column"> <Link className="link-to-viewlist" to={`/view-user-list/${user.user_id}/followers`}><strong> <i className="far fa-address-book"> </i> Followers </strong></Link> {user.followers}</span>
-                                            <span className="column"> <Link className="link-to-viewlist" to={`/view-user-list/${user.user_id}/fraternity`}><strong> <i className="fas fa-id-card-alt"> </i> Fraternity </strong></Link> {user.linkages}  </span>
+                                            <span className="column"> <Link className="link-to-viewlist" to={`/view-user-list/${user.user_id}/fraternity`}><strong> <i className="fas fa-id-card-alt"> </i> Fraternity </strong></Link> {user.fraternity}  </span>
                                         </div>
                                     </div> 
                                     <div className="bio-details">

@@ -75,7 +75,7 @@ const ViewConvoUser = props => {
         <>
             <div className="card view-user-card">
                 <div className="card-content" style={{padding:"0.5rem"}}>
-                    <Link className="user-item" onClick={e => props.setTabs("messages")} to={`/messages/convo/direct/${user.user_id}`}>
+                    <Link className="user-item" onClick={e => {localStorage.setItem("msg-view","message");props.setTabs("message");}} to={`/messages/convo/direct/${user.user_id}`}>
                         <div className="media">
                             <div className="media-left">
                                 <figure className="image is-96x96">
@@ -89,12 +89,12 @@ const ViewConvoUser = props => {
                         </div>
                     </Link>
                     <div className="content">
-                        <Link className="user-item has-text-centered" onClick={e => props.setTabs("messages")} to={`/messages/convo/direct/${user.user_id}`}>
+                        <Link className="user-item has-text-centered" onClick={e => {localStorage.setItem("msg-view","message");props.setTabs("message");}} to={`/messages/convo/direct/${user.user_id}`}>
                             <span> #{user.tagline} </span>
                             <br />
                         </Link>
                         <div className="columns is-mobile">
-                            <Link className="user-item column" onClick={e => props.setTabs("messages")} to={`/messages/convo/direct/${user.user_id}`}>
+                            <Link className="user-item column" onClick={e => {localStorage.setItem("msg-view","message");props.setTabs("message");}} to={`/messages/convo/direct/${user.user_id}`}>
                                 <div> <span> {user.location} </span> </div>
                             </Link>
                             <div className="column is-one-third"> <button onClick={isFollower ? unfollow : follow } className={`button is-rounded is-info is-small ${isFollower ? "is-outlined" : ""}`}> {isFollower ? "Unfollow" : "Follow"} </button> </div>

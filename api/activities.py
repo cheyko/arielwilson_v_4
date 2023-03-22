@@ -9,7 +9,7 @@ from api.models import db, User, Accesses, Profile, Pree
 from api.specials import Task, Request, Logistic, Poll, Event, Classified, Volunteer, Vote
 #from datetime import datetime
 import datetime
-from api.relations import check_follower, check_following
+from api.relations import check_follower
 
 @app.route('/api/activities')
 def activities():

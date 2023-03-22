@@ -46,6 +46,7 @@ const NewConvo = props => {
 
     const handleChange = (e) => {
         setSearchVal(e.target.value);
+        setUserList([]);
         const searchval = e.target.value;
         const user_id = props.context.user.id;
 

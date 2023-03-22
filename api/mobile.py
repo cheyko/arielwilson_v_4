@@ -17,7 +17,7 @@ from api.models import db, User, Accesses, Profile, Pree, Approvals, Media, Quot
 from api.relations import update_stats
 from flask_cors import CORS, cross_origin
 from os import walk
-from api.relations import check_follower, check_following
+from api.relations import check_follower
 
 @app.route("/api/get-mirror-pic", methods=["GET","POST"])
 def get_mirror_pic():
@@ -43,7 +43,7 @@ def mobile_prees():
         results = Pree.query.filter(Pree.is_visible == True).order_by(Pree.pree_id.desc()).all()
         prees = []
         for pree in results:
-            if(check_following(user_id, pree.user_id) or pree.user_id == user_id):
+            if(check_follower(pree.user_id, user_id) or pree.user_id == user_id):
                 theUser = User.query.get(pree.user_id)
                  
                 if pree.is_media and pree.pree_type != 'exclusive':

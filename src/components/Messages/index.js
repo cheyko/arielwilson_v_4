@@ -37,7 +37,7 @@ const Messages = props => {
     useEffect(() => {
         let interval = null;
         //let convoMsgs = null;
-        const userview_id = id;
+        /*const userview_id = id;
 
         if (userview_id !== '0'){
             if (userview === ""){
@@ -80,8 +80,8 @@ const Messages = props => {
                 }
                 return () => clearInterval(interval);
             }
-        }
-    },[tab, userview, id, setConvo, user_id]);
+        }*/
+    },[/*tab, userview, id, setConvo, user_id*/]);
 
     const toggleMenu = (e) => {
         e.preventDefault();
@@ -164,7 +164,11 @@ const Messages = props => {
                     {props.context.user ? 
                         <div className="card">
                             {tab === "message" && 
-                                <Messaging id={id} userview={userview} user_id={user_id} convo={convo} setConvo={setConvo} />
+                                <div>
+                                    <h1>Messages</h1>
+                                {/*<Messaging id={id} userview={userview} user_id={user_id} convo={convo} setConvo={setConvo} />*/}
+                                </div>
+
                             }
                             {tab === "convos" && 
                                 <Convos allmessages={allmessages} people={people} user_id={user_id} setUserview={setUserview} setConvo={setConvo} setTab={setTab}/>

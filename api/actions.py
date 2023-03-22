@@ -10,7 +10,7 @@ from flask import request, jsonify
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree, Approvals, Media, Quote, Exclusive, ExclusiveSale, Subscriber, Subscription, GroupPree, Group
 from api.specials import Preepedia, Biography, Product, Listing, Vehicle, Service, Item, Event, Classified, Volunteer, Poll, Vote
-from api.relations import check_follower, check_following
+from api.relations import check_follower
 
 ###############-----actions.py----##############
 
@@ -109,7 +109,7 @@ def see_the_pree():
         results = Pree.query.filter(Pree.is_visible == True).order_by(Pree.pree_id.desc()).all()
         prees = []
         for pree in results:
-            if(check_following(user_id, pree.user_id) or pree.user_id == user_id):
+            if(check_follower(pree.user_id, user_id) or pree.user_id == user_id):
                 #reduce to a join query
                 theUser = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == pree.user_id).first()
                 userObj = {"user_id":theUser.User.user_id, "username":theUser.User.username,"access-type":theUser.User.accessType, "has_dp":theUser.Profile.has_dp}
@@ -224,7 +224,7 @@ def search_users():
         users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),User.firstname.ilike('%'+searchval+'%'), User.lastname.ilike('%'+searchval+'%') )).order_by(User.username).limit(5) 
         userlist = []
         for user in users:
-            is_follower = check_follower(user_id,user.User.user_id)
+            is_follower = check_follower(user.User.user_id, user_id)
             aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
             userlist.append(aUserObj)
         result = {"userlist":userlist}
@@ -273,10 +273,43 @@ def my_view():
         #print(user_id)
         if user_id != '0':
             user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == user_id).first() #.filter(or_( User.firstname.like(checkwg), User.lastname.like(checkwg), User.username.like(checkwg) )).all()
-            myUserObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "access-type":user_details.User.accessType, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "description":user_details.Profile.description, "location":user_details.Profile.location, "followers":user_details.Profile.followers, "following":user_details.Profile.following, "linkages":user_details.Profile.linkages,"groups":user_details.Profile.groups, "has_dp":user_details.Profile.has_dp, "has_cv":user_details.Profile.has_cv}
+            myUserObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "access-type":user_details.User.accessType, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "description":user_details.Profile.description, "location":user_details.Profile.location, "followers":user_details.Profile.followers, "figures":user_details.Profile.figures, "fraternity":user_details.Profile.fraternity,"groups":user_details.Profile.groups, "has_dp":user_details.Profile.has_dp, "has_cv":user_details.Profile.has_cv}
             return myUserObj , 200
         else:
             return jsonify({"msg":"User does not have ID of Zero (0)."}), 205
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
+#not being used 
+"""@app.route('/api/user-view', methods=['POST'])
+def user_view():
+    if request.method == 'POST':
+        userview_id = request.json.get('userview_id', None)
+        #print(user_id)
+        if userview_id != '0':
+            user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == userview_id).first() #.filter(or_( User.firstname.like(checkwg), User.lastname.like(checkwg), User.username.like(checkwg) )).all()
+            myUserObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "has_dp":user_details.Profile.has_dp}
+            return myUserObj , 200
+        else:
+            return jsonify({"msg":"User does not have ID of Zero (0)."}), 205
+    return jsonify({"msg":"There was an error somewhere."}), 400"""
+
+@app.route('/api/users-view', methods=['POST'])
+def users_view():
+    if request.method == 'POST':
+        userlist = request.json.get('userlist', None)
+        print(userlist)
+        users = []
+        for userview_id in userlist:
+            user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == userview_id).first() #.filter(or_( User.firstname.like(checkwg), User.lastname.like(checkwg), User.username.like(checkwg) )).all()
+            userObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "tagline":user_details.Profile.tagline, "has_dp":user_details.Profile.has_dp}
+            users.append(userObj)
+        return {"users":users}, 200
+        """if userview_id != '0':
+            user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == userview_id).first() #.filter(or_( User.firstname.like(checkwg), User.lastname.like(checkwg), User.username.like(checkwg) )).all()
+            myUserObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "has_dp":user_details.Profile.has_dp}
+            return myUserObj , 200
+        else:
+            return jsonify({"msg":"User does not have ID of Zero (0)."}), 205"""
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/testing', methods=['POST'])

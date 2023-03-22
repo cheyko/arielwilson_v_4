@@ -43,7 +43,7 @@ const ViewUserList = props => {
                             if (result2.status !== 200){
                                 throw new Error('List of Followings were not sent from server.');
                             }else{
-                                setViewList(result2.data.followingslist);
+                                setViewList(result2.data.figureslist);
                             }
                         }
                     )
