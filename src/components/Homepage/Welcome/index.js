@@ -70,7 +70,7 @@ const Welcome = props => {
         }  
         //setUname(response.data.uname);
         return false;
-    }, [new_id, val, props.context.user_id] );
+    }, [new_id, props.context.user_id] );
 
 
     const checkUname = async (e) => {
@@ -166,6 +166,8 @@ const Welcome = props => {
                 default:
                     break;
             }
+        }else{
+            setResponseMsg(String.format('{0} {1}',"Please upload only one (1) file for",e.target.name));
         }
         //console.log(vidView);
         setResponseMsg("");
@@ -311,7 +313,7 @@ const Welcome = props => {
             loadMainMedia();
         }
         //setResponseMsg(responseMsg);
-    },[val, gotMedia, hasUname, loadMainMedia]);
+    },[val, new_id, showStep3, props.context.user_id, gotMedia, hasUname, loadMainMedia]);
 
     return (
         <div className="hero">

@@ -27,8 +27,8 @@ migrate = Migrate(app, db)
 jwtmanager = JWTManager(app)
 
 app.config.from_object(__name__)
-#CORS(app, resources={r"/api/*": {"origins": "*"}})
-#app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 from api import actions, messages, profile, reactions, relations, shops, exclusives, mobile, activities, test
 

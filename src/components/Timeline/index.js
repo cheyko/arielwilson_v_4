@@ -19,9 +19,8 @@ const Timeline = props => {
     //const loadPrees = props.context.prees ? props.context.prees : [];
     //console.log(loadPrees);
     //const loadPrees = axios.post("/api/see-the-pree",{user_id})
-    let newArray = [];
     const [showDropDown, setShowDropDown] = useState(false);
-    const [allPrees, renderPrees] = useState(newArray);
+    const [allPrees, renderPrees] = useState([]);
     const [filterText, setFilterText] = useState("all");
     const [loadNew, setLoadNew] = useState(true);
     const [modalIsOpen, setModalOpen] = useState(false);
@@ -147,18 +146,18 @@ const Timeline = props => {
         //sortPrees();
         //get reactions to prees --> getlist of prees ids from from allPrees = (param) ?
         const user_id = props.context.user ? props.context.user.id : 0;
-        if(loadNew === true){
+        //if(loadNew === true){
             //setUser(props.context.user);
             axios.post("/api/see-the-pree",{user_id}).then(
                 result => {
                     renderPrees(result.data);
-                    setLoadNew(false);
+                    //setLoadNew(false);
                 }
             ).catch( error => {
                 console.log(error);
             });
-        }
-    },[allPrees, loadNew, props.context.user]);//, gotMedia, loadMainMedia]);
+        //}
+    },[props.context.user]);//, gotMedia, loadMainMedia]);
 
     let timeline;
     if(allPrees.length > 0){
@@ -213,7 +212,7 @@ const Timeline = props => {
             
                 <hr className="h-line" />
 
-                <span> Checkboxes </span>
+                <span onLoad={e => {console.log("load")}}> Checkboxes </span>
                 
                 <div id="filter-prees" className={`dropdown is-right is-pulled-right ${showDropDown ? "is-active" : ""}`} >
                     <div className="dropdown-trigger">

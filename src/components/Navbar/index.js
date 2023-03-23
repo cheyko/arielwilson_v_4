@@ -17,14 +17,14 @@ const Navbar = props => {
     //const user = props.context.user;
     const gender = props.context.user ? props.context.user.gender : "";
     const [selection, setSelection] = useState("");
-    const [clicked, setClick] = useState(false);
+    //const [clicked, setClick] = useState(false);
 
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
     const [openImage, setOpen] = useState(false);
     const [path, setPath] = useState("");
 
-    const loadMainMedia = async() => {
+    const loadMainMedia = useCallback(async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
@@ -46,10 +46,10 @@ const Navbar = props => {
             );
         }
         return true;
-    }
+    },[props.context.user]);
 
     const activate = (choice) => {
-        setClick(true);
+        //setClick(true);
         setSelection(choice);
     }
     
@@ -95,7 +95,7 @@ const Navbar = props => {
         if (document.documentElement.classList.contains("hide-scroll") === true){
             document.documentElement.classList.remove("hide-scroll");
         }
-    },[gotMedia, clicked, selection, location, loadMainMedia]);
+    },[gotMedia, path, location, loadMainMedia]); //, clicked, selection
 
     return(
         <div className="custom-nav has-text-centered" id="custom-nav">

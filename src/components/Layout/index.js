@@ -17,9 +17,7 @@ const Layout = props => {
       if (document.documentElement.classList.contains("hide-scroll") === true){
         document.documentElement.classList.remove("hide-scroll");
       }
-  },[document]);
-  console.log(props.context.welcome);
-  
+  },[]);
   return(
     <div>
       {props.context.welcome ? 
