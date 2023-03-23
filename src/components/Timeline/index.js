@@ -10,50 +10,12 @@ import ActivityPree from "./ActivityPree";
 import EncourageModal from "../HelperComponents/EncourageModal";
 
 const Timeline = props => {
-
-    /*const allPrees = props.context.prees.sort((a,b) => {
-        return a.pree_id - b.pree_id;
-    });*/
-    //console.log(props.context.user);
-    //const [user, setUser] = useState(props.context.user);
-    //const loadPrees = props.context.prees ? props.context.prees : [];
-    //console.log(loadPrees);
-    //const loadPrees = axios.post("/api/see-the-pree",{user_id})
     const [showDropDown, setShowDropDown] = useState(false);
     const [allPrees, renderPrees] = useState([]);
     const [filterText, setFilterText] = useState("all");
     const [loadNew, setLoadNew] = useState(true);
     const [modalIsOpen, setModalOpen] = useState(false);
     const [wanted, setWanted] = useState("");
-    
-    /*const [gotMedia, setGetMedia] = useState(false);
-    const [imgView, setImgView] = useState(null);*/
-
-    //console.log(loadPrees);
-    
-    /*const loadMainMedia = useCallback( async() => {
-        //check if cv and dp is available (database check):
-        //if true => set imgView and vidView to files that are in bio folder
-        //if false load a placeholder image and placeholder video
-    
-        ///use the loadmainmedia from navbar
-        const user_id = props.context.user ? props.context.user.id : 0;
-        if(user_id > 0){
-            await axios.post('/api/get-main-media',{user_id}).then(
-                (response) => {
-                    if (response.status === 200){
-                        if (response.data.has_dp === true){
-                            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
-                        }else{
-                            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
-                        }
-                        setGetMedia(true);
-                    }
-                }
-            )
-        }
-        return true;
-    },[props.context.user]);*/
 
     const handleScroll = e => {
         //let page = document.getElementById("app-container");
@@ -131,33 +93,17 @@ const Timeline = props => {
     }
 
     useEffect( () => {
-        //document.getElementById("app-container").addEventListener('scroll', e => handleScroll(e));
         window.addEventListener('scroll', e => handleScroll(e));
-        /*if (!gotMedia){
-            loadMainMedia();
-        } */
-        
-        /*if(allPrees.length === 0){
-            document.getElementById("app-container").style.height = "100vh";
-        }else{
-            document.getElementById("app-container").style.height = "auto";
-        }*/
-
-        //sortPrees();
-        //get reactions to prees --> getlist of prees ids from from allPrees = (param) ?
         const user_id = props.context.user ? props.context.user.id : 0;
-        //if(loadNew === true){
-            //setUser(props.context.user);
-            axios.post("/api/see-the-pree",{user_id}).then(
-                result => {
-                    renderPrees(result.data);
-                    //setLoadNew(false);
-                }
-            ).catch( error => {
-                console.log(error);
-            });
-        //}
-    },[props.context.user]);//, gotMedia, loadMainMedia]);
+        axios.post("/api/see-the-pree",{user_id}).then(
+            result => {
+                renderPrees(result.data);
+            }
+        ).catch( error => {
+            console.log(error);
+        });
+        
+    },[props.context.user]);
 
     let timeline;
     if(allPrees.length > 0){
@@ -173,9 +119,7 @@ const Timeline = props => {
             }
         })
     }
-    //console.log(user);
-    //console.log(props.context.user);
-    //console.log(allPrees);
+
     return (
         <div id="timeline-div" className="hero">  
             <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
