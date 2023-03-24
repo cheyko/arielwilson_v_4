@@ -14,7 +14,7 @@ const BickleCourt = props => {
 
     const {subview} = props;
     const [BCView, setBCView] = useState(subview);
-    const [showDropDown, setShowDropDown] = useState(false);
+    //const [showDropDown, setShowDropDown] = useState(false);
 
     useEffect(() => {
         setBCView(subview);
@@ -22,7 +22,7 @@ const BickleCourt = props => {
     return(
         <div className="shops-container">
             <div className="bickle-court">
-                <div className="sub-content" onClick={e => setShowDropDown(false)}>
+                <div className="sub-content"> {/* onClick={e => setShowDropDown(false)}>*/}
                     {BCView === "BCHome" && 
                         <div className="content">
                             <BCHome  />

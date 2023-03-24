@@ -41,15 +41,15 @@ const Profile = props => {
                 (response) => {
                     if (response.status === 200){
                         if (response.data.has_cv === true){
-                            setVidView(process.env.PUBLIC_URL + "/images/bio/cover/" + user_id +".mp4");
+                            setVidView(`${process.env.PUBLIC_URL}/images/bio/cover/${user_id}.mp4`);
                         }else{
-                            setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
+                            setVidView(`${process.env.PUBLIC_URL}/images/bio/cover/default.mp4`);
                         }
 
                         if (response.data.has_dp === true){
-                            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
                         }else{
-                            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
                         }
                         
                     }
@@ -128,7 +128,7 @@ const Profile = props => {
         
         if (cover || display){
 
-            const result = await axios.post('/api/main-media', formData, {
+            const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/main-media`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
@@ -163,7 +163,7 @@ const Profile = props => {
         <div className="hero hero-container">
             <div className="card profile-box">
                 
-                <ProfileHeader showEdit={showEdit} setShowEdit={setShowEdit} handleUpload={handleUpload} saveUpload={saveUpload} cancelUpload={cancelUpload} showDropDown={showDropDown} setShowDropDown={setShowDropDown} user={myView} imgView={imgView} vidView={vidView} action="read-write"  />
+                <ProfileHeader showEdit={showEdit} setShowEdit={setShowEdit} handleUpload={handleUpload} responseMsg={responseMsg} saveUpload={saveUpload} cancelUpload={cancelUpload} showDropDown={showDropDown} setShowDropDown={setShowDropDown} user={myView} imgView={imgView} vidView={vidView} action="read-write"  />
                 
                 <Tabs>
                     <div className="card has-text-centered has-text-weight-bold">

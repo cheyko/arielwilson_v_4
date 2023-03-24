@@ -39,14 +39,14 @@ const PFHome = props => {
         {id : 5 , text : "test 5"},
     ]
 
-    var settings = {
+    /*var settings = {
         dots: false,
         infinite: true,
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 1,
         arrows: true,
-    };
+    };*/
 
     const settingsThumbs = {
         speed: 1000,
@@ -81,7 +81,7 @@ const PFHome = props => {
     };
     
     const [searchval, setSearch] = useState("");
-    const imageUrls = []; //props.context;
+    //const imageUrls = []; //props.context;
     const listings = props.context.listings ? (props.context.listings.length > 5 ? (props.context.listings.slice(0,6)) : props.context.listings ) : null ;
 
     const [showDropDownLeft, setShowDropDownLeft] = useState(false);
@@ -97,7 +97,7 @@ const PFHome = props => {
                     <form className="lookup-div">
                         <div className="field has-addons searchbar" style={{display: "inline-flex"}}>
                             <div className="control form-control">
-                                <input className="input is-focused" onChange={setSearch} type="text" placeholder="Enter Address ....."/>
+                                <input className="input is-focused" value={searchval} onChange={e => setSearch(e.target.value)} type="text" placeholder="Enter Address ....."/>
                             </div>
                             <div className="control">
                                 <button type="submit" className="button is-link is-rounded"> Search </button>
@@ -119,7 +119,7 @@ const PFHome = props => {
                                             {listings.map((listing, index) => (
                                                 <div className="slick-slide" key={index}>
                                                     <PFLItem
-                                                        imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0"}
+                                                        imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0.jpeg"}
                                                         listing={listing}
                                                         key={index}
                                                         page={"home"}

@@ -2,6 +2,7 @@ import {useState, useEffect} from "react";
 import Modal from "react-modal";
 import withContext from "../../../../withContext"
 import axios from "axios";
+import { useCallback } from "react";
 
 Modal.setAppElement('#root');
 
@@ -36,7 +37,7 @@ const customStyles = {
 
 const AddPoll = props => {
 
-    const {operation} = props;
+    //const {operation} = props; //use for editting polls (may not be feasible to allow user to edit poll unless there are no votes)
 
     const getDateTime = () => {
         const original = new Date();
@@ -83,7 +84,7 @@ const AddPoll = props => {
             choices.forEach( (choice,index) => {
                 formData.append('choices',choice);
             });
-            await axios.post('/api/polls',formData, 
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/polls`,formData, 
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -91,7 +92,7 @@ const AddPoll = props => {
             }).then(
                 (result) => {
                     if (result.status === 200){
-                        const poll_id = result.data.poll_id;
+                        //const poll_id = result.data.poll_id;
                         clearFunc();
                         props.setGotPolls(false);
                         setResponseMsg("Poll was saved.");
@@ -107,9 +108,9 @@ const AddPoll = props => {
         }
     }
 
-    const loadRequest = async(e) => {
+    /*const loadPoll = async(e) => {
 
-    }
+    }*/
 
     const addChoice = () => {
         if(aChoice !== ""){
@@ -146,9 +147,9 @@ const AddPoll = props => {
         setChoices(choices.filter((val,idx) => index !== idx));
     }
 
-    const isValid = () => {
+    const isValid = useCallback( () => {
         if((parseInt(endDate.split("-")[0]) === (new Date()).getFullYear()) && (parseInt(endDate.split("-")[1]) === (new Date()).getMonth() + 1) && (parseInt(endDate.split("-")[2]) === (new Date()).getDate()) ){
-            if ((parseInt(endTime.split(':')[0]) == (new Date()).getHours())){
+            if ((parseInt(endTime.split(':')[0]) === (new Date()).getHours())){
                 if ((parseInt(endTime.split(':')[1]) > (new Date()).getMinutes())){
                     setResponseMsg("");
                     return true;
@@ -168,20 +169,11 @@ const AddPoll = props => {
             setResponseMsg("");
             return true;
         }
-    }
+    },[endDate, endTime]);
 
     useEffect( () => {
         isValid();
-    },[endTime, endDate]);
-
-    const handleChange = (e) => {
-        switch(e.target.name){
-            case 'projectSelect':
-                break;
-            default:
-                break;     
-        } 
-    }
+    },[endTime, endDate, isValid]);
     
     const openModal = e => {
         e.preventDefault();

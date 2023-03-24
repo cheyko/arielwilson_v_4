@@ -39,12 +39,12 @@ const Requests = props => {
         setRequests(result);
         setOffset(0);
         setFilter(false);
-    },[fullList, searchval, status, requests]);
+    },[fullList, searchval, status]);
 
     useEffect(() => {
         if (user_id !== 0){
             if (gotRequest === false){
-                axios.post("/api/get-requests",{user_id}).then(res => {
+                axios.post(`${process.env.REACT_APP_PROXY}/api/get-requests`,{user_id}).then(res => {
                     if (res.status === 200){
                         setFullList(res.data);
                         setRequests(res.data);
@@ -72,9 +72,9 @@ const Requests = props => {
                 {showFilter && 
                     <>
                     <p className="panel-tabs">
-                        <a href="#" onClick={e => {setStatus('All');setFilter(true);}} className={`${status === "All" ? "is-active" : ""}`}>All</a>
-                        <a href="#" onClick={e => {setStatus('Sent');setFilter(true);}} className={`${status === "Sent" ? "is-active" : ""}`}>Un-Answered</a>
-                        <a href="#" onClick={e => {setStatus('Responded');setFilter(true);}} className={`${status === "Responded" ? "is-active" : ""}`}>Answered</a>
+                        <span onClick={e => {setStatus('All');setFilter(true);}} className={`${status === "All" ? "is-active" : ""}`}>All</span>
+                        <span href="#" onClick={e => {setStatus('Sent');setFilter(true);}} className={`${status === "Sent" ? "is-active" : ""}`}>Un-Answered</span>
+                        <span href="#" onClick={e => {setStatus('Responded');setFilter(true);}} className={`${status === "Responded" ? "is-active" : ""}`}>Answered</span>
                     </p>
                     <div className="panel-block">
                         <p className="control has-icons-left">

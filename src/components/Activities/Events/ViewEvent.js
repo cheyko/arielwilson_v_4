@@ -18,7 +18,7 @@ const ViewEvent = props => {
     const getTargetPhotos = (event) => {
         const targetPhotos = [];
         for (var i=0; i<parseInt(event.numOfPics); i++){
-            let url = process.env.PUBLIC_URL + "/images/events/event" + event.event_id + "/" + i;
+            let url = process.env.PUBLIC_URL + "/images/events/event" + event.event_id + "/" + i + ".jpeg";
             targetPhotos.push(url);
         }
         return targetPhotos;
@@ -29,7 +29,7 @@ const ViewEvent = props => {
         $('#rightContent').scrollTop(0); //did not work as expected
         if (event === null){
             const event_id = id;
-            axios.post("/api/get-event",{event_id}).then(res => {
+            axios.post(`${process.env.REACT_APP_PROXY}/api/get-event`,{event_id}).then(res => {
                 if (res.status === 200){
                     setEvent(res.data);
                     setPics(getTargetPhotos(res.data));
@@ -39,7 +39,7 @@ const ViewEvent = props => {
             });
         }
 
-    }, [event]);
+    }, [event, id]);
 
     return (
         <div className="hero">

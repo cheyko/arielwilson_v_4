@@ -7,10 +7,10 @@ import ServicesList from "./ServicesList";
 import Provider from "./Offer";
 import Categories from "./Categories";
 import Offer from "./Offer";
-import SelfHelp from "./SelfHelp";
+//import SelfHelp from "./SelfHelp";
 
 const Services = props => {
-    const [showDropDown, setShowDropDown] = useState(false);
+    //const [showDropDown, setShowDropDown] = useState(false);
     const {subview} = props;
     const [ServicesView, setServicesView] = useState(subview);
 
@@ -23,7 +23,7 @@ const Services = props => {
     return(
         <div className="shops-container">
             <div className="w-o-v">
-                <div className="sub-content" onClick={e => setShowDropDown(false)}>
+                <div className="sub-content">{/*onClick={e => setShowDropDown(false)}>*/}
                     {ServicesView === "ServicesHome" && 
                         <div className="content">
                             <ServicesHome setServicesView={setServicesView}/>

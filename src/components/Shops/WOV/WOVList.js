@@ -4,14 +4,15 @@ import VehicleItem from "./VehicleItem";
 import ReactPaginate from 'react-paginate';
 import "./index.css";
 import axios from "axios";
+import { useCallback } from "react";
 
 const WOVList = props => {
     //const {WOVView} = props;
-    let fullList = props.context.vehicles;
+    let fullList = props.context.vehicles ? props.context.vehicles : null;
     const [vehicles, setVehicles] = useState(fullList);
 
-    if(vehicles.length == 0){
-        axios.get("/api/vehicles").then(res => {
+    if(vehicles === null){
+        axios.get(`${process.env.REACT_APP_PROXY}/api/vehicles`).then(res => {
             if (res.status === 200){
                 setVehicles(res.data);
                 fullList = res.data;
@@ -20,7 +21,7 @@ const WOVList = props => {
     }
 
     const perPage = 12;
-    const pageCount = Math.ceil(vehicles.length / perPage);
+    const pageCount = vehicles ? Math.ceil(vehicles.length / perPage) : 0;
     let slice;
     const [offset, setOffset] = useState(0);
 
@@ -47,38 +48,7 @@ const WOVList = props => {
     const [toVal, setToVal ] = useState(1000000000);
     //const val = WOVView.make &&  === "PFBuy" ? "Sale" : (PFView === "PFRent" ? "Rent" : "all");
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        /*if (!filter){
-            //setMarket(val);
-        }else{
-            let pfview = market === "Sale" ? "PFBuy" : (market === "Rent" ? "PFRent" : "all"); 
-            props.setPFView(pfview);
-        }*/
-        filterList();
-        
-    }, [make, typeOf, condition, fuel, transmission, color, seats, toVal, fromVal]);
-    
-    const handlePageClick = (e) => {
-        setOffset(e.selected * perPage);
-        window.scrollTo(0, 0);
-    };
-
-    const convertPrice = (price, currency) => {
-        //console.log(price > 100);
-        //console.log(currency);
-        if (currency === "JMD"){
-          return price
-        } else if (currency === "USD"){
-          return price * 150
-        } else if (currency === "GBP"){
-          return price * 210
-        } else if (currency === "EUR"){
-          return price * 180
-        }    
-    }
-
-    const filterList = () => {
+    const filterList = useCallback( () => {
         let result = fullList;
         if (make && make !== "All"){
             result = result.filter(vehicle => vehicle.make === make);
@@ -118,9 +88,42 @@ const WOVList = props => {
         setVehicles(result);
         setOffset(0);
         setFilter(false);
+    },[make, typeOf, condition, fuel, transmission, color, seats, toVal, fromVal, sortOrder, fullList]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        /*if (!filter){
+            //setMarket(val);
+        }else{
+            let pfview = market === "Sale" ? "PFBuy" : (market === "Rent" ? "PFRent" : "all"); 
+            props.setPFView(pfview);
+        }*/
+        if(filter){
+            filterList();
+        }
+        
+    }, [filterList, filter]);
+    
+    const handlePageClick = (e) => {
+        setOffset(e.selected * perPage);
+        window.scrollTo(0, 0);
+    };
+
+    const convertPrice = (price, currency) => {
+        //console.log(price > 100);
+        //console.log(currency);
+        if (currency === "JMD"){
+          return price
+        } else if (currency === "USD"){
+          return price * 150
+        } else if (currency === "GBP"){
+          return price * 210
+        } else if (currency === "EUR"){
+          return price * 180
+        }    
     }
     
-    slice = vehicles.slice(offset, offset + perPage); 
+    slice = vehicles ? vehicles.slice(offset, offset + perPage) : []; 
 
     return (
         <div className="hero has-text-centered">
@@ -399,7 +402,7 @@ const WOVList = props => {
                         slice.map((vehicle, index) => (
                             <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                 <VehicleItem
-                                    imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/0"}
+                                    imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/0.jpeg"}
                                     vehicle={vehicle}
                                     key={index}
                                     page={"list"}

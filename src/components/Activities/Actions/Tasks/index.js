@@ -48,12 +48,12 @@ const Tasks = props => {
         setTasks(result);
         setOffset(0);
         setFilter(false);
-    },[fullList, searchval, status, project, tasks]);
+    },[fullList, searchval, status, project]);
 
     useEffect(() => {
         if (user_id !== 0){
             if (gotTask === false){
-                axios.post("/api/get-tasks",{user_id}).then(res => {
+                axios.post(`${process.env.REACT_APP_PROXY}/api/get-tasks`,{user_id}).then(res => {
                     if (res.status === 200){
                         setFullList(res.data);
                         setTasks(res.data);
@@ -65,7 +65,7 @@ const Tasks = props => {
             }
             if(gotProjects === false){
                 
-                axios.post('/api/get-projects',{user_id}).then(
+                axios.post(`${process.env.REACT_APP_PROXY}/api/get-projects`,{user_id}).then(
                     (response) => {
                         if (response.status === 200){
                             if (response.data.projectlist){
@@ -101,10 +101,10 @@ const Tasks = props => {
                 {showFilter && 
                     <>
                     <p className="panel-tabs">
-                        <a href="#" onClick={e => {setStatus('All');setFilter(true);}} className={`${status === "All" ? "is-active" : ""}`}>All</a>
-                        <a href="#" onClick={e => {setStatus('Pending');setFilter(true);}} className={`${status === "Pending" ? "is-active" : ""}`}>Pending</a>
-                        <a href="#" onClick={e => {setStatus('In-Progress');setFilter(true);}} className={`${status === "In-Progress" ? "is-active" : ""}`}>In-progress</a>
-                        <a href="#" onClick={e => {setStatus('Completed');setFilter(true);}} className={`${status === "Completed" ? "is-active" : ""}`}>Completed</a>
+                        <span onClick={e => {setStatus('All');setFilter(true);}} className={`${status === "All" ? "is-active" : ""}`}>All</span>
+                        <span onClick={e => {setStatus('Pending');setFilter(true);}} className={`${status === "Pending" ? "is-active" : ""}`}>Pending</span>
+                        <span onClick={e => {setStatus('In-Progress');setFilter(true);}} className={`${status === "In-Progress" ? "is-active" : ""}`}>In-progress</span>
+                        <span onClick={e => {setStatus('Completed');setFilter(true);}} className={`${status === "Completed" ? "is-active" : ""}`}>Completed</span>
                     </p>
                     <div className="panel-block">
                         <p className="control has-icons-left">

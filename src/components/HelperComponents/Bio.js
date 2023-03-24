@@ -1,22 +1,45 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import withContext from "../../withContext";
+import { useCallback } from "react";
 
 const Bio = props => {
 
     let new_id = localStorage.getItem("user_id");
-    const getUname = props.context.user ? props.context.user.username : "";
+    //const getUname = props.context.user ? props.context.user.username : "";
     const [uname, setUname] = useState("");
     const [dob, setDOB] = useState("");
     const [tagline, setTagline] = useState("");
     const [description, setDesc] = useState("");
     const [location, setLocs] = useState("");
+    const [loaded, setLoaded] = useState(false);
+
+    const loadBio = useCallback( async () => {
+        props.setResponseMsg("");
+        const user_id = props.context.user_id ? props.context.user_id : new_id;
+        await axios.post(`${process.env.REACT_APP_PROXY}/api/get-bio`,{user_id}).then(
+            (result) => {
+                if (result.status !== 200){
+                    props.setResponseMsg("Bio information was not loaded, please refresh page and try again. Contact us for suppport if problem persist.");
+                }else{
+                    
+                    setUname(result.data.uname);
+                    setDOB(new Date(result.data.dob).toISOString().substr(0, 10));
+                    setTagline(result.data.tagline);
+                    setDesc(result.data.description);
+                    setLocs(result.data.location);
+                }
+            }
+        );
+        setLoaded(true);
+        return true;
+    },[props, new_id]);
 
     useEffect( () => {
-        if (props.func === 'edit' && (dob === "" && tagline === "" && description === "" && location === "")){
+        if (props.func === 'edit' && loaded === false){
             loadBio();
         } 
-    },[]);
+    },[props.func, loaded, loadBio]);
 
     const handleChange = (e) => {
         switch(e.target.name){
@@ -49,34 +72,13 @@ const Bio = props => {
         setLocs("");
     }
 
-    const loadBio = async () => {
-        props.setResponseMsg("");
-        const user_id = props.context.user_id ? props.context.user_id : new_id;
-        await axios.post('/api/get-bio',{user_id}).then(
-            (result) => {
-                if (result.status !== 200){
-                    props.setResponseMsg("Bio information was not loaded, please refresh page and try again. Contact us for suppport if problem persist.");
-                }else{
-                    
-                    setUname(result.data.uname);
-                    setDOB(new Date(result.data.dob).toISOString().substr(0, 10));
-                    setTagline(result.data.tagline);
-                    setDesc(result.data.description);
-                    setLocs(result.data.location);
-                }
-            }
-        );
-        return true;
-    }
-
-
     const saveBio = async (e) => {
         e.preventDefault();
         props.setResponseMsg("");
         const user_id = props.context.user_id ? props.context.user_id : new_id;
         
         if (props.func === 'create'){
-            await axios.post('/api/bio',{user_id,dob,tagline,description,location}).then(
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/bio`,{user_id,dob,tagline,description,location}).then(
                 (result1) => {
                     if (result1.status === 200){
                         //change some bool to true to display the next button
@@ -92,7 +94,7 @@ const Bio = props => {
                 }
             );
         }else if (props.func === 'edit'){
-            await axios.put('/api/bio',{user_id,uname,dob,tagline,description,location}).then(
+            await axios.put(`${process.env.REACT_APP_PROXY}/api/bio`,{user_id,uname,dob,tagline,description,location}).then(
                 (result2) => {
                     if (result2.status === 200){                    
                         props.setResponseMsg("Bio information was updated.");

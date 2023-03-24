@@ -2,13 +2,19 @@ import React, {useState, useEffect} from 'react';
 import withContext from '../../withContext';
 import Highlights from './Highlights';
 import News from "./News";
+import Sports from "./Sports";
+import Weather from "./Weather";
+import Entertainment from "./Entertainment";
+import Archives from "./Archives";
+import Business from "./Business";
 import './index.css';
 import $ from 'jquery';
 
 
 
 const WGR = props => {
-    const [boxWidth, setWidth] = useState($(".ad-bar-container").width());
+    //const [boxWidth, setWidth] = useState($(".ad-bar-container").width());
+    let boxWidth = $(".ad-bar-container").width();
     const [start, setStart] = useState(true);
     const [toggleads , setToggleAds] = useState(true);
     const [togglebn , setToggleBN] = useState(false);
@@ -178,7 +184,75 @@ const WGR = props => {
                         }
                         <div className='column no-padding'>
                             <div className='box'>
-                                <h1>main</h1>
+                            {rView === 'highlights' && 
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Highlights />
+                            </div>
+                        }
+                        {rView === 'news' &&
+                            <div className="column wgr-articles"
+                                onClick={e => {
+                                    setToggleAds(false);
+                                    setToggleBN(false);
+                                }}>
+                                <News  />
+                            </div>
+
+                        }
+                        {rView === 'sports' &&
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Sports  />
+                            </div>
+
+                        }
+                        {rView === 'weather' &&
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Weather  />
+                            </div>
+
+                        }
+                        {rView === 'entertainment' &&
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Entertainment  />
+                            </div>
+
+                        }
+                        {rView === 'archives' &&
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Archives  />
+                            </div>
+
+                        }
+                        {rView === 'business' &&
+                            <div className="column wgr-articles"
+                            onClick={e => {
+                                setToggleAds(false);
+                                setToggleBN(false);
+                            }}>
+                                <Business  />
+                            </div>
+
+                        }
                             </div>
                         </div>
                         {togglebn &&

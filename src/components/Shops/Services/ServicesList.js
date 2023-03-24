@@ -11,7 +11,7 @@ const ServicesList = props => {
     const [services, setServices] = useState(fullList);
 
     if(services === null){
-        axios.get("/api/services").then(res => {
+        axios.get(`${process.env.REACT_APP_PROXY}/api/services`).then(res => {
             if (res.status === 200){
                 setServices(res.data);
                 fullList = res.data;
@@ -238,7 +238,7 @@ const ServicesList = props => {
                             slice.map((service, index) => (
                                 <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                     <ServiceItem
-                                        imageUrl={process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/0"}
+                                        imageUrl={process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/0.jpeg"}
                                         service={service}
                                         key={index}
                                         page={"list"}

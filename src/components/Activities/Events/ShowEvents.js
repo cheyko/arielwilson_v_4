@@ -62,6 +62,7 @@ const ShowEvents = props => {
                             return event;
                         }
                     }
+                    return false;
                 });
             }
             else if (start_date === ""){
@@ -71,6 +72,7 @@ const ShowEvents = props => {
                             return event;
                         }
                     }
+                    return false;
                 });
             }else{
                 result = result.filter((event) => {
@@ -79,6 +81,7 @@ const ShowEvents = props => {
                             return event;
                         }
                     }
+                    return false;
                 });
             }
             //result = result.filter(event => start_date < event.dates[0]);
@@ -90,11 +93,11 @@ const ShowEvents = props => {
         setEvents(result);
         setOffset(0);
         setFilter(false);
-    },[fullList, searchval, metrics, entry ,mapping, start_date, end_date, category, events]);
+    },[fullList, searchval, metrics, entry ,mapping, start_date, end_date, category]);
 
     useEffect(() => {
         if (gotEvents === false){
-            axios.post("/api/get-events",{user_id, typeOf}).then(res => {
+            axios.post(`${process.env.REACT_APP_PROXY}/api/get-events`,{user_id, typeOf}).then(res => {
                 if (res.status === 200){
                     setFullList(res.data);
                     setEvents(res.data);
@@ -106,7 +109,7 @@ const ShowEvents = props => {
         if(filter){
             filterList();
         }
-    }, [gotEvents, filter, filterList, events]);
+    }, [gotEvents, filter, filterList, user_id, typeOf]);
 
     slice = events.slice(offset, offset + perPage); 
     
@@ -125,8 +128,8 @@ const ShowEvents = props => {
                 {showFilter && 
                     <>
                     <p className="panel-tabs">
-                        <a onClick={e => {setMapping('All');setFilter(true);}} className={`${mapping === "All" ? "is-active" : ""}`}>All</a>
-                        <a onClick={e => {setMapping('Mines');setFilter(true);}} className={`${mapping === "Mines" ? "is-active" : ""}`}>My {typeOf === "Party" ? "Parties" : typeOf+"s"}</a>
+                        <span onClick={e => {setMapping('All');setFilter(true);}} className={`${mapping === "All" ? "is-active" : ""}`}>All</span>
+                        <span onClick={e => {setMapping('Mines');setFilter(true);}} className={`${mapping === "Mines" ? "is-active" : ""}`}>My {typeOf === "Party" ? "Parties" : typeOf+"s"}</span>
                     </p>
                     <div className="panel-block">
                         <p className="control has-icons-left">

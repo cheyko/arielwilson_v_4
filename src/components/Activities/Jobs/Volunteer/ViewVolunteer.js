@@ -19,7 +19,7 @@ const ViewVolunteer = props => {
         const targetPhotos = [];
         if(activity.numOfPics > 0){
             for (var i=0; i<parseInt(activity.numOfPics); i++){
-                let url = process.env.PUBLIC_URL + "/images/volunteers/volunteer" + activity.volunteer_id + "/" + i;
+                let url = process.env.PUBLIC_URL + "/images/volunteers/volunteer" + activity.volunteer_id + "/" + i + "jpeg";
                 targetPhotos.push(url);
             }
         }else{
@@ -46,7 +46,7 @@ const ViewVolunteer = props => {
             document.documentElement.classList.add("hide-scroll");
         }
 
-    }, [activity]);
+    }, [activity, id]);
 
     return (
         <div className="hero">

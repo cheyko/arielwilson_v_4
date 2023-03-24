@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import withContext from "../../../withContext";
 import Modal from "react-modal";
 import axios from "axios";
@@ -83,9 +83,9 @@ const ServicesAdd = props => {
         setMedia([]);
     }
 
-    useEffect(() => {
+    /*useEffect(() => {
         
-    },[addProvider]);
+    },[addProvider]);*/
 
     const handleChange = (e) => {
         switch(e.target.name){
@@ -145,6 +145,7 @@ const ServicesAdd = props => {
         let temp = [];
         Array.from(e.target.files).map( (file) => {
             temp = [...temp, file.type.split('/')[0]]
+            return true;
         });
         setMediaTypes(temp);
     }
@@ -187,11 +188,12 @@ const ServicesAdd = props => {
             formData.append('timeunit', timeunit);
             formData.append('procedures',procedures);
             formData.append('description',description);
-            media.forEach( (file,index) => {
+            formData.append('mediatype', mediatypes);
+            media.forEach( (file) => {
                 formData.append('media',file);
             });
 
-            const result = await axios.post('/api/services',formData, 
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/services`,formData, 
                 {
                 headers: {
                 'Content-Type': 'multipart/form-data'

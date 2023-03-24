@@ -10,7 +10,7 @@ const Classifieds = props => {
     let navigate = useNavigate();
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user ? props.context.user.id : 0;
+    //const user_id = props.context.user ? props.context.user.id : 0;
     const [classifieds, setClassifieds] = useState([]);
     const [gotClassifieds, setGotClassifieds] = useState(false);
     const [pageCount, setPageCount] = useState(0);
@@ -52,11 +52,11 @@ const Classifieds = props => {
         setClassifieds(result);
         setOffset(0);
         setFilter(false);
-    },[fullList, searchval, metrics ,mapping, typeOf, category]);
+    },[fullList, searchval, metrics, typeOf, category]);
 
     useEffect(() => {
         if (gotClassifieds === false){
-            axios.get("/api/classifieds").then(res => {
+            axios.get(`${process.env.REACT_APP_PROXY}/api/classifieds`).then(res => {
                 if (res.status === 200){
                     setFullList(res.data);
                     setClassifieds(res.data);
@@ -98,8 +98,8 @@ const Classifieds = props => {
                 {showFilter && 
                     <>
                     <p className="panel-tabs">
-                        <a onClick={e => {setMapping('All');setFilter(true);}} className={`${mapping === "All" ? "is-active" : ""}`}>All</a>
-                        <a onClick={e => {setMapping('Saved');setFilter(true);}} className={`${mapping === "Saved" ? "is-active" : ""}`}>My Jobs</a>
+                        <span onClick={e => {setMapping('All');setFilter(true);}} className={`${mapping === "All" ? "is-active" : ""}`}>All</span>
+                        <span onClick={e => {setMapping('Saved');setFilter(true);}} className={`${mapping === "Saved" ? "is-active" : ""}`}>My Jobs</span>
                     </p>
                     <div className="panel-block">
                         <p className="control has-icons-left">

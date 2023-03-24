@@ -9,19 +9,18 @@ import WOVTravel from "./WOVTravel";
 import WOVRental from "./WOVRental";
 
 const WOV = props => {
-    const [showDropDown, setShowDropDown] = useState(false);
+    //const [showDropDown, setShowDropDown] = useState(false);
     const {subview} = props;
     const [WOVView, setWOVView] = useState(subview);
 
     useEffect( () => {  
         setWOVView(subview);
-    
     },[subview]);
 
     return(
         <div className="shops-container">
             <div className="w-o-v">
-                <div className="sub-content" onClick={e => setShowDropDown(false)}>
+                <div className="sub-content"> {/*onClick={e => setShowDropDown(false)}> */}
                     {WOVView === 'WOVHome' && 
                         <div className="content">
                             <WOVHome setWOVView={setWOVView}/>

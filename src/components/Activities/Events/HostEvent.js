@@ -98,6 +98,7 @@ const HostEvent = props => {
         setAttraction("");
         setPhotos([]);
         setResponseMsg("");
+        setStatus("On-Schedule");
         $('[name="audience-checkbox"]').each(function(){
             console.log($(this));
             $( this ).prop("checked", false );
@@ -157,7 +158,7 @@ const HostEvent = props => {
             photos.forEach( (file) => {
                 formData.append('media',file);
             });
-            await axios.post('/api/events',formData, 
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/events`,formData, 
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -165,9 +166,9 @@ const HostEvent = props => {
             }).then(
                 (result) => {
                     if (result.status === 200){
-                        const event_id = result.data.event_id;
+                        //const event_id = result.data.event_id;
                         clearFunc();
-                        console.log(result);
+                        //console.log(result);
                         setResponseMsg("Event was saved.");
                     }else{
                         setResponseMsg("Event was not saved, please try again. Contact us for suppport if problem persist.");
@@ -181,9 +182,9 @@ const HostEvent = props => {
         }
     }
 
-    const loadEvent = async(e) => {
+    /*const loadEvent = async(e) => {
 
-    }
+    }*/
 
     const convertTime = (aTime) => {
         var meridian = parseInt(aTime.split(":")[0]) >= 12 ? 'pm' : 'am';
@@ -459,7 +460,7 @@ const HostEvent = props => {
                                         <div className="column" key={index}>
                                             <span> {index + 1} </span>
                                             <br />
-                                            <img className="is-256x256" src={URL.createObjectURL(photo)} />
+                                            <img alt={`${index} of Event Uploads`} className="is-256x256" src={URL.createObjectURL(photo)} />
                                         </div>
                                     )}
 
@@ -958,7 +959,7 @@ const HostEvent = props => {
                                                 <div key={index} className="control">
                                                     <div className="tags has-addons">
                                                         <ViewUserCard user={val} />
-                                                        <a onClick={e => removePersonnel(index)} className="tag is-large is-delete"></a>
+                                                        <span onClick={e => removePersonnel(index)} className="tag is-large is-delete"></span>
                                                     </div>
                                                     <p>
                                                         <>

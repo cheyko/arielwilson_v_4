@@ -11,11 +11,10 @@ const ViewUserCard = props => {
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
         //const user_id = userview_id;
-
         if (user.has_dp === true){
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user.user_id);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user.user_id}.jpeg`);
         }else{
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
         }
         return true;
     },[user]);

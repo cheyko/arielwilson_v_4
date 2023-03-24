@@ -7,12 +7,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBeer, faBusinessTime, faCarrot, faCashRegister, faCertificate, faChalkboard, faChalkboardTeacher, faClipboardList, faCloudMeatball, faCocktail, faCookie, faCreditCard, faDigitalTachograph, faDrumstickBite, faEye, faHardHat, faIceCream, faListOl, faMitten, faNetworkWired, faPizzaSlice, faScrewdriver, faStamp, faTicketAlt, faUserAstronaut, faUserClock, faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { faBeer, faCarrot, faCashRegister, faCertificate, faChalkboardTeacher, faClipboardList, faCocktail, faCookie, faEye, faIceCream, faListOl, faMitten, faPizzaSlice, faTicketAlt, faUserClock } from '@fortawesome/free-solid-svg-icons';
 import { faHandHoldingUsd, faInfo } from '@fortawesome/free-solid-svg-icons'
 import { faPeopleCarry } from '@fortawesome/free-solid-svg-icons'
 import {faHouzz} from "@fortawesome/free-brands-svg-icons";
 import Item from "./Item";
-import $ from "jquery";
+//import $ from "jquery";
 
 
 const BCHome = props => {
@@ -26,14 +26,14 @@ const BCHome = props => {
         {id : 5 , text : "test 5"},
     ]
 
-    var settings = {
+    /*var settings = {
         dots: false,
         infinite: true,
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 1,
         arrows: true,
-    };
+    };*/
 
     const settingsThumbs = {
         speed: 1000,
@@ -68,7 +68,7 @@ const BCHome = props => {
     };
     
     const [searchval, setSearch] = useState("");
-    const imageUrls = []; //props.context;
+    //const imageUrls = []; //props.context;
     const items = props.context.items ? (props.context.items.length > 5 ? (props.context.items.slice(0,6)) : props.context.items ) : null ;
     //const { services } = [];
 
@@ -95,7 +95,7 @@ const BCHome = props => {
                     <form>
                         <div className="field has-addons searchbar" style={{display: "inline-flex"}}>
                             <div className="control">
-                                <input className="input is-focused" onChange={setSearch} type="text" placeholder="Search Bickle Court ....."/>
+                                <input className="input is-focused" value={searchval} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search Bickle Court ....."/>
                             </div>
                             <div className="control">
                                 <button type="submit" className="button is-link is-rounded is-focused"> Search </button>
@@ -116,7 +116,7 @@ const BCHome = props => {
                                         {items.map((item, index) => (
                                             <div className="slick-slide" key={index}>
                                                 <Item
-                                                    imageUrl={process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/0"}
+                                                    imageUrl={process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/0.jpeg"}
                                                     item={item}
                                                     key={index}
                                                 />

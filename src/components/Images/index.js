@@ -8,7 +8,7 @@ import $ from 'jquery';
 
 const Images = props => {
 
-    const loadImages = useMemo(() => props.context.prees ? props.context.prees.filter(pree => (pree.is_media === true && pree.attachment.has_image === true) || pree.is_media === false) : [],[props.context.prees]);
+    const loadImages = useMemo(() => props.context.prees ? props.context.prees.filter(pree => (pree.is_media === true && pree.attachment.has_image === true) || (pree.is_media === false && pree.pree_type !== "poll")) : [],[props.context.prees]);
     const [images, renderImages] = useState([]);
     let sessionVar = localStorage.getItem("mag-section") ? localStorage.getItem("mag-section") : "all";
     const [section, setSection] = useState(sessionVar);

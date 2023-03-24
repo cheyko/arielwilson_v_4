@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
-import { useNavigate, Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 //import Slider from "react-slick";
 import TrendyControls from "./TrendyControls";
 import TrendyFooter from "./TrendyFooter";
 import TrendyImage from "./TrendyImage";
 import TrendyQuote from "./TrendyQuote";
 import TrendyHeader from "./TrendyHeader";
+import { useCallback } from "react";
 
 const ViewTrend = props => {
 
@@ -22,7 +23,7 @@ const ViewTrend = props => {
     };*/
 
     let navigate = useNavigate();
-    const [view, setView] = useState("view");
+    let view = "view";
     let {id} = useParams();
     //const [mainmedia, setMainmedia] = useState(null);
     //const [details, setDetails] = useState(null);
@@ -33,28 +34,28 @@ const ViewTrend = props => {
     //const aPree = props.context.getPree(id);
     const [aPree, setAPree] = useState(null);
     const [commentscount, setCommentsCount] = useState(0); 
-    const [returnHome, setReturn] = useState(false);
+    //const [returnHome, setReturn] = useState(false);
 
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
         
-    const loadMainMedia = () => {
+    const loadMainMedia = useCallback( () => {
         const user_id = aPree.user.user_id;
         if (aPree.user.has_dp === true){
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
         }else{
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
         }
         setGetMedia(true);
         return true;
-    }
+    },[aPree]);
 
     useEffect( () => {
         setOperation(view);
         window.scroll(0,0);
         if (aPree){
             setCommentsCount(aPree.comments);
-            setUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/upload0");
+            setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.jpeg`);
 
             if (!gotMedia){
                 loadMainMedia();
@@ -65,18 +66,18 @@ const ViewTrend = props => {
                 setAPree(promise);
             });
         }
-    },[url, aPree, view, commentscount, gotMedia]);
+    },[url, aPree, view, commentscount, gotMedia, id, loadMainMedia, props.context]);
 
     const updateSettings = () => {
 
     }
 
-    const goToUpload = () => {
+    /*const goToUpload = () => {
         localStorage.setItem("trendy-view","upload");
         localStorage.setItem("mag-section","wg-influence");
         props.context.setMenuChoice("images");
         navigate('/images');
-    }
+    }*/
 
     const goToTrendy = () => {
         localStorage.setItem("trendy-view","main");

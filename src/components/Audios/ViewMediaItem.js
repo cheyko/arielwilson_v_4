@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 //import Slider from "react-slick";
 import MediaFooter from "./MediaFooter";
 import MediaControls from "./MediaControls";
@@ -8,6 +8,7 @@ import MediaInfo from "./MediaInfo";
 import MusicPlayer from "./MusicPlayer";
 import VideoPlayer from "./VideoPlayer";
 import MediaHeader from "./MediaHeader";
+import { useCallback } from "react";
 
 
 const ViewMediaItem = props => {
@@ -36,36 +37,40 @@ const ViewMediaItem = props => {
     //const aPree = props.context.getPree(id);
     const [aPree, setAPree] = useState(null);
     const [commentscount, setCommentsCount] = useState(0); 
-    const [returnHome, setReturn] = useState(false);
+    //const [returnHome, setReturn] = useState(false);
 
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
         
-    const loadMainMedia = () => {
+    const loadMainMedia = useCallback(() => {
         const user_id = aPree.user.user_id;
         if (aPree.user.has_dp === true){
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
         }else{
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
         }
         setGetMedia(true);
         return true;
-    }
+    },[aPree]);
 
     useEffect( () => {
         window.scroll(0,0);
         if (aPree){
             if (aPree.attachment.mediatypes[0] === "audio"){
                 setMediaType("audio/mp3");
+                setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.mp3`);
             }
             else if (aPree.attachment.mediatypes[0] === "video"){
                 setMediaType("video/mp4");
+                setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.mp4`);
+
+            }else if (aPree.attachment.mediatypes[0] === "image"){
+                setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.jpeg`);
             }
             setCommentsCount(aPree.comments);
             setMainmedia(true);
-            setUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/upload0");
             if (aPree.attachment.has_cover_art === true){
-                setDisplayUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/display_art");
+                setDisplayUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/display_art.jpeg`);
             }
 
             if (!gotMedia){
@@ -77,7 +82,7 @@ const ViewMediaItem = props => {
                 setAPree(promise);
             });
         }
-    },[url, aPree, view, commentscount, gotMedia]);
+    },[url, aPree, view, commentscount, gotMedia, id, props.context, loadMainMedia]);
 
     const updateSettings = () => {
         setOperation("edit");

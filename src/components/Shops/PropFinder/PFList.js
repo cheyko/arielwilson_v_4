@@ -11,7 +11,7 @@ const PFList = props => {
     const [listings, setListings] = useState(fullList);
 
     if(listings === null){
-        axios.get("/api/listings").then(res => {
+        axios.get(`${process.env.REACT_APP_PROXY}/api/listings`).then(res => {
             if (res.status === 200){
                 setListings(res.data);
                 fullList = res.data;
@@ -126,8 +126,7 @@ const PFList = props => {
             filterList();
         }
         //setFilter(false);
-        console.log(listings);
-    }, [val, market, filter, props, filterList]);
+    }, [val, listings, market, filter, props, filterList]);
 
     slice = listings ? listings.slice(offset, offset + perPage) : []; 
 
@@ -366,7 +365,7 @@ const PFList = props => {
                         slice.map((listing, index) => (
                             <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                 <PFLItem
-                                    imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0"}
+                                    imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0.jpeg"}
                                     listing={listing}
                                     key={index}
                                     page={"list"}

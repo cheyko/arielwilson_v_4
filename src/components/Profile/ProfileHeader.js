@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import withContext from "../../withContext";
 import {Link} from "react-router-dom";
 import Lightbox from 'react-image-lightbox';
@@ -20,10 +20,19 @@ const ProfileHeader = props => {
 
     //const videoUrl = props.vidView;
 
+    const editHeader = () => {
+        if (props.context.user){
+            props.setShowEdit(!props.showEdit);
+        }else{
+            setWanted("Edit Your Profile Media");
+            setModalOpen(true);
+        }
+    }
+
     return(
         <>
             <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
-            <div className="top-div hero-contain">  
+            <div className="top-div">  
                 <div className="main-media-video">
                     <div className="container has-text-centered">
                         {action === 'read-write' && props.showEdit &&
@@ -104,7 +113,7 @@ const ProfileHeader = props => {
                         <div className="column">
                             {!props.showEdit ?
                             (
-                                <button onClick={ e => {props.context.user ? props.setShowEdit(!props.showEdit) : setWanted("Edit Your Profile Media");setModalOpen(true);}} className={`button is-link is-pulled-right`}> 
+                                <button onClick={ e => editHeader()} className={`button is-link is-pulled-right`}> 
                                     Edit Media 
                                 </button>
                             ):(
@@ -121,7 +130,9 @@ const ProfileHeader = props => {
                         </div>
                     </div>
                 }
-                <div className="main-media-image has-text-centered">       
+                <div className="main-media-image has-text-centered">  
+                    {props.responseMsg !== "" && <span className="tag has-text-link">{props.responseMsg}</span>}
+
                     <figure className="display-figure">
                         {action === 'read-write' && props.showEdit &&
                             <div className="image-upload">
@@ -147,8 +158,8 @@ const ProfileHeader = props => {
                     <div className="card tagline has-text-centered" >
                         {action === "read-write" && !props.context.user ? "Welcome Guest, create a profile to have a tagline" : "#" + user.tagline} 
                     </div>
+
                 </div>
-                <br/>{props.responseMsg}<br/>
             </div>
         </>
     )

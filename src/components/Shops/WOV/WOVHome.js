@@ -97,7 +97,7 @@ const WOVHome = props => {
                     <form>
                         <div className="field has-addons searchbar" style={{display: "inline-flex"}}>
                             <div className="control">
-                                <input className="input is-focused" onChange={setSearch} type="text" placeholder="Search WOV ....."/>
+                                <input className="input is-focused" value={searchval} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search WOV ....."/>
                             </div>
                             <div className="control">
                                 <button type="submit" className="button is-link is-rounded is-focused"> Search </button>
@@ -118,7 +118,7 @@ const WOVHome = props => {
                                         {vehicles.map((vehicle, index) => (
                                             <div className="slick-slide" key={index}>
                                                 <VehicleItem
-                                                    imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/0"}
+                                                    imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/0.jpeg"}
                                                     vehicle={vehicle}
                                                     key={index}
                                                     page={"home"}

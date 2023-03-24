@@ -15,7 +15,7 @@ const RequestItem = props => {
     const answerRequest = async(index) => {
         const request_id = request.request_id;
         const answer = index;
-        await axios.put('/api/answer-request',{user_id, request_id, answer}).then(
+        await axios.put(`${process.env.REACT_APP_PROXY}/api/answer-request`,{user_id, request_id, answer}).then(
             (result1) => {
                 if (result1.status === 200){
                     //setResponseMsg("Task status was changed.");
@@ -31,7 +31,7 @@ const RequestItem = props => {
         if (user_id === request.is_for.user_id){
             setBelong(true);
         }
-    },[belong])
+    },[user_id, request.is_for.user_id])
 
     return(
         <div className="card">

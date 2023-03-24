@@ -4,6 +4,7 @@ import "./index.css";
 import Item from "../Item";
 import ReactPaginate from 'react-paginate';
 import axios from "axios";
+import { useCallback } from "react";
 
 const Kiosk = props => {
 
@@ -11,7 +12,7 @@ const Kiosk = props => {
     const [items, setItems] = useState(fullList);
 
     if(items === null){
-        axios.get("/api/items").then(res => {
+        axios.get(`${process.env.REACT_APP_PROXY}/api/items`).then(res => {
             if (res.status === 200){
                 setItems(res.data);
                 fullList = res.data;
@@ -24,10 +25,7 @@ const Kiosk = props => {
     const [offset, setOffset] = useState(0);
 
     const categories = ["Meal", "Beverage","Dessert"];
-    const mealsTypes = ["Dish","Side","Sandwich","Soup"];
-    const beverageTypes = ["Alcohol","Juice","Mix", "Diary"];
-    const dessertTypes = ["Ice-Cream","Cake","Candy","Diary"];
-    const pigments = ["black", "blue", "brown", "gold", "green", "grey", "orange", "purple", "red", "silver", "tan", "white", "yellow"];
+    //const pigments = ["black", "blue", "brown", "gold", "green", "grey", "orange", "purple", "red", "silver", "tan", "white", "yellow"];
 
     const [searchval, setSearchVal] = useState("");
     const [category, setCategory] = useState("All");
@@ -40,32 +38,13 @@ const Kiosk = props => {
     const [caloriesLimit, setCaloriesLimit] = useState(100);
     const [showFilter, setShow] = useState(null);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if(filter){
-            filterList();
-        }
-    }, [filter]);
-
-    const handlePageClick = (e) => {
-        setOffset(e.selected * perPage);
-        window.scrollTo(0, 0);
-    };
-
-    const convertPrice = (price, currency) => {
-        if (currency === "JMD"){
-          return price;
-        } else if (currency === "USD"){
-          return price * 150;
-        } else if (currency === "GBP"){
-          return price * 210;
-        } else if (currency === "EUR"){
-          return price * 180;
-        }    
-    }
-
-    const filterList = () => {
+    
+    const filterList = useCallback(() => {
         let result = fullList;
+        const mealsTypes = ["Dish","Side","Sandwich","Soup"];
+        const beverageTypes = ["Alcohol","Juice","Mix", "Diary"];
+        const dessertTypes = ["Ice-Cream","Cake","Candy","Diary"];
+
         if (searchval && searchval !== ""){
             result = result.filter(item => item.name.replace(/ /g,'').toLowerCase().includes(searchval.replace(/ /g,'').toLowerCase()));         
         }
@@ -101,6 +80,30 @@ const Kiosk = props => {
         setItems(result);
         setOffset(0);
         setFilter(false);
+    },[category,fromVal,fullList,searchval,sortOrder,toVal,typeOf]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if(filter){
+            filterList();
+        }
+    }, [filter, filterList]);
+
+    const handlePageClick = (e) => {
+        setOffset(e.selected * perPage);
+        window.scrollTo(0, 0);
+    };
+
+    const convertPrice = (price, currency) => {
+        if (currency === "JMD"){
+          return price;
+        } else if (currency === "USD"){
+          return price * 150;
+        } else if (currency === "GBP"){
+          return price * 210;
+        } else if (currency === "EUR"){
+          return price * 180;
+        }    
     }
     
     slice = items ? items.slice(offset, offset + perPage) : []; 
@@ -288,7 +291,7 @@ const Kiosk = props => {
                             slice.map((item, index) => (
                                 <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                     <Item
-                                        imageUrl={process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/0"}
+                                        imageUrl={process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/0.jpeg"}
                                         item={item}
                                         key={index}
                                         page={"list"}

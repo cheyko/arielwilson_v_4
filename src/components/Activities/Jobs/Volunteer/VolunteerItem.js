@@ -4,12 +4,11 @@ import { Link } from "react-router-dom";
 const Volunteer = props => {
 
     const {activity} = props;
-    console.log(activity.numOfPics);
-    const imgUrl = activity.numOfPics > 0 ? (process.env.PUBLIC_URL + "/images/volunteers/volunteer" + activity.volunteer_id + "/0") : (process.env.PUBLIC_URL + "/images/defaults/volunteers/" + activity.category + ".jpg");
+    const imgUrl = activity.numOfPics > 0 ? (`${process.env.PUBLIC_URL}/images/volunteers/volunteer${activity.volunteer_id}/0.jpeg`) : (`${process.env.PUBLIC_URL}/images/defaults/volunteers/${activity.category}.jpg`);
 
     const convertDate = (val) => {
         var result;
-        if (new Date().getDate() == new Date(val).getDate() + 1){
+        if (new Date().getDate() === new Date(val).getDate() + 1){
             result = "Today at";
         }else{
             result = new Date(new Date(val).setDate(new Date(val).getDate() + 1)).toDateString();

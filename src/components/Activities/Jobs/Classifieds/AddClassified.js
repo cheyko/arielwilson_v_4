@@ -63,6 +63,7 @@ const AddClassified = props => {
     const [isEditResponse,setIsEditResponse] = useState(false);
     const [end, setEndDate] = useState(new Date().toISOString().split("T")[0]);
     const [responseMsg, setResponseMsg] = useState("");   
+    const [viewUpload, setViewUpload] = useState("");
 
     const getDateTime = () => {
         const original = new Date();
@@ -115,9 +116,7 @@ const AddClassified = props => {
                 if (val === 'fulltext'){
                     formData.append('subcontent'+index, topicInfos[index]);
                 }else{
-                    topicInfos[index].map((info,idx) => {
-                        formData.append('subcontent'+index, info);
-                    })
+                    topicInfos[index].map((info,idx) => formData.append('subcontent'+index, info));
                 }
                 //formData.append('subcontent',topicInfos[index]);
             })
@@ -132,12 +131,10 @@ const AddClassified = props => {
             });
             questions.forEach((val, index) => {
                 formData.append('questions', val);
-                responsesList[index].map((res,idx) => {
-                    formData.append('responses'+index, res);
-                })
+                responsesList[index].map((res,idx) => formData.append('responses'+index, res));
                 
             });
-            await axios.post('/api/classifieds',formData, 
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/classifieds`,formData, 
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -148,6 +145,8 @@ const AddClassified = props => {
                         const classified_id = result.classified_id;
                         clearFunc();
                         setResponseMsg("Job was saved.");
+                        setViewUpload('/classified-view/'+classified_id);
+
                     }else{
                         setResponseMsg("Job was not saved, please try again. Contact us for suppport if problem persist.");
                     }
@@ -158,9 +157,9 @@ const AddClassified = props => {
         }
     }
 
-    const loadClassified = async(e) => {
+    /*const loadClassified = async(e) => {
 
-    }
+    }*/
 
     //const []
     const addChoice = (adding) => {
@@ -1056,6 +1055,11 @@ const AddClassified = props => {
                             <div className="field is-normal"></div>
                             <div className="field-body">
                                 <span>{responseMsg}</span>
+                                {viewUpload !== "" &&
+                                    <p>
+                                        <button className="button is-link" onClick={() => navigate(viewUpload)}>View Upload</button>
+                                    </p>
+                                }
                             </div>
                         </div>
                         <div className="field is-clearfix">

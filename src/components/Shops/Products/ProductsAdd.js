@@ -203,7 +203,7 @@ const ProductsAdd = props => {
                 formData.append('photos',photo);
             });
 
-            const result = await axios.post('/api/products',formData, 
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/products`,formData, 
                 {
                 headers: {
                 'Content-Type': 'multipart/form-data'

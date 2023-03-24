@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faL, faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
+import {faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
 import { faQuoteRight } from '@fortawesome/free-solid-svg-icons';
 import {Link} from "react-router-dom";
 import Lightbox from 'react-image-lightbox';
@@ -55,7 +55,7 @@ const PreeBody = props => {
                                                             <div className="image-container">
                                                                 <figure key={index} className="image is-1by1">
                                                                     {/*<img src={aUrl} alt="upload" />*/}
-                                                                    <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`} />
+                                                                    <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}.jpeg`} />
                                                                 </figure>
                                                             </div>
                                                         )}
@@ -63,7 +63,7 @@ const PreeBody = props => {
                                                             <div className="audio-container">
                                                                 <audio className="audio-playback" key={index} controls>
                                                                     {/*<source src={aUrl} type="audio/mp3"/> */}
-                                                                    <source src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`} type="audio/mp3"/>
+                                                                    <source src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}.mp3`} type="audio/mp3"/>
                                                                 </audio>
                                                             </div>
                                                         )}
@@ -71,7 +71,7 @@ const PreeBody = props => {
                                                             <div className="video-container">
                                                                 <video id="video" key={index} controls>
                                                                     {/*<source src={aUrl} type="video/mp4"/>*/}
-                                                                    <source src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`} type="video/mp4"/>
+                                                                    <source src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}.mp4`} type="video/mp4"/>
                                                                 </video>
                                                             </div>
                                                         )}
@@ -124,7 +124,7 @@ const PreeBody = props => {
                                                                     <Lightbox
                                                                         key={index}
                                                                         imageTitle={aPree.attachment.caption}
-                                                                        mainSrc={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${val}`}
+                                                                        mainSrc={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${val}.jpeg`}
                                                                         onCloseRequest={() => setOpen(false)}
                                                                         
                                                                     />)}
@@ -135,7 +135,7 @@ const PreeBody = props => {
                                                             <div className="audio-container">
                                                                 <audio className="audio-playback" key={index} controls>
                                                                     {/*<source src={aUrl} type="audio/mp3"/> */}
-                                                                    <source src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`} type="audio/mp3"/>
+                                                                    <source src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}.mp3`} type="audio/mp3"/>
                                                                 </audio>
                                                             </div>
                                                         )}
@@ -143,7 +143,7 @@ const PreeBody = props => {
                                                             <div className="video-container">
                                                                 <video id="video" key={index} controls>
                                                                     {/*<source src={aUrl} type="video/mp4"/>*/}
-                                                                    <source src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`} type="video/mp4"/>
+                                                                    <source src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}.mp4`} type="video/mp4"/>
                                                                 </video>
                                                             </div>
                                                         )}

@@ -154,7 +154,7 @@ const MediaPlayerUpload = props => {
             formData.set('magazine',false);
             formData.set('stereo',mainmedia.type.split("/")[0] === "audio" ? true : false);
                         
-            const result = await axios.post('/api/exclusive',formData, 
+            const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/exclusive`,formData, 
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'

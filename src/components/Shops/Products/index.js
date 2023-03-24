@@ -8,7 +8,7 @@ import ProductsRental from "./ProductsRental";
 import Categories from "./Categories";
 
 const Products = props => {
-    const [showDropDown, setShowDropDown] = useState(false);
+   // const [showDropDown, setShowDropDown] = useState(false);
     const {subview} = props;
     const [productsView, setProductsView] = useState(subview);
 
@@ -19,7 +19,7 @@ const Products = props => {
     return(
         <div className="shops-container">
             <div className="products">
-                <div className="sub-content" onClick={e => setShowDropDown(false)}>
+                <div className="sub-content"> {/*onClick={e => setShowDropDown(false)}*/}
                     {productsView === "ProductsHome" && 
                         <div className="content">
                             <ProductsHome setProductsView={setProductsView}/>

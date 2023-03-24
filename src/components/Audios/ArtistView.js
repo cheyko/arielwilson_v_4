@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import withContext from "../../withContext";
 import Modal from "react-modal";
 import axios from "axios";
@@ -11,9 +11,9 @@ const ArtistView = props => {
     let {modalIsOpen} = props;
     const [searchval, setSearchVal] = useState("");
     const [responseMsg, setResponseMsg] = useState("");
-    const [userlist, setUserList] = useState([]);
-    const [background, setBackground] = useState("white");
-    const [backgroundSet, isBkgrdSet] = useState(false);
+    //const [userlist, setUserList] = useState([]);
+    //const [background, setBackground] = useState("white");
+    //const [backgroundSet, isBkgrdSet] = useState(false);
 
     const customStyles = {
         overlay: {
@@ -51,11 +51,11 @@ const ArtistView = props => {
 
         if( e.target.value !== ""){
 
-            axios.post('/api/search-users',{searchval, user_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/search-users`,{searchval, user_id}).then(
                 (search) => {
                     if (search.status === 200){
                         if (search.data.userlist){
-                            setUserList(Array.from(search.data.userlist));
+                            //setUserList(Array.from(search.data.userlist));
                         }
                     }else{
                         setResponseMsg("No user found with that username.")
@@ -65,7 +65,7 @@ const ArtistView = props => {
                 console.log(error);
             });
         }else{
-            setUserList([]);
+            //setUserList([]);
         }
     }
 

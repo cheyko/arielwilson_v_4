@@ -4,7 +4,8 @@ import withContext from "../../../../withContext";
 //import getDateTime from "../../../../GlobalFunctions";
 import axios from "axios";
 import ViewUserCard from "../../../HelperComponents/ViewUserCard";
-import $ from "jquery";
+import { useCallback } from "react";
+//import $ from "jquery";
 
 Modal.setAppElement('#root');
 
@@ -52,7 +53,8 @@ const AddTask = props => {
     const [title, setTitle] = useState("");
     const [start, setStartDate] = useState(new Date().toISOString().split("T")[0]);
     const [description, setDescription] = useState("");
-    const [status, setStatus] = useState("Pending");
+    //const [status, setStatus] = useState("Pending");
+    let status = "Pending";
     const [end, setEndDate] = useState(new Date().toISOString().split("T")[0]);
     const [responseMsg, setResponseMsg] = useState("");
     const [modalIsOpen, setModalOpen] = useState(false);
@@ -120,7 +122,7 @@ const AddTask = props => {
                 }).then(
                     (result) => {
                         if (result.status === 200){
-                            const task_id = result.data.task_id;
+                            //const task_id = result.data.task_id;
                             clearFunc();
                             setResponseMsg("Task was saved.");
                         }else{
@@ -135,7 +137,7 @@ const AddTask = props => {
         }
     }
 
-    const loadTask = () => {
+    const loadTask = useCallback( () => {
         const task = props.task;
         setTitle(task.title);
         setProject(task.project);
@@ -148,13 +150,13 @@ const AddTask = props => {
             setAddFor(true);
             setUser(task.done_by);
         }
-    }
+    },[props.task, user_id]);
 
     useEffect( () => {
         if(operation === 'edit'){
             loadTask();
         }
-    },[operation,projects]);
+    },[operation,projects,loadTask]);
 
     const selectUser = (index) => {
         setUser(userlist[index]);
@@ -190,7 +192,7 @@ const AddTask = props => {
                 setSearchVal(e.target.value);
                 if( e.target.value !== ""){
                     const searchval = e.target.value;
-                    axios.post('/api/search-frat',{searchval, user_id}).then(
+                    axios.post(`${process.env.REACT_APP_PROXY}/api/search-frat`,{searchval, user_id}).then(
                         (search) => {
                             if (search.status === 200){
                                 if (search.data.userlist){

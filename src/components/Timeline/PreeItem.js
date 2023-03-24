@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import withContext from '../../withContext';
 //import Slider from "react-slick";
-import axios from "axios";
+//import axios from "axios";
 
 import PreeHeader from "./PreeHeader";
 import PreeBody from "./PreeBody";
 import PreeReaction from "./PreeReaction";
+import { useCallback } from 'react';
 
 const PreeItem = props => {
 
@@ -16,25 +17,25 @@ const PreeItem = props => {
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
 
-    useEffect( ()=> {
-        if (!gotMedia){
-            loadMainMedia();
-        }
-    },[gotMedia]);
-
-    const loadMainMedia = async() => {
+    const loadMainMedia = useCallback(async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
         const user_id = aPree.user.user_id;
         if (aPree.user.has_dp === true){
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
         }else{
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
         }
         setGetMedia(true);
         return true;
-    }
+    },[aPree]);
+
+    useEffect( ()=> {
+        if (!gotMedia){
+            loadMainMedia();
+        }
+    },[gotMedia, loadMainMedia]);
     
     return (
         <div className="hero">

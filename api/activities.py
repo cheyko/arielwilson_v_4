@@ -133,7 +133,7 @@ def delete_request():
 def requests():
     if request.method == 'POST':
         result = request.form
-        newRequest = Request(lister=result["user_id"],is_for=result["isFor"],question=result["question"],date_added=result["theDateTime"],status=result["status"],choices=result.getlist("choices"))
+        newRequest = Request(lister=result["user_id"],is_for=result["isFor"], typeOf=result["typeOf"],question=result["question"],date_added=result["theDateTime"],status=result["status"],choices=result.getlist("choices"))
         db.session.add(newRequest)
         db.session.flush()
         db.session.commit()

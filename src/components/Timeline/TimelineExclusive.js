@@ -10,38 +10,56 @@ import TrendyImage from "../Images/TrendyImage";
 import TrendyQuote from "../Images/TrendyQuote";
 import TrendyHeader from "../Images/TrendyHeader";
 import MediaHeader from "../Audios/MediaHeader";
+import { useCallback } from "react";
 
 const TimelineExclusive = props => {
 
     //const accessLevel = props.context ? props.context.user.accessLevel : 0;
     const {aPree} = props;
-    const [view, setView] = useState("timeline");  
+    //const [view, setView] = useState("timeline");  
 
-    const [mainmedia, setMainmedia] = useState(null);
-    const [details, setDetails] = useState(aPree);
+    //const [mainmedia, setMainmedia] = useState(null);
+    //const [details, setDetails] = useState(aPree);
+    let details = aPree;
     const [mediatype, setMediaType] = useState("");
     const [display_url, setDisplayUrl] = useState("");
     const [url, setUrl] = useState(null);
-    const [options, setOptions] = useState(null);
-    const [commentscount, setCommentsCount] = useState(aPree.comments); 
-    const [operation, setOperation] = useState("timeline"); 
+    //const [options, setOptions] = useState(null);
+    //const [commentscount, setCommentsCount] = useState(aPree.comments); 
+    let commentscount = aPree.comments;
+    //const [operation, setOperation] = useState("timeline"); 
+    let operation = "timeline";
 
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
+
+    const loadMainMedia = useCallback(async() => {
+        const user_id = aPree.user.user_id;
+        if (aPree.user.has_dp === true){
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
+        }else{
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
+        }
+        setGetMedia(true);
+        return true;
+    },[aPree]);
 
     useEffect( () => {
         if (details){
             
             if (aPree.attachment.mediatypes[0] === "audio"){
                 setMediaType("audio/mp3");
+                setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.mp3`);
             }
             else if (aPree.attachment.mediatypes[0] === "video"){
                 setMediaType("video/mp4");
+                setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.mp4`);
+            }else if (aPree.attachment.mediatypes[0] === "image"){
+                setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.jpeg`);
             }
-            setMainmedia(true);
-            setUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/upload0");
+            //setMainmedia(true);
             if (aPree.attachment.has_cover_art === true){
-                setDisplayUrl(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/display_art");
+                setDisplayUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/display_art.jpeg`);
             }
 
             if (!gotMedia){
@@ -49,18 +67,7 @@ const TimelineExclusive = props => {
             }
         }
         
-    },[url, details, aPree, gotMedia]);
-    
-    const loadMainMedia = async() => {
-        const user_id = aPree.user.user_id;
-        if (aPree.user.has_dp === true){
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
-        }else{
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
-        }
-        setGetMedia(true);
-        return true;
-    }
+    },[url, details, aPree, gotMedia, loadMainMedia]);
 
     return(
         <div className="hero">

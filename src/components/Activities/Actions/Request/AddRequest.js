@@ -38,7 +38,7 @@ const customStyles = {
 
 const AddTask = props => {
 
-    const {operation} = props;
+    //const {operation} = props;
 
     const getDateTime = () => {
         const original = new Date();
@@ -49,9 +49,11 @@ const AddTask = props => {
     }
 
     const user_id = props.context.user.id;
-    const [typeOf, setTypeOf] = useState("Question");
+    //const [typeOf, setTypeOf] = useState("Question");
     const [question, setQuestion] = useState("");
-    const [status, setStatus] = useState("Sent");
+    //const [status, setStatus] = useState("Sent");
+    let typeOf = "Personal";
+    let status = "Sent";
     const [responseMsg, setResponseMsg] = useState("");
     const [modalIsOpen, setModalOpen] = useState(false);
     const [aChoice, setAChoice] = useState("");
@@ -80,6 +82,7 @@ const AddTask = props => {
         if (choices.length !== 0 && question !== "" && isFor !== null){
             const formData = new FormData();
             formData.append('theDateTime',theDateTime);
+            formData.append('typeOf',typeOf);
             formData.append('user_id',user_id);
             formData.append('isFor',isFor);
             formData.append('question',question);
@@ -95,7 +98,7 @@ const AddTask = props => {
             }).then(
                 (result) => {
                     if (result.status === 200){
-                        const request_id = result.data.request_id;
+                        //const request_id = result.data.request_id;
                         clearFunc();
                         setResponseMsg("Request was saved.");
                     }else{
@@ -110,9 +113,9 @@ const AddTask = props => {
         }
     }
 
-    const loadRequest = async(e) => {
+    /*const loadRequest = async(e) => {
 
-    }
+    }*/
 
     const addChoice = () => {
         setChoices([...choices, aChoice]);
@@ -147,7 +150,7 @@ const AddTask = props => {
 
     useEffect( () => {
 
-    });
+    },[]);
 
     const selectUser = (index) => {
         setUser(userlist[index]);
@@ -162,7 +165,7 @@ const AddTask = props => {
                 setSearchVal(e.target.value);
                 if( e.target.value !== ""){
                     const searchval = e.target.value;
-                    axios.post('/api/search-users',{searchval, user_id}).then(
+                    axios.post(`${process.env.REACT_APP_PROXY}/api/search-users`,{searchval, user_id}).then(
                         (search) => {
                             if (search.status === 200){
                                 if (search.data.userlist){

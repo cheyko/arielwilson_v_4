@@ -65,7 +65,7 @@ const ServicesHome = props => {
     };
     
     const [searchval, setSearch] = useState("");
-    const imageUrls = []; //props.context;
+    //const imageUrls = []; //props.context;
     const services = props.context.services ? (props.context.services.length > 5 ? (props.context.services.slice(0,6)) : props.context.services ) : null ;
     //const { services } = [];
 
@@ -82,7 +82,7 @@ const ServicesHome = props => {
                     <form>
                         <div className="field has-addons searchbar" style={{display: "inline-flex"}}>
                             <div className="control">
-                                <input className="input is-focused" onChange={setSearch} type="text" placeholder="Search Work Site ....."/>
+                                <input className="input is-focused" value={searchval} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search Work Site ....."/>
                             </div>
                             <div className="control">
                                 <button type="submit" className="button is-link is-rounded is-focused"> Search </button>
@@ -103,7 +103,7 @@ const ServicesHome = props => {
                                         {services.map((service, index) => (
                                             <div className="slick-slide" key={index}>
                                                 <ServiceItem
-                                                    imageUrl={process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/0"}
+                                                    imageUrl={process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/0.jpeg"}
                                                     service={service}
                                                     key={index}
                                                     page={"home"}

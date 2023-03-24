@@ -143,7 +143,7 @@ const CompanyProfile = props => {
                           if (types[index] === "image"){
                             return(
                               <div className="slick-slide" key={index}>
-                                <img className="slick-slide-image" src={media} />
+                                <img alt={`${index} of Company Profile`} className="slick-slide-image" src={media} />
                               </div>
                             );
                           }else if (types[index] === "video"){

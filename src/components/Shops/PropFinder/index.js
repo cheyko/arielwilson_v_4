@@ -9,14 +9,13 @@ import PFLodge from "./PFLodge";
 
 
 const PropFinder = props => {
-    const [showDropDown, setShowDropDown] = useState(false);
+    //const [showDropDown, setShowDropDown] = useState(false);
     const {subview} = props;
     const [PFView, setPFView] = useState(subview);
 
     useEffect( () => {
         setPFView(subview);
-        props.setSubView(subview);
-        console.log(subview);
+        //props.setSubView(subview);
         //set current to local storage. 
     
     },[subview]);
@@ -24,7 +23,7 @@ const PropFinder = props => {
     return(
         <div className="shops-container">
             <div className="prop-finder">                
-                <div className="sub-content" onClick={e => setShowDropDown(false)}>
+                <div className="sub-content"> {/*onClick={e => setShowDropDown(false)}>*/}
                     {PFView === 'PFHome' && 
                         <div className="content">
                             <PFHome setPFView={setPFView}/>

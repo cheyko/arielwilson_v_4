@@ -18,10 +18,10 @@ const MediaItem = props => {
         // call function is-follower
         if (!gotMedia){
             if (aPree.attachment.mediatypes[0] === "audio"){
-                setImgView(process.env.PUBLIC_URL + "/images/exclusives/exclusive" + aPree.attachment.exclusive_id + "/cover");
+                setImgView(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/cover.jpeg`);
             }
             else if (aPree.attachment.mediatypes[0] === "video"){
-                setImgView(process.env.PUBLIC_URL + "/logo192.png");
+                setImgView(`${process.env.PUBLIC_URL}/logo192.png`);
             }
             setGetMedia(true);
         }

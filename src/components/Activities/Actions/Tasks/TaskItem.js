@@ -64,7 +64,7 @@ const TaskItem = props => {
 
     const updateTask = async() => {
         const task_id = task.task_id;
-        await axios.put('/api/update-task',{user_id, task_id, status}).then(
+        await axios.put(`${process.env.REACT_APP_PROXY}/api/update-task`,{user_id, task_id, status}).then(
             (result1) => {
                 if (result1.status === 200){
                     setShowUpdate(false);
@@ -79,7 +79,7 @@ const TaskItem = props => {
 
     const deleteTask = async() => {
         const task_id = task.task_id;
-        await axios.put('/api/delete-task',{user_id, task_id}).then(
+        await axios.put(`${process.env.REACT_APP_PROXY}/api/delete-task`,{user_id, task_id}).then(
             (result1) => {
                 if (result1.status === 200){
                     setResponseMsg("Task status was deleted.");
@@ -128,7 +128,7 @@ const TaskItem = props => {
                     <div className="content">
                         <b>Project :</b><span> {task.project} </span>
                         <br />
-                        <b>To Do :</b><span> {task.is_for === user_id ? "You" : <a>@{task.done_by.username}</a>} </span>
+                        <b>To Do :</b><span> {task.is_for === user_id ? "You" : <span className="has-text-link">@{task.done_by.username}</span>} </span>
                         <br />
                         <div>
                             <b> Status : </b> &nbsp;

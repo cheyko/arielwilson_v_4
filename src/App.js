@@ -17,7 +17,7 @@ import CryptoJS from 'crypto-js';
 import Profile from "./components/Profile";
 import Timeline from "./components/Timeline";
 //import Notifications from "./components/Notifications";
-import Quotes from "./components/Quotes";
+//import Quotes from "./components/Quotes";
 import Audios from './components/Audios';
 import Messages from './components/Messages';
 import Images from './components/Images';
@@ -96,7 +96,7 @@ export default class App extends Component {
     //this.setState({ready:true}); 
     const time = await axios.get(process.env.REACT_APP_PROXY+'/api/time',{
       headers: {
-        'Authorization' : this.state.jwt
+        'Authorization' : this.state.jwt,
       }
     });
     console.log(time);
@@ -119,7 +119,7 @@ export default class App extends Component {
     userlist = userlist ? JSON.parse(userlist) : [];
     //userlist = this.state.userlist ? this.state.userlist : [];
     const user_id = user ? user.id : 0;
-    const prees = user ? await axios.post(process.env.REACT_APP_PROXY+"/api/see-the-pree",{user_id}) : {"data":[]}; //add reactions to the prees from the backend before response to request.
+    const prees = user ? await axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{user_id}) : {"data":[]}; //add reactions to the prees from the backend before response to request.
     const messages = user ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
     //console.log(prees);
     //this.setState({user, ready, welcome, prees:prees.data, userlist, menuChoice, recent, messages, boxWidth:boxWidth}); //, 
@@ -167,7 +167,7 @@ export default class App extends Component {
         */
        const listing = theElement;
         for (var x=0; x<parseInt(listing.numOfPics); x++){
-          let url = process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/" + x;
+          let url = `${process.env.PUBLIC_URL}/images/listings/listing${listing.listing_id}/${x}.jpeg`;
           targetPhotos.push(url);
         }
         break;
@@ -177,7 +177,7 @@ export default class App extends Component {
         */
        const vehicle = theElement;
         for (var y=0; y<parseInt(vehicle.numOfPics); y++){
-          let url = process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/" + y;
+          let url = `${process.env.PUBLIC_URL}/images/vehicles/vehicle${vehicle.vehicle_id}/${y}.jpeg`;
           targetPhotos.push(url);
         }
         break;
@@ -186,7 +186,7 @@ export default class App extends Component {
           //const product = products ? products.find(product => product.product_id.toString() === theID.toString()) : null;
           const product = theElement;
           for (var z=0; z<parseInt(product.numOfPics); z++){
-            let url = process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/" + z;
+            let url = `${process.env.PUBLIC_URL}/images/products/product${product.product_id}/${z}.jpeg`;
             targetPhotos.push(url);
           }
           break;
@@ -195,7 +195,7 @@ export default class App extends Component {
         const service = services ? services.find(service => service.service_id.toString() === theID.toString()) : null;*/
         const service = theElement;
         for (var i=0; i<parseInt(service.numOfPics); i++){
-          let url = process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/" + i;
+          let url = `${process.env.PUBLIC_URL}/images/services/service${service.service_id}/${i}.jpeg`;
           targetPhotos.push(url);
         }
         break;
@@ -204,7 +204,7 @@ export default class App extends Component {
         const item = items ? items.find(item => item.item_id.toString() === theID.toString()) : null;*/
         const item = theElement;
         for (var j=0; j<parseInt(item.numOfPics); j++){
-          let url = process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/" + j;
+          let url = `${process.env.PUBLIC_URL}/images/items/item${item.item_id}/${j}.jpeg`;
           targetPhotos.push(url);
         }
         break;
@@ -220,7 +220,7 @@ export default class App extends Component {
     let result;
     if (listing === undefined || listing === null){
       const listing_id = listingID;
-      const val = await axios.post(process.env.REACT_APP_PROXY+"/api/get-listing",{listing_id}).catch(error => {console.log(error)});
+      const val = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-listing`,{listing_id}).catch(error => {console.log(error)});
       if (val.status === 200){
         result = val.data;
       }else{
@@ -239,7 +239,7 @@ export default class App extends Component {
     let result;
     if (vehicle === undefined || vehicle === null){
       const vehicle_id = vehicleID;
-      const val = await axios.post(process.env.REACT_APP_PROXY+"/api/get-vehicle",{vehicle_id}).catch(error => {console.log(error)});
+      const val = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-vehicle`,{vehicle_id}).catch(error => {console.log(error)});
       if (val.status === 200){
         result = val.data;
       }else{
@@ -261,7 +261,7 @@ export default class App extends Component {
     let result;
     if (product === undefined || product === null){
       const product_id = productID;
-      const val = await axios.post(process.env.REACT_APP_PROXY+"/api/get-product",{product_id}).catch(error => {console.log(error)});
+      const val = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-product`,{product_id}).catch(error => {console.log(error)});
       if (val.status === 200){
         result = val.data;
       }else{
@@ -280,7 +280,7 @@ export default class App extends Component {
     let result;
     if (service === undefined || service === null){
       const service_id = serviceID;
-      const val = await axios.post(process.env.REACT_APP_PROXY+"/api/get-service",{service_id}).catch(error => {console.log(error)});
+      const val = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-service`,{service_id}).catch(error => {console.log(error)});
       if (val.status === 200){
         result = val.data;
       }else{
@@ -299,7 +299,7 @@ export default class App extends Component {
     let result;
     if (item === undefined || item === null){
       const item_id = itemID;
-      const val = await axios.post(process.env.REACT_APP_PROXY+"/api/get-item",{item_id}).catch(error => {console.log(error)});
+      const val = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-item`,{item_id}).catch(error => {console.log(error)});
       if (val.status === 200){
         result = val.data;
       }else{
@@ -320,11 +320,11 @@ export default class App extends Component {
 
   //method to populate shops move to individual files
   setShops = async () => {
-    const listings = await axios.get(process.env.REACT_APP_PROXY+"/api/listings");
-    const vehicles = await axios.get(process.env.REACT_APP_PROXY+"/api/vehicles");
-    const products = await axios.get(process.env.REACT_APP_PROXY+"/api/products");
-    const items = await axios.get(process.env.REACT_APP_PROXY+"/api/items");
-    const services = await axios.get(process.env.REACT_APP_PROXY+"/api/services");
+    const listings = await axios.get(`${process.env.REACT_APP_PROXY}/api/listings`);
+    const vehicles = await axios.get(`${process.env.REACT_APP_PROXY}/api/vehicles`);
+    const products = await axios.get(`${process.env.REACT_APP_PROXY}/api/products`);
+    const items = await axios.get(`${process.env.REACT_APP_PROXY}/api/items`);
+    const services = await axios.get(`${process.env.REACT_APP_PROXY}/api/services`);
     this.setState({listings : listings.data, vehicles : vehicles.data , products : products.data, services: services.data, items:items.data });
   }
 
@@ -385,7 +385,7 @@ export default class App extends Component {
   getMessages = async (user_id) => {
     //const user_id = this.state.user ? this.state.user.id : 0;
     if (user_id){
-      const messages = await axios.post(process.env.REACT_APP_PROXY+'/api/get-messages',{user_id}).catch(
+      const messages = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-messages`,{user_id}).catch(
         (messages) => {
           if (messages.status !== 200){ 
             return false;
@@ -397,15 +397,15 @@ export default class App extends Component {
       const correspondents = allmessages ? [...new Set(allmessages.map((unique)=> ((unique.sender_id === user_id) && unique.receiver_id) || unique.sender_id ))] : [];
       this.getUsers(correspondents).then(
         (y) => {
-          console.log(y);
+          //console.log(y);
           this.setState({viewlist:y});
         }
       ).catch( error => {
         console.log(error);
       }); 
       this.setState({correspondents});
-      console.log(allmessages);
-      console.log(correspondents);
+      //console.log(allmessages);
+      //console.log(correspondents);
       return allmessages;
     }
   }
@@ -415,7 +415,7 @@ export default class App extends Component {
     const user_id = this.state.user.id;
 
     if (user_id && userview_id !== 0){
-      const convo = await axios.post(process.env.REACT_APP_PROXY+'/api/get-convo',{user_id, userview_id}).catch(
+      const convo = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-convo`,{user_id, userview_id}).catch(
         (convo) => {
           if (convo.status !== 200){ 
             console.log("Convo not found.");
@@ -461,7 +461,7 @@ export default class App extends Component {
   //pull all and find specific user from list or do request with return of specific user from query ?
   getMyView = async () => {
     const user_id = this.state.user ? this.state.user.id : 0;
-    const userview =  await axios.post(process.env.REACT_APP_PROXY+'/api/my-view',{user_id}).catch(
+    const userview =  await axios.post(`${process.env.REACT_APP_PROXY}/api/my-view`,{user_id}).catch(
       (userview) => {
           if (userview.status !== 200){ 
               console.log("No results from search");
@@ -478,7 +478,7 @@ export default class App extends Component {
   }
 
   getUsers = async(userlist) => {
-    const result = await axios.post(process.env.REACT_APP_PROXY+'/api/users-view',{userlist}).catch(
+    const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/users-view`,{userlist}).catch(
       (result) => {
         if(result.status !== 200){
           return false;
@@ -492,7 +492,7 @@ export default class App extends Component {
   getUserView = async(userID) => {
     const user_id = userID;
     if (user_id && user_id !== 0){
-      const userview =  await axios.post(process.env.REACT_APP_PROXY+'/api/my-view',{user_id}).catch(
+      const userview =  await axios.post(`${process.env.REACT_APP_PROXY}/api/my-view`,{user_id}).catch(
         (userview) => {
             if (userview.status !== 200){ 
                 console.log("No results from search");
@@ -515,7 +515,7 @@ export default class App extends Component {
   //pull all and find specific user from list or do request with return of specific user from query ?
   getGroupView = async(group_id) => {
     if (group_id && group_id !== 0){
-      const groupview =  await axios.post(process.env.REACT_APP_PROXY+'/api/group-view',{group_id}).catch(
+      const groupview =  await axios.post(`${process.env.REACT_APP_PROXY}/api/group-view`,{group_id}).catch(
         (groupview) => {
             if (groupview.status !== 200){ 
                 console.log("No results from search");
@@ -549,7 +549,7 @@ export default class App extends Component {
     let result;
     if (pree === undefined){
       const user_id = this.state.user ? this.state.user.id : 0;
-      const val = await axios.post(process.env.REACT_APP_PROXY+"/api/get-pree",{pree_id, user_id}).catch(error => {console.log(error)});
+      const val = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-pree`,{pree_id, user_id}).catch(error => {console.log(error)});
       if (val.status === 200){
         result = val.data;
       }else{
@@ -605,7 +605,7 @@ export default class App extends Component {
     formData.append('lkjhg5',lkjhg5);
     formData.append('lkjhg6',lkjhg6);
 
-    const res = await axios.post(process.env.REACT_APP_PROXY+'/api/signup', formData).catch((res) => {
+    const res = await axios.post(`${process.env.REACT_APP_PROXY}/api/signup`, formData).catch((res) => {
       return { status: 401, message: 'Unauthorized' }
     });
 
@@ -629,7 +629,7 @@ export default class App extends Component {
     formData.append('lkjhg2',lkjhg2);
 
     //const res = await axios.post(process.env.REACT_APP_PROXY+"/api/login",{email,password},{
-    const res = await axios.post(process.env.REACT_APP_PROXY+"/api/login",formData,{
+    const res = await axios.post(`${process.env.REACT_APP_PROXY}/api/login`,formData,{
       headers: {
         'Authorization' : this.state.jwt
       }
@@ -750,7 +750,7 @@ export default class App extends Component {
                 <Route path="/images" element={<Images />} />
                 {/*<Route path="/follower" component={Follower} />
                 <Route path="/following" component={Following} />*/}
-                <Route path="/quotes" element={<Quotes />} />
+                {/*<Route path="/quotes" element={<Quotes />} />*/}
                 <Route path="/settings" element={<Settings />} />
                 {/*<Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />*/}

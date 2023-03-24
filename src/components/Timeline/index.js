@@ -95,14 +95,11 @@ const Timeline = props => {
     useEffect( () => {
         window.addEventListener('scroll', e => handleScroll(e));
         const user_id = props.context.user ? props.context.user.id : 0;
-        axios.post("/api/see-the-pree",{user_id}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{user_id}).then(
             result => {
                 renderPrees(result.data);
             }
-        ).catch( error => {
-            console.log(error);
-        });
-        
+        );
     },[props.context.user]);
 
     let timeline;

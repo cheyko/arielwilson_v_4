@@ -19,7 +19,7 @@ const Volunteer = props => {
     let navigate = useNavigate();
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user ? props.context.user.id : 0;
+    //const user_id = props.context.user ? props.context.user.id : 0;
     const [activities, setActivities] = useState([]);
     const [gotActivities, setGotActivities] = useState(false);
     const [pageCount, setPageCount] = useState(0);
@@ -50,11 +50,11 @@ const Volunteer = props => {
         setActivities(result);
         setOffset(0);
         setFilter(false);
-    },[fullList, searchval ,mapping, category]);
+    },[fullList, searchval, category]);
 
     useEffect(() => {
         if (gotActivities === false){
-            axios.get("/api/volunteer").then(res => {
+            axios.get(`${process.env.REACT_APP_PROXY}/api/volunteer`).then(res => {
                 if (res.status === 200){
                     setFullList(res.data);
                     setActivities(res.data);
@@ -88,8 +88,8 @@ const Volunteer = props => {
                 {showFilter && 
                     <>
                     <p className="panel-tabs">
-                        <a onClick={e => {setMapping('All');setFilter(true);}} className={`${mapping === "All" ? "is-active" : ""}`}>All</a>
-                        <a onClick={e => {setMapping('Saved');setFilter(true);}} className={`${mapping === "Saved" ? "is-active" : ""}`}>My Volunteerting</a>
+                        <span onClick={e => {setMapping('All');setFilter(true);}} className={`${mapping === "All" ? "is-active" : ""}`}>All</span>
+                        <span onClick={e => {setMapping('Saved');setFilter(true);}} className={`${mapping === "Saved" ? "is-active" : ""}`}>My Volunteerting</span>
                     </p>
                     <div className="panel-block">
                         <p className="control has-icons-left">

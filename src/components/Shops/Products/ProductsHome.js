@@ -69,7 +69,7 @@ const ProductsHome = props => {
     };
     
     const [searchval, setSearch] = useState("");
-    const imageUrls = []; //props.context;
+    //const imageUrls = []; //props.context;
     //const listings = props.context.listings ? (props.context.listings.length > 5 ? (props.context.listings.slice(0,6)) : props.context.listings ) : null ;
     const products = props.context.products ? (props.context.products.length > 5 ? (props.context.products.slice(0,6)) : props.context.products ) : null ;;
 
@@ -86,7 +86,7 @@ const ProductsHome = props => {
                     <form>
                         <div className="field has-addons searchbar" style={{display: "inline-flex"}}>
                             <div className="control">
-                                <input className="input is-focused" onChange={setSearch} type="text" placeholder="Search Products ....."/>
+                                <input className="input is-focused" value={searchval} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search Products ....."/>
                             </div>
                             <div className="control">
                                 <button type="submit" className="button is-link is-rounded is-focused"> Search </button>
@@ -108,7 +108,7 @@ const ProductsHome = props => {
                                             {products.map((product, index) => (
                                                 <div className="slick-slide" key={index}>
                                                     <ProductItem
-                                                        imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0"}
+                                                        imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0.jpeg"}
                                                         product={product}
                                                         key={index}
                                                         page={"home"}

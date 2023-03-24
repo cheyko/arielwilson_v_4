@@ -345,7 +345,8 @@ class Request(db.Model):
 
     request_id = db.Column(db.Integer, db.Sequence('wg_requests_request_id_seq'), primary_key=True)
     lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
-    is_for = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)    
+    is_for = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False) 
+    typeOf = db.Column(db.String(10))
     question = db.Column(db.String(255))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     choices = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
@@ -353,9 +354,10 @@ class Request(db.Model):
     status = db.Column(db.String(80))
     is_visible = db.Column(db.Boolean, default=True)
     
-    def __init__(self,lister,is_for,question,date_added,status,choices):
+    def __init__(self,lister,is_for, typeOf,question,date_added,status,choices):
         self.lister = lister
         self.is_for = is_for
+        self.typeOf = typeOf
         self.question = question
         self.date_added = date_added
         self.choices = choices

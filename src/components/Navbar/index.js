@@ -30,15 +30,15 @@ const Navbar = props => {
         //if false load a placeholder image and placeholder video
         const user_id = props.context.user ? props.context.user.id : 0;
         if (user_id === 0){
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
         }else{
-            await axios.post('/api/get-main-media',{user_id}).then(
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/get-main-media`,{user_id}).then(
                 (response) => {
                     if (response.status === 200){
                         if (response.data.has_dp === true){
-                            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
                         }else{
-                            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
                         }
                         setGetMedia(true);
                     }
@@ -49,7 +49,6 @@ const Navbar = props => {
     },[props.context.user]);
 
     const activate = (choice) => {
-        //setClick(true);
         setSelection(choice);
     }
     
@@ -87,10 +86,6 @@ const Navbar = props => {
         if (gotMedia === false){
             loadMainMedia();
         }
-
-        /*if(selection !== props.context.menuChoice){
-            activate(props.context.menuChoice);
-        }*/
         
         if (document.documentElement.classList.contains("hide-scroll") === true){
             document.documentElement.classList.remove("hide-scroll");

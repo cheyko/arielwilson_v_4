@@ -11,7 +11,7 @@ const ProductsList = props => {
     const [products, setProducts] = useState(fullList);
 
     if(products === null){
-        axios.get("/api/products").then(res => {
+        axios.get(`${process.env.REACT_APP_PROXY}/api/products`).then(res => {
             if (res.status === 200){
                 setProducts(res.data);
                 fullList = res.data;
@@ -42,7 +42,7 @@ const ProductsList = props => {
     const [brand, setBrand] = useState("All");
     const [category, setCategory] = useState("All");
     const [condition, setCondition] = useState("All");
-    const [color, setColor] = useState("Any");
+    //const [color, setColor] = useState("Any");
     const [showFilter, setShow] = useState(false);
     const [filter, setFilter] = useState(null);
     const [sortOrder, setSortOrder] = useState("");
@@ -84,9 +84,9 @@ const ProductsList = props => {
         if (condition && condition !== "All") {
             result = result.filter(product => product.condition === condition);
         }
-        if (color && color !== "Any") {
+        /*if (color && color !== "Any") {
             result = result.filter(product => product.color === color);
-        }
+        }*/
         if (fromVal > 0){
             result = result.filter(product => ( convertPrice(product.price, product.currency) >= Number(fromVal)));
         }
@@ -104,7 +104,7 @@ const ProductsList = props => {
         setProducts(result);
         setOffset(0);
         setFilter(false);
-    },[products, brand, category, color, condition, fromVal, filter, searchval, sortOrder, toVal]);
+    },[fullList, brand, category, condition, fromVal, searchval, sortOrder, toVal]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -361,7 +361,7 @@ const ProductsList = props => {
                                 slice.map((product, index) => (
                                     <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                         <ProductItem
-                                            imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0"}
+                                            imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0.jpeg"}
                                             product={product}
                                             key={index}
                                             page={"list"}

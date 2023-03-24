@@ -208,11 +208,11 @@ const WOVAdd = props => {
         formData.append('ignition',ignition);
         formData.append('seats',seats);
         formData.append('description',description);
-        photos.forEach( (photo,index) => {
+        photos.forEach( (photo) => {
             formData.append('photos',photo);
         });
 
-        const result = await axios.post('/api/vehicles',formData, 
+        const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/vehicles`,formData, 
             {
               headers: {
               'Content-Type': 'multipart/form-data'

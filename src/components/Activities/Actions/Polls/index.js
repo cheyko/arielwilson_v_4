@@ -56,11 +56,11 @@ const Polls = props => {
         setPolls(result);
         setOffset(0);
         setFilter(false);
-    },[fullList, searchval,mapping, status, category, polls]);
+    },[fullList, searchval,mapping, status, category, user_id]);
 
     useEffect(() => {
         if (gotPolls === false){
-            axios.post("/api/get-polls",{user_id}).then(res => {
+            axios.post(`${process.env.REACT_APP_PROXY}/api/get-polls`,{user_id}).then(res => {
                 if (res.status === 200){
                     setFullList(res.data);
                     setPolls(res.data);
@@ -72,7 +72,7 @@ const Polls = props => {
         if(filter){
             filterList();
         }
-    }, [gotPolls, filter, filterList, polls]);
+    }, [gotPolls, filter, filterList, polls, user_id]);
 
     slice = polls.slice(offset, offset + perPage); 
 
@@ -88,9 +88,9 @@ const Polls = props => {
                 {showFilter && 
                     <>
                     <p className="panel-tabs">
-                        <a onClick={e => {setMapping('All');setFilter(true);}} className={`${mapping === "All" ? "is-active" : ""}`}>All</a>
-                        <a onClick={e => {setMapping('Created');setFilter(true);}} className={`${mapping === "Created" ? "is-active" : ""}`}>Created</a>
-                        <a onClick={e => {setMapping('Voted');setFilter(true);}} className={`${mapping === "Voted" ? "is-active" : ""}`}>Voted</a>
+                        <span onClick={e => {setMapping('All');setFilter(true);}} className={`${mapping === "All" ? "is-active" : ""}`}>All</span>
+                        <span onClick={e => {setMapping('Created');setFilter(true);}} className={`${mapping === "Created" ? "is-active" : ""}`}>Created</span>
+                        <span onClick={e => {setMapping('Voted');setFilter(true);}} className={`${mapping === "Voted" ? "is-active" : ""}`}>Voted</span>
                     </p>
                     <div className="panel-block">
                         <p className="control has-icons-left">

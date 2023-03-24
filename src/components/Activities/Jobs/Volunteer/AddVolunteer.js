@@ -17,7 +17,7 @@ const AddVolunteer = props => {
     const [description, setDescription] = useState("");
     const [startTime, setStartTime] = useState("00:00");
     const [metrics, setMetrics] = useState("");
-    const [status, setStatus] = useState("On-Schedule");
+    //const [status, setStatus] = useState("On-Schedule");
     const [endTime, setEndTime] = useState("00:00");
     const [end, setEndDate] = useState(new Date().toISOString().split("T")[0]);
     const [contributions, setContributions] = useState([]);
@@ -45,7 +45,7 @@ const AddVolunteer = props => {
         setStartDate(new Date().toISOString().split("T")[0]);
         setDescription("");
         setStartTime("00:00");
-        setStatus("On-Schedule");
+        //setStatus("On-Schedule");
         setEndTime("00:00");
         setEndDate(new Date().toISOString().split("T")[0]);
         setContributions([]);
@@ -81,7 +81,7 @@ const AddVolunteer = props => {
             photos.forEach( (file) => {
                 formData.append('media',file);
             });
-            await axios.post('/api/volunteer',formData, 
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/volunteer`,formData, 
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -103,9 +103,9 @@ const AddVolunteer = props => {
         }
     }
 
-    const loadVolunteer = async(e) => {
+    /*const loadVolunteer = async(e) => {
 
-    }
+    }*/
 
     //const []
     
@@ -197,7 +197,7 @@ const AddVolunteer = props => {
                                         <div className="column is-half-tablet" key={index}>
                                             <span> {index + 1} </span>
                                             <br />
-                                            <img className="is-256x256" src={URL.createObjectURL(photo)} />
+                                            <img alt={`${index} of Uploads`} className="is-256x256" src={URL.createObjectURL(photo)} />
                                         </div>
                                     )}
 

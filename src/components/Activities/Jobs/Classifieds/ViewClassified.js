@@ -1,6 +1,6 @@
 import withContext from "../../../../withContext";
 import React, {useEffect, useState} from "react";
-import { json, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import $ from 'jquery';
 import CompanyProfile from "../../../Company/CompanyProfile";
 import axios from "axios";
@@ -22,7 +22,7 @@ const ViewClassified = (props) => {
         $('#rightContent').scrollTop(0); //did not work as expected
         if (classified === null){
             const classified_id = id;
-            axios.post("/api/get-classified",{classified_id}).then(res => {
+            axios.post(`${process.env.REACT_APP_PROXY}/api/get-classified`,{classified_id}).then(res => {
                 if (res.status === 200){
                     setClassified(res.data);
                 }else{
@@ -38,7 +38,7 @@ const ViewClassified = (props) => {
         if (document.documentElement.classList.contains("hide-scroll") === false){
             document.documentElement.classList.add("hide-scroll");
         }
-    }, [classified, window.screen.width, document]);
+    }, [classified, id]);
 
     const updateSize = () => {
         if (window.screen.width > 1022){
