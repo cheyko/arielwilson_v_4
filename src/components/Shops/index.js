@@ -18,7 +18,7 @@ import BickleCourt from './BickleCourt';
 
 
 const Shops = props => {
-    const [boxWidth, setWidth] = useState($(".ad-bar-container").width());
+    let boxWidth = $(".ad-bar-container").width();
     const [start, setStart] = useState(true);
     const [toggleads , setToggleAds] = useState(true);
     const [togglecart , setToggleCart] = useState(false);
@@ -59,7 +59,7 @@ const Shops = props => {
         } 
 
         //set current to local storage.    
-    },[start,shopView, subview]);
+    },[start,shopView, subview, boxWidth, props.context]);
 
     const toggleAds = (e) => {
         e.preventDefault();

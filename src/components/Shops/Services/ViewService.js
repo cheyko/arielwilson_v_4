@@ -31,7 +31,7 @@ const ViewService = props => {
             });
         }
 
-    }, [service]);
+    }, [service, props.context, id]);
 
     /*useEffect(() => {
         window.scrollTo(0, 0);

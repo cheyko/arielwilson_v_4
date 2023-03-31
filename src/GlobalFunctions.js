@@ -5,3 +5,5 @@ function getDateTime(){
     //console.log(result);
     return result;
 }
+
+export {getDateTime};

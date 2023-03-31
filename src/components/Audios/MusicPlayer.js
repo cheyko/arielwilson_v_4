@@ -3,6 +3,7 @@ import withContext from "../../withContext";
 import "./index.css";
 import Lightbox from "react-image-lightbox";
 import ArtistView from "./ArtistView";
+import { useCallback } from "react";
 
 const MusicPlayer = props => {
 
@@ -25,6 +26,20 @@ const MusicPlayer = props => {
     const {display_url} = props;
     const {mediatype} = props;
     const {details} = props;
+
+    const loadMusic = useCallback( () => {
+
+        seekBar.value = 0; // set range slide value to 0;
+        let url = temp_url;
+        music.src = url;
+        music.type = mediatype;
+
+        currentTime.innerHTML = '00:00';
+        setTimeout(() => {
+            seekBar.max = music.duration;
+            musicDuration.innerHTML = formatTime(music.duration); 
+        }, 300);
+    },[seekBar, temp_url, music, musicDuration, currentTime, mediatype]);
 
     useEffect( () => {
         if(loading){
@@ -60,21 +75,7 @@ const MusicPlayer = props => {
             }
         }, 500);        
 
-    },[openImage, seekBar, musicDuration, currentTime, music, playBtn, temp_url, display_url, container, forwardBtn,loading]);
-
-    const loadMusic = () => {
-
-        seekBar.value = 0; // set range slide value to 0;
-        let url = temp_url;
-        music.src = url;
-        music.type = mediatype;
-
-        currentTime.innerHTML = '00:00';
-        setTimeout(() => {
-            seekBar.max = music.duration;
-            musicDuration.innerHTML = formatTime(music.duration); 
-        }, 300);
-    }
+    },[openImage, seekBar, musicDuration, currentTime, music, playBtn, temp_url, display_url, container, forwardBtn,loading,loadMusic]);
 
     const formatTime = (time) => {
         let min = Math.floor(time / 60);

@@ -34,6 +34,6 @@ from api import actions, messages, profile, reactions, relations, shops, exclusi
 
 @app.route("/", defaults={'path':''})
 @app.route('/index')
-@cross_origin()
+@cross_origin(allow_headers=app.config['CORS_HEADERS'])
 def serve(path):
     return send_from_directory(app.static_folder,'index.html')

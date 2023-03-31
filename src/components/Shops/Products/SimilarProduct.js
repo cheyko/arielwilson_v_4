@@ -16,7 +16,7 @@ const SimilarProduct = (props) => {
         centerPadding: '10px'
     };
 
-    const convertPrice = (price, currency) => {
+    /*const convertPrice = (price, currency) => {
         //console.log(price > 100);
         //console.log(currency);
         if (currency === "JMD"){
@@ -28,12 +28,12 @@ const SimilarProduct = (props) => {
         } else if (currency === "EUR"){
           return price * 180
         }    
-    }
+    }*/
 
     const { product } = props;
     //check house listing similarity inside houses.
     //const imageUrls = props.context.imageUrls;
-    const matches  = props.context.products ;/*? props.context.products.filter( aProduct => (aProduct.make === aProduct.make 
+    const matches  = props.context.products.filter( aProduct => aProduct !== product) ;/*? props.context.products.filter( aProduct => (aProduct.make === aProduct.make 
     && aProduct.vehicle_id !== aProduct.vehicle_id
     && aVehicle.model.replace(/ /g,'').toLowerCase().includes(vehicle.model.replace(/ /g,'').toLowerCase())
     ) 

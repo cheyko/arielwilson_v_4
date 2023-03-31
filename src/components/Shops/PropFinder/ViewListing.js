@@ -30,7 +30,7 @@ const ViewListing = props => {
             });
         }
 
-    }, [listing]);
+    }, [listing, id, props.context]);
 
     /*useEffect(() => {
         window.scrollTo(0, 0);

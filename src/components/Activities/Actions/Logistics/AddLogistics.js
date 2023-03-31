@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
 import withContext from "../../../../withContext";
 //import getDateTime from "../../../../GlobalFunctions";
@@ -38,7 +38,7 @@ const customStyles = {
 
 const AddLogistics = props => {
 
-    const {operation} = props;
+    //const {operation} = props;
 
     const getDateTime = () => {
         const original = new Date();
@@ -62,7 +62,7 @@ const AddLogistics = props => {
     const [searchval, setSearchVal] = useState("");
     const [userlist, setUserList] = useState([]);
     const [user, setUser] = useState(null);
-    const [status, setStatus] = useState("Pending");
+    let status = "Pending";
 
 
     const clearFunc = () => {
@@ -97,7 +97,7 @@ const AddLogistics = props => {
             }).then(
                 (result) => {
                     if (result.status === 200){
-                        const logistic_id = result.data.logistic_id;
+                        //const logistic_id = result.data.logistic_id;
                         clearFunc();
                         setResponseMsg("Logistic was saved.");
                     }else{
@@ -110,13 +110,13 @@ const AddLogistics = props => {
         }
     }
 
-    const loadRequest = async(e) => {
+    /*const loadLogistics = async(e) => {
 
-    }
+    }*/
 
-    useEffect( () => {
+    /*useEffect( () => {
 
-    });
+    });*/
 
     const handleChange = (e) => {
         switch(e.target.name){

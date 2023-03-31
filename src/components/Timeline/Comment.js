@@ -79,7 +79,7 @@ const Comment = props => {
             } 
         )
 
-    },[comment_id,likedcount,dislikedcount, threadcount, c_reaction, reply]);
+    },[comment_id,likedcount,dislikedcount, user_id, threadcount, c_reaction, reply]);
 
     const [modalIsOpen, setModalOpen] = useState(false);
     

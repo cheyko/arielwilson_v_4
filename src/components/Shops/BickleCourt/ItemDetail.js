@@ -58,9 +58,9 @@ const ItemDetail = props =>{
                         <p className="has-text-centered"><b style={{textDecoration:"underline"}}> Ingredients</b></p>
                         <div style={{fontWeight:"bold"}}> 
                             <ul>
-                                {item.ingredients.map((ingredient, index) => {
+                                {item.ingredients.map((ingredient, index) => 
                                     <li key={index}> {ingredient}</li>
-                                })} 
+                                )} 
                             </ul>
                         
                         </div>

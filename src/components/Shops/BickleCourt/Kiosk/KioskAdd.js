@@ -121,6 +121,7 @@ const KioskAdd = props => {
         let temp = [];
         Array.from(e.target.files).map( (file) => {
             temp = [...temp, file.type.split('/')[0]]
+            return true;
         });
         setMediaTypes(temp);
     }
@@ -159,11 +160,12 @@ const KioskAdd = props => {
             formData.append('currency',currency);
             formData.append('ingredients',ingredients);
             formData.append('description',description);
-            media.forEach( (file,index) => {
+            formData.append('mediatypes',mediatypes);
+            media.forEach( (file) => {
                 formData.append('media',file);
             });
 
-            const result = await axios.post('/api/items',formData, 
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/items`,formData, 
                 {
                 headers: {
                 'Content-Type': 'multipart/form-data'
@@ -348,7 +350,7 @@ const KioskAdd = props => {
                                 <div className="column is-half has-text-centered" key={index}>
                                     <span> {index + 1} </span>
                                     <br />
-                                    <img className="is-256x256" src={URL.createObjectURL(photo)} />
+                                    <img alt={`${index} of Uploads`} className="is-256x256" src={URL.createObjectURL(photo)} />
                                 </div>
                             )}
                         </div>

@@ -31,7 +31,7 @@ const ViewVehicle = props => {
             });
         }
 
-    }, [vehicle]);
+    }, [vehicle, id, props.context]);
 
     /*useEffect(() => {
         window.scrollTo(0, 0);

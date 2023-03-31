@@ -21,7 +21,7 @@ import Timeline from "./components/Timeline";
 import Audios from './components/Audios';
 import Messages from './components/Messages';
 import Images from './components/Images';
-import Videos from './components/Videos';
+//import Videos from './components/Videos';
 import Settings from './components/Settings';
 import Homepage from './components/Homepage';
 
@@ -90,6 +90,7 @@ export default class App extends Component {
     };
     /// Create Router reference 
     this.routerRef = React.createRef();
+    console.log("constructor");
   }
 
   async componentDidMount(){
@@ -624,6 +625,7 @@ export default class App extends Component {
     const lkjhg1 = CryptoJS.AES.encrypt(email, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
     const lkjhg2 = CryptoJS.AES.encrypt(password, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
 
+    console.log(lkjhg1);
     const formData = new FormData();
     formData.append('lkjhg1',lkjhg1);
     formData.append('lkjhg2',lkjhg2);
@@ -754,7 +756,7 @@ export default class App extends Component {
                 <Route path="/settings" element={<Settings />} />
                 {/*<Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />*/}
-                <Route path="/videos" element={<Videos />} />
+                {/*<Route path="/videos" element={<Videos />} />*/}
                 {/*<Route path="/notifications" element={<Notifications />} />*/}
                 <Route path="/social" element={<Social />} />
                 <Route path="/messages/:category/:msgtype/:id" element={<Messages />} />

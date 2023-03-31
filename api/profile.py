@@ -111,7 +111,7 @@ def login():
         return jsonify({"msg": "Incorrect email or password"}), 400
     else:
         return jsonify({"msg": "There was an error"}), 400
-
+    
 def str2bool(v):
   return v.lower() == "true" 
 

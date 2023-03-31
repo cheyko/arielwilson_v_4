@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import withContext from "../../../../withContext"
 import axios from "axios";
 import { useCallback } from "react";
+import { getDateTime } from "../../../../GlobalFunctions";
 
 Modal.setAppElement('#root');
 
@@ -38,14 +39,6 @@ const customStyles = {
 const AddPoll = props => {
 
     //const {operation} = props; //use for editting polls (may not be feasible to allow user to edit poll unless there are no votes)
-
-    const getDateTime = () => {
-        const original = new Date();
-        const isoVal = original.toString();
-        const result = isoVal.split("GMT")[0];
-        //console.log(result);
-        return result;
-    }
 
     const user_id = props.context.user.id;
     const [poll, setPoll] = useState("");

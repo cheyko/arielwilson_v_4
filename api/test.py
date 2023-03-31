@@ -9,9 +9,59 @@ from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree
 from api.specials import Listing, Vehicle, Product, Item, Service, Classified
 from datetime import datetime
+from werkzeug.security import check_password_hash
+from flask_jwt_extended import create_access_token, create_refresh_token
+from api.relations import update_stats
+from api.security import authenticate_token
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+@app.route('/api/login2', methods=['GET','POST'])
+@authenticate_token
+def login2():
+    if request.method == 'POST':
+        #enc1 = base64.b64decode(request.form["lkjhg1"])
+        #enc2 = base64.b64decode(request.form["lkjhg2"])
+        #cipher = AES.new((str(os.getenv("AES_KEY"))).encode('utf-8'), AES.MODE_ECB)
+        #email = unpad(cipher.decrypt(enc1),AES.block_size).decode("utf-8", "ignore")
+        #password = unpad(cipher.decrypt(enc2),AES.block_size).decode("utf-8", "ignore")
+        email = request.form["email"]
+        password = request.form["password"]
+ 
+        if not email:
+            return jsonify({"msg": "Missing username parameter"}), 400, {"Access-Control-Allow-Origin": "*"}
+        if not password:
+            return jsonify({"msg": "Missing password parameter"}), 400, {"Access-Control-Allow-Origin": "*"}
+        
+        user = User.query.filter_by(email=email).first()
+        if user is not None and check_password_hash(user.password,password):           
+            access_token = create_access_token(identity=email)
+            refresh_token = create_refresh_token(identity=email)
+            profile_record = Profile.query.get(user.user_id)
+            if profile_record is None:
+                has_profile = False
+                location = ""
+            else:
+                has_profile = True
+                location = profile_record.location
+                update_stats(user.user_id)
+            return {
+                'user_id' : user.user_id,
+                'firstname' : user.firstname,
+                'lastname' : user.lastname,
+                'username' : user.username,
+                'phonenumber' : user.phonenumber,
+                'access_token': access_token,
+                'refresh_token': refresh_token,
+                'access_type': user.accessType,
+                'has_profile' : has_profile,
+                'gender' : user.gender,
+                'location': location
+            }, 200, {"Access-Control-Allow-Origin": "*"}
+        return jsonify({"msg": "Incorrect email or password"}), 400, {"Access-Control-Allow-Origin": "*"}
+    else:
+        return jsonify({"msg": "There was an error"}), 400, {"Access-Control-Allow-Origin": "*"}
+    
 @app.route('/api/test-function', methods=['POST'])
 def test_func():
     if request.method == 'POST':

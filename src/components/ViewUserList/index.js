@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import './index.css';
 import withContext from '../../withContext';
 import axios from 'axios';
@@ -12,22 +12,62 @@ import { useNavigate, useParams } from "react-router-dom";
 // example = /view-user-list/0/search ... /view-user-list/3/followers
 // add back arrow in the future. 
 
+function reducer(state, action) {
+    const user_id  = action.id;
+    if (action.type === 'search') {
+      return action.val;
+    }else if(action.type === 'followers'){
+        axios.post('/api/get-followers',{user_id}).then(
+            (result1) => {
+                if (result1.status !== 200){
+                    console.log('List of Followers were not sent from server.');
+                }else{
+                    return (result1.data.followerslist);
+                }
+            }
+        )
+    }else if(action.type === 'figures'){
+        axios.post('/api/get-figures',{user_id}).then(
+            (result2) => {
+                if (result2.status !== 200){
+                    throw new Error('List of Followings were not sent from server.');
+                }else{
+                    return (result2.data.figureslist);
+                }
+            }
+        )
+    }else if(action.type === 'fraternity'){
+        axios.post('/api/get-fraternity',{user_id}).then(
+            (result3) => {
+                if (result3.status !== 200){
+                    throw new Error('List of Fraternity were not sent from server.');
+                }else{
+                    return (result3.data.fraternitylist);
+                }
+            }
+        )
+    }
+    throw Error('Unknown action.');
+  }
+
 const ViewUserList = props => {
 
     let {id} = useParams();
     let {action} = useParams();
-    const [viewlist, setViewList] = useState(null);
+    const [viewlist, setViewList] = useReducer(reducer, null);
+    //const [viewlist, setViewList] = useState(null);
     let navigate = useNavigate();
 
     useEffect( () => {
-        const user_id  = id;
         if (viewlist === null){
             switch(action){
                 case 'search':
-                    setViewList(props.context.userlist);
+                    setViewList({ type: 'search', val: props.context.userlist });
+                    //setViewList(props.context.userlist);
                     break;
                 case 'followers':
-                    axios.post('/api/get-followers',{user_id}).then(
+                    setViewList({ type: 'followers', id });
+                    /*axios.post('/api/get-followers',{user_id}).then(
                         (result1) => {
                             if (result1.status !== 200){
                                 console.log('List of Followers were not sent from server.');
@@ -35,10 +75,12 @@ const ViewUserList = props => {
                                 setViewList(result1.data.followerslist);
                             }
                         }
-                    )
+                    )*/
                     break;
                 case 'figures': //change function to get-figures
-                    axios.post('/api/get-figures',{user_id}).then(
+                    setViewList({ type: 'figures' , id});
+
+                    /*axios.post('/api/get-figures',{user_id}).then(
                         (result2) => {
                             if (result2.status !== 200){
                                 throw new Error('List of Followings were not sent from server.');
@@ -46,10 +88,11 @@ const ViewUserList = props => {
                                 setViewList(result2.data.figureslist);
                             }
                         }
-                    )
+                    )*/
                     break;
                 case 'fraternity':
-                    axios.post('/api/get-fraternity',{user_id}).then(
+                    setViewList({ type: 'fraternity', id });
+                    /*axios.post('/api/get-fraternity',{user_id}).then(
                         (result3) => {
                             if (result3.status !== 200){
                                 throw new Error('List of Fraternity were not sent from server.');
@@ -57,13 +100,13 @@ const ViewUserList = props => {
                                 setViewList(result3.data.fraternitylist);
                             }
                         }
-                    )
+                    )*/
                     break;
                 default:
                     break;
             }
         }
-    },[viewlist])
+    },[viewlist, action, id, props.context.userlist])
 
 
     console.log(viewlist);

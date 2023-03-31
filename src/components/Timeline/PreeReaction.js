@@ -58,7 +58,7 @@ const PreeReaction = props => {
             //console.log(comments);
             setLoad(false);
         }
-    },[load, aPree, clickable]);
+    },[load, aPree, clickable, props.context.user]);
     
     //PreeReactions Functions
     const likePree = (e, pree_id) => {

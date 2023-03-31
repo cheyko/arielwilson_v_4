@@ -5,6 +5,7 @@ import $ from "jquery";
 import ViewUserCard from "../../../HelperComponents/ViewUserCard";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useCallback } from "react";
 
 const PollItem = props => {
 
@@ -49,6 +50,15 @@ const PollItem = props => {
         setSize(window.innerWidth);
     }
 
+    const checkPoll = useCallback(() => {
+        let poll_end = new Date();
+        poll_end.setDate(new Date(poll.end_date).getDate() + 1);
+        var time_vals = poll.end_time.split(":");
+        poll_end.setHours(time_vals[0],time_vals[1],time_vals[2]);
+        var now = new Date();
+        return (poll_end.getTime() > now.getTime());
+    },[poll.end_date, poll.end_time]);
+
     useEffect(() => {
         if(theWidth === 0){
             window.addEventListener("resize", runWindow);
@@ -61,7 +71,7 @@ const PollItem = props => {
         if(isOpen === null){
             setOpen(checkPoll());
         }
-    },[voted, results, theWidth, windowSize, isOpen]);
+    },[voted, results, theWidth, windowSize, isOpen, checkPoll]);
 
 
     const calWidth = (result) => {
@@ -76,10 +86,9 @@ const PollItem = props => {
         return response;
     }
 
-
     const convertDate = (val) => {
         var result;
-        if (new Date().getDate() == new Date(val).getDate() + 1){
+        if (new Date().getDate() === new Date(val).getDate() + 1){
              result = "Today at";
         }else{
             result = new Date(new Date(val).setDate(new Date(val).getDate() + 1)).toDateString();
@@ -92,15 +101,6 @@ const PollItem = props => {
         var hour = parseInt(aTime.split(":")[0]) % 12 || 12;
         var minutes = aTime.split(":")[1];
         return hour + ":" + minutes + meridian;
-    }
-
-    const checkPoll = () => {
-        let poll_end = new Date();
-        poll_end.setDate(new Date(poll.end_date).getDate() + 1);
-        var time_vals = poll.end_time.split(":");
-        poll_end.setHours(time_vals[0],time_vals[1],time_vals[2]);
-        var now = new Date();
-        return (poll_end.getTime() > now.getTime());
     }
 
     return(

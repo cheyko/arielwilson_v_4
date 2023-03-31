@@ -31,8 +31,8 @@ const Wallet = props => {
     };
 
     const [wView, setView] = useState('cash');
-    const [showDropDown, setShowDropDown] = useState(false);
-    const [showMore, setShowMore] = useState(false);
+    //const [showDropDown, setShowDropDown] = useState(false);
+    //const [showMore, setShowMore] = useState(false);
 
     const toggleMenu = (e) => {
         e.preventDefault();
@@ -44,45 +44,45 @@ const Wallet = props => {
         <div className="hero">
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
-                    <a className="navbar-item">
+                    <span className="navbar-item">
                         <h1 className="subtitle"><b>WALLET</b></h1>
-                    </a>
+                    </span>
 
-                    <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
+                    <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
                     
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <small>sections</small>
-                    </a>
+                    </span>
                 </div>
 
                 <div id="navbarBasicExample" className="navbar-menu">
                     <div className="navbar-start">
                         <div className="buttons">
-                            <a className={`navbar-item button ${wView === "cash" ? "is-active" : "is-not-active"}`} onClick={e => {setView("cash");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${wView === "cash" ? "is-active" : "is-not-active"}`} onClick={e => {setView("cash");toggleMenu(e);}}>
                                 <i className="fas fa-money-bill" aria-hidden="true"></i> &nbsp; CASH
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${wView === "card" ? "is-active" : "is-not-active"}`} onClick={e => {setView("card");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${wView === "card" ? "is-active" : "is-not-active"}`} onClick={e => {setView("card");toggleMenu(e);}}>
                                 <i className="fas fa-credit-card" aria-hidden="true"></i> &nbsp; CARD
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${wView === "crypto" ? "is-active" : "is-not-active"}`} onClick={e => {setView("crypto");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${wView === "crypto" ? "is-active" : "is-not-active"}`} onClick={e => {setView("crypto");toggleMenu(e);}}>
                                 <i className="fab fa-bitcoin" aria-hidden="true"></i> &nbsp; CRYPTO
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${wView === "assets" ? "is-active" : "is-not-active"}`} onClick={e => {setView("assets");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${wView === "assets" ? "is-active" : "is-not-active"}`} onClick={e => {setView("assets");toggleMenu(e);}}>
                                 <i className="fas fa-lock" aria-hidden="true"></i> &nbsp; WG-ASSETS
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${wView === "forex" ? "is-active" : "is-not-active"}`} onClick={e => {setView("forex");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${wView === "forex" ? "is-active" : "is-not-active"}`} onClick={e => {setView("forex");toggleMenu(e);}}>
                                 <i className="fas fa-comment-dollar" aria-hidden="true"></i> &nbsp; FOREX
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${wView === "stocks" ? "is-active" : "is-not-active"}`} onClick={e => {setView("stocks");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${wView === "stocks" ? "is-active" : "is-not-active"}`} onClick={e => {setView("stocks");toggleMenu(e);}}>
                                 <i className="fas fa-trademark" aria-hidden="true"></i> &nbsp; STOCKS & BONDS
-                            </a>
+                            </span>
                         </div>
                     </div>
                 </div>

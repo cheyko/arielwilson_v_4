@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const AddService = props => {
 
     const [responseMsg, setResponseMsg] = useState("");
-    const [modalIsOpen, setModalOpen] = useState(false);
+    //const [modalIsOpen, setModalOpen] = useState(false);
 
     const categories = ["Beauty & Grooming", "Clothing","Construction","Creative", "Electronics","Entertainment","Food & Beverages", "General", "Heath & Wellness", "Household", "Industrial", "I.T", "Landscaping", "Legal", "Medical",  "Religious", "Sports" ];
     const deliverables = ["Appointment", "Application", "Booking", "Content", "Consultation", "Design", "Evaluation","File", "Job","Product", "Repair", "Representation"];
@@ -144,9 +144,7 @@ const AddService = props => {
     const handleMedia = e => {
         setMedia(Array.from(e.target.files));
         let temp = [];
-        Array.from(e.target.files).map( (file) => {
-            temp = [...temp, file.type.split('/')[0]]
-        });
+        Array.from(e.target.files).map( (file) => temp = [...temp, file.type.split('/')[0]]);
         setMediaTypes(temp);
     }
 
@@ -197,7 +195,7 @@ const AddService = props => {
             });
             formData.append('mediatypes',mediatypes);
 
-            const result = await axios.post('/api/services',formData, 
+            await axios.post('/api/services',formData, 
                 {
                 headers: {
                 'Content-Type': 'multipart/form-data'
@@ -526,7 +524,7 @@ const AddService = props => {
                                 <div className="column is-half has-text-centered" key={index}>
                                     <span> {index + 1} </span>
                                     <br />
-                                    <img className="is-256x256" src={URL.createObjectURL(photo)} />
+                                    <img alt={`${index} of Uploads`} className="is-256x256" src={URL.createObjectURL(photo)} />
                                 </div>
                             )}
                         </div>

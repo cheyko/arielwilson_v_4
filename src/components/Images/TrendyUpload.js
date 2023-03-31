@@ -14,7 +14,8 @@ const TrendyUpload = props => {
     const [mainmedia, setMainMedia] = useState(null);
     const [addMainMedia, setAddMainMedia] = useState(false);
     const [temp_url, setUrl] = useState(null);
-    const [captionlist, setCaptionList] = useState(["testing","testing","testing"]);
+    //const [captionlist, setCaptionList] = useState(["testing","testing","testing"]);
+    let captionlist = ["testing","testing","testing"];
     const [category, setCategory] = useState(null);
     const [addCategory, setAddCategory] = useState(false);    
     const [genre, setGenre] = useState("");
@@ -22,7 +23,8 @@ const TrendyUpload = props => {
     const [description, setDescription] = useState("");
     const [addDescription, setAddDescription] = useState(false);
     const [playback, setPlayBack] = useState("");
-    const [theDate, setDate] = useState(new Date().toISOString().split("T"));
+     let theDate = new Date().toISOString().split("T");
+    //const [theDate, setDate] = useState(new Date().toISOString().split("T"));
     const [contingency, setContingency] = useState([]);
     const [downloadable, setDownloadable] = useState(false); 
     
@@ -71,7 +73,7 @@ const TrendyUpload = props => {
             }
         }
     }
-    const checkCategory = () => {
+    /*const checkCategory = () => {
         var radios = document.getElementsByName("category");
         for (var j = 0; j < radios.length; j++) {
             if (radios[j].value === category) {   
@@ -79,7 +81,7 @@ const TrendyUpload = props => {
                 break;
             }
         }
-    }
+    }*/
 
     const clearRadio = () => {
         var radios = document.getElementsByName("genre");
@@ -94,7 +96,7 @@ const TrendyUpload = props => {
         }
     }
 
-    const checkPlaybackRadio = () => {
+    /*const checkPlaybackRadio = () => {
         var radios = document.getElementsByName("playback");
         for (var j = 0; j < radios.length; j++) {
             if (radios[j].value === playback) {   
@@ -102,7 +104,7 @@ const TrendyUpload = props => {
                 break;
             }
         }
-    }
+    }*/
 
     const getDateTime = () => {
         const original = new Date();
@@ -199,9 +201,7 @@ const TrendyUpload = props => {
         setMainMedia(Array.from(e.target.files)[0]);
         
         let temp = [];
-        Array.from(e.target.files).map( (file) => {
-            temp = [...temp, file.type.split('/')[0]]
-        });
+        Array.from(e.target.files).map( (file) => temp = [...temp, file.type.split('/')[0]]);
         setMediaTypes(temp);
         setAddGenre(false);
         setCategory("");
@@ -256,6 +256,7 @@ const TrendyUpload = props => {
                                             <div className="card" style={{background:"none"}}>
                                                 {addTitle && <i className="fas fa-edit reaction-btn" onClick={e => { setAddTitle(false);e.preventDefault();}}>edit Title</i> } {" "}
                                                 {addArtist && <i className="fas fa-edit reaction-btn" onClick={e => { setAddArtist(false);e.preventDefault();}}>edit Artist</i> }
+                                                {addCategory && <i className="fas fa-edit reaction-btn" onClick={e => { setAddCategory(false);e.preventDefault();}}>edit Category</i> }
                                                 <div className="mainmedia">
                                                 {trend === "image" &&                                                            
                                                     <>
@@ -276,7 +277,6 @@ const TrendyUpload = props => {
                                                 } 
                                                 {trend === "quote" &&
                                                     <>
-                                                        
                                                         <TrendyQuote 
                                                             details={{"title":title,"artist":artistname, "description":description}}
                                                         />

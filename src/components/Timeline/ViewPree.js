@@ -19,7 +19,7 @@ const ViewPree = props => {
                 setAPree(promise);
             });
         }
-    },[aPree])
+    },[aPree, id, props.context])
     
     //console.log(aPree);
     return (

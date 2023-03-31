@@ -44,13 +44,13 @@ const TrendyFooter = props => {
         /*if(commentscount !== props.commentscount){
             setCommentsCount(props.commentscount);
         }*/
-    },[reaction, gotReaction, props.commentscount]);
+    },[reaction, gotReaction, props.commentscount, commentscount, details.pree_id, operation, props.context.user]);
 
         //PreeReactions Functions
         const likePree = (e, pree_id) => {
             const user_id = props.context.user.id;
             if (reaction !== true){
-                axios.post("/api/like-pree",{user_id,pree_id}).then(
+                axios.post(`${process.env.REACT_APP_PROXY}/api/like-pree`,{user_id,pree_id}).then(
                     (addlike) => {
                         if (addlike.status === 200){
                             setReaction(true);
@@ -62,7 +62,7 @@ const TrendyFooter = props => {
                     }
                 )
             }else{
-                axios.put("/api/like-pree",{user_id,pree_id}).then(
+                axios.put(`${process.env.REACT_APP_PROXY}/api/like-pree`,{user_id,pree_id}).then(
                     (unlike) => {
                         if (unlike.status === 200){
                             setLikes(unlike.data.likedcount);
@@ -78,7 +78,7 @@ const TrendyFooter = props => {
         const dislikePree = (e, pree_id) => {
             const user_id = props.context.user.id;
             if (reaction !== false){
-                axios.post("/api/dislike-pree",{user_id,pree_id}).then(
+                axios.post(`${process.env.REACT_APP_PROXY}/api/dislike-pree`,{user_id,pree_id}).then(
                     (dislike) => {
                         if (dislike.status === 200){
                             setLikes(dislike.data.likedcount);
@@ -90,7 +90,7 @@ const TrendyFooter = props => {
                     }
                 )
             }else{
-                axios.put("/api/dislike-pree",{user_id,pree_id}).then(
+                axios.put(`${process.env.REACT_APP_PROXY}/api/dislike-pree`,{user_id,pree_id}).then(
                     (undislike) => {
                         if (undislike.status === 200){
                             setReaction(null);

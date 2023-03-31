@@ -6,7 +6,6 @@ import {useNavigate } from "react-router-dom";
 const AddVehicle = props => {
 
     const [responseMsg, setResponseMsg] = useState("");
-    const [modalIsOpen, setModalOpen] = useState(false);
 
     const makes = ["Acura","Audi","BMW","Buick","Cadillac","Chevrolet","Chrysler","Dodge", "Fiat","Ford", "Genesis", "GMC", "Honda", "Hyundai", "Infiniti", "Jaguar","Jeep", "Kia", "Land Rover", "Lexus", "Lincoln", "Mazda","Mercedes-Benz", "Mini", "Mitsubishi", "Nissan", "Porshe", "Ram", "Scion","Subaru", "Tesla", "Toyota", "Volkswagen", "Volvo", "Other"];
     const types = ["Bus", "Convertible", "Coupe", "Electric", "Hybrid", "Luxury","Minivan", "Pick-Up", "Sedan", "Sport", "SUV", "Truck", "Van", "Wagon"];
@@ -180,7 +179,7 @@ const AddVehicle = props => {
             formData.append('photos',photo);
         });
 
-        const result = await axios.post('/api/vehicles',formData, 
+        await axios.post('/api/vehicles',formData, 
             {
               headers: {
               'Content-Type': 'multipart/form-data'
@@ -478,7 +477,7 @@ const AddVehicle = props => {
                                 <div className="column is-half has-text-centered" key={index}>
                                     <span> {index + 1} </span>
                                     <br />
-                                    <img className="is-256x256" src={URL.createObjectURL(photo)} />
+                                    <img alt={`${index} of uploads`} className="is-256x256" src={URL.createObjectURL(photo)} />
                                 </div>
                             )}
                         </div>

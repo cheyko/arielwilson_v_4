@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import withContext from "../../../withContext";
-import ServicesAdd from "./ServicesAdd";
+//import ServicesAdd from "./ServicesAdd";
 
 const Offer = props => {
 

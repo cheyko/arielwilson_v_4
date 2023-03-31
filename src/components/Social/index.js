@@ -7,12 +7,12 @@ import $ from 'jquery';
 const Social = props => {
     
     const [sView, setView] = useState('religion');
-    const [showDropDown, setShowDropDown] = useState(false);
-    const [showMore, setShowMore] = useState(false);
+    //const [showDropDown, setShowDropDown] = useState(false);
+    //const [showMore, setShowMore] = useState(false);
 
     useEffect( () => {
         props.context.setShops();
-    },[]);
+    },[props.context]);
 
     const toggleMenu = (e) => {
         e.preventDefault();
@@ -24,92 +24,92 @@ const Social = props => {
         <div className="hero social-container">
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
-                    <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
+                    <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
                     
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <small>sections</small>
-                    </a>
+                    </span>
                 </div>
 
                 <div id="navbarBasicExample" className="navbar-menu">
                     <div className="navbar-start nav-row">
                         <div className="buttons">
-                            <a className="navbar-item button" onClick={e => { setView('religion'); setShowMore(false);}}>
+                            <span className="navbar-item button" onClick={e => { setView('religion'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-pray" aria-hidden="true"></i></span> 
                                 <span> Religion </span>
-                            </a>
+                            </span>
 
-                            <a className="navbar-item button" onClick={e => { setView('gov'); setShowMore(false);}}>
+                            <span className="navbar-item button" onClick={e => { setView('gov'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-building" aria-hidden="true"></i></span>
                                 <span> Gov </span>
-                            </a>
-                            <a className="navbar-item button" onClick={e => { setView('family'); setShowMore(false);}}>
+                            </span>
+                            <span className="navbar-item button" onClick={e => { setView('family'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-house-user" aria-hidden="true"></i></span>  
                                 <span> Family </span>
-                            </a>
-                            <a className="navbar-item button" onClick={e => { setView('education'); setShowMore(false);}}>
+                            </span>
+                            <span className="navbar-item button" onClick={e => { setView('education'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-graduation-cap" aria-hidden="true"></i></span>  
                                 <span> Education </span>
-                            </a>
-                            <a className="navbar-item button" onClick={e => { setView('justice'); setShowMore(false);}}>
+                            </span>
+                            <span className="navbar-item button" onClick={e => { setView('justice'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-gavel" aria-hidden="true"></i></span>  
                                 <span> Justice </span>
-                            </a>
-                            <a className="navbar-item button" onClick={e => { setView('finance'); setShowMore(false);}}>
+                            </span>
+                            <span className="navbar-item button" onClick={e => { setView('finance'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-donate" aria-hidden="true"></i></span>  
                                 <span> Finance </span>
-                            </a>
+                            </span>
 
-                            <a className="navbar-item button" onClick={e => { setView('health'); setShowMore(false);}}>
+                            <span className="navbar-item button" onClick={e => { setView('health'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-first-aid" aria-hidden="true"></i></span> 
                                 <span> Health </span>
-                            </a>
+                            </span>
 
-                            <a className="navbar-item button" onClick={e => { setView('cuisine'); setShowMore(false);}}>
+                            <span className="navbar-item button" onClick={e => { setView('cuisine'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-drumstick-bite" aria-hidden="true"></i></span> 
                                 <span> Cuisine </span>
-                            </a>
+                            </span>
                         </div>
                     </div>
                     <div className="navbar-start nav-row">
                         <div className="buttons">
-                            <a className="navbar-item button" onClick={e => { setView('science'); setShowMore(false);}}>
+                            <span className="navbar-item button" onClick={e => { setView('science'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-microscope" aria-hidden="true"></i></span>  
                                 <span> Science </span>
-                            </a>
+                            </span>
 
-                            <a className="navbar-item button" onClick={e => { setView('tech'); setShowMore(false);}}>
+                            <span className="navbar-item button" onClick={e => { setView('tech'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-microchip" aria-hidden="true"></i></span> 
                                 <span> Tech </span>
-                            </a>
-                            <a className="navbar-item button" onClick={e => { setView('groups'); setShowMore(false);}}>
+                            </span>
+                            <span className="navbar-item button" onClick={e => { setView('groups'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-users" aria-hidden="true"></i></span> 
                                 <span> Groups </span>
-                            </a>
-                            <a className="navbar-item button" onClick={e => { setView('agri-green'); setShowMore(false);}}>
+                            </span>
+                            <span className="navbar-item button" onClick={e => { setView('agri-green'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-tree" aria-hidden="true"></i></span> 
                                 <span> Agri-Green </span>
-                            </a>
-                            <a className="navbar-item button" onClick={e => { setView('charity'); setShowMore(false);}}>
+                            </span>
+                            <span className="navbar-item button" onClick={e => { setView('charity'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-hand-holding-heart" aria-hidden="true"></i></span>  
                                 <span> Charity </span>
-                            </a>
-                            <a className="navbar-item button" onClick={e => { setView('media'); setShowMore(false);}}>
+                            </span>
+                            <span className="navbar-item button" onClick={e => { setView('media'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-tv" aria-hidden="true"></i></span>  
                                 <span> Media </span>
-                            </a>
+                            </span>
 
-                            <a className="navbar-item button" onClick={e => { setView('culture'); setShowMore(false);}}>
+                            <span className="navbar-item button" onClick={e => { setView('culture'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-people-arrows" aria-hidden="true"></i></span> 
                                 <span> Culture </span>
-                            </a>
+                            </span>
 
-                            <a className="navbar-item button" onClick={e => { setView('industry'); setShowMore(false);}}>
+                            <span className="navbar-item button" onClick={e => { setView('industry'); /*setShowMore(false);*/}}>
                                 <span className="icon is-small"><i  className="fas fa-industry" aria-hidden="true"></i></span> 
                                 <span> Industry </span>
-                            </a>
+                            </span>
                         </div>
                     </div>
                 

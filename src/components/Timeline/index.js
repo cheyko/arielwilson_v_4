@@ -95,12 +95,15 @@ const Timeline = props => {
     useEffect( () => {
         window.addEventListener('scroll', e => handleScroll(e));
         const user_id = props.context.user ? props.context.user.id : 0;
-        axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{user_id}).then(
-            result => {
-                renderPrees(result.data);
-            }
-        );
-    },[props.context.user]);
+        if (loadNew){
+            axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{user_id}).then(
+                result => {
+                    renderPrees(result.data);
+                }
+            );
+            setLoadNew(false);
+        }
+    },[props.context.user,loadNew]);
 
     let timeline;
     if(allPrees.length > 0){
@@ -136,7 +139,7 @@ const Timeline = props => {
                 <br />
                 
                 <div className="timeline-container">
-                    <AddPree setWanted={setWanted} setModalOpen={setModalOpen} setWa setLoadNew={setLoadNew} renderPrees={renderPrees} preetype={"individual"}/>
+                    <AddPree setWanted={setWanted} setModalOpen={setModalOpen} setLoadNew={setLoadNew} renderPrees={renderPrees} preetype={"individual"}/>
                 </div>
 
                 <div id="make-pree" className="hero">
@@ -196,16 +199,11 @@ const Timeline = props => {
                     )) 
                     
                 ) : (
-                    <>
-                    {loadNew ? 
-                        <div></div>:
-                        <div className="container" style={{ padding:"3rem"}}>
-                            <span className="is-size-3" style={{color:"blue"}}>
-                                Follow Figures, Make Prees and see 'WAH REALLY A GWAAN'
-                            </span>
-                        </div>
-                        }
-                    </>
+                    <div className="container" style={{ padding:"3rem"}}>
+                        <span className="is-size-3" style={{color:"blue"}}>
+                            Follow Figures, Make Prees and see 'WAH REALLY A GWAAN'
+                        </span>
+                    </div>
                 )}
             </div>
             

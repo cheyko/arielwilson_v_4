@@ -5,7 +5,7 @@ import withContext from "../../withContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
-import ViewUser from "../ViewUser";
+//import ViewUser from "../ViewUser";
 //import {Link} from 'react-router-dom';
 import Results from "./Results";
 import Menu from "./Menu";
@@ -106,7 +106,7 @@ const Search = props => {
                             <PagesSearch setView={setView} />
                         }
                         {view === "results" &&
-                            <Results checkwg={checkwg} setCheckWG={setCheckWG} setView={setView} userlist={userlist} />
+                            <Results checkwg={checkwg} flashMsg={flashMsg} portfoliolist={portfoliolist} setCheckWG={setCheckWG} setView={setView} userlist={userlist} />
                         }
                     </div>
                     <hr />

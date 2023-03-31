@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState} from "react";
 import './index.css'
 import axios from 'axios';
 import withContext from '../../withContext';
@@ -15,7 +15,7 @@ const ViewConvoUser = props => {
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
 
-    const loadMainMedia = () => {
+    const loadMainMedia = useCallback( () => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
@@ -28,7 +28,7 @@ const ViewConvoUser = props => {
         }
         setGetMedia(true);
         return true;
-    }
+    },[user, userview_id]);
 
     useEffect( () => {
         // call function is-follower
@@ -38,7 +38,7 @@ const ViewConvoUser = props => {
         if (!gotMedia){
             loadMainMedia();
         }
-    },[gotMedia, isFollower, loadMainMedia]); 
+    },[gotMedia, isFollower, loadMainMedia, user.is_follower]); 
 
     const follow = () => {
         console.log("follow function");

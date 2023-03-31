@@ -60,7 +60,7 @@ const Reply = props => {
 
     const likeReply = (e) => {
         if (r_reaction !== true){
-            const addlike = axios.post("/api/like-reply",{user_id,reply_id}).then(
+            axios.post("/api/like-reply",{user_id,reply_id}).then(
                 (addlike) => {
                     if (addlike.status === 200){
                         setRReaction(true);
@@ -72,7 +72,7 @@ const Reply = props => {
                 }
             )
         }else{
-            const unlike = axios.put("/api/like-reply",{user_id,reply_id}).then(
+            axios.put("/api/like-reply",{user_id,reply_id}).then(
                 (unlike) => {
                     if (unlike.status === 200){
                         setRReaction(null);
@@ -87,7 +87,7 @@ const Reply = props => {
 
     const dislikeReply = (e) => {
         if (r_reaction !== false){
-            const dislike = axios.post("/api/dislike-reply",{user_id,reply_id}).then(
+            axios.post("/api/dislike-reply",{user_id,reply_id}).then(
                 (dislike) => {
                     if (dislike.status === 200){
                         setRReaction(false);
@@ -99,7 +99,7 @@ const Reply = props => {
                 }
             )
         }else{
-            const undislike = axios.put("/api/dislike-reply",{user_id,reply_id}).then(
+            axios.put("/api/dislike-reply",{user_id,reply_id}).then(
                 (undislike) => {
                     if (undislike.status === 200){
                         setRReaction(null);
@@ -114,7 +114,7 @@ const Reply = props => {
 
     const deleteReply = (e) => {
         const comment_id = comment.comment_id;
-        const remove = axios.post("/api/delete-reply", {comment_id, reply_id}).then(
+        axios.post("/api/delete-reply", {comment_id, reply_id}).then(
             (remove) => {
                 if (remove.status === 200){
                     setStatus(false);

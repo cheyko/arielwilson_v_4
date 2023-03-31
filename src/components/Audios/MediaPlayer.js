@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
-import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import MediaPlayerList from "./MediaPlayerList";
 import MediaPlayerUpload from "./MediaPlayerUpload";
@@ -33,7 +32,7 @@ const MediaPlayer = props => {
         autoplaySpeed: 1500,
     };
 
-    let navigate = useNavigate();
+    //let navigate = useNavigate();
 
     useEffect( () => {
         window.scroll(0,0);

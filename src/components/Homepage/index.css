@@ -14,7 +14,7 @@
     border: green 2px solid !important;
 }
 
-.auth-div, .features-snippet-div{
+.auth-div, .features-snippet-div, .intro-div{
     background-color: lightblue !important;
 }
 

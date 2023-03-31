@@ -16,7 +16,7 @@ const SimilarEvents = (props) => {
         centerPadding: '10px'
     };
 
-    const convertPrice = (price, currency) => {
+    /*const convertPrice = (price, currency) => {
         //console.log(price > 100);
         //console.log(currency);
         if (currency === "JMD"){
@@ -28,7 +28,7 @@ const SimilarEvents = (props) => {
         } else if (currency === "EUR"){
           return price * 180
         }    
-    }
+    }*/
 
     const { event } = props;
     //check house listing similarity inside houses.

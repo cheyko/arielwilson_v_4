@@ -129,7 +129,7 @@ const RightContainer = () => {
 
 const Homepage = props => {
     window.onstorage = event => {
-        if (event.key != 'user-context') return;
+        if (event.key !== 'user-context') return;
         if (event.oldValue === null){
           alert('Irregular sign in procedure.');
           props.context.logout(event);

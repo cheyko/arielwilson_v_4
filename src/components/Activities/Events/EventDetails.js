@@ -8,7 +8,7 @@ const EventDetails = props => {
 
     const convertDate = (val) => {
         var result;
-        if (new Date().getDate() == new Date(val).getDate() + 1){
+        if (new Date().getDate() === new Date(val).getDate() + 1){
              result = "Today at";
         }else{
             result = new Date(new Date(val).setDate(new Date(val).getDate() + 1)).toDateString();
@@ -103,6 +103,7 @@ const EventDetails = props => {
                                 </div>
                             )
                         }
+                        return false;
                     })}
                 </div>
                 <div className="speakers">
@@ -120,6 +121,7 @@ const EventDetails = props => {
                                 </div>
                             )
                         }
+                        return false;
                     })}
                 </div>
                 <div className="performers">
@@ -137,6 +139,7 @@ const EventDetails = props => {
                                 </div>
                             )
                         }
+                        return false;
                     })}
                 </div>
                 <div className="presenters">
@@ -154,6 +157,7 @@ const EventDetails = props => {
                                 </div>
                             )
                         }
+                        return false;
                     })}
                 </div>
                 <div className="general">
@@ -171,6 +175,7 @@ const EventDetails = props => {
                                 </div>
                             )
                         }
+                        return false;
                     })}
                 </div>
             </div>

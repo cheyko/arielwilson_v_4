@@ -16,7 +16,7 @@ const International = props => {
                     <small>Main</small>
                     <div className="top-story box">
                         <figure class="image is-16by9">
-                            <iframe class="has-ratio" width="640" height="360" src="https://www.youtube.com/embed/YE7VzlLtp-4" frameborder="0" allowfullscreen></iframe>
+                            <iframe title="headline" class="has-ratio" width="640" height="360" src="https://www.youtube.com/embed/YE7VzlLtp-4" frameborder="0" allowfullscreen></iframe>
                         </figure>
                     </div>
                     <div className="columns is-multiline is-mobile">

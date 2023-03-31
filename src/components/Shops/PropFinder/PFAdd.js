@@ -162,7 +162,7 @@ const PFAdd = props => {
             formData.append('photos',photo);
         });
 
-        const result = await axios.post('/api/listings',formData, 
+        await axios.post(`${process.env.REACT_APP_PROXY}/api/listings`,formData, 
             {
               headers: {
               'Content-Type': 'multipart/form-data'
@@ -374,7 +374,7 @@ const PFAdd = props => {
                                 <div className="column is-half" key={index}>
                                     <span> {index + 1} </span>
                                     <br />
-                                    <img className="is-256x256" src={URL.createObjectURL(photo)} />
+                                    <img alt={`${index} of Uploads`} className="is-256x256" src={URL.createObjectURL(photo)} />
                                 </div>
                             )}
 

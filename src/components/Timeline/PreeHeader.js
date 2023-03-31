@@ -7,12 +7,12 @@ const PreeHeader = props => {
 
     //const user = props.user ? props.user : "";
 
-    const getDateTime = () => {
+    /*const getDateTime = () => {
         const orignal = new Date();
         const isoVal = orignal.toISOString();
         const result = isoVal.split('T')[0]+" "+(isoVal.split('T')[1]).split('Z')[0];
         return result;
-    }
+    }*/
 
     function formatTime(param){
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

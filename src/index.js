@@ -7,12 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import "bulma/css/bulma.css";
 
 const root = createRoot(document.getElementById("root"));
-root.render(
-  <App />
-
-);
+root.render(<App />);
 
 reportWebVitals();
-  {/*<React.StrictMode>
+/*<React.StrictMode>
     <App />
-</React.StrictMode>*/}
+</React.StrictMode>*/

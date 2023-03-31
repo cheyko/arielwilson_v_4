@@ -12,7 +12,7 @@ const ViewGroup = props => {
 
     useEffect(() => {
         if (!groupview){
-            const result = props.context.getGroupView(group_id).then(
+            props.context.getGroupView(group_id).then(
                 (result) => {
                     if (!result){
                         console.log("there was an error when search for group details");

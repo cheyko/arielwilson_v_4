@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import withContext from "../../withContext";
 import Modal from "react-modal";
 import axios from "axios";
@@ -116,7 +116,7 @@ const Signup = props => {
             return false;
         }          
 
-        var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
         if (email.match(regex)){
             axios.post('/api/check-email', {email}).then( response => {
                 if (response.status === 200){

@@ -121,7 +121,7 @@ const MediaPlayerUpload = props => {
         checkCategory();
         setCaptionList(["testing","testing","testing"]);
 
-    },[ready, title, artistname, description, genre, mainmedia, category, playback, checkCategory,checkRadio]);
+    },[display_art, ready, title, artistname, description, genre, mainmedia, category, playback, checkCategory,checkRadio]);
 
     const saveMedia = async(e) => {
         e.preventDefault();
@@ -212,9 +212,7 @@ const MediaPlayerUpload = props => {
         setMainMedia(Array.from(e.target.files)[0]);
         
         let temp = [];
-        Array.from(e.target.files).map( (file) => {
-            temp = [...temp, file.type.split('/')[0]]
-        });
+        Array.from(e.target.files).map( (file) => temp = [...temp, file.type.split('/')[0]]);
         setMediaTypes(temp);
         setAddGenre(false);
         setCategory("");

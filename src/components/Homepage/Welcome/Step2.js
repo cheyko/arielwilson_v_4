@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Bio from '../../HelperComponents/Bio';
 import withContext from "../../../withContext";
-import axios from "axios";
 //import axios from 'axios';
 
 const Step2 = props => {

@@ -32,7 +32,7 @@ const ViewProduct = props => {
             });
         }
 
-    }, [product]);
+    }, [product, id, props.context]);
 
     /*let product = localStorage.getItem("vehicle");
     let thePics = localStorage.getItem("thePics");

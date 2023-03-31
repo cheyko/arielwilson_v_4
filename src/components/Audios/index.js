@@ -10,8 +10,8 @@ const Audios = props => {
     const [audios, renderAudios] = useState([]);
     let sessionVar = localStorage.getItem("av-section") ? localStorage.getItem("av-section") : "all";
     const [section, setSection] = useState(sessionVar);
-    const [showDropDown, setShowDropDown] = useState(false);
-    const [showMore, setShowMore] = useState(false);
+    //const [showDropDown, setShowDropDown] = useState(false);
+    //const [showMore, setShowMore] = useState(false);
 
     const showAudios = useCallback( () => {
         if (props.context.user){
@@ -35,7 +35,7 @@ const Audios = props => {
                     break;
             }
         }
-    }, [section, props.context.user]);
+    }, [section, props.context.user, props.context.prees]);
 
     useEffect( () => {
         if (section === "all" || section === "yours"){
@@ -54,43 +54,43 @@ const Audios = props => {
         <div className="hero">
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
-                    <a className="navbar-item">
+                    <span className="navbar-item">
                         <h1 className="subtitle"><b>AUDIOVISUAL</b></h1>
-                    </a>
+                    </span>
 
-                    <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
+                    <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={ e => toggleMenu(e)}>
                     
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <small>sections</small>
-                    </a>
+                    </span>
                 </div>
 
                 <div id="navbarBasicExample" className="navbar-menu">
                     <div className="navbar-start">
                         <div className="buttons">
-                            <a className={`navbar-item button ${section === "all" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("all"); localStorage.setItem("av-section","all"); toggleMenu(e)}}>
+                            <span className={`navbar-item button ${section === "all" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("all"); localStorage.setItem("av-section","all"); toggleMenu(e)}}>
                                 <i className="fas fa-play-circle" aria-hidden="true"></i> &nbsp; <strong>ALL</strong>
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${section === "yours" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("yours");  localStorage.setItem("av-section","yours"); toggleMenu(e);}}>
+                            <span className={`navbar-item button ${section === "yours" ? "is-active" : "is-not-active"}`} onClick={e => { setSection("yours");  localStorage.setItem("av-section","yours"); toggleMenu(e);}}>
                                 <i className="fas fa-user" aria-hidden="true"></i> &nbsp; <strong>YOURS</strong> 
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${section === "tagged" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("tagged"); localStorage.setItem("av-section","tagged");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${section === "tagged" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("tagged"); localStorage.setItem("av-section","tagged");toggleMenu(e);}}>
                                 <i className="fas fa-at" aria-hidden="true"></i> &nbsp; <strong>TAGGED</strong> 
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${section === "favourites" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("favourites"); localStorage.setItem("av-section","favourites"); toggleMenu(e);}}>
+                            <span className={`navbar-item button ${section === "favourites" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("favourites"); localStorage.setItem("av-section","favourites"); toggleMenu(e);}}>
                                 <i className="fab fa-gratipay" aria-hidden="true"></i> &nbsp; <strong>FAVOURITES</strong> 
-                            </a>
+                            </span>
 
-                            <a className={`navbar-item button ${section === "wg-stereo" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("wg-stereo"); localStorage.setItem("av-section","wg-stereo");toggleMenu(e);}}>
+                            <span className={`navbar-item button ${section === "wg-stereo" ? "is-active" : "is-not-active"}`} onClick={e => {setSection("wg-stereo"); localStorage.setItem("av-section","wg-stereo");toggleMenu(e);}}>
                                 <i className="fas fa-film" aria-hidden="true"></i> 
                                     &nbsp; <strong>BLUEBERRY</strong> &nbsp; 
                                 <i className="fas fa-record-vinyl" aria-hidden="true"></i>
-                            </a>
+                            </span>
                         </div>
                     </div>
                 </div>

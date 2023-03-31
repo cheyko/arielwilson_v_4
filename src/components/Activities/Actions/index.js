@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import withContext from "../../../withContext";
 import Logistics from './Logistics';
 import Polls from './Polls';

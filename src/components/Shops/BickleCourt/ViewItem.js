@@ -6,7 +6,7 @@ import ItemDetail from "./ItemDetail";
 import ItemFeatures from "./ItemFeatures";
 import SimilarItem from "./SimilarItem";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import $ from 'jquery';
 
 
@@ -31,7 +31,7 @@ const ViewItem = props => {
             });
         }
 
-    }, [item]);
+    }, [item, id, props.context]);
 
     //implement input where items are added in a list ///
     const interior = ['Overhead Airbags','Power Locks','Power Mirrors','Power Windows','Side Airbags'];
@@ -48,7 +48,7 @@ const ViewItem = props => {
     //console.log(Vehicle);
     //console.log(thePics);
     
-    let navigate = useNavigate();
+    //let navigate = useNavigate();
 
     return (
         <div className="hero">

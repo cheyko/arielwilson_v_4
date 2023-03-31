@@ -1,7 +1,7 @@
-import React , {useState} from "react";
+import React from "react";
 import withContext from "../../withContext";
 import { Link } from "react-router-dom";
-import NewConvo from "./NewConvo";
+//import NewConvo from "./NewConvo";
 
 const Convos = props => {
 
@@ -9,7 +9,7 @@ const Convos = props => {
     let {people} = props;
     let {user_id} = props;
 
-    const [modalIsOpen, setModalOpen] = useState(false);
+    //const [modalIsOpen, setModalOpen] = useState(false);
     
     const getLastMsg = (person) => {
         const result = allmessages.filter((msg) => msg.sender_id === person.user_id || msg.receiver_id === person.user_id);

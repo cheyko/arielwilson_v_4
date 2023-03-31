@@ -8,7 +8,7 @@ const ClassifiedItem = props => {
 
     const convertDate = (val) => {
         var result;
-        if (new Date().getDate() == new Date(val).getDate() + 1){
+        if (new Date().getDate() === new Date(val).getDate() + 1){
              result = "Today at";
         }else{
             result = new Date(new Date(val).setDate(new Date(val).getDate() + 1)).toDateString();

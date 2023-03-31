@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import withContext from "../../withContext";
 import Lightbox from 'react-image-lightbox';
 
