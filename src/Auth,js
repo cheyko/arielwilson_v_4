@@ -1,0 +1,14 @@
+function getAuth(){
+    let token = localStorage.getItem("token");
+    return {"authenticated" : true, "token" : test};
+}
+
+function setAuth(val){
+    localStorage.setItem("token", val);
+}
+
+function removeAuth(){
+    localStorage.setItem("token");
+}
+
+export {getAuth, setAuth, removeAuth};
