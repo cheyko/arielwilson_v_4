@@ -337,52 +337,6 @@ export default class App extends Component {
     localStorage.setItem("recent", userview_id);
   }
 
-  //get all user's messages 
-  /*getMessages = async (user_id) => {
-    //const user_id = this.state.user ? this.state.user.id : 0;
-    if (user_id){
-      const messages = await axios.post(process.env.REACT_APP_PROXY+'/api/get-messages',{user_id}).catch(
-        (messages) => {
-          if (messages.status !== 200){ 
-            console.log("no messages from request.");
-            return false;
-          }else{
-            console.log("message are loaded");
-          }
-        }
-      ); 
-        
-      if (messages.status === 200){
-        const allmessages = messages.data.messages;
-        //correspondents is a unique list of senders and recipients of messages exchanged between a user.
-        const correspondents = allmessages ? [...new Set(allmessages.map((unique)=> ((unique.sender_id === user_id) && unique.receiver_id) || unique.sender_id ))] : [];
-        //console.log(correspondents);
-        var i = 0, len = correspondents.length;
-        let viewlist = new Set();
-        //let y;
-        while (i < len) {
-          this.getUserView(correspondents[len-1-i]).then(
-                (y) => {
-                    if (!y){
-                        throw new Error("There was an error while searching for this user.");
-                    }else{
-                        //console.log(y);
-                        viewlist.add(y);
-                        //console.log(viewlist);
-                        this.setState({viewlist:[...new Set(viewlist)]});
-                    }
-                }
-            ) 
-            i++
-        }
-        this.setState({correspondents});
-        return messages.data.messages;
-      }else{
-        return [];
-      }
-    }
-  }*/
-
   getMessages = async (user_id) => {
     //const user_id = this.state.user ? this.state.user.id : 0;
     if (user_id){
@@ -405,8 +359,8 @@ export default class App extends Component {
         console.log(error);
       }); 
       this.setState({correspondents});
-      //console.log(allmessages);
-      //console.log(correspondents);
+      console.log(allmessages);
+      console.log(correspondents);
       return allmessages;
     }
   }
