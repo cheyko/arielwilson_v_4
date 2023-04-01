@@ -1,6 +1,7 @@
 function getAuth(){
     let token = localStorage.getItem("token");
-    return {"authenticated" : true, "token" : test};
+
+    return {"authenticated" : true, "token" : token};
 }
 
 function setAuth(val){
@@ -8,7 +9,9 @@ function setAuth(val){
 }
 
 function removeAuth(){
-    localStorage.setItem("token");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user-context");
+    localStorage.removeItem("aic123");
 }
 
 export {getAuth, setAuth, removeAuth};

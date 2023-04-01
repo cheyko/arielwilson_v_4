@@ -12,6 +12,7 @@ import axios from "axios";
 import Context from "./Context";
 //import jwt_decode from 'jwt-decode';
 import CryptoJS from 'crypto-js';
+import {removeAuth} from './Auth';
 
 //Components
 import Profile from "./components/Profile";
@@ -600,6 +601,7 @@ export default class App extends Component {
       let toggle = false;
       let user_id;
 
+      console.log(res.data.access_token);
       // get access level from database
       user = {
         id: res.data.user_id,
@@ -639,13 +641,11 @@ export default class App extends Component {
   };
 
   //logout
-  logout = e => {
-    //e.preventDefault();
+  logout = async(e) => {
+    const token = this.state.user.token
+    await axios.post(process.env.REACT_APP_PROXY+"/api/logout",{token});
     this.setState({user : null, ready : false, welcome: false, recent:0, prees:null});
-    localStorage.setItem("recent", JSON.stringify(this.state.recent));
-    localStorage.removeItem("user-context");
-    //localStorage.removeItem("ready");
-    localStorage.removeItem("aic123");
+    removeAuth();
     return <Navigate to="/home" replace={true}/>;
   }
 

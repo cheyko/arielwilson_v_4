@@ -8,14 +8,14 @@ import jwt
 #from flask import send_from_directory
 from lib2to3.refactor import _identity
 from werkzeug.security import check_password_hash
-from flask_jwt_extended import create_access_token, create_refresh_token
+#from flask_jwt_extended import create_access_token, create_refresh_token
 from flask import request, jsonify, Response
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile
 from api.relations import update_stats
 from flask_cors import CORS, cross_origin
 from os import walk
-from api.security import authenticate_token
+from api.security import authenticate_token, assign_token, detach_token
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 import base64 
@@ -85,8 +85,9 @@ def login():
         
         user = User.query.filter_by(email=email).first()
         if user is not None and check_password_hash(user.password,password):           
-            access_token = create_access_token(identity=email)
-            refresh_token = create_refresh_token(identity=email)
+            #access_token = create_access_token(identity=email)
+            #refresh_token = create_refresh_token(identity=email)
+            tokens = assign_token(user.user_id)
             profile_record = Profile.query.get(user.user_id)
             if profile_record is None:
                 has_profile = False
@@ -101,8 +102,7 @@ def login():
                 'lastname' : user.lastname,
                 'username' : user.username,
                 'phonenumber' : user.phonenumber,
-                'access_token': access_token,
-                'refresh_token': refresh_token,
+                'access_token' : tokens.token_alpha +"-"+tokens.token_omega, 
                 'access_type': user.accessType,
                 'has_profile' : has_profile,
                 'gender' : user.gender,
@@ -111,7 +111,16 @@ def login():
         return jsonify({"msg": "Incorrect email or password"}), 400
     else:
         return jsonify({"msg": "There was an error"}), 400
+
+@app.route('/api/logout', methods=['GET','POST'])
+def logout():
+    if request.method == 'POST':
+        token = request.json.get('token', None)
+        detach_token(token)
+        return jsonify({"msg": "token detached successfully"}), 200
+    return jsonify({"msg": "There was an error"}), 400
     
+
 def str2bool(v):
   return v.lower() == "true" 
 

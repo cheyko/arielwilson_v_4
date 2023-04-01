@@ -4,6 +4,22 @@ from api.sqlal_mutable_array import MutableList
 from sqlalchemy.dialects.postgresql import ARRAY
 from datetime import datetime
 
+class TokenAlpha(db.Model):
+    __tablename__ = 'wg_tokens_alpha'
+
+    token_id = db.Column(db.Integer, db.Sequence('wg_tokens_alpha_token_id_seq'), primary_key=True)
+    token_val = db.Column(db.String(7), unique=True)
+    is_assigned = db.Column(db.Boolean, default=False)
+    assigned_to = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'))
+
+class TokenOmega(db.Model):
+    __tablename__ = 'wg_tokens_omega'
+
+    token_id = db.Column(db.Integer, db.Sequence('wg_tokens_omega_token_id_seq'), primary_key=True)
+    token_val = db.Column(db.String(7), unique=True)
+    is_assigned = db.Column(db.Boolean, default=False)
+    assigned_to = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'))
+     
 class Accesses(db.Model):
     __tablename__ = 'wg_access_types'
 
