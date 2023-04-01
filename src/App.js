@@ -7,12 +7,12 @@ import 'react-tabs/style/react-tabs.css';
 
 //Helpers
 import React, { Component } from "react";
-import { Routes, Route, Navigate, BrowserRouter as Router} from "react-router-dom";
+import { Routes, Route, BrowserRouter as Router} from "react-router-dom";
 import axios from "axios";
 import Context from "./Context";
 //import jwt_decode from 'jwt-decode';
 import CryptoJS from 'crypto-js';
-import {removeAuth} from './Auth';
+//import {removeAuth} from './Auth';
 
 //Components
 import Profile from "./components/Profile";
@@ -104,13 +104,11 @@ export default class App extends Component {
     console.log(time);
 
     let user = localStorage.getItem("user-context");
-    //let ready = localStorage.getItem("ready");
     let welcome = localStorage.getItem("aic123");
     let userlist = localStorage.getItem("userlist");
     let recent = localStorage.getItem("recent");
     //let menuChoice = JSON.parse(localStorage.getItem("choice"));
     user = user ? JSON.parse(user) : null;
-    //ready = ready ? JSON.parse(ready) : null;
     welcome = welcome ? JSON.parse(welcome) : null;
     this.setMenuWidth();
     window.addEventListener("resize", this.setMenuWidth);
@@ -580,7 +578,6 @@ export default class App extends Component {
     const lkjhg1 = CryptoJS.AES.encrypt(email, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
     const lkjhg2 = CryptoJS.AES.encrypt(password, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
 
-    console.log(lkjhg1);
     const formData = new FormData();
     formData.append('lkjhg1',lkjhg1);
     formData.append('lkjhg2',lkjhg2);
@@ -601,7 +598,6 @@ export default class App extends Component {
       let toggle = false;
       let user_id;
 
-      console.log(res.data.access_token);
       // get access level from database
       user = {
         id: res.data.user_id,
@@ -643,10 +639,12 @@ export default class App extends Component {
   //logout
   logout = async(e) => {
     const token = this.state.user.token
-    await axios.post(process.env.REACT_APP_PROXY+"/api/logout",{token});
+    const done = await axios.post(process.env.REACT_APP_PROXY+"/api/logout",{token});
     this.setState({user : null, ready : false, welcome: false, recent:0, prees:null});
-    removeAuth();
-    return <Navigate to="/home" replace={true}/>;
+    localStorage.removeItem("user-context");
+    localStorage.removeItem("aic123");
+    console.log(done.status);
+    return done.status === 200;
   }
 
   toggleMenu = e => {

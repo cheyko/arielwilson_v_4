@@ -52,8 +52,11 @@ const UserCog = props => {
     }
 
     const logout = e => {
-        props.context.logout(e);
-        navigate("/home");
+        props.context.logout(e).then((res) => {
+            if (res === true){
+                navigate("/home");
+            }
+        });
     }
 
     return(

@@ -35,6 +35,8 @@ def assign_token(user_id):
     token_omega.is_assigned = True
     token_omega.assigned_to = user_id
     db.session.commit()
+    print(token_alpha)
+    print(token_omega)
     return {"token_alpha":token_alpha.token_val, "token_omega":token_omega.token_val}
 
 def confirm_token(token):

@@ -51,11 +51,13 @@ const PollItem = props => {
     }
 
     const checkPoll = useCallback(() => {
-        let poll_end = new Date();
+        let poll_end = new Date(poll.end_date);
         poll_end.setDate(new Date(poll.end_date).getDate() + 1);
         var time_vals = poll.end_time.split(":");
         poll_end.setHours(time_vals[0],time_vals[1],time_vals[2]);
         var now = new Date();
+        console.log(poll_end);
+        console.log(now);
         return (poll_end.getTime() > now.getTime());
     },[poll.end_date, poll.end_time]);
 

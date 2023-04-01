@@ -88,6 +88,7 @@ def login():
             #access_token = create_access_token(identity=email)
             #refresh_token = create_refresh_token(identity=email)
             tokens = assign_token(user.user_id)
+            print(tokens)
             profile_record = Profile.query.get(user.user_id)
             if profile_record is None:
                 has_profile = False
@@ -102,7 +103,7 @@ def login():
                 'lastname' : user.lastname,
                 'username' : user.username,
                 'phonenumber' : user.phonenumber,
-                'access_token' : tokens.token_alpha +"-"+tokens.token_omega, 
+                'access_token' : tokens['token_alpha'] +"-"+tokens['token_omega'], 
                 'access_type': user.accessType,
                 'has_profile' : has_profile,
                 'gender' : user.gender,
