@@ -72,7 +72,7 @@ const ViewConvoUser = props => {
         <>
             <div className="card view-user-card">
                 <div className="card-content" style={{padding:"0.5rem"}}>
-                    <Link className="user-item" onClick={e => {localStorage.setItem("msg-view","message");props.setTabs("message");}} to={`/messages/user/${user.username}`}>
+                    <Link className="user-item" onClick={e => {localStorage.setItem("msg-view","message");props.setTabs("message");}} to={`/message/user/${user.username}`}>
                         <div className="media">
                             <div className="media-left">
                                 <figure className="image is-96x96">
