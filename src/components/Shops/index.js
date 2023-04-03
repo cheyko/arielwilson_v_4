@@ -31,13 +31,17 @@ const Shops = props => {
     const [worksiteMenu, setWSMenu] = useState(false);
     const [propfinderMenu, setPFMenu] = useState(false);
     const [wovMenu, setWOVMenu] = useState(false);
+    const [shops, shopsSet] = useState(false);
 
     //const [showDropDown, setShowDropDown] = useState(false);
     //const [showMore, setShowMore] = useState(false);
 
     useEffect( () => {
         window.scrollTo(0, 0);
-        props.context.setShops();
+        if (!shops){
+            props.context.setShops();
+            shopsSet(true);
+        }
         
         if (start){
             $(".ad-bar-container").animate({
@@ -59,7 +63,7 @@ const Shops = props => {
         } 
 
         //set current to local storage.    
-    },[start,shopView, subview, boxWidth, props.context]);
+    },[start,shopView, subview, boxWidth, props.context, shops]);
 
     const toggleAds = (e) => {
         e.preventDefault();
