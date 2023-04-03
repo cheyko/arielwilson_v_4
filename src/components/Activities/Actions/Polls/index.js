@@ -10,7 +10,7 @@ const Polls = props => {
 
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user ? props.context.user.id : 0;
+    const token = props.context.token ? props.context.token : 0;
     const [polls, setPolls] = useState([]);
     const [gotPolls, setGotPolls] = useState(false);
     const [pageCount, setPageCount] = useState(0);
@@ -45,10 +45,10 @@ const Polls = props => {
         }
         if (mapping && mapping !== "All"){
             if (mapping === "Created"){
-                result = result.filter(poll => poll.did_vote === true);
+                result = result.filter(poll => poll.lister.is_user === true);
             }
             else{
-                result = result.filter(poll => poll.lister.user_id === user_id);
+                result = result.filter(poll => poll.did_vote === true);
             }
 
         }
@@ -56,23 +56,25 @@ const Polls = props => {
         setPolls(result);
         setOffset(0);
         setFilter(false);
-    },[fullList, searchval,mapping, status, category, user_id]);
+    },[fullList, searchval,mapping, status, category]);
 
     useEffect(() => {
         if (gotPolls === false){
-            axios.post(`${process.env.REACT_APP_PROXY}/api/get-polls`,{user_id}).then(res => {
+            setFullList([]);
+            setPolls([]);
+            axios.post(`${process.env.REACT_APP_PROXY}/api/get-polls`,{token}).then(res => {
                 if (res.status === 200){
                     setFullList(res.data);
                     setPolls(res.data);
                     setPageCount( Math.ceil(res.data.length / perPage));
-                    setGotPolls(true);
                 }
             });
+            setGotPolls(true);
         }
         if(filter){
             filterList();
         }
-    }, [gotPolls, filter, filterList, polls, user_id]);
+    }, [gotPolls, filter, filterList, token]);
 
     slice = polls.slice(offset, offset + perPage); 
 
@@ -82,7 +84,7 @@ const Polls = props => {
                 <div className="panel-heading">
                     Polls
                     <div className="is-pulled-right"><button onClick={e => setShowFilter(!showFilter)} className="button">Filter</button></div>
-                    <div className="is-pulled-right">{props.context.user ? <AddPoll setGotPolls={setGotPolls}/> : <button onClick={e => {setWanted("to create new Polls.");setModalOpen(true)}} className="button">Create</button> }</div>
+                    <div className="is-pulled-right">{props.context.token ? <AddPoll setGotPolls={setGotPolls}/> : <button onClick={e => {setWanted("to create new Polls.");setModalOpen(true)}} className="button">Create</button> }</div>
                     <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
                 </div>
                 {showFilter && 

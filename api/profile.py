@@ -11,11 +11,11 @@ from werkzeug.security import check_password_hash
 #from flask_jwt_extended import create_access_token, create_refresh_token
 from flask import request, jsonify, Response
 from sqlalchemy import or_ , and_
-from api.models import db, User, Accesses, Profile
+from api.models import db, User, Accesses, Profile, TokenAlpha, TokenOmega
 from api.relations import update_stats
 from flask_cors import CORS, cross_origin
 from os import walk
-from api.security import authenticate_token, assign_token, detach_token
+from api.security import authenticate_token, assign_token, detach_token, confirm_token
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 import base64 
@@ -59,12 +59,13 @@ def signup():
         db.session.add(newuser)
         db.session.flush()
         db.session.commit()
+        token = assign_token(newuser.user_id)
 
         #### send authentication email to new user ####
         #welcomeEmail = MIMEText(welcomeEmailTemp.format(firstname), "html")
         #subject = "Welcome Message from thaKKB.com"
         #sendEmail(email,subject,welcomeEmail)
-    return jsonify({"msg": "New User added","user_id":newuser.user_id}), 200
+    return jsonify({"msg": "New User added","token":token}), 200
 
 #api method for Login
 #@cross_origin()
@@ -85,10 +86,7 @@ def login():
         
         user = User.query.filter_by(email=email).first()
         if user is not None and check_password_hash(user.password,password):           
-            #access_token = create_access_token(identity=email)
-            #refresh_token = create_refresh_token(identity=email)
             tokens = assign_token(user.user_id)
-            print(tokens)
             profile_record = Profile.query.get(user.user_id)
             if profile_record is None:
                 has_profile = False
@@ -98,29 +96,39 @@ def login():
                 location = profile_record.location
                 update_stats(user.user_id)
             return {
-                'user_id' : user.user_id,
-                'firstname' : user.firstname,
-                'lastname' : user.lastname,
+                'id':user.user_id,
                 'username' : user.username,
-                'phonenumber' : user.phonenumber,
-                'access_token' : tokens['token_alpha'] +"-"+tokens['token_omega'], 
-                'access_type': user.accessType,
+                'access_token' : tokens['token_alpha']+""+tokens['token_omega'], 
                 'has_profile' : has_profile,
-                'gender' : user.gender,
-                'location': location
+                'gender': user.gender,
+                'location' : location,
             }
         return jsonify({"msg": "Incorrect email or password"}), 400
     else:
         return jsonify({"msg": "There was an error"}), 400
 
+"""@app.route('/api/get-details', methods=['GET','POST'])
+def get_details():
+    if request.method == 'POST':
+        tokens = request.json.get('token', None).split('-')
+        user = db.session.query(User, TokenAlpha, TokenOmega).join(TokenAlpha, TokenAlpha.assigned_to == User.user_id).join(TokenOmega, TokenOmega.assigned_to == User.user_id).filter(and_(TokenAlpha.token_val == tokens[0], TokenOmega.token_val == tokens[1])).first()
+        print(user)
+        if user is not None:
+            return {
+                'username' : user.User.username,
+                'gender' : user.User.gender
+            }
+        else:
+            return jsonify({"msg": "invalid token"}), 400
+    return jsonify({"msg": "There was an error"}), 400    
+"""
 @app.route('/api/logout', methods=['GET','POST'])
 def logout():
     if request.method == 'POST':
         token = request.json.get('token', None)
         detach_token(token)
         return jsonify({"msg": "token detached successfully"}), 200
-    return jsonify({"msg": "There was an error"}), 400
-    
+    return jsonify({"msg": "There was an error"}), 400    
 
 def str2bool(v):
   return v.lower() == "true" 
@@ -142,7 +150,6 @@ def check_uname():
 def check_email():
     if request.method == 'POST':
         email = request.json.get('email', None)
-        print(email)
         result = User.query.filter_by(email=email).first()
         if result is None:
             return jsonify({"msg":"email is available registered"}), 200
@@ -154,7 +161,8 @@ def check_email():
 @app.route('/api/has-uname', methods=['POST'])
 def has_uname():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
+        token = request.json.get('user_id', None)
+        user_id = confirm_token(token)
         #print(user_id)
         user_record = User.query.get(user_id)
         #print(user_record)
@@ -169,7 +177,8 @@ def has_uname():
 @app.route('/api/save-uname', methods=['PUT'])
 def save_uname():
     if request.method == 'PUT':
-        user_id = request.json.get('user_id', None)
+        token = request.json.get('user_id', None)
+        user_id = confirm_token(token)
         uname = request.json.get('uname', None)
         user_record = User.query.get(user_id) 
         user_record.username = uname
@@ -181,12 +190,28 @@ def save_uname():
 @app.route('/api/get-main-media', methods=['GET','POST'])
 def get_media():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
         profile_record = Profile.query.get(user_id)
         if profile_record is not None:
             return{
                 'has_cv' : profile_record.has_cv,
-                'has_dp' : profile_record.has_dp
+                'has_dp' : profile_record.has_dp,
+                'user_id': user_id
+            }, 200
+        return jsonify({"msg":"User Profile not found."}), 205
+    return jsonify({"msg":"Request not accepted."}), 400
+
+@app.route('/api/get-user-media', methods=['GET','POST'])
+def get_user_media():
+    if request.method == 'POST':
+        username = request.json.get('uname', None)
+        profile_record = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(username == User.username).first()
+        if profile_record is not None:
+            return{
+                'has_cv' : profile_record.Profile.has_cv,
+                'has_dp' : profile_record.Profile.has_dp,
+                'user_id': profile_record.User.user_id
             }, 200
         return jsonify({"msg":"User Profile not found."}), 205
     return jsonify({"msg":"Request not accepted."}), 400
@@ -196,7 +221,8 @@ def get_media():
 def main_media():
     if request.method == 'POST':
         result = request.form
-        user_id = result["user_id"]
+        token = result["token"]
+        user_id = confirm_token(token)
         has_cover = result["has_cover"]
         has_display = result["has_display"]
         profile_record = Profile.query.get(user_id) 
@@ -210,7 +236,8 @@ def main_media():
             display_folder = app.config['UPLOAD_FOLDER'] + "bio/display"
             #display_folder = "../public/images/bio/display"
             image_upload = request.files['display']
-            image_upload.save(os.path.join(display_folder, user_id)) 
+            file_name = user_id + ".jpeg"
+            image_upload.save(os.path.join(display_folder, file_name)) 
         if has_cover == 'true':
             profile_record.has_cv = True
             cover_folder = app.config['UPLOAD_FOLDER'] + "bio/cover"
@@ -226,45 +253,52 @@ def main_media():
 @app.route('/api/bio', methods=['GET','POST','PUT'])
 def bio():
     if request.method == 'POST':
-        print('POST')
         #change this to just user_id
-        user_id = request.json.get('user_id', None)
-        dob = request.json.get('dob', None)
-        tagline = request.json.get('tagline', None)
-        description = request.json.get('description', None)
-        location = request.json.get('location', None)
-        newProfile = Profile(user_id=user_id, dob=dob, tagline=tagline, description=description, location=location)
-        db.session.add(newProfile)
-        db.session.commit()
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
+        if(user_id != 0):
+            #user_id = request.json.get('user_id', None)
+            dob = request.json.get('dob', None)
+            tagline = request.json.get('tagline', None)
+            description = request.json.get('description', None)
+            location = request.json.get('location', None)
+            newProfile = Profile(user_id=user_id, dob=dob, tagline=tagline, description=description, location=location)
+            db.session.add(newProfile)
+            db.session.commit()
         return jsonify({"msg":"Bio informaiton added."}), 200
     elif request.method == 'PUT':
         print('PUT')
-        user_id = request.json.get('user_id', None)
-        uname = request.json.get('uname', None)
-        dob = request.json.get('dob', None)
-        tagline = request.json.get('tagline', None)
-        description = request.json.get('description', None)
-        location = request.json.get('location', None)
-        user_record = User.query.get(user_id)
-        check = User.query.filter_by(username=uname).first()
-        if check is None or user_record.username == uname:
-            user_record.username = uname
-        else:
-            return {"msg":"Username not available"}, 206
-        profile_record = Profile.query.get(user_id) 
-        profile_record.dob = dob
-        profile_record.tagline = tagline
-        profile_record.description = description
-        profile_record.location = location
-        db.session.commit()
-        return jsonify({"msg":"Bio informaiton updated."}), 200
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
+        if(user_id != 0):
+            #user_id = request.json.get('user_id', None)
+            uname = request.json.get('uname', None)
+            dob = request.json.get('dob', None)
+            tagline = request.json.get('tagline', None)
+            description = request.json.get('description', None)
+            location = request.json.get('location', None)
+            user_record = User.query.get(user_id)
+            check = User.query.filter_by(username=uname).first()
+            if check is None or user_record.username == uname:
+                user_record.username = uname
+            else:
+                return {"msg":"Username not available"}, 206
+            profile_record = Profile.query.get(user_id) 
+            profile_record.dob = dob
+            profile_record.tagline = tagline
+            profile_record.description = description
+            profile_record.location = location
+            db.session.commit()
+            return jsonify({"msg":"Bio informaiton updated."}), 200
+        return jsonify({"msg":"Incorrect Token"}), 201
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 #api method to load profile bio
 @app.route('/api/get-bio', methods=['POST'])
 def get_bio():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
+        token = request.json.get('user_id', None)
+        user_id = confirm_token(token)
         #reduce to one query
         user_record = User.query.get(user_id)
         profile_record = Profile.query.get(user_id) 
@@ -279,3 +313,17 @@ def get_bio():
             }, 200
         return jsonify({"msg":"Profile not found"}), 205
     return jsonify({"msg": "There was an error, method not executed"}), 400
+
+#api method for getting full profile details --> (change to user-view in future)
+@app.route('/api/profile-details', methods=['POST'])
+def profile_details():
+    if request.method == 'POST':
+        uname = request.json.get('uname', None)
+        #print(user_id)
+        if uname != '':
+            user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.username == uname).first()  
+            myUserObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "access-type":user_details.User.accessType, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "description":user_details.Profile.description, "location":user_details.Profile.location, "followers":user_details.Profile.followers, "figures":user_details.Profile.figures, "fraternity":user_details.Profile.fraternity,"groups":user_details.Profile.groups, "has_dp":user_details.Profile.has_dp, "has_cv":user_details.Profile.has_cv}
+            return myUserObj , 200
+        else:
+            return jsonify({"msg":"User does not have ID of Zero (0)."}), 205
+    return jsonify({"msg":"There was an error somewhere."}), 400

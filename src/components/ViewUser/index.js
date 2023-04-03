@@ -8,9 +8,9 @@ import EncourageModal from "../HelperComponents/EncourageModal";
 const ViewUser = props => {
 
     const {user} = props;
-    const userview_id = user.user_id;
+    const uname = user.username;
 
-    const user_id = props.context.user ? props.context.user.id : 0;
+    const token = props.context.token ? props.context.token : 0;
     
     const [isFollower, setIsFollower] = useState(null);
     const [gotMedia, setGetMedia] = useState(false);
@@ -25,13 +25,13 @@ const ViewUser = props => {
         //const user_id = userview_id;
 
         if (user.has_dp === true){
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + userview_id);
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user.user_id + ".jpeg");
         }else{
             setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
         }
         setGetMedia(true);
         return true;
-    },[user, userview_id]);
+    },[user]);
 
     useEffect( () => {
         // call function is-follower
@@ -44,9 +44,8 @@ const ViewUser = props => {
     },[gotMedia, isFollower, loadMainMedia, user.is_follower]); 
 
     const follow = () => {
-        console.log("follow function");
-        if (props.context.user){
-            axios.post('/api/add-follower',{user_id,userview_id}).then(
+        if (token !== 0){
+            axios.post('/api/add-follower',{token,uname}).then(
                 (dofollow) => {
                     if (dofollow.status !== 200){
                         console.log('User was followed successful.');
@@ -63,8 +62,7 @@ const ViewUser = props => {
     }
 
     const unfollow = () => {
-        console.log("unfollow function");
-        axios.put('/api/un-follow',{user_id,userview_id}).then(
+        axios.put('/api/un-follow',{token,uname}).then(
             (unfollow) => {
                 if (unfollow.status !== 200){
                     console.log('User was unfollowed succesfully.');
@@ -84,7 +82,7 @@ const ViewUser = props => {
             <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
             <div className="card view-user-card">
                 <div className="card-content" style={{padding:"0.5rem"}}>
-                    <Link className="user-item" to={`/view-user-profile/${user.user_id}`}>
+                    <Link className="user-item" to={`/user/${user.username}`}>
                         <div className="media">
                             <div className="media-left">
                                 <figure className="image is-64x64">

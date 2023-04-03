@@ -10,7 +10,8 @@ import Encourage from "../../../HelperComponents/Encourage";
 const Requests = props => {
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user ? props.context.user.id : 0;
+    //const user_id = props.context.user ? props.context.user.id : 0;
+    const token = props.context.token ? props.context.token : 0;
     const [requests, setRequests] = useState([]);
     const [gotRequest, setGotRequest] = useState(false);
     const [pageCount, setPageCount] = useState(0);
@@ -34,7 +35,7 @@ const Requests = props => {
             result = result.filter(request => request.question.replace(/ /g,'').toLowerCase().includes(searchval.replace(/ /g,'').toLowerCase()));         
         }
         if (status && status !== "All") {
-            result = result.filter(task => task.status === status);
+            result = result.filter(request => request.status === status);
         }        
         setRequests(result);
         setOffset(0);
@@ -42,22 +43,24 @@ const Requests = props => {
     },[fullList, searchval, status]);
 
     useEffect(() => {
-        if (user_id !== 0){
+        if (token !== 0){
             if (gotRequest === false){
-                axios.post(`${process.env.REACT_APP_PROXY}/api/get-requests`,{user_id}).then(res => {
+                setFullList([]);
+                setRequests([]);
+                axios.post(`${process.env.REACT_APP_PROXY}/api/get-requests`,{token}).then(res => {
                     if (res.status === 200){
                         setFullList(res.data);
                         setRequests(res.data);
                         setPageCount( Math.ceil(res.data.length / perPage));
-                        setGotRequest(true);
                     }
                 });
+                setGotRequest(true);
             }
             if(filter){
                 filterList();
             }
         }
-    }, [gotRequest, filter, user_id, filterList, requests]);
+    }, [gotRequest, filter, token, filterList, requests]);
 
     slice = requests.slice(offset, offset + perPage); 
     return (
@@ -66,15 +69,15 @@ const Requests = props => {
                 <div className="panel-heading">
                     Request
                     <div className="is-pulled-right"><button onClick={e => setShowFilter(!showFilter)} className="button">Filter</button></div>
-                    <div className="is-pulled-right">{props.context.user ? <AddRequest /> : <button onClick={e => setModalOpen(true)} className="button">Create</button> }</div>
+                    <div className="is-pulled-right">{props.context.token ? <AddRequest setGotRequest={setGotRequest}/> : <button onClick={e => setModalOpen(true)} className="button">Create</button> }</div>
                     <EncourageModal wanted={"to create new Request."}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
                 </div>
                 {showFilter && 
                     <>
                     <p className="panel-tabs">
                         <span onClick={e => {setStatus('All');setFilter(true);}} className={`${status === "All" ? "is-active" : ""}`}>All</span>
-                        <span href="#" onClick={e => {setStatus('Sent');setFilter(true);}} className={`${status === "Sent" ? "is-active" : ""}`}>Un-Answered</span>
-                        <span href="#" onClick={e => {setStatus('Responded');setFilter(true);}} className={`${status === "Responded" ? "is-active" : ""}`}>Answered</span>
+                        <span href="#" onClick={e => {setStatus('Sent');setFilter(true);}} className={`${status === "Sent" ? "is-active" : ""}`}>Sent</span>
+                        <span href="#" onClick={e => {setStatus('Responded');setFilter(true);}} className={`${status === "Responded" ? "is-active" : ""}`}>Responded</span>
                     </p>
                     <div className="panel-block">
                         <p className="control has-icons-left">

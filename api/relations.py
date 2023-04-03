@@ -6,6 +6,7 @@ import os
 from flask import request, jsonify
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree, Approvals, Media, Quote, Follower, Comments, CommentsApprovals, CommentsReplies, Group ,GroupRelations
+from api.security import confirm_token
 
 ###############----relations.py-----##############
 @app.route('/api/relations/')
@@ -140,18 +141,24 @@ def check_follower(figure_id, follower_id):
 @app.route('/api/is-follower', methods=['POST'])
 def is_follower():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
-        userview_id = request.json.get('userview_id', None)
-        return {"is_follower" : check_follower(user_id,userview_id)}, 200 
+        token = request.json.get('token', None)
+        uname = request.json.get('uname', None)
+        user_id = confirm_token(token)
+        userview_id = User.query.filter_by(username=uname).first().user_id
+        #user_id = request.json.get('user_id', None)
+        #userview_id = request.json.get('userview_id', None)
+        return {"is_follower" : check_follower(userview_id,user_id)}, 200 
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 ###### not needed, just reverse the parameters of is-follower to get is-following
 @app.route('/api/is-figure', methods=['POST'])
-def is_following():
+def is_figure():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
-        userview_id = request.json.get('userview_id', None)
-        return {"is_figure" : check_follower(userview_id,user_id)}, 200 
+        token = request.json.get('token', None)
+        uname = request.json.get('uname', None)
+        user_id = confirm_token(token)
+        userview_id = User.query.filter_by(username=uname).first().user_id
+        return {"is_figure" : check_follower(user_id,userview_id)}, 200 
     return jsonify({"msg":"There was an error somewhere."}), 400
    
 #api method to see check if this is a match and match reverse (is-linkage) in Follower Table
@@ -160,8 +167,12 @@ def is_following():
 @app.route('/api/add-follower', methods=['POST'])
 def add_follower():
     if request.method == 'POST':
-        follower_id = request.json.get('user_id', None)
-        figure_id = request.json.get('userview_id', None)
+        token = request.json.get('token', None)
+        uname = request.json.get('uname', None)
+        follower_id = confirm_token(token)
+        figure_id = User.query.filter_by(username=uname).first().user_id
+        #follower_id = request.json.get('user_id', None)
+        #figure_id = request.json.get('userview_id', None)
         wasRecorded = was_recorded(figure_id,follower_id)
         print(wasRecorded)
         if wasRecorded == True:
@@ -170,15 +181,15 @@ def add_follower():
         else:
             newFollow = Follower(figure_id=figure_id,follower_id=follower_id,is_following=True)
             db.session.add(newFollow)
-
         figure_profile = Profile.query.get(figure_id)
         followercount = figure_profile.followers + 1
         figure_profile.followers = followercount
         follower_profile = Profile.query.get(follower_id)
-        figurecount = follower_profile.following + 1
-        follower_profile.following = figurecount
+        figurecount = follower_profile.figures + 1
+        follower_profile.figures = figurecount
 
         db.session.commit()
+
         return jsonify({"msg":"Follower added.","is_follower":True}) , 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
@@ -186,8 +197,12 @@ def add_follower():
 @app.route('/api/un-follow', methods=['PUT'])
 def un_follow():
     if request.method == 'PUT':
-        follower_id = request.json.get('user_id', None)
-        figure_id = request.json.get('userview_id', None)
+        #follower_id = request.json.get('user_id', None)
+        #figure_id = request.json.get('userview_id', None)
+        token = request.json.get('token', None)
+        uname = request.json.get('uname', None)
+        follower_id = confirm_token(token)
+        figure_id = User.query.filter_by(username=uname).first().user_id
         record = Follower.query.filter_by(figure_id=figure_id,follower_id=follower_id).first()
         record.is_following = False
 
@@ -195,8 +210,8 @@ def un_follow():
         followercount = figure_profile.followers - 1
         figure_profile.followers = followercount
         follower_profile = Profile.query.get(follower_id)
-        figurecount = follower_profile.following - 1
-        follower_profile.following = figurecount
+        figurecount = follower_profile.figures - 1
+        follower_profile.figures = figurecount
 
         db.session.commit()
         return jsonify({"msg":"User unfollowed succesfully.","is_follower":False}) , 200

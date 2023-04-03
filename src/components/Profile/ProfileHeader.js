@@ -11,7 +11,6 @@ import { faVideo } from '@fortawesome/free-solid-svg-icons';
 const ProfileHeader = props => {
 
     const action = props.action ? props.action : "";
-
     const user = props.user ? props.user : "";
 
     const [openImage, setOpen] = useState(false);
@@ -131,7 +130,7 @@ const ProfileHeader = props => {
                     </div>
                 }
                 <div className="main-media-image has-text-centered">  
-                    {props.responseMsg !== "" && <span className="tag has-text-link">{props.responseMsg}</span>}
+                    {props.responseMsg && (props.responseMsg !== "") && <span className="tag has-text-link">{props.responseMsg}</span>}
 
                     <figure className="display-figure">
                         {action === 'read-write' && props.showEdit &&

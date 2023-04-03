@@ -3,14 +3,13 @@ import time
 import json
 import os
 
-from lib2to3.refactor import _identity
-from werkzeug.security import check_password_hash
-from flask_jwt_extended import create_access_token, create_refresh_token
+#from lib2to3.refactor import _identity
 from flask import request, jsonify
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree, Approvals, Media, Quote, Exclusive, ExclusiveSale, Subscriber, Subscription, GroupPree, Group
 from api.specials import Preepedia, Biography, Product, Listing, Vehicle, Service, Item, Event, Classified, Volunteer, Poll, Vote
 from api.relations import check_follower
+from api.security import confirm_token
 
 ###############-----actions.py----##############
 
@@ -105,82 +104,93 @@ def get_pree():
 @app.route('/api/see-the-pree', methods=['GET','POST'])
 def see_the_pree():
     if request.method == 'POST':         
-        user_id = request.json.get('user_id', None)
-        results = Pree.query.filter(Pree.is_visible == True).order_by(Pree.pree_id.desc()).all()
-        prees = []
-        for pree in results:
-            if(check_follower(pree.user_id, user_id) or pree.user_id == user_id):
-                #reduce to a join query
-                theUser = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == pree.user_id).first()
-                userObj = {"user_id":theUser.User.user_id, "username":theUser.User.username,"access-type":theUser.User.accessType, "has_dp":theUser.Profile.has_dp}
-                if pree.is_media and pree.pree_type == 'individual':
-                    theMedia = Media.query.get(pree.pree_id)
-                    attachment = {"caption":theMedia.caption, "no_of_media":theMedia.no_of_media, "has_image":theMedia.has_image, "has_audio":theMedia.has_audio, "has_video":theMedia.has_video}
-                elif pree.is_media and pree.pree_type == 'exclusive':
-                    theExclusive = Exclusive.query.filter_by(pree_id = pree.pree_id).first()
-                    attachment = {"exclusive_id":theExclusive.exclusive_id,"title":theExclusive.title, "artistname":theExclusive.artistname, "genre":theExclusive.genre, "captionlist":theExclusive.captionlist, "description":theExclusive.description, "playback":theExclusive.playback, "unlock_requirement": theExclusive.unlock_requirement, "is_locked":theExclusive.is_locked, "is_downloadable":theExclusive.is_downloadable, "unlock_fee":theExclusive.unlock_fee, "no_of_media":theExclusive.no_of_media, "mediatypes":theExclusive.mediatypes , "influence":theExclusive.influence,"stereo":theExclusive.stereo, "md" : theExclusive.md,"magazine":theExclusive.magazine, "views":theExclusive.views, "has_cover_art":theExclusive.has_cover_art }
-                elif pree.is_media and pree.pree_type == 'product':
-                    product = Product.query.filter_by(pree_id = pree.pree_id).first()
-                    #reduce return object values
-                    attachment = {"product_id":product.product_id,"lister":product.lister,"brand":product.brand,"name":product.name,"category":product.category,"condition":product.condition,"typeOf":product.typeOf,"location":product.location,"stock":product.stock,"price":product.price,"currency":product.currency, "year": product.year, "colors": product.colors, "package": product.package, "description": product.description, "numOfPics":product.numOfPics}
-                elif pree.is_media and pree.pree_type == 'listing':
-                    listing = Listing.query.filter_by(pree_id = pree.pree_id).first()
-                    #reduce return object values
-                    attachment = {"listing_id":listing.listing_id,"lister":listing.lister,"title":listing.title,"category":listing.category,"typeOf":listing.typeOf,"address":listing.address,"price":listing.price,"currency":listing.currency,"beds":listing.beds, "baths": listing.baths, "insideSqft": listing.insideSqft, "lotSqft": listing.lotSqft, "parking": listing.parking, "description": listing.description, "numOfPics":listing.numOfPics}
-                elif pree.is_media and pree.pree_type == 'vehicle':
-                    vehicle = Vehicle.query.filter_by(pree_id = pree.pree_id).first()
-                    #reduce return object values
-                    attachment = {"vehicle_id":vehicle.vehicle_id,"lister":vehicle.lister,"pree_id":vehicle.pree_id,"make":vehicle.make,"model":vehicle.model,"condition":vehicle.condition,"typeOf":vehicle.typeOf,"fuel":vehicle.fuel,"transmission":vehicle.transmission,"mileage":vehicle.mileage,"location":vehicle.location,"price":vehicle.price,"currency":vehicle.currency,"engine":vehicle.engine, "year": vehicle.year, "color": vehicle.color, "steering": vehicle.steering, "ignition": vehicle.ignition, "seats":vehicle.seats, "description": vehicle.description, "numOfPics":vehicle.numOfPics}
-                elif pree.is_media and pree.pree_type == 'item':
-                    item = Item.query.filter_by(pree_id = pree.pree_id).first()
-                    #reduce return object values
-                    attachment = {"item_id":item.item_id,"lister":item.lister,"pree_id":item.pree_id,"name":item.name,"category":item.category,"typeOf":item.typeOf,"calories":item.calories,"price":item.price,"currency":item.currency, "ingredients": item.ingredients, "description": item.description, "numOfPics":item.numOfPics}
-                elif pree.is_media and pree.pree_type == 'service':
-                    service = Service.query.filter_by(pree_id = pree.pree_id).first()
-                    #reduce return object values
-                    attachment =  {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics, "time_contingency" : service.time_contingency, "price_contingency" : service.price_contingency, "requirements" : service.requirements, "address":service.address}
-                elif pree.pree_type == 'poll':
-                    #poll = Poll.query.filter_by(pree_id = pree.pree_id).first()
-                    poll = db.session.query(Poll, User, Profile, Vote).join(User, User.user_id == Poll.lister).join(Profile, Profile.user_id == Poll.lister).join(Vote, (Vote.poll_id == Poll.poll_id) & (Vote.user_id == user_id), isouter=True).filter(Poll.is_visible == True, Poll.pree_id == pree.pree_id).first()
-                    #reduce return object values
-                    if (poll.Vote == None):
-                        didVote = False
-                    else:
-                        didVote = True
-                    lister = {"user_id":poll.User.user_id, "firstname":poll.User.firstname, "lastname":poll.User.lastname, "username":poll.User.username, "tagline":poll.Profile.tagline, "location":poll.Profile.location, "has_dp":poll.Profile.has_dp}
-                    attachment = {"poll_id":poll.Poll.poll_id,"lister":lister,"pree_id":poll.Poll.pree_id,"category":poll.Poll.category,"question":poll.Poll.question,"choices":poll.Poll.choices,"results":poll.Poll.results,"votes":poll.Poll.votes,"end_date":str(poll.Poll.end_date),"end_time":str(poll.Poll.end_time), "status" : poll.Poll.status, "did_vote":didVote}
-                    #attachment =  {"poll_id":poll.poll_id,"lister":poll.lister,"pree_id":poll.pree_id,"question":poll.question,"choices":poll.choices,"results":poll.results,"votes":poll.votes,"end_date":str(poll.end_date),"end_time":str(poll.end_time)}
-                elif pree.is_media and pree.pree_type == 'event':
-                    event = Event.query.filter_by(pree_id = pree.pree_id).first()
-                    #reduce return object values
-                    attachment =  {"event_id":event.event_id,"lister":event.lister,"pree_id":event.pree_id,"title":event.title,"host":event.host,"category":event.category,"typeOf":event.typeOf,"metrics":event.metrics,"venue":event.venue,"where":event.where,"status":event.status,"dates":list(map(lambda x: str(x), event.dates)),"start_times":list(map(lambda x: str(x), event.start_times)),"end_times":list(map(lambda x:str(x), event.end_times)),"tickets":event.tickets,"costs":event.costs,"currencies":event.currencies, "numOfPics":event.numOfPics}
-                elif pree.is_media and pree.pree_type == 'classified':
-                    job = Classified.query.filter_by(pree_id = pree.pree_id).first()
-                    #reduce return object values
-                    attachment =  {"classified_id":job.classified_id,"lister":job.lister,"pree_id":job.pree_id,"title":job.title,"category":job.category,"typeOf":job.typeOf,"metrics":job.metrics,"location":job.location,"salary":job.salary,"company":job.company,"description":job.description,"subtopics":job.subtopics, "contents":job.contents,"subcontent":job.subcontent,"qualifications":job.qualifications,"benefits":job.benefits,"skills":job.skills,"questions":job.questions,"responses":job.responses,"end_date":str(job.end_date)}
-                elif pree.is_media and pree.pree_type == 'volunteer':
-                    volunteer = Volunteer.query.filter_by(pree_id = pree.pree_id).first()
-                    #reduce return object values
-                    attachment =  {"volunteer_id":volunteer.volunteer_id,"lister":volunteer.lister,"pree_id":volunteer.pree_id,"title":volunteer.title,"category":volunteer.category,"venue":volunteer.venue,"location":volunteer.location,"start_date":str(volunteer.start_date),"end_date":str(volunteer.end_date),"start_time":str(volunteer.start_time),"end_time":str(volunteer.end_time),"metrics":volunteer.metrics,"numOfPics":volunteer.numOfPics}
-                else:
-                    theQuote = Quote.query.get(pree.pree_id)
-                    attachment = {"the_quote":theQuote.the_quote}
-                if pree.pree_type == "group":
-                    #change to single query eventually
-                    group_pree = GroupPree.query.get(pree.pree_id)
-                    theGroup = Group.query.get(group_pree.group_id)
-                    groupObj = {"group_id":theGroup.group_id,"group_name":theGroup.name}
-                else:
-                    groupObj = {}
-                record = Approvals.query.filter_by(user_id=user_id,pree_id=pree.pree_id).first()
-                if record is not None:
-                    approvedObj = record.is_approved
-                else:
-                    approvedObj = None
-                preeObj = {"pree_id":pree.pree_id, "user":userObj, "date_added":str(pree.date_added), "is_media":pree.is_media,"pree_type":pree.pree_type, "approvals":pree.approvals, "disapprovals":pree.disapprovals, "comments":pree.comments, "attachment" : attachment, "group":groupObj, "is_approved": approvedObj}
-                prees.append(preeObj)
+        token = request.json.get('token', None)
+        if (token != 0):
+            user_id = confirm_token(token)
+            print(user_id)
+            results = Pree.query.filter(and_(Pree.is_visible == True, or_(check_follower(Pree.user_id, user_id), Pree.user_id == user_id))).order_by(Pree.pree_id.desc()).all()
+            prees = formatPree(results, user_id)
+        else:
+            results = Pree.query.filter(Pree.is_visible == True).order_by(Pree.pree_id.desc()).all()
+            prees = [] #formatPree(results, 0)
         return json.dumps(prees), 200
     return jsonify({"msg":"There was an error somewhere."}), 400
+
+#remove user_id when hosting media content is finalized 
+def formatPree(results, user_id):
+    prees = []
+    for pree in results:
+        #if(check_follower(pree.user_id, user_id) or pree.user_id == user_id):
+        #reduce to a join query
+        theUser = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == pree.user_id).first()
+        userObj = {"user_id":theUser.User.user_id, "username":theUser.User.username, "has_dp":theUser.Profile.has_dp}
+        if pree.is_media and pree.pree_type == 'individual':
+            theMedia = Media.query.get(pree.pree_id)
+            attachment = {"caption":theMedia.caption, "no_of_media":theMedia.no_of_media, "has_image":theMedia.has_image, "has_audio":theMedia.has_audio, "has_video":theMedia.has_video}
+        elif pree.is_media and pree.pree_type == 'exclusive':
+            theExclusive = Exclusive.query.filter_by(pree_id = pree.pree_id).first()
+            attachment = {"exclusive_id":theExclusive.exclusive_id,"title":theExclusive.title, "artistname":theExclusive.artistname, "genre":theExclusive.genre, "captionlist":theExclusive.captionlist, "description":theExclusive.description, "playback":theExclusive.playback, "unlock_requirement": theExclusive.unlock_requirement, "is_locked":theExclusive.is_locked, "is_downloadable":theExclusive.is_downloadable, "unlock_fee":theExclusive.unlock_fee, "no_of_media":theExclusive.no_of_media, "mediatypes":theExclusive.mediatypes , "influence":theExclusive.influence,"stereo":theExclusive.stereo, "md" : theExclusive.md,"magazine":theExclusive.magazine, "views":theExclusive.views, "has_cover_art":theExclusive.has_cover_art }
+        elif pree.is_media and pree.pree_type == 'product':
+            product = Product.query.filter_by(pree_id = pree.pree_id).first()
+            #reduce return object values
+            attachment = {"product_id":product.product_id,"lister":product.lister,"brand":product.brand,"name":product.name,"category":product.category,"condition":product.condition,"typeOf":product.typeOf,"location":product.location,"stock":product.stock,"price":product.price,"currency":product.currency, "year": product.year, "colors": product.colors, "package": product.package, "description": product.description, "numOfPics":product.numOfPics}
+        elif pree.is_media and pree.pree_type == 'listing':
+            listing = Listing.query.filter_by(pree_id = pree.pree_id).first()
+            #reduce return object values
+            attachment = {"listing_id":listing.listing_id,"lister":listing.lister,"title":listing.title,"category":listing.category,"typeOf":listing.typeOf,"address":listing.address,"price":listing.price,"currency":listing.currency,"beds":listing.beds, "baths": listing.baths, "insideSqft": listing.insideSqft, "lotSqft": listing.lotSqft, "parking": listing.parking, "description": listing.description, "numOfPics":listing.numOfPics}
+        elif pree.is_media and pree.pree_type == 'vehicle':
+            vehicle = Vehicle.query.filter_by(pree_id = pree.pree_id).first()
+            #reduce return object values
+            attachment = {"vehicle_id":vehicle.vehicle_id,"lister":vehicle.lister,"pree_id":vehicle.pree_id,"make":vehicle.make,"model":vehicle.model,"condition":vehicle.condition,"typeOf":vehicle.typeOf,"fuel":vehicle.fuel,"transmission":vehicle.transmission,"mileage":vehicle.mileage,"location":vehicle.location,"price":vehicle.price,"currency":vehicle.currency,"engine":vehicle.engine, "year": vehicle.year, "color": vehicle.color, "steering": vehicle.steering, "ignition": vehicle.ignition, "seats":vehicle.seats, "description": vehicle.description, "numOfPics":vehicle.numOfPics}
+        elif pree.is_media and pree.pree_type == 'item':
+            item = Item.query.filter_by(pree_id = pree.pree_id).first()
+            #reduce return object values
+            attachment = {"item_id":item.item_id,"lister":item.lister,"pree_id":item.pree_id,"name":item.name,"category":item.category,"typeOf":item.typeOf,"calories":item.calories,"price":item.price,"currency":item.currency, "ingredients": item.ingredients, "description": item.description, "numOfPics":item.numOfPics}
+        elif pree.is_media and pree.pree_type == 'service':
+            service = Service.query.filter_by(pree_id = pree.pree_id).first()
+            #reduce return object values
+            attachment =  {"service_id":service.service_id,"lister":service.lister,"pree_id":service.pree_id,"title":service.title,"category":service.category,"deliverable":service.deliverable, "provider":service.provider, "contact":service.contact, "email":service.email,"timetaken":service.timetaken,"timeunit":service.timeunit,"price":service.price,"currency":service.currency,"procedures":service.procedures, "description": service.description, "numOfPics":service.numOfPics, "time_contingency" : service.time_contingency, "price_contingency" : service.price_contingency, "requirements" : service.requirements, "address":service.address}
+        elif pree.pree_type == 'poll':
+            #poll = Poll.query.filter_by(pree_id = pree.pree_id).first()
+            poll = db.session.query(Poll, User, Profile, Vote).join(User, User.user_id == Poll.lister).join(Profile, Profile.user_id == Poll.lister).join(Vote, (Vote.poll_id == Poll.poll_id) & (Vote.user_id == user_id), isouter=True).filter(Poll.is_visible == True, Poll.pree_id == pree.pree_id).first()
+            #reduce return object values
+            if (poll.Vote == None):
+                didVote = False
+            else:
+                didVote = True
+            lister = {"user_id":poll.User.user_id, "is_user":(poll.User.user_id == user_id), "firstname":poll.User.firstname, "lastname":poll.User.lastname, "username":poll.User.username, "tagline":poll.Profile.tagline, "location":poll.Profile.location, "has_dp":poll.Profile.has_dp}
+            attachment = {"poll_id":poll.Poll.poll_id,"lister":lister,"pree_id":poll.Poll.pree_id,"category":poll.Poll.category,"question":poll.Poll.question,"choices":poll.Poll.choices,"results":poll.Poll.results,"votes":poll.Poll.votes,"end_date":str(poll.Poll.end_date),"end_time":str(poll.Poll.end_time), "status" : poll.Poll.status, "did_vote":didVote}
+            #attachment =  {"poll_id":poll.poll_id,"lister":poll.lister,"pree_id":poll.pree_id,"question":poll.question,"choices":poll.choices,"results":poll.results,"votes":poll.votes,"end_date":str(poll.end_date),"end_time":str(poll.end_time)}
+        elif pree.is_media and pree.pree_type == 'event':
+            event = Event.query.filter_by(pree_id = pree.pree_id).first()
+            #reduce return object values
+            attachment =  {"event_id":event.event_id,"lister":event.lister,"pree_id":event.pree_id,"title":event.title,"host":event.host,"category":event.category,"typeOf":event.typeOf,"metrics":event.metrics,"venue":event.venue,"where":event.where,"status":event.status,"dates":list(map(lambda x: str(x), event.dates)),"start_times":list(map(lambda x: str(x), event.start_times)),"end_times":list(map(lambda x:str(x), event.end_times)),"tickets":event.tickets,"costs":event.costs,"currencies":event.currencies, "numOfPics":event.numOfPics}
+        elif pree.is_media and pree.pree_type == 'classified':
+            job = Classified.query.filter_by(pree_id = pree.pree_id).first()
+            #reduce return object values
+            attachment =  {"classified_id":job.classified_id,"lister":job.lister,"pree_id":job.pree_id,"title":job.title,"category":job.category,"typeOf":job.typeOf,"metrics":job.metrics,"location":job.location,"salary":job.salary,"company":job.company,"description":job.description,"subtopics":job.subtopics, "contents":job.contents,"subcontent":job.subcontent,"qualifications":job.qualifications,"benefits":job.benefits,"skills":job.skills,"questions":job.questions,"responses":job.responses,"end_date":str(job.end_date)}
+        elif pree.is_media and pree.pree_type == 'volunteer':
+            volunteer = Volunteer.query.filter_by(pree_id = pree.pree_id).first()
+            #reduce return object values
+            attachment =  {"volunteer_id":volunteer.volunteer_id,"lister":volunteer.lister,"pree_id":volunteer.pree_id,"title":volunteer.title,"category":volunteer.category,"venue":volunteer.venue,"location":volunteer.location,"start_date":str(volunteer.start_date),"end_date":str(volunteer.end_date),"start_time":str(volunteer.start_time),"end_time":str(volunteer.end_time),"metrics":volunteer.metrics,"numOfPics":volunteer.numOfPics}
+        else:
+            theQuote = Quote.query.get(pree.pree_id)
+            attachment = {"the_quote":theQuote.the_quote}
+        if pree.pree_type == "group":
+            #change to single query eventually
+            group_pree = GroupPree.query.get(pree.pree_id)
+            theGroup = Group.query.get(group_pree.group_id)
+            groupObj = {"group_id":theGroup.group_id,"group_name":theGroup.name}
+        else:
+            groupObj = {}
+        record = Approvals.query.filter_by(user_id=user_id,pree_id=pree.pree_id).first()
+        if record is not None:
+            approvedObj = record.is_approved
+        else:
+            approvedObj = None
+        preeObj = {"pree_id":pree.pree_id, "user":userObj, "date_added":str(pree.date_added), "is_media":pree.is_media,"pree_type":pree.pree_type, "approvals":pree.approvals, "disapprovals":pree.disapprovals, "comments":pree.comments, "attachment" : attachment, "group":groupObj, "is_approved": approvedObj}
+        prees.append(preeObj)
+    return prees
 
 #api method for pree of Followers -- cutting edge
 @app.route('/api/see-the-view', methods=['POST'])
@@ -220,22 +230,26 @@ def see_the_view():
 def search_users():
     if request.method == 'POST':
         searchval = request.json.get('searchval', None)
-        user_id = request.json.get('user_id', None)
-        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),User.firstname.ilike('%'+searchval+'%'), User.lastname.ilike('%'+searchval+'%') )).order_by(User.username).limit(5) 
-        userlist = []
-        for user in users:
-            is_follower = check_follower(user.User.user_id, user_id)
-            aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
-            userlist.append(aUserObj)
-        result = {"userlist":userlist}
-        return result , 200
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
+        if(user_id != 0):
+            users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),User.firstname.ilike('%'+searchval+'%'), User.lastname.ilike('%'+searchval+'%') )).order_by(User.username).limit(5) 
+            userlist = []
+            for user in users:
+                is_follower = check_follower(user.User.user_id, user_id)
+                aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
+                userlist.append(aUserObj)
+            result = {"userlist":userlist}
+            return result , 200
+        return jsonify({"msg":"invalid token"}), 201
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/search-frat', methods=['POST'])
 def search_frat():
     if request.method == 'POST':
         searchval = request.json.get('searchval', None)
-        user_id = request.json.get('user_id', None)
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
         users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),User.firstname.ilike('%'+searchval+'%'), User.lastname.ilike('%'+searchval+'%') )).order_by(User.username)
         userlist = []
         for user in users:

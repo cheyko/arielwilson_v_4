@@ -40,7 +40,7 @@ const AddPoll = props => {
 
     //const {operation} = props; //use for editting polls (may not be feasible to allow user to edit poll unless there are no votes)
 
-    const user_id = props.context.user.id;
+    const token = props.context.token;
     const [poll, setPoll] = useState("");
     const categories = ["Agriculture & Food", "Automobiles","Business", "Climate & Weather", "Education", "Entertainment", "General" , "Historical", "Law", "News", "Personal", "Political", "Religious", "Science & Technology", "Sports"];
     const [category, setCategory] = useState("General");
@@ -69,12 +69,12 @@ const AddPoll = props => {
         if (isValid() && poll && (choices.length > 1)){
             const formData = new FormData();
             formData.append('theDateTime',theDateTime);
-            formData.append('user_id',user_id);
+            formData.append('token',token);
             formData.append('category',category);
             formData.append('poll',poll);
             formData.append('end_date',endDate);
             formData.append('end_time',endTime);
-            choices.forEach( (choice,index) => {
+            choices.forEach( (choice) => {
                 formData.append('choices',choice);
             });
             await axios.post(`${process.env.REACT_APP_PROXY}/api/polls`,formData, 
@@ -221,7 +221,7 @@ const AddPoll = props => {
                                 />
                             </div>
                             <div className="field">
-                                <span>Enter the different responses that you would like the recipient to choose from.</span>
+                                <span>Enter the different responses that you would like the voters to choose from.</span>
                                 <div className="choices">
                                     <div className=""><b>Choices</b></div>
                                     <div>

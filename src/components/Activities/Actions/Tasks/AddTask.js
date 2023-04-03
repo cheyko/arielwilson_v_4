@@ -50,6 +50,7 @@ const AddTask = props => {
         return result;
     }
     const user_id = props.context.user ? props.context.user.id : 0;
+    const token = props.context.token ? props.context.token : 0;
     const [title, setTitle] = useState("");
     const [start, setStartDate] = useState(new Date().toISOString().split("T")[0]);
     const [description, setDescription] = useState("");
@@ -59,7 +60,7 @@ const AddTask = props => {
     const [responseMsg, setResponseMsg] = useState("");
     const [modalIsOpen, setModalOpen] = useState(false);
     const [project, setProject] = useState("Open");
-    const projects = props.projects.filter((project,idx) => project !== "Open");
+    const projects = props.projects.filter((project) => project !== "Open");
     //const [projects, setProjects] = useState([]);
     //const [gotProjects, setGotProjects] = useState(false);
     const [projectSelect, setSelect] = useState("Open")
@@ -85,10 +86,10 @@ const AddTask = props => {
     const saveTask = async(e) => {
         e.preventDefault();
         var theDateTime = getDateTime();
-        if (title !== "" && project !== "" && isFor !== null){
+        if (title !== "" && project !== "" && isFor !== null && (start <= end)){
             const formData = new FormData();
             formData.append('theDateTime',theDateTime);
-            formData.append('user_id',user_id);
+            formData.append('token',token);
             formData.append('isFor',isFor);
             formData.append('title',title);
             formData.append('project',project);
@@ -108,6 +109,7 @@ const AddTask = props => {
                         if (result.status === 200){
                             //clearFunc();
                             setResponseMsg("Task was updated.");
+                            props.setGotTask(false);
                         }else{
                             setResponseMsg("Task was not updated, please try again. Contact us for suppport if problem persist.");
                         }
@@ -125,12 +127,15 @@ const AddTask = props => {
                             //const task_id = result.data.task_id;
                             clearFunc();
                             setResponseMsg("Task was saved.");
+                            props.setGotTask(false);
                         }else{
                             setResponseMsg("Task was not saved, please try again. Contact us for suppport if problem persist.");
                         }
                     }
                 );
             }
+        }else if (start > end){
+            setResponseMsg("Start date cannot be greater than end date.");
         }else{
             setResponseMsg("Task is missing some important details.");
             //return false;
@@ -146,11 +151,11 @@ const AddTask = props => {
         setStartDate(task.start_date);
         setEndDate(task.end_date);
         setFor(task.is_for);
-        if(task.is_for !== user_id){
+        if(task.for_me){
             setAddFor(true);
             setUser(task.done_by);
         }
-    },[props.task, user_id]);
+    },[props.task]);
 
     useEffect( () => {
         if(operation === 'edit'){
@@ -192,7 +197,7 @@ const AddTask = props => {
                 setSearchVal(e.target.value);
                 if( e.target.value !== ""){
                     const searchval = e.target.value;
-                    axios.post(`${process.env.REACT_APP_PROXY}/api/search-frat`,{searchval, user_id}).then(
+                    axios.post(`${process.env.REACT_APP_PROXY}/api/search-frat`,{searchval, token}).then(
                         (search) => {
                             if (search.status === 200){
                                 if (search.data.userlist){
@@ -351,6 +356,7 @@ const AddTask = props => {
                                     type="date" 
                                     name="end"
                                     value={end}
+                                    min={start}
                                     onChange={e => setEndDate(e.target.value)}
                                 />
                             </div>

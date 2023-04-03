@@ -15,6 +15,7 @@ import Encourage from "../HelperComponents/Encourage";
 const Profile = props => {
     
     const [myView, setMyView] = useState(null);
+    const token = props.context.token ? props.context.token: 0;
 
     //Rendered cv and dp urls that have been uploaded b4 however on handleupload set these to the newly uploaded files to be viewed before potentially saved
     const [imgView, setImgView] = useState(null);
@@ -31,23 +32,21 @@ const Profile = props => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
-        const user_id = props.context.user ? props.context.user.id : 0;
-
-        if (user_id === 0){
+        if (token === 0){
             setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
             setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
         }else{
-            await axios.post('/api/get-main-media',{user_id}).then(
+            await axios.post('/api/get-main-media',{token}).then(
                 (response) => {
                     if (response.status === 200){
                         if (response.data.has_cv === true){
-                            setVidView(`${process.env.PUBLIC_URL}/images/bio/cover/${user_id}.mp4`);
+                            setVidView(`${process.env.PUBLIC_URL}/images/bio/cover/${response.data.user_id}.mp4`);
                         }else{
                             setVidView(`${process.env.PUBLIC_URL}/images/bio/cover/default.mp4`);
                         }
 
                         if (response.data.has_dp === true){
-                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
+                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${response.data.user_id}.jpeg`);
                         }else{
                             setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
                         }
@@ -57,7 +56,7 @@ const Profile = props => {
             );
         }
         return true;
-    },[props.context]);
+    },[token]);
 
     useEffect(() => {
         window.scroll(0,0);
@@ -111,9 +110,9 @@ const Profile = props => {
     const saveUpload = async (e) => {
         e.preventDefault();
         setShowEdit(false);
-        const user_id = props.context.user ? props.context.user.id : 0;
+        //const user_id = props.context.user ? props.context.user.id : 0;
         const formData = new FormData();
-        formData.append('user_id', user_id);
+        formData.append('token', token);
         formData.set('has_cover',false);
         formData.set('has_display',false);
 

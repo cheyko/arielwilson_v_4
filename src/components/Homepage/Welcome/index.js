@@ -17,7 +17,8 @@ const Welcome = props => {
     //then if uname is true : login user 
 
     let navigate = useNavigate();
-    let new_id = localStorage.getItem("user_id");
+    //let new_id = localStorage.getItem("user_id");
+    const token = props.context.token ? props.context.token : 0;
     const [uname, setUname] = useState("");
     const [val, setVal] = useState("");
     const [tagline, setTagline] = useState("");
@@ -48,9 +49,9 @@ const Welcome = props => {
         //e.preventDefault();
         //setVal(null);
         
-        const user_id = props.context.user_id ? props.context.user_id : new_id;
+        //const user_id = props.context.user_id ? props.context.user_id : new_id;
         //console.log(user_id);
-        const response = await axios.post('/api/has-uname',{user_id}).catch(
+        const response = await axios.post('/api/has-uname',{token}).catch(
             (response) => {
                 if (response.status !== 200) { 
                     return { status: response.status, message: 'Api call was not successful' } 
@@ -70,7 +71,7 @@ const Welcome = props => {
         }  
         //setUname(response.data.uname);
         return false;
-    }, [new_id, props.context.user_id] );
+    }, [token] );
 
 
     const checkUname = async (e) => {
@@ -103,8 +104,8 @@ const Welcome = props => {
         e.preventDefault();
         //allow user to save username to database
         //do axios put request to update the username of the user
-        const user_id = props.context.user_id ? props.context.user_id : new_id;
-        await axios.put('/api/save-uname',{user_id,uname}).then(
+        //const user_id = props.context.user_id ? props.context.user_id : new_id;
+        await axios.put('/api/save-uname',{token,uname}).then(
             (response) => {
                 if (response.status === 200){
                     //change some bool to true to display the next button
@@ -128,19 +129,19 @@ const Welcome = props => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
-        const user_id = props.context.user_id ? props.context.user_id : new_id;
+        //const user_id = props.context.user_id ? props.context.user_id : new_id;
         //console.log(user_id);
-        await axios.post('/api/get-main-media',{user_id}).then(
+        await axios.post('/api/get-main-media',{token}).then(
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_cv === true){
-                        setVidView(process.env.PUBLIC_URL + "/images/bio/cover/" + user_id +".mp4");
+                        setVidView(process.env.PUBLIC_URL + "/images/bio/cover/" + response.data.user_id +".mp4");
                     }else{
                         setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
                     }
 
                     if (response.data.has_dp === true){
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + response.data.user_id);
                     }else{
                         setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
                     }
@@ -149,7 +150,7 @@ const Welcome = props => {
             }
         )
         return true;
-    },[new_id, props.context.user_id]);
+    },[token]);
 
     const handleUpload = (e) => {
         const upload = Array.from(e.target.files);
@@ -178,9 +179,9 @@ const Welcome = props => {
 
     const saveUpload = async (e) => {
         e.preventDefault();
-        const user_id = props.context.user_id ? props.context.user_id : new_id;
+        //const user_id = props.context.user_id ? props.context.user_id : new_id;
         const formData = new FormData();
-        formData.append('user_id', user_id);
+        formData.append('token', token);
         formData.set('has_cover',false);
         formData.set('has_display',false);
 
@@ -297,8 +298,8 @@ const Welcome = props => {
         if (val === ""){
             //console.log("hasuname");
             hasUname();
-            const user_id = props.context.user_id ? props.context.user_id : new_id;
-            axios.post('/api/get-bio',{user_id}).then(
+            //const user_id = props.context.user_id ? props.context.user_id : new_id;
+            axios.post('/api/get-bio',{token}).then(
                 (response) => {
                     if (response.status === 200){
                         setShowStep2(false);
@@ -313,7 +314,7 @@ const Welcome = props => {
             loadMainMedia();
         }
         //setResponseMsg(responseMsg);
-    },[val, new_id, showStep3, props.context.user_id, gotMedia, hasUname, loadMainMedia]);
+    },[val, showStep3, token, gotMedia, hasUname, loadMainMedia]);
 
     return (
         <div className="hero">

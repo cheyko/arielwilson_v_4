@@ -13,6 +13,7 @@ const Navbar = props => {
 
     let navigate = useNavigate();
     let location = useLocation();
+    const token = props.context.token ? props.context.token : 0;
     const uname = props.context.user ? props.context.user.username : "";
     //const user = props.context.user;
     const gender = props.context.user ? props.context.user.gender : "";
@@ -28,15 +29,15 @@ const Navbar = props => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
-        const user_id = props.context.user ? props.context.user.id : 0;
-        if (user_id === 0){
+        //const user_id = props.context.user ? props.context.user.id : 0;
+        if (token === 0){
             setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
         }else{
-            await axios.post(`${process.env.REACT_APP_PROXY}/api/get-main-media`,{user_id}).then(
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/get-main-media`,{token}).then(
                 (response) => {
                     if (response.status === 200){
                         if (response.data.has_dp === true){
-                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
+                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${response.data.user_id}.jpeg`);
                         }else{
                             setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
                         }
@@ -46,7 +47,7 @@ const Navbar = props => {
             );
         }
         return true;
-    },[props.context.user]);
+    },[token]);
 
     const activate = (choice) => {
         setSelection(choice);

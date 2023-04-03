@@ -15,7 +15,7 @@ const ViewUserProfile = props => {
     let navigate = useNavigate();
 
     //let userview = localStorage.getItem("userview");
-    let {id} = useParams();
+    let {uname} = useParams();
 
     const [userview, setUserview] = useState(null);
     const [showDropDown, setShowDropDown] = useState(false);
@@ -26,24 +26,25 @@ const ViewUserProfile = props => {
     const [vidView, setVidView] = useState(null);
 
     const [isFollower, setIsFollower] = useState(null);
-    const user_id = props.context.user ? props.context.user.id : 0;
+    //const user_id = props.context.user ? props.context.user.id : 0;
+    const token = props.context.token ? props.context.token : 0;
+    const myuname = props.context.user ? props.context.user.username : "";
     const loadMainMedia = useCallback( async() => {
         //check if cv and dp is available (database check):
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
-        const user_id = id;
 
-        await axios.post('/api/get-main-media',{user_id}).then(
+        await axios.post('/api/get-user-media',{uname}).then(
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_cv === true){
-                        setVidView(process.env.PUBLIC_URL + "/images/bio/cover/" + user_id + ".mp4");
+                        setVidView(process.env.PUBLIC_URL + "/images/bio/cover/" + response.data.user_id + ".mp4");
                     }else{
                         setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
                     }
 
                     if (response.data.has_dp === true){
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + user_id);
+                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + response.data.user_id + ".jpeg");
                     }else{
                         setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
                     }
@@ -52,7 +53,7 @@ const ViewUserProfile = props => {
             }
         )
         return true;
-    },[id]);
+    },[uname]);
 
 
     useEffect( () => {
@@ -61,7 +62,7 @@ const ViewUserProfile = props => {
         }
 
         if (!userview){
-            props.context.getUserView(id).then(
+            props.context.getUserView(uname).then(
                 (result) => {
                     if (!result){
                         console.log("there was an error when search for my details");
@@ -73,8 +74,7 @@ const ViewUserProfile = props => {
         }
 
         if (isFollower === null){
-            const userview_id = id;
-            axios.post('/api/is-follower',{user_id,userview_id}).then(
+            axios.post('/api/is-follower',{token,uname}).then(
                 (response) => {
                     if (response.status !== 200){
                         console.log('I need a better error messaging system');
@@ -85,37 +85,37 @@ const ViewUserProfile = props => {
                 }
             );
         }
-    },[imgView, vidView,userview, id, user_id, isFollower, loadMainMedia, props.context]);
+    },[imgView, vidView,userview, uname, token, isFollower, loadMainMedia, props.context]);
     
     // have onclick functions for add-follower and unfollow
     
     const follow = () => {
-        const userview_id = id;
-        axios.post('/api/add-follower',{user_id,userview_id}).then(
+        axios.post('/api/add-follower',{token,uname}).then(
             (dofollow) => {
                 if (dofollow.status !== 200){
                     console.log('User was followed successful.');
                 }else{
                     setIsFollower(dofollow.data.is_follower);
+                    setUserview(null);
                 }
             }
         );
     }
 
     const unfollow = () => {
-        const userview_id = id;
-        axios.put('/api/un-follow',{user_id,userview_id}).then(
+        axios.put('/api/un-follow',{token,uname}).then(
             (unfollow) => {
                 if (unfollow.status !== 200){
                     throw new Error('User was unfollowed succesfully.');
                 }else{
                     setIsFollower(unfollow.data.is_follower);
+                    setUserview(null);
                 }
             }
         );
     }
 
-    return (`${user_id}` === `${id}`) ? (
+    return (`${myuname}` === `${uname}`) ? (
         <Navigate to="/profile" />
     ):(  
         <div className="hero hero-container">

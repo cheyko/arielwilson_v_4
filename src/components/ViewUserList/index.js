@@ -66,9 +66,6 @@ const ViewUserList = props => {
         }
     },[viewlist, action, id, list])
 
-
-    console.log(viewlist);
-
     return (
         <div className="hero">
             <div className="hero-container has-text-centered">

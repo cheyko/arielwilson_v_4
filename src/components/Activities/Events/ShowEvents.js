@@ -11,7 +11,8 @@ const ShowEvents = props => {
     const {typeOf} = props;
     const [showFilter, setShowFilter] = useState(false);
     const [fullList, setFullList] = useState([]);
-    const user_id = props.context.user ? props.context.user.id : 0;
+    //const user_id = props.context.user ? props.context.user.id : 0;
+    //const token = props.context.token ? props.context.token : 0;
     const [events, setEvents] = useState([]);
     const [gotEvents, setGotEvents] = useState(false);
     const [pageCount, setPageCount] = useState(0);
@@ -97,7 +98,7 @@ const ShowEvents = props => {
 
     useEffect(() => {
         if (gotEvents === false){
-            axios.post(`${process.env.REACT_APP_PROXY}/api/get-events`,{user_id, typeOf}).then(res => {
+            axios.post(`${process.env.REACT_APP_PROXY}/api/get-events`,{typeOf}).then(res => {
                 if (res.status === 200){
                     setFullList(res.data);
                     setEvents(res.data);
@@ -109,7 +110,7 @@ const ShowEvents = props => {
         if(filter){
             filterList();
         }
-    }, [gotEvents, filter, filterList, user_id, typeOf]);
+    }, [gotEvents, filter, filterList, typeOf]);
 
     slice = events.slice(offset, offset + perPage); 
     

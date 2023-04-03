@@ -47,7 +47,7 @@ def exclusive():
         prefix = "exclusive" + str(newExclusive.exclusive_id)
         os.makedirs(upload_folder + prefix)
         for index, file in enumerate(mainmedia):
-            filename = "upload" + str(index) 
+            filename = "upload" + str(index) + ".jpeg"
             file.save(os.path.join(upload_folder + prefix, filename)) 
         cover_art = request.files['display_art']
         if cover_art.filename == '':

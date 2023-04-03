@@ -7,7 +7,8 @@ const AddVolunteer = props => {
 
     let navigate = useNavigate();
 
-    const user_id = props.context.user.id;
+    //const user_id = props.context.user.id;
+    const token = props.context.token;
     const [title, setTitle] = useState("");
     const categories = ["Animals","Community","Education","Health and Social Care", "Political", "Sports","Environmental"];
     const [category, setCategory] = useState("");
@@ -64,7 +65,7 @@ const AddVolunteer = props => {
         if(title !== "" && category !== "" && venue !== "" && location !== ""){
             const formData = new FormData();
             formData.append('theDateTime',theDateTime);
-            formData.append('user_id',user_id);
+            formData.append('token',token);
             formData.append('title',title);
             formData.append('category',category);
             formData.append('metrics', metrics);

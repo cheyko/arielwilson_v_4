@@ -40,7 +40,7 @@ const Results = props => {
         arrows: true,
     };
 */  
-    console.log(userlist);
+    //console.log(userlist);
     return(
         <div className="hero">
             {userlist && userlist.length > 0 &&

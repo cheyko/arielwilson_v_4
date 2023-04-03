@@ -7,6 +7,7 @@ from flask import request, jsonify
 from sqlalchemy import or_ , and_
 from api.models import db, User, Accesses, Profile, Pree
 from api.specials import Task, Request, Logistic, Poll, Event, Classified, Volunteer, Vote
+from api.security import confirm_token
 #from datetime import datetime
 import datetime
 from api.relations import check_follower
@@ -18,13 +19,14 @@ def activities():
 @app.route('/api/get-tasks', methods=['POST'])
 def get_tasks():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
         result = db.session.query(Task, User, Profile).join(User, User.user_id == Task.is_for).join(Profile, Profile.user_id == Task.is_for).filter(Task.is_visible == True,or_(Task.lister == user_id,Task.is_for == user_id)).order_by(Task.task_id).all()
         tasks = []
         for task in result:
             #reduce payload
             done_by = {"user_id":task.User.user_id, "firstname":task.User.firstname, "lastname":task.User.lastname, "username":task.User.username, "tagline":task.Profile.tagline, "location":task.Profile.location, "has_dp":task.Profile.has_dp}
-            taskObj = {"task_id":task.Task.task_id,"lister":task.Task.lister,"is_for":task.Task.is_for, "done_by":done_by,"title":task.Task.title,"project":task.Task.project,"start_date":str(task.Task.start_date),"end_date":str(task.Task.end_date),"description":task.Task.description,"status":task.Task.status}
+            taskObj = {"task_id":task.Task.task_id,"lister":task.Task.lister, "for_me":(task.Task.is_for == user_id),"is_for":task.Task.is_for, "done_by":done_by,"title":task.Task.title,"project":task.Task.project,"start_date":str(task.Task.start_date),"end_date":str(task.Task.end_date),"description":task.Task.description,"status":task.Task.status}
             tasks.append(taskObj)
         return json.dumps(tasks)
     return jsonify({"msg":"There was an error somewhere."}), 400
@@ -32,7 +34,8 @@ def get_tasks():
 @app.route('/api/get-projects', methods=['POST'])
 def get_projects():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
         result = db.session.query(Task.project).filter(or_(Task.lister == user_id,Task.is_for == user_id)).distinct()
         projectlist = []
         for task in result:
@@ -45,7 +48,9 @@ def get_projects():
 def tasks():
     if request.method == 'POST':
         result = request.form
-        newTask = Task(lister=result["user_id"],is_for=result["isFor"],title=result["title"],project=result["project"],date_added=result["theDateTime"],start_date=result["start_date"],end_date=result["end_date"],description=result["description"],status=result["status"])
+        token = result["token"]
+        user_id = confirm_token(token)
+        newTask = Task(lister=user_id,is_for=result["isFor"],title=result["title"],project=result["project"],date_added=result["theDateTime"],start_date=result["start_date"],end_date=result["end_date"],description=result["description"],status=result["status"])
         db.session.add(newTask)
         db.session.flush()
         db.session.commit()
@@ -91,33 +96,39 @@ def delete_task():
 @app.route('/api/get-requests', methods=['POST'])
 def get_requests():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
-        result = Request.query.filter(Request.is_visible == True,or_(Request.lister == user_id,Request.is_for == user_id)).all()
-        requests = []
-        for aRequest in result:
-            #reduce payload
-            lister = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter_by(user_id=aRequest.lister).first()
-            listerObj = {"user_id":lister.User.user_id, "firstname":lister.User.firstname, "lastname":lister.User.lastname, "username":lister.User.username, "tagline":lister.Profile.tagline, "location":lister.Profile.location, "has_dp":lister.Profile.has_dp}
-            is_for = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter_by(user_id=aRequest.is_for).first()
-            forObj = {"user_id":is_for.User.user_id, "firstname":is_for.User.firstname, "lastname":is_for.User.lastname, "username":is_for.User.username, "tagline":is_for.Profile.tagline, "location":is_for.Profile.location, "has_dp":lister.Profile.has_dp}
-            requestObj = {"request_id":aRequest.request_id,"lister":listerObj,"is_for":forObj,"question":aRequest.question,"answer":aRequest.answer,"status":aRequest.status,"choices":aRequest.choices}
-            requests.append(requestObj)
-        return json.dumps(requests)
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
+        if user_id != 0:
+            result = Request.query.filter(Request.is_visible == True,or_(Request.lister == user_id,Request.is_for == user_id)).all()
+            requests = []
+            for aRequest in result:
+                #reduce payload
+                lister = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter_by(user_id=aRequest.lister).first()
+                listerObj = {"user_id":lister.User.user_id, "is_user":(lister.User.user_id == user_id), "firstname":lister.User.firstname, "lastname":lister.User.lastname, "username":lister.User.username, "tagline":lister.Profile.tagline, "location":lister.Profile.location, "has_dp":lister.Profile.has_dp}
+                is_for = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter_by(user_id=aRequest.is_for).first()
+                forObj = {"user_id":is_for.User.user_id, "firstname":is_for.User.firstname, "lastname":is_for.User.lastname, "username":is_for.User.username, "tagline":is_for.Profile.tagline, "location":is_for.Profile.location, "has_dp":lister.Profile.has_dp}
+                requestObj = {"request_id":aRequest.request_id,"lister":listerObj,"is_for":forObj,"question":aRequest.question,"answer":aRequest.answer,"status":aRequest.status,"choices":aRequest.choices}
+                requests.append(requestObj)
+            return json.dumps(requests)
+        return jsonify({"msg":"invalid token"}), 201
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/answer-request', methods=['PUT'])
 def answer_request():
     if request.method == 'PUT':
-        user_id = request.json.get('user_id', None)
-        request_id = request.json.get('request_id', None)
-        answer = request.json.get('answer', None)
-        status = "Responded"
-        theRequest = Request.query.get(request_id)
-        if theRequest.is_for == user_id:
-            theRequest.answer = int(answer)
-            theRequest.status = status
-        db.session.commit()
-        return jsonify({"msg":"Task informaiton updated."}), 200
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
+        if(user_id != 0):
+            request_id = request.json.get('request_id', None)
+            answer = request.json.get('answer', None)
+            status = "Responded"
+            theRequest = Request.query.get(request_id)
+            if theRequest.is_for == user_id:
+                theRequest.answer = int(answer)
+                theRequest.status = status
+            db.session.commit()
+            return jsonify({"msg":"Task informaiton updated."}), 200
+        return jsonify({"msg":"invalid token"}), 201
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/edit-request', methods=['PUT'])
@@ -133,7 +144,9 @@ def delete_request():
 def requests():
     if request.method == 'POST':
         result = request.form
-        newRequest = Request(lister=result["user_id"],is_for=result["isFor"], typeOf=result["typeOf"],question=result["question"],date_added=result["theDateTime"],status=result["status"],choices=result.getlist("choices"))
+        token = result["token"]
+        user_id = confirm_token(token)
+        newRequest = Request(lister=user_id,is_for=result["isFor"], typeOf=result["typeOf"],question=result["question"],date_added=result["theDateTime"],status=result["status"],choices=result.getlist("choices"))
         db.session.add(newRequest)
         db.session.flush()
         db.session.commit()
@@ -173,10 +186,12 @@ def get_recv_address(receiver_id):
     profile_record = Profile.query.get(receiver_id)
     return profile_record.location
 
+####remove user_id from lister
 @app.route('/api/get-polls', methods=['POST'])
 def get_polls():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
         #result = Poll.query.filter(Poll.is_visible == True).all()
         result = db.session.query(Poll, User, Profile).join(User, User.user_id == Poll.lister).join(Profile, Profile.user_id == Poll.lister).filter(Poll.is_visible == True).order_by(Poll.poll_id.desc()).all()
         polls = []
@@ -190,7 +205,7 @@ def get_polls():
                 didVote = False
             #if(check_following(user_id, poll.lister) or poll.lister == user_id):
             #reduce payload
-            lister = {"user_id":poll.User.user_id, "firstname":poll.User.firstname, "lastname":poll.User.lastname, "username":poll.User.username, "tagline":poll.Profile.tagline, "location":poll.Profile.location, "has_dp":poll.Profile.has_dp}
+            lister = {"user_id":poll.User.user_id, "is_user":(poll.User.user_id == user_id), "firstname":poll.User.firstname, "lastname":poll.User.lastname, "username":poll.User.username, "tagline":poll.Profile.tagline, "has_dp":poll.Profile.has_dp}
             pollObj = {"poll_id":poll.Poll.poll_id,"lister":lister,"pree_id":poll.Poll.pree_id,"category":poll.Poll.category,"question":poll.Poll.question,"choices":poll.Poll.choices,"results":poll.Poll.results,"votes":poll.Poll.votes,"end_date":str(poll.Poll.end_date),"end_time":str(poll.Poll.end_time), "status" : poll.Poll.status, "did_vote":didVote}
             polls.append(pollObj)
         return json.dumps(polls)
@@ -211,35 +226,42 @@ def check_poll(poll):
 def polls():
     if request.method == 'POST':
         result = request.form
-        choices = result.getlist("choices")
-        zeros = list(map(lambda x: 0, choices))
-        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=False, pree_type="poll")
-        db.session.add(newPree)
-        db.session.flush()
-        newPoll = Poll(lister=result["user_id"],pree_id=newPree.pree_id,category=result["category"],question=result["poll"],date_added=result["theDateTime"],choices=choices,results=zeros, end_date=result["end_date"], end_time=result["end_time"], status="Open")
-        db.session.add(newPoll)
-        db.session.flush()
-        db.session.commit()
-        return jsonify({"msg": "added successfully", "poll_id":newPoll.poll_id}), 200
+        token = result["token"]
+        user_id = confirm_token(token)
+        if user_id != 0:
+            choices = result.getlist("choices")
+            zeros = list(map(lambda x: 0, choices))
+            newPree = Pree(user_id=user_id,date_added=result["theDateTime"],is_media=False, pree_type="poll")
+            db.session.add(newPree)
+            db.session.flush()
+            newPoll = Poll(lister=user_id,pree_id=newPree.pree_id,category=result["category"],question=result["poll"],date_added=result["theDateTime"],choices=choices,results=zeros, end_date=result["end_date"], end_time=result["end_time"], status="Open")
+            db.session.add(newPoll)
+            db.session.flush()
+            db.session.commit()
+            return jsonify({"msg": "added successfully", "poll_id":newPoll.poll_id}), 200
+        return jsonify({"msg": "incorrect token"}), 201
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/vote-poll', methods=['POST'])
 def vote_poll():
     #post to a vote table similar to likes
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
-        poll_id = request.json.get('poll_id', None)
-        choice = request.json.get('choice', None)
-        newVote = Vote(user_id=user_id,poll_id=poll_id,choice=choice)
-        db.session.add(newVote)
-        poll_details = Poll.query.get(poll_id)
-        new_results = poll_details.results
-        new_results[choice] = poll_details.results[choice] + 1
-        poll_details.results.set(new_results)
-        votecount = poll_details.votes + 1
-        poll_details.votes = votecount
-        db.session.commit()
-        return jsonify({"msg":"vote added.", "votes":votecount,"results":new_results}) , 200
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
+        if user_id != 0:
+            poll_id = request.json.get('poll_id', None)
+            choice = request.json.get('choice', None)
+            newVote = Vote(user_id=user_id,poll_id=poll_id,choice=choice)
+            db.session.add(newVote)
+            poll_details = Poll.query.get(poll_id)
+            new_results = poll_details.results
+            new_results[choice] = poll_details.results[choice] + 1
+            poll_details.results.set(new_results)
+            votecount = poll_details.votes + 1
+            poll_details.votes = votecount
+            db.session.commit()
+            return jsonify({"msg":"vote added.", "votes":votecount,"results":new_results}) , 200
+        return jsonify({"msg": "incorrect token"}), 201
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 @app.route('/api/delete-poll', methods=['PUT'])
@@ -261,7 +283,9 @@ def events():
         personnel_ids = result.getlist("personnel_ids")
         personnel = result.getlist("personnel")
         attractions = result.getlist("attractions")
-        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="event")
+        token = result["token"]
+        user_id = confirm_token(token)
+        newPree = Pree(user_id=user_id,date_added=result["theDateTime"],is_media=True, pree_type="event")
         db.session.add(newPree)
         db.session.flush()
         newEvent = Event(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"], host=result["host"],description=result["description"],category=result["category"],typeOf=result["typeOf"],metrics=result["metrics"],venue=result["venue"],where=result["where"],status=result["status"],dates=dates,start_times=start_times,end_times=end_times,tickets=tickets,costs=costs, currencies=currencies,personnel_ids=personnel_ids,personnel=personnel,attractions=attractions, numOfPics=numOfPics)
@@ -271,7 +295,7 @@ def events():
         event_folder = app.config['UPLOAD_FOLDER'] + "events/"
         os.makedirs(event_folder + prefix)   
         for index, pic in enumerate(photos):
-            filename = prefix + "/" + str(index)
+            filename = prefix + "/" + str(index) + ".jpeg"
             #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
             pic.save(os.path.join(event_folder , filename))
         db.session.commit()
@@ -281,7 +305,6 @@ def events():
 @app.route('/api/get-events', methods=['POST'])
 def get_events():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
         typeOf = request.json.get('typeOf', None)
         result = db.session.query(Event, User, Profile).join(User, User.user_id == Event.lister).join(Profile, Profile.user_id == Event.lister).filter(Event.is_visible == True, Event.typeOf == typeOf).order_by(Event.event_id.desc()).all()
         events = []
@@ -359,7 +382,9 @@ def classifieds():
             for i in range(len(z),mostC):
                 z.append("")
             subcontent.append(z)
-        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="classified")
+        token = result["token"]
+        user_id = confirm_token(token)
+        newPree = Pree(user_id=user_id,date_added=result["theDateTime"],is_media=True, pree_type="classified")
         db.session.add(newPree)
         db.session.flush()
         newJob = Classified(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"],description=description,category=result["category"],typeOf=result["typeOf"],metrics=result["metrics"],location=result["location"],salary=result["salary"],company=result["company"],subtopics=subtopics,contents=contents,subcontent=subcontent,qualifications=qualifications,benefits=benefits,skills=skills,questions=questions,responses=responses,end_date=str(result["end_date"]))
@@ -395,7 +420,9 @@ def volunteer():
         photos = request.files.getlist("media")
         numOfPics = (len(photos))
         contributions = result.getlist("contributions")
-        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type="volunteer")
+        token = result["token"]
+        user_id = confirm_token(token)
+        newPree = Pree(user_id=user_id,date_added=result["theDateTime"],is_media=True, pree_type="volunteer")
         db.session.add(newPree)
         db.session.flush()
         newVolunteer = Volunteer(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"],description=result["description"],category=result["category"],venue=result["venue"],location=result["location"],start_date=result["start_date"],end_date=result["end_date"],start_time=result["start_time"],end_time=result["end_time"],contributions=contributions,metrics=result["metrics"],numOfPics=numOfPics)
@@ -405,7 +432,7 @@ def volunteer():
         event_folder = app.config['UPLOAD_FOLDER'] + "volunteers/"
         os.makedirs(event_folder + prefix)   
         for index, pic in enumerate(photos):
-            filename = prefix + "/" + str(index)
+            filename = prefix + "/" + str(index) + ".jpeg"
             #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
             pic.save(os.path.join(event_folder , filename))
         db.session.commit()

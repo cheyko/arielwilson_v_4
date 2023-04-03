@@ -96,7 +96,7 @@ const EventDetails = props => {
                         if (aType === "Host"){
                             return(
                                 <div key={idx}>
-                                    <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
+                                    <Link className="user-item" to={`/user/${event.personnel[idx].username}`}>
                                         <ViewUserCard user={event.personnel[idx]} />
                                     </Link>
                                     <br />
@@ -114,7 +114,7 @@ const EventDetails = props => {
                         if (aType === "Speaker"){
                             return(
                                 <div key={idx}>
-                                    <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
+                                    <Link className="user-item" to={`/user/${event.personnel[idx].username}`}>
                                         <ViewUserCard user={event.personnel[idx]} />
                                     </Link>
                                     <br />
@@ -132,7 +132,7 @@ const EventDetails = props => {
                         if (aType === "Performer"){
                             return(
                                 <div key={idx}>
-                                    <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
+                                    <Link className="user-item" to={`/user/${event.personnel[idx].username}`}>
                                         <ViewUserCard user={event.personnel[idx]} />
                                     </Link>
                                     <br />
@@ -150,7 +150,7 @@ const EventDetails = props => {
                         if (aType === "Presenter"){
                             return(
                                 <div key={idx}>
-                                    <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
+                                    <Link className="user-item" to={`/user/${event.personnel[idx].username}`}>
                                         <ViewUserCard user={event.personnel[idx]} />
                                     </Link>
                                     <br />
@@ -168,7 +168,7 @@ const EventDetails = props => {
                         if (aType === "General") {
                             return( 
                                 <div key={idx}>
-                                    <Link className="user-item" to={`/view-user-profile/${event.personnel[idx].user_id}`}>
+                                    <Link className="user-item" to={`/user/${event.personnel[idx].username}`}>
                                         <ViewUserCard user={event.personnel[idx]} />
                                     </Link>
                                     <br />

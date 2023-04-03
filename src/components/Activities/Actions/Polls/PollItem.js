@@ -10,7 +10,8 @@ import { useCallback } from "react";
 const PollItem = props => {
 
     const {poll, page} = props;
-    const user_id = props.context.user ? props.context.user.id : 0;
+    //const user_id = props.context.user ? props.context.user.id : 0;
+    const token = props.context.token ? props.context.token : 0;
     const [showPoll, setShowPoll] = useState(true);
     const [voted, setVoted] = useState(poll.did_vote);
     const [theWidth, setWidth] = useState(0);
@@ -22,10 +23,10 @@ const PollItem = props => {
     const [windowSize, setSize] = useState(0);
 
     const vote = async(index) => {
-        if (props.context.user){
+        if (props.context.token){
             const poll_id = poll.poll_id;
             const choice = index;
-            await axios.post('/api/vote-poll',{user_id, poll_id, choice}).then(
+            await axios.post('/api/vote-poll',{token, poll_id, choice}).then(
                 (result1) => {
                     if (result1.status === 200){
                         //setResponseMsg("Task status was changed.");
@@ -56,8 +57,6 @@ const PollItem = props => {
         var time_vals = poll.end_time.split(":");
         poll_end.setHours(time_vals[0],time_vals[1],time_vals[2]);
         var now = new Date();
-        console.log(poll_end);
-        console.log(now);
         return (poll_end.getTime() > now.getTime());
     },[poll.end_date, poll.end_time]);
 
@@ -128,7 +127,7 @@ const PollItem = props => {
                     <div className="panel">
                         {poll.choices && poll.choices.length > 0 &&
                             <>
-                                {voted || (poll.lister.user_id === user_id) || isOpen === false ?
+                                {voted || (poll.lister.is_user === true) || isOpen === false ?
                                 <>
                                     {poll.choices.map((choice,index) => 
                                         <div key={index} className="panel-block p-0">
@@ -153,13 +152,17 @@ const PollItem = props => {
                                             </button>
                                         </div>
                                     )}
+                                    <div className="panel-block">
+                                        <span><b> {votes} </b>  {votes === 1 ? "vote" : "votes"} </span> &nbsp; - &nbsp; 
+                                        <span><b> {isOpen === true ? "Ends" : "Ended"} : </b>{convertDate(poll.end_date)}, {convertTime(poll.end_time)}  </span>
+                                    </div>
                                 </>}
                             </>
                         }
                     </div>
                 </>
             }
-            <Link className="user-item" to={`/view-user-profile/${poll.lister.user_id}`}>
+            <Link className="user-item" to={`/user/${poll.lister.username}`}>
                 <ViewUserCard user={poll.lister} />
             </Link>
         </div>

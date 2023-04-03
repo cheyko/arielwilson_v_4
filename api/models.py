@@ -11,6 +11,7 @@ class TokenAlpha(db.Model):
     token_val = db.Column(db.String(7), unique=True)
     is_assigned = db.Column(db.Boolean, default=False)
     assigned_to = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'))
+    expiry_date = db.Column(db.DateTime)
 
 class TokenOmega(db.Model):
     __tablename__ = 'wg_tokens_omega'
@@ -19,6 +20,7 @@ class TokenOmega(db.Model):
     token_val = db.Column(db.String(7), unique=True)
     is_assigned = db.Column(db.Boolean, default=False)
     assigned_to = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'))
+    expiry_date = db.Column(db.DateTime)
      
 class Accesses(db.Model):
     __tablename__ = 'wg_access_types'

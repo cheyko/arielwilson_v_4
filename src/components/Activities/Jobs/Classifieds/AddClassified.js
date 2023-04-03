@@ -7,7 +7,8 @@ const AddClassified = props => {
 
     let navigate = useNavigate();
 
-    const user_id = props.context.user.id;
+    //const user_id = props.context.user.id;
+    const token = props.context.token;
     const [title, setTitle] = useState("");
     const categories = ["Agriculture, Food, and Natural Resources", "Architecture and Construction", "Arts, Audio/Video Technology, and Communication",
                         "Business and Finance", "Government and Public Administration", "Health Science", "Information Technology", "Law, Public Safety, Corrections, and Security",
@@ -98,7 +99,7 @@ const AddClassified = props => {
         if(title !== "" && category !== "" && location !== "" && metrics !== "" && company !== ""){
             const formData = new FormData();
             formData.append('theDateTime',theDateTime);
-            formData.append('user_id',user_id);
+            formData.append('token',token);
             formData.append('title',title);
             formData.append('category',category);
             formData.append('location', location);

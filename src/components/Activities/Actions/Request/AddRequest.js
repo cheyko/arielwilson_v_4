@@ -48,7 +48,8 @@ const AddTask = props => {
         return result;
     }
 
-    const user_id = props.context.user.id;
+    //const user_id = props.context.user.id;
+    const token = props.context.token;
     //const [typeOf, setTypeOf] = useState("Question");
     const [question, setQuestion] = useState("");
     //const [status, setStatus] = useState("Sent");
@@ -83,11 +84,11 @@ const AddTask = props => {
             const formData = new FormData();
             formData.append('theDateTime',theDateTime);
             formData.append('typeOf',typeOf);
-            formData.append('user_id',user_id);
+            formData.append('token',token);
             formData.append('isFor',isFor);
             formData.append('question',question);
             formData.append('status',status);
-            choices.forEach( (choice,index) => {
+            choices.forEach( (choice) => {
                 formData.append('choices',choice);
             });
             await axios.post('/api/requests',formData, 
@@ -100,6 +101,7 @@ const AddTask = props => {
                     if (result.status === 200){
                         //const request_id = result.data.request_id;
                         clearFunc();
+                        props.setGotRequest(false);
                         setResponseMsg("Request was saved.");
                     }else{
                         setResponseMsg("Request was not saved, please try again. Contact us for suppport if problem persist.");
@@ -165,7 +167,7 @@ const AddTask = props => {
                 setSearchVal(e.target.value);
                 if( e.target.value !== ""){
                     const searchval = e.target.value;
-                    axios.post(`${process.env.REACT_APP_PROXY}/api/search-users`,{searchval, user_id}).then(
+                    axios.post(`${process.env.REACT_APP_PROXY}/api/search-users`,{searchval, token}).then(
                         (search) => {
                             if (search.status === 200){
                                 if (search.data.userlist){

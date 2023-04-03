@@ -4,7 +4,9 @@ from functools import wraps
 import jwt
 from sqlalchemy import func, and_
 from api.models import db, TokenAlpha, TokenOmega
-
+#import datetime
+#import pytz
+from datetime import datetime, timedelta
 
 #function used to wrap API Functions preventing unauthorized access.
 def authenticate_token(t):
@@ -30,30 +32,34 @@ def authenticate_token(t):
 def assign_token(user_id):
     token_alpha = db.session.query(TokenAlpha).filter_by(is_assigned = False).order_by(func.random()).limit(1).first()
     token_omega = db.session.query(TokenOmega).filter_by(is_assigned = False).order_by(func.random()).limit(1).first()
+    utc_datetime = datetime.utcnow() + timedelta(days=365)
+    val = utc_datetime.strftime('%Y-%m-%d %H:%M:%S')
     token_alpha.is_assigned = True
     token_alpha.assigned_to = user_id
+    token_alpha.expiry_date = val
     token_omega.is_assigned = True
     token_omega.assigned_to = user_id
+    token_omega.expiry_date = val
     db.session.commit()
-    print(token_alpha)
-    print(token_omega)
     return {"token_alpha":token_alpha.token_val, "token_omega":token_omega.token_val}
 
 def confirm_token(token):
-    tokens = token.split('-')
-    result = db.session.query(TokenAlpha, TokenOmega).join(TokenAlpha.assigned_to == TokenOmega.assigned_to).filter(and_(TokenAlpha.token_val == tokens[0], TokenOmega.token_val == tokens[1])).first()
+    tokens = [token[:7],token[7:]]
+    result = db.session.query(TokenAlpha, TokenOmega).join(TokenOmega, TokenAlpha.assigned_to == TokenOmega.assigned_to).filter(and_(TokenAlpha.token_val == tokens[0], TokenOmega.token_val == tokens[1])).first()
     if result is not None:
         return result.TokenAlpha.assigned_to
     else:
-        return False
+        return 0
     
 def detach_token(token):
-    tokens = token.split('-')
+    tokens = [token[:7],token[7:]]
     token_alpha = db.session.query(TokenAlpha).filter_by(token_val = tokens[0]).first()
     token_omega = db.session.query(TokenOmega).filter_by(token_val = tokens[1]).first()
     token_alpha.is_assigned = False
     token_alpha.assigned_to = None
+    token_alpha.expiry_date = None
     token_omega.is_assigned = False
     token_omega.assigned_to = None
+    token_omega.expiry_date = None
     db.session.commit()
     return True

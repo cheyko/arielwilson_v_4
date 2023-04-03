@@ -12,7 +12,7 @@ import axios from "axios";
 import Context from "./Context";
 //import jwt_decode from 'jwt-decode';
 import CryptoJS from 'crypto-js';
-//import {removeAuth} from './Auth';
+import {getAuth, removeAuth, setAuth} from './Auth';
 
 //Components
 import Profile from "./components/Profile";
@@ -79,23 +79,20 @@ const data = {
 };
 
 export default class App extends Component {
+
   constructor(props){
     super(props);
-    let user = localStorage.getItem("user-context");
-    user = user ? JSON.parse(user) : null;
+    let token = getAuth();
+    token = token ? token : null;
     this.state = {
-      user: user,
-      prees: [],
-      menuChoice: "",
+      token,
       jwt : sign(data, secret, algorithm), // creation of the JSON Web Token which is placed in the API request headers.
     };
     /// Create Router reference 
     this.routerRef = React.createRef();
-    console.log("constructor");
   }
 
   async componentDidMount(){
-    //this.setState({ready:true}); 
     const time = await axios.get(process.env.REACT_APP_PROXY+'/api/time',{
       headers: {
         'Authorization' : this.state.jwt,
@@ -105,47 +102,36 @@ export default class App extends Component {
 
     let user = localStorage.getItem("user-context");
     let welcome = localStorage.getItem("aic123");
-    let userlist = localStorage.getItem("userlist");
     let recent = localStorage.getItem("recent");
-    //let menuChoice = JSON.parse(localStorage.getItem("choice"));
-    user = user ? JSON.parse(user) : null;
     welcome = welcome ? JSON.parse(welcome) : null;
     this.setMenuWidth();
     window.addEventListener("resize", this.setMenuWidth);
 
     //if User is logged in
     recent = recent ? parseInt(recent) : 0;
-    //recent = this.state.recent ? this.state.recent : 0;
-    userlist = userlist ? JSON.parse(userlist) : [];
-    //userlist = this.state.userlist ? this.state.userlist : [];
-    const user_id = user ? user.id : 0;
-    const prees = user ? await axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{user_id}) : {"data":[]}; //add reactions to the prees from the backend before response to request.
-    const messages = user ? await this.getMessages(user_id) : null; // review if data too large later offset maybe needed
-    //console.log(prees);
-    //this.setState({user, ready, welcome, prees:prees.data, userlist, menuChoice, recent, messages, boxWidth:boxWidth}); //, 
-    this.setState({user, prees:prees.data, messages, recent, userlist, welcome});
+    const token = this.state.token;
+    user = this.state.token ? JSON.parse(user) : null;
+    const prees = token ? await axios.post("/api/see-the-pree",{token}) : {"data":null}; //used in av and magazine, retrieve prees differently on the respective pages
+    const messages = user ? await this.getMessages(user.id) : null; // review if data too large later offset maybe needed
+    this.setState({recent,prees:prees.data, welcome, user, messages}); //messages, userlist
     window.addEventListener('storage', event => {
       if(event.key){
-        if (event.key !== 'user-context') return;
+        if (event.key !== 'token') return;
         if (event.oldValue === null){
           alert('New user signed in');
         }else{
-          alert("User details were tampered with");
+          alert("token was tampered with");
           this.logout(event);
           window.location.reload();
         }
       }else{
-        if(!localStorage.getItem("user-context")){
+        if(!localStorage.getItem("token")){
           this.logout(event);
           window.location.reload();
         }
       }
     });
   }
-
-  /*setMenuChoice = (choice) => {
-      this.setState({menuChoice:choice});
-  }*/
 
   setMenuWidth = () => {
     let val = window.screen.width;
@@ -330,7 +316,6 @@ export default class App extends Component {
 
   //method to set most recent correspondent implement with group later
   setRecent = (userview_id) => {
-    //console.log(userview_id);
     const recent = userview_id;
     this.setState({recent});
     localStorage.setItem("recent", userview_id);
@@ -358,8 +343,8 @@ export default class App extends Component {
         console.log(error);
       }); 
       this.setState({correspondents});
-      console.log(allmessages);
-      console.log(correspondents);
+      //console.log(allmessages);
+      //console.log(correspondents);
       return allmessages;
     }
   }
@@ -414,21 +399,24 @@ export default class App extends Component {
 
   //pull all and find specific user from list or do request with return of specific user from query ?
   getMyView = async () => {
-    const user_id = this.state.user ? this.state.user.id : 0;
-    const userview =  await axios.post(`${process.env.REACT_APP_PROXY}/api/my-view`,{user_id}).catch(
-      (userview) => {
-          if (userview.status !== 200){ 
-              console.log("No results from search");
-              return false;
-          }
+    //const user_id = this.state.user ? this.state.user.id : 0;
+    const uname = this.state.user ? this.state.user.username : "";
+    if(uname !== ""){
+      const userview =  await axios.post(`${process.env.REACT_APP_PROXY}/api/profile-details`,{uname}).catch(
+        (userview) => {
+            if (userview.status !== 200){ 
+                console.log("No results from search");
+                return false;
+            }
+        }
+      );
+      if (userview.status === 200){
+        return userview.data;
+      }else{
+        return false;
       }
-    );
-    
-    if (userview.status === 200){
-      return userview.data;
-    }else{
-      return false;
     }
+    return false;
   }
 
   getUsers = async(userlist) => {
@@ -443,10 +431,10 @@ export default class App extends Component {
   }
   
   //pull all and find specific user from list or do request with return of specific user from query ?
-  getUserView = async(userID) => {
-    const user_id = userID;
-    if (user_id && user_id !== 0){
-      const userview =  await axios.post(`${process.env.REACT_APP_PROXY}/api/my-view`,{user_id}).catch(
+  getUserView = async(uname) => {
+    //const uname = userID;
+    if (uname && uname !== ""){
+      const userview =  await axios.post(`${process.env.REACT_APP_PROXY}/api/profile-details`,{uname}).catch(
         (userview) => {
             if (userview.status !== 200){ 
                 console.log("No results from search");
@@ -564,16 +552,16 @@ export default class App extends Component {
     });
 
     if (res.status === 200){
-      const user_id = res.data.user_id;
-      localStorage.setItem("user_id", JSON.stringify(user_id));
-      this.setState({user_id});
+      const token = res.data.token;
+      //localStorage.setItem("user_id", JSON.stringify(user_id));
+      setAuth(token);
+      this.setState({token});
       return true;
     }else{
       return false;
     }
   }
 
-  //login
   login = async (email, password) => {
     const lkjhg1 = CryptoJS.AES.encrypt(email, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
     const lkjhg2 = CryptoJS.AES.encrypt(password, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
@@ -594,40 +582,24 @@ export default class App extends Component {
     )
     if (res.status === 200){
       let welcome;
-      let user;
+      let token = res.data.access_token;
       let toggle = false;
-      let user_id;
+      let user = {
+        "id": res.data.id,
+        "username":res.data.username,
+        "gender": res.data.gender
+      }
 
       // get access level from database
-      user = {
-        id: res.data.user_id,
-        email:email,
-        token: res.data.access_token,
-        accessLevel: res.data.access_type,
-        username: res.data.username,
-        fullname : res.data.firstname + " " + res.data.lastname,
-        has_profile : res.data.has_profile,
-        phonenumber: res.data.phonenumber,
-        gender : res.data.gender,
-        location : res.data.location
-      }
       if (res.data.has_profile === true){
         welcome = false;
-        user_id = res.data.user_id;
-        const prees = await axios.post(process.env.REACT_APP_PROXY+"/api/see-the-pree",{user_id});
-        const messages = await this.getMessages(user_id);
-        this.setState({prees:prees.data,messages:messages});
       }else{
         welcome = true;
-        user_id = res.data.user_id;
-        this.setState({lkjhg1,lkjhg2});
-      }
-      
-      //replace the implementations that used user_id with user.id inside the welcome features
-      localStorage.setItem("user-context", JSON.stringify(user));
+      }      
+      setAuth(token);
       localStorage.setItem("aic123", JSON.stringify(welcome));
-      localStorage.setItem("user_id", JSON.stringify(user_id));
-      this.setState({user,welcome,toggle:toggle,user_id});
+      localStorage.setItem("user-context", JSON.stringify(user));
+      this.setState({token,welcome,toggle, user});
       return true;
     }else if (res.status === 201){
       return null;
@@ -635,15 +607,13 @@ export default class App extends Component {
       return false;
     }
   };
-
+  
   //logout
   logout = async(e) => {
-    const token = this.state.user.token
+    const token = this.state.token
     const done = await axios.post(process.env.REACT_APP_PROXY+"/api/logout",{token});
-    this.setState({user : null, ready : false, welcome: false, recent:0, prees:null});
-    localStorage.removeItem("user-context");
-    localStorage.removeItem("aic123");
-    console.log(done.status);
+    this.setState({token : null, welcome: false, recent:0});
+    removeAuth();
     return done.status === 200;
   }
 
@@ -722,10 +692,10 @@ export default class App extends Component {
                 <Route path="/view-pree/:id" element={<ViewPree />} />
                 <Route path="/view-blueberry/:id" element={<ViewMediaItem />} />
                 <Route path="/view-trendy/:id" element={<ViewTrend />} />
-                <Route path="/view-user-profile/:id" element={<ViewUserProfile />} />
+                <Route path="/user/:uname" element={<ViewUserProfile />} />
                 <Route path="/view-user-list/:id/:action" element={<ViewUserList />} />
                 <Route path="/groups/:id/:action" element={<Groups />} />
-                <Route path="/view-group/:id/" element={<ViewGroup />} />
+                <Route path="/view-group/:groupname/" element={<ViewGroup />} />
                 {/*<Route path="/shops/propfinder" element={<PropFinder />} />*/}
                 <Route path="/listing-view/:id" element={<ViewListing />} />
                 <Route path="/vehicle-view/:id" element={<ViewVehicle />} />

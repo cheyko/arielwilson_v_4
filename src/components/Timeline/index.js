@@ -94,16 +94,16 @@ const Timeline = props => {
 
     useEffect( () => {
         window.addEventListener('scroll', e => handleScroll(e));
-        const user_id = props.context.user ? props.context.user.id : 0;
+        const token = props.context.token ? props.context.token : 0;
         if (loadNew){
-            axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{user_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{token}).then(
                 result => {
                     renderPrees(result.data);
                 }
             );
             setLoadNew(false);
         }
-    },[props.context.user,loadNew]);
+    },[props.context.token,loadNew]);
 
     let timeline;
     if(allPrees.length > 0){

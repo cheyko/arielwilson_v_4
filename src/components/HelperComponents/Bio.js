@@ -5,8 +5,9 @@ import { useCallback } from "react";
 
 const Bio = props => {
 
-    let new_id = localStorage.getItem("user_id");
+    //let new_id = localStorage.getItem("user_id");
     //const getUname = props.context.user ? props.context.user.username : "";
+    const token = props.context.token ? props.context.token : 0;
     const [uname, setUname] = useState("");
     const [dob, setDOB] = useState("");
     const [tagline, setTagline] = useState("");
@@ -16,8 +17,8 @@ const Bio = props => {
 
     const loadBio = useCallback( async () => {
         props.setResponseMsg("");
-        const user_id = props.context.user_id ? props.context.user_id : new_id;
-        await axios.post(`${process.env.REACT_APP_PROXY}/api/get-bio`,{user_id}).then(
+        //const user_id = props.context.user_id ? props.context.user_id : new_id;
+        await axios.post(`${process.env.REACT_APP_PROXY}/api/get-bio`,{token}).then(
             (result) => {
                 if (result.status !== 200){
                     props.setResponseMsg("Bio information was not loaded, please refresh page and try again. Contact us for suppport if problem persist.");
@@ -33,7 +34,7 @@ const Bio = props => {
         );
         setLoaded(true);
         return true;
-    },[props, new_id]);
+    },[token, props]);
 
     useEffect( () => {
         if (props.func === 'edit' && loaded === false){
@@ -75,10 +76,10 @@ const Bio = props => {
     const saveBio = async (e) => {
         e.preventDefault();
         props.setResponseMsg("");
-        const user_id = props.context.user_id ? props.context.user_id : new_id;
+        //const user_id = props.context.user_id ? props.context.user_id : new_id;
         
         if (props.func === 'create'){
-            await axios.post(`${process.env.REACT_APP_PROXY}/api/bio`,{user_id,dob,tagline,description,location}).then(
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/bio`,{token,dob,tagline,description,location}).then(
                 (result1) => {
                     if (result1.status === 200){
                         //change some bool to true to display the next button
@@ -94,7 +95,7 @@ const Bio = props => {
                 }
             );
         }else if (props.func === 'edit'){
-            await axios.put(`${process.env.REACT_APP_PROXY}/api/bio`,{user_id,uname,dob,tagline,description,location}).then(
+            await axios.put(`${process.env.REACT_APP_PROXY}/api/bio`,{token,uname,dob,tagline,description,location}).then(
                 (result2) => {
                     if (result2.status === 200){                    
                         props.setResponseMsg("Bio information was updated.");

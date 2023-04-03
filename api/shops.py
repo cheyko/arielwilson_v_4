@@ -41,7 +41,7 @@ def listings():
         listing_folder = app.config['UPLOAD_FOLDER'] + "listings/"
         os.makedirs(listing_folder + prefix)   
         for index, pic in enumerate(photos):
-            filename = prefix + "/" + str(index)
+            filename = prefix + "/" + str(index) + ".jpeg"
             #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
             pic.save(os.path.join(listing_folder , filename))
         db.session.commit()
@@ -86,7 +86,7 @@ def vehicles():
         vehicle_folder = app.config['UPLOAD_FOLDER'] + "vehicles/"
         os.makedirs(vehicle_folder + prefix)   
         for index, pic in enumerate(photos):
-            filename = prefix + "/" + str(index)
+            filename = prefix + "/" + str(index) + ".jpeg"
             #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
             pic.save(os.path.join(vehicle_folder , filename))
         db.session.commit()
@@ -131,7 +131,7 @@ def products():
         product_folder = app.config['UPLOAD_FOLDER'] + "products/"
         os.makedirs(product_folder + prefix)   
         for index, pic in enumerate(photos):
-            filename = prefix + "/" + str(index)
+            filename = prefix + "/" + str(index) + ".jpeg"
             #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
             pic.save(os.path.join(product_folder , filename))
         db.session.commit()
@@ -175,7 +175,7 @@ def items():
         item_folder = app.config['UPLOAD_FOLDER'] + "items/"
         os.makedirs(item_folder + prefix)   
         for index, pic in enumerate(media):
-            filename = prefix + "/" + str(index)
+            filename = prefix + "/" + str(index) + ".jpeg"
             #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
             pic.save(os.path.join(item_folder , filename))
         db.session.commit()
@@ -219,7 +219,7 @@ def services():
         service_folder = app.config['UPLOAD_FOLDER'] + "services/"
         os.makedirs(service_folder + prefix)   
         for index, pic in enumerate(photos):
-            filename = prefix + "/" + str(index)
+            filename = prefix + "/" + str(index) + ".jpeg"
             #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
             pic.save(os.path.join(service_folder , filename))
         db.session.commit()

@@ -138,7 +138,7 @@ const Homepage = props => {
     };
 
     return (
-        !props.context.user ? (
+        !props.context.token ? (
         <div className="hero">
             <div>
                 <div className="columns">

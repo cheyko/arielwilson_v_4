@@ -7,7 +7,8 @@ import $ from "jquery";
 
 const HostEvent = props => {
 
-    const user_id = props.context.user ? props.context.user.id : 0;
+    //const user_id = props.context.user ? props.context.user.id : 0;
+    const token = props.context.token ? props.context.token : 0;
     const [title, setTitle] = useState("");
     const [host, setHost] = useState("");
     const [typeOf, setType] = useState("");
@@ -120,7 +121,7 @@ const HostEvent = props => {
         && dates.length > 0 && startTimes.length > 0 && endTimes.length > 0 && entry !== "" ){
             const formData = new FormData();
             formData.append('theDateTime',theDateTime);
-            formData.append('user_id',user_id);
+            formData.append('token',token);
             formData.append('title',title);
             formData.append('host',host);
             formData.append('typeOf',typeOf);
@@ -373,7 +374,7 @@ const HostEvent = props => {
                 setUserList([]);
                 if( e.target.value !== ""){
                     const searchval = e.target.value;
-                    axios.post('/api/search-users',{searchval, user_id}).then(
+                    axios.post('/api/search-users',{searchval, token}).then(
                         (search) => {
                             if (search.status === 200){
                                 if (search.data.userlist){
