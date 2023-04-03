@@ -111,7 +111,7 @@ export default class App extends Component {
     recent = recent ? parseInt(recent) : 0;
     const token = this.state.token;
     user = this.state.token ? JSON.parse(user) : null;
-    const prees = token ? await axios.post("/api/see-the-pree",{token}) : {"data":null}; //used in av and magazine, retrieve prees differently on the respective pages
+    const prees = token ? await axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{token}) : {"data":null}; //used in av and magazine, retrieve prees differently on the respective pages
     const messages = user ? await this.getMessages(user.id) : null; // review if data too large later offset maybe needed
     this.setState({recent,prees:prees.data, welcome, user, messages}); //messages, userlist
     window.addEventListener('storage', event => {
