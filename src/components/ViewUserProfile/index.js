@@ -34,7 +34,7 @@ const ViewUserProfile = props => {
         //if true => set imgView and vidView to files that are in bio folder
         //if false load a placeholder image and placeholder video
 
-        await axios.post('/api/get-user-media',{uname}).then(
+        await axios.post(`${process.env.REACT_APP_PROXY}/api/get-user-media`,{uname}).then(
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_cv === true){

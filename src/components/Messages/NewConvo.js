@@ -48,11 +48,11 @@ const NewConvo = props => {
         setSearchVal(e.target.value);
         setUserList([]);
         const searchval = e.target.value;
-        const user_id = props.context.user.id;
+        const token = props.context.token;
 
         if( e.target.value !== ""){
 
-            axios.post(`${process.env.REACT_APP_PROXY}/api/search-users`,{searchval, user_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/search-users`,{searchval, token}).then(
                 (search) => {
                     if (search.status === 200){
                         if (search.data.userlist){

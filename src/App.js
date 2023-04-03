@@ -83,9 +83,12 @@ export default class App extends Component {
   constructor(props){
     super(props);
     let token = getAuth();
+    let user = localStorage.getItem("user-context");
     token = token ? token : null;
+    user = token ? JSON.parse(user) : null;
     this.state = {
       token,
+      user,
       jwt : sign(data, secret, algorithm), // creation of the JSON Web Token which is placed in the API request headers.
     };
     /// Create Router reference 
@@ -112,8 +115,8 @@ export default class App extends Component {
     const token = this.state.token;
     user = this.state.token ? JSON.parse(user) : null;
     const prees = token ? await axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{token}) : {"data":null}; //used in av and magazine, retrieve prees differently on the respective pages
-    const messages = user ? await this.getMessages(user.id) : null; // review if data too large later offset maybe needed
-    this.setState({recent,prees:prees.data, welcome, user, messages}); //messages, userlist
+    const convos = token ? await this.getConvos(token) : null;
+    this.setState({recent,prees:prees.data, welcome, user, convos});
     window.addEventListener('storage', event => {
       if(event.key){
         if (event.key !== 'token') return;
@@ -321,40 +324,25 @@ export default class App extends Component {
     localStorage.setItem("recent", userview_id);
   }
 
-  getMessages = async (user_id) => {
-    //const user_id = this.state.user ? this.state.user.id : 0;
-    if (user_id){
-      const messages = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-messages`,{user_id}).catch(
-        (messages) => {
-          if (messages.status !== 200){ 
+  getConvos = async (token) => {
+    if (token){
+      const convos = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-convos`,{token}).catch(
+        (convos) => {
+          if (convos.status !== 200){ 
             return false;
           }
         }
-      ); 
-
-      const allmessages = messages.data.messages;
-      const correspondents = allmessages ? [...new Set(allmessages.map((unique)=> ((unique.sender_id === user_id) && unique.receiver_id) || unique.sender_id ))] : [];
-      this.getUsers(correspondents).then(
-        (y) => {
-          //console.log(y);
-          this.setState({viewlist:y});
-        }
-      ).catch( error => {
-        console.log(error);
-      }); 
-      this.setState({correspondents});
-      //console.log(allmessages);
-      //console.log(correspondents);
-      return allmessages;
+      );
+      console.log(convos.data.convos);
+      return convos.data.convos;
     }
   }
-
   //get a user's convo with another user for use in message component and message shortcut compone
-  getConvo = async (userview_id) => {
-    const user_id = this.state.user.id;
+  getConvo = async (uname) => {
+    const token = this.state.token;
 
-    if (user_id && userview_id !== 0){
-      const convo = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-convo`,{user_id, userview_id}).catch(
+    if (token && uname !== ""){
+      const convo = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-convo`,{token, uname}).catch(
         (convo) => {
           if (convo.status !== 200){ 
             console.log("Convo not found.");
@@ -364,7 +352,6 @@ export default class App extends Component {
       )
 
       if (convo.status === 200){
-        //console.log(convo.data.convo);
         return convo.data.convo;
       }else{
         return "no messages";
@@ -682,7 +669,8 @@ export default class App extends Component {
                 {/*<Route path="/notifications" element={<Notifications />} />*/}
                 <Route path="/social" element={<Social />} />
                 <Route path="/messages/:category/:msgtype/:id" element={<Messages />} />
-                <Route path="/messages" element={<Messages />} />
+                <Route path="/message/:user/:uname" element={<Messages />} />
+                <Route path="/message" element={<Messages />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/test" element={<Test />} />
                 <Route path="/wallet" element={<Wallet />} />

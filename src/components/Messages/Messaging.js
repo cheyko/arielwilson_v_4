@@ -5,23 +5,22 @@ import NewConvo from "./NewConvo";
 
 const Messaging = props => {
 
-    let {id} = props;
-    let {userview} = props;
-    let {user_id} = props;
+    let {uname} = props;
     let {convo} = props;
-
+    let {userview} = props;
+    
+    const user_id = props.context.token ? props.context.user.id : 0;
+    const token = props.context.token ? props.context.token : 0;
     const endOfMessages = useRef(null);
-
     const [modalIsOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
-        
-        if(id > 0){
-            if(convo.length > 0){
+        if(uname){
+            if(convo.length > 0 && endOfMessages.current){
                 endOfMessages.current.scrollIntoView({ behavior: "smooth" });
             }        
         }
-    },[id, convo]);
+    },[uname, convo, endOfMessages]);
 
     const getDateTime = () => {
         const orignal = new Date();
@@ -64,10 +63,9 @@ const Messaging = props => {
         e.preventDefault();
         var theMsg = document.getElementById("new-message").textContent;
         var theDate = getDateTime();
-        const userview_id = id;
 
         console.log(theMsg);
-        axios.post(`${process.env.REACT_APP_PROXY}/api/create-message`,{user_id,userview_id,theMsg,theDate}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/create-message`,{token,uname,theMsg,theDate}).then(
             (createMsg) => {
                 if (createMsg.status !== 200){
                     throw new Error('Message was not sent succesfully.');
@@ -75,7 +73,7 @@ const Messaging = props => {
                     console.log('Message was sent succesfully.');
                     document.getElementById("new-message").textContent = "";
                     //add message to exisiting convo
-                    props.context.getConvo(userview_id).then(
+                    props.context.getConvo(uname).then(
                         (updateConvo) => {
                             if(!updateConvo){
                                 throw new Error('There was an error when getting convo');
@@ -88,7 +86,7 @@ const Messaging = props => {
             }
         );
 
-        props.context.setRecent(userview_id);
+        props.context.setRecent(uname);
     }
 
     return (
@@ -97,7 +95,7 @@ const Messaging = props => {
                 <br />
                 <div id="message-app" className="msg-section">
                     <div className="message-app-container">
-                        {id > 0 && userview? 
+                        {uname ? 
                         (<>
                             <div key={userview} id="convo-header">
                                 <div className="media">

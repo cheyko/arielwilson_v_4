@@ -7,7 +7,7 @@ from flask import request, jsonify
 from sqlalchemy import or_ , and_ , func, select
 from sqlalchemy.orm import aliased
 from api.models import db, User, Message, Profile 
-
+from api.security import confirm_token
 ###############----messages.py-----##############
 
 #api method to create new messages.
@@ -58,7 +58,8 @@ def get_convos_scrap():
 @app.route('/api/get-convos', methods=['GET','POST'])
 def get_convos():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
+        token = request.json.get('token', None)
+        user_id = confirm_token(token)
         convos = []
         query1 = db.session.query(Message.receiver_id).filter(Message.sender_id == user_id).distinct(Message.receiver_id)
         query2 = db.session.query(Message.sender_id).filter(Message.receiver_id == user_id).distinct(Message.sender_id)
@@ -76,9 +77,9 @@ def get_convos():
                 join(userRecv, userRecv.user_id == Message.receiver_id).join(profileRecv, profileRecv.user_id == Message.receiver_id).\
                 filter(Message.message_id == db.session.execute(stmt).first()[0]).first()
             if (message[0].sender_id == user_id):
-                attachment = {"firstname":message[6], "lastname":message[7], "username":message[8], "tagline":message[9], "has_dp":message[10]}
+                attachment = {"firstname":message[6], "lastname":message[7], "username":message[8], "tagline":message[9], "has_dp":message[10], "metrics":"sent"}
             else:
-                attachment = {"firstname":message[1], "lastname":message[2], "username":message[3], "tagline":message[4], "has_dp":message[5]}
+                attachment = {"firstname":message[1], "lastname":message[2], "username":message[3], "tagline":message[4], "has_dp":message[5], "metrics":"received"}
             msgObj = {"message_content":message[0].message_content, "sent_date":message[0].sent_date, "is_seen":message[0].is_seen, "is_visible":message[0].is_visible, "attachment":attachment}
             convos.append(msgObj)
         return {"convos":convos}, 200
@@ -101,8 +102,12 @@ def get_messages():
 @app.route('/api/get-convo', methods=['GET','POST'])
 def get_convo():
     if request.method == 'POST':
-        user_id = request.json.get('user_id', None)
-        userview_id = request.json.get('userview_id', None)
+        #user_id = request.json.get('user_id', None)
+        #userview_id = request.json.get('userview_id', None)
+        token = request.json.get('token', None)
+        uname = request.json.get('uname', None)
+        user_id = confirm_token(token)
+        userview_id = User.query.filter_by(username=uname).first().user_id
         convo = []
         results = Message.query.filter(or_( and_(Message.sender_id == user_id,Message.receiver_id == userview_id), and_(Message.sender_id == userview_id, Message.receiver_id == user_id))).all()
         #print(results)

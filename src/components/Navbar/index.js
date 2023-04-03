@@ -41,7 +41,6 @@ const Navbar = props => {
                         }else{
                             setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
                         }
-                        setGetMedia(true);
                     }
                 }
             );
@@ -86,6 +85,7 @@ const Navbar = props => {
         }
         if (gotMedia === false){
             loadMainMedia();
+            setGetMedia(true);
         }
         
         if (document.documentElement.classList.contains("hide-scroll") === true){
@@ -117,7 +117,7 @@ const Navbar = props => {
                                         activate('messages'); 
                                         props.context.toggleMenu(e);
                                     }} 
-                                    to={'/messages'/*`/messages/convo/direct/${props.context.recent}`*/}>
+                                    to={'/message'/*`/messages/convo/direct/${props.context.recent}`*/}>
                                     <div className={selection === "messages" ? "is-active" : "is-not-active"}> 
                                         <FontAwesomeIcon icon={faPaperPlane} size="1x" /> 
                                             {" "}<span className="badge-length">0</span><br/>

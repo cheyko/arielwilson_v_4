@@ -12,21 +12,15 @@ import Encourage from "../HelperComponents/Encourage";
 
 const Messages = props => {
 
-    const user_id = props.context.user ? props.context.user.id : 0;
-    let {id} = useParams();
-    //let {catergory} = useParams();
-    //let {msgtype} = useParams();
+    let {uname} = useParams();
 
     const [userview, setUserview] = useState("");
     const [convo, setConvo] = useState([]);
     const [count, setCount] = useState(0);
     const [modalIsOpen, setModalOpen] = useState(false);
     const [msgSection, setMsgSection] = useState("");
-    //const [convoView, setConvoView] = useState([]);
 
-    const allmessages = props.context.messages ? props.context.messages : []; 
-    const people = props.context.viewlist ? props.context.viewlist : [];
-    const [showMore, setShowMore] = useState(false);
+    const convos = props.context.convos ? props.context.convos : [];
     const [convosMenu, showConvosMenu] = useState(false);
     const [notificationsMenu, showNotificationsMenu] = useState(false);
 
@@ -36,21 +30,34 @@ const Messages = props => {
 
     useEffect(() => {
         let interval = null;
-        //let convoMsgs = null;
-        /*const userview_id = id;
-
-        if (userview_id !== '0'){
-            if (userview === ""){
-                props.context.getUserView(userview_id).then(
-                    (result) => {
-                        if (!result){
-                            throw new Error("there was an error when search for my details");
-                        }else{
-                            setUserview(result);
-                        }
+        if(uname){
+            props.context.getConvo(uname).then(
+                (convoMsgs) => {
+                    if(!convoMsgs){
+                        throw new Error('There was an error when getting convo');
+                    }else{
+                        setConvo(convoMsgs);
                     }
-                );
-                props.context.getConvo(userview_id).then(
+                }
+            );
+            props.context.setRecent(uname);
+        }
+
+        if(userview === "" && uname){
+            props.context.getUserView(uname).then(
+                (result) => {
+                    if (!result){
+                        throw new Error("there was an error when search for my details");
+                    }else{
+                        setUserview(result);
+                    }
+                }
+            );
+        }
+
+        if (count < 1){
+            interval = setInterval(() => {
+                props.context.getConvo(uname).then(
                     (convoMsgs) => {
                         if(!convoMsgs){
                             throw new Error('There was an error when getting convo');
@@ -59,30 +66,15 @@ const Messages = props => {
                         }
                     }
                 );
-                props.context.setRecent(userview_id);
+                 
+                setCount(count => count + 1);
+                console.log("run")
+            }, 10000);  
+        }
+        return () => clearInterval(interval);
 
-            }else{
-                if (count < 1){
-                    interval = setInterval(() => {
-                        props.context.getConvo(userview_id).then(
-                            (convoMsgs) => {
-                                if(!convoMsgs){
-                                    throw new Error('There was an error when getting convo');
-                                }else{
-                                    setConvo(convoMsgs);
-                                }
-                            }
-                        );
-                         
-                        setCount(count => count + 1);
-                    }, 100000);  
-                    //$('#convo-msgs').scrollTop($('#convo-msgs')[0].scrollHeight); 
-                }
-                return () => clearInterval(interval);
-            }
-        }*/
-    },[/*tab, userview, id, setConvo, user_id*/]);
-
+    },[tab,uname, userview]);
+    
     const toggleMenu = (e) => {
         e.preventDefault();
         $(".navbar-burger").toggleClass("is-active");
@@ -161,17 +153,13 @@ const Messages = props => {
             <br />
             <div className="page-content">
                 <div className="container">
-                    {props.context.user ? 
+                    {props.context.token !== null && 
                         <div className="card">
                             {tab === "message" && 
-                                <div>
-                                    <h1>Messages</h1>
-                                {/*<Messaging id={id} userview={userview} user_id={user_id} convo={convo} setConvo={setConvo} />*/}
-                                </div>
-
+                                <Messaging userview={userview} uname={uname} convo={convo} />
                             }
                             {tab === "convos" && 
-                                <Convos allmessages={allmessages} people={people} user_id={user_id} setUserview={setUserview} setConvo={setConvo} setTab={setTab}/>
+                                <Convos convos={convos} setUserview={setUserview} setConvo={setConvo} setTab={setTab} />
                             }
                             {tab === "wg-mail" &&
                                 <div className="hero-body">
@@ -197,7 +185,9 @@ const Messages = props => {
                                     <h1> RECOMMENDATIONS </h1> 
                                 </div>
                             }
-                        </div>:
+                        </div>
+                    }
+                    {props.context.token === null &&
                         <Encourage wanted={wanted} use={"page"} />
                     }
                 </div>

@@ -5,29 +5,10 @@ import { Link } from "react-router-dom";
 
 const Convos = props => {
 
-    let {allmessages} = props;
-    let {people} = props;
-    let {user_id} = props;
+    let {convos} = props;
 
-    //const [modalIsOpen, setModalOpen] = useState(false);
-    
-    const getLastMsg = (person) => {
-        const result = allmessages.filter((msg) => msg.sender_id === person.user_id || msg.receiver_id === person.user_id);
-        return result[result.length - 1];
-    }
-
-    const loadConvo = async(e, theID) => {
-        const userview_id = theID;
-        props.context.getUserView(userview_id).then(
-            (result) => {
-                if (!result){
-                    throw new Error("there was an error when search for my details");
-                }else{
-                    props.setUserview(result);
-                }
-            }
-        );
-        props.context.getConvo(userview_id).then(
+    const loadConvo = async(user) => {
+        props.context.getConvo(user.username).then(
             (convoMsgs) => {
                 if(!convoMsgs){
                     throw new Error('There was an error when getting convo');
@@ -36,9 +17,9 @@ const Convos = props => {
                 }
             }
         );
-        //const heightVal = $('#convo-msgs')[0] ? $('#convo-msgs')[0].scrollHeight : 0;
-        //$('#convo-msgs').scrollTop(heightVal);
-        props.context.setRecent(userview_id); //get recent from database.
+
+        props.setUserview(user);
+
     }
 
     return (
@@ -46,10 +27,10 @@ const Convos = props => {
             <div id="messages-view">
                 <div id="message-list" className="msg-section">
                     <div className="messages-div">
-                        {people && people.length > 0 ? 
+                        {convos && convos.length > 0 ? 
                         (
-                            people.map((person, index) => (
-                                <Link key={index} className="convo-link" onClick={(e) => { loadConvo(e,person.user_id);props.setTab("message");localStorage.setItem("msg-view","message"); }} to={`/messages/convo/direct/${person.user_id}`}>
+                            convos.map((convo, index) => (
+                                <Link key={index} className="convo-link" onClick={(e) => {loadConvo(convo.attachment);props.setTab("message");localStorage.setItem("msg-view","message"); }} to={`/message/user/${convo.attachment.username}`}>
                                     <article className="media">
                                         <figure className="media-left">
                                             <small>31m</small>
@@ -61,23 +42,20 @@ const Convos = props => {
                                         <div className="media-content">
                                             <div className="content">
                                                 <p>
-                                                    <strong>{person.firstname} {" "} {person.lastname}</strong> <small>@{person.username}</small> 
+                                                    <strong>{convo.attachment.firstname} {" "} {convo.attachment.lastname}</strong> <small>@{convo.attachment.username}</small> 
                                                     <br />
-                                                    <small style={{textDecoration:"underline"}}> #{person.tagline} </small> 
+                                                    <small style={{textDecoration:"underline"}}> #{convo.attachment.tagline} </small> 
                                                     <br />
                                                     <strong>
-                                                        {getLastMsg(person).sender_id === user_id ? "You : " : person.username + " : "}  
+                                                        {convo.attachment.metrics === "sent" ? "You : " : convo.attachment.username + " : "}  
                                                     </strong>
                                                     {" "}
                                                     <span>
-                                                        {getLastMsg(person).message_content}
+                                                        {convo.message_content}
                                                     </span>
                                                 </p>
-                                                
                                             </div>
-                                            
                                         </div>
-                                        
                                     </article> 
                                     <hr className="h-line"/> 
                                 </Link>
