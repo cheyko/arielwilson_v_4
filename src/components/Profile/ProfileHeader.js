@@ -20,7 +20,7 @@ const ProfileHeader = props => {
     //const videoUrl = props.vidView;
 
     const editHeader = () => {
-        if (props.context.user){
+        if (props.context.token){
             props.setShowEdit(!props.showEdit);
         }else{
             setWanted("Edit Your Profile Media");
@@ -73,14 +73,14 @@ const ProfileHeader = props => {
                             </div>
                         </div>
                         <div className="column has-text-centered" onClick={e => localStorage.setItem("msg-view","message")}>
-                            {props.context.user ? 
-                                <Link to={`/messages/convo/direct/${user.user_id}`}><button style={{fontSize:"large"}} className="button"> <i className="fas fa-envelope"></i> </button></Link>
+                            {props.context.token ? 
+                                <Link to={`/message/user/${user.username}`}><button style={{fontSize:"large"}} className="button"> <i className="fas fa-envelope"></i> </button></Link>
                                 :
                                 <button style={{fontSize:"large"}} onClick={e => {setWanted("message this user");setModalOpen(true);}} className="button"> <i className="fas fa-envelope"></i> </button> 
                             }
                         </div>
                         <div className="column">
-                            {props.context.user ? 
+                            {props.context.token ? 
                                 <button onClick={props.isFollower ? props.unfollow : props.follow } className={`button is-link is-pulled-right`}> {props.isFollower ? "Unfollow" : "Follow"} </button>
                                 :
                                 <button onClick={e => {setWanted("follow this user and others");setModalOpen(true);}} className={`button is-link is-pulled-right`}> Follow </button>
@@ -152,10 +152,10 @@ const ProfileHeader = props => {
                         )}
                     </figure>
                     <div className="username tag" style={{fontWeight:"bold",fontSize:"large"}}>
-                        {action === "read-write" && !props.context.user ? "Guest" : "@" + user.username} 
+                        {action === "read-write" && !props.context.token ? "Guest" : "@" + user.username} 
                     </div>
                     <div className="card tagline has-text-centered" >
-                        {action === "read-write" && !props.context.user ? "Welcome Guest, create a profile to have a tagline" : "#" + user.tagline} 
+                        {action === "read-write" && !props.context.token ? "Welcome Guest, create a profile to have a tagline" : "#" + user.tagline} 
                     </div>
 
                 </div>

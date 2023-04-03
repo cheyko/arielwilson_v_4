@@ -75,6 +75,8 @@ const NewConvo = props => {
         props.setModalOpen(false);
     }
 
+    console.log(userlist[0])
+
     return(
         <div>
             <Modal 

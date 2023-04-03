@@ -14,8 +14,10 @@ from api.security import confirm_token
 @app.route('/api/create-message', methods=['GET','POST'])
 def create_message():
     if request.method == 'POST':
-        sender_id = request.json.get('user_id', None)
-        receiver_id = request.json.get('userview_id', None)
+        token = request.json.get('token', None)
+        uname = request.json.get('uname', None)
+        sender_id = confirm_token(token)
+        receiver_id = User.query.filter_by(username=uname).first().user_id
         theMsg = request.json.get('theMsg', None)
         theDate = request.json.get('theDate', None)
         newMessage = Message(sender_id=sender_id, receiver_id=receiver_id, message_content=theMsg, sent_date=theDate)
@@ -86,7 +88,7 @@ def get_convos():
     return jsonify({"msg":"There was an error; request not accepted."}), 400
 
 #api method to get all messages
-@app.route('/api/get-messages', methods=['GET','POST'])
+"""@app.route('/api/get-messages', methods=['GET','POST'])
 def get_messages():
     if request.method == 'POST':
         user_id = request.json.get('user_id', None)
@@ -97,6 +99,7 @@ def get_messages():
             messages.append(msgObj)
         return {"messages":messages}, 200
     return jsonify({"msg":"There was an error; request not accepted."}), 400
+"""
 
 #api method to get convo
 @app.route('/api/get-convo', methods=['GET','POST'])

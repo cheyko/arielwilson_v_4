@@ -64,7 +64,7 @@ const Navbar = props => {
             }else if(newpath === "view-trendy"){
                 setSelection("images");
                 setPath("images");
-            }else if(newpath === "view-user-profile"){
+            }else if(newpath === "user" || newpath === "profile"){
                 setSelection("profile");
                 setPath("profile");
             }else if(newpath === "preepedia" || newpath === "view-user-list" || newpath === "groups" || newpath === "view-group"){
@@ -114,11 +114,11 @@ const Navbar = props => {
                         <div className="column no-padding">
                             <div className="control-btn">
                                 <Link onClick={e => {
-                                        activate('messages'); 
+                                        activate('message'); 
                                         props.context.toggleMenu(e);
                                     }} 
-                                    to={'/message'/*`/messages/convo/direct/${props.context.recent}`*/}>
-                                    <div className={selection === "messages" ? "is-active" : "is-not-active"}> 
+                                    to={props.context.recent ? `/message/user/${props.context.recent}` : '/message'}>
+                                    <div className={selection === "message" ? "is-active" : "is-not-active"}> 
                                         <FontAwesomeIcon icon={faPaperPlane} size="1x" /> 
                                             {" "}<span className="badge-length">0</span><br/>
                                         <b> W@H <br/> GW@@N</b> 

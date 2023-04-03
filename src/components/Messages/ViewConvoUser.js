@@ -8,9 +8,10 @@ const ViewConvoUser = props => {
 
     const {user} = props;
     const userview_id = user.user_id;
+    const uname = user.username;
 
-    const user_id = props.context.user ? props.context.user.id : 0;
-    
+    //const user_id = props.context.user ? props.context.user.id : 0;
+    const token = props.context.token ? props.context.token : 0;
     const [isFollower, setIsFollower] = useState(null);
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
@@ -41,8 +42,7 @@ const ViewConvoUser = props => {
     },[gotMedia, isFollower, loadMainMedia, user.is_follower]); 
 
     const follow = () => {
-        console.log("follow function");
-        axios.post('/api/add-follower',{user_id,userview_id}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/add-follower`,{token,uname}).then(
             (dofollow) => {
                 if (dofollow.status !== 200){
                     console.log('User was followed successful.');
@@ -54,9 +54,9 @@ const ViewConvoUser = props => {
         //isFollower(true);
     }
 
+
     const unfollow = () => {
-        console.log("unfollow function");
-        axios.put('/api/un-follow',{user_id,userview_id}).then(
+        axios.put(`${process.env.REACT_APP_PROXY}/api/un-follow`,{token,uname}).then(
             (unfollow) => {
                 if (unfollow.status !== 200){
                     console.log('User was unfollowed succesfully.');
@@ -68,14 +68,11 @@ const ViewConvoUser = props => {
         //isFollower(false);
     }
 
-    //console.log(isFollower);
-    // have onclick functions for add-follower and unfollow
-
     return (
         <>
             <div className="card view-user-card">
                 <div className="card-content" style={{padding:"0.5rem"}}>
-                    <Link className="user-item" onClick={e => {localStorage.setItem("msg-view","message");props.setTabs("message");}} to={`/messages/convo/direct/${user.user_id}`}>
+                    <Link className="user-item" onClick={e => {localStorage.setItem("msg-view","message");props.setTabs("message");}} to={`/messages/user/${user.username}`}>
                         <div className="media">
                             <div className="media-left">
                                 <figure className="image is-96x96">

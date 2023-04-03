@@ -3,7 +3,7 @@ import './index.css';
 import withContext from "../../withContext";
 //import axios from 'axios';
 import $ from 'jquery';
-import {Link, useParams} from "react-router-dom";
+import { useParams} from "react-router-dom";
 
 import Messaging from "./Messaging";
 import Convos from "./Convos";
@@ -30,7 +30,7 @@ const Messages = props => {
 
     useEffect(() => {
         let interval = null;
-        if(uname){
+        if(userview === "" && uname){
             props.context.getConvo(uname).then(
                 (convoMsgs) => {
                     if(!convoMsgs){
@@ -40,10 +40,6 @@ const Messages = props => {
                     }
                 }
             );
-            props.context.setRecent(uname);
-        }
-
-        if(userview === "" && uname){
             props.context.getUserView(uname).then(
                 (result) => {
                     if (!result){
@@ -53,27 +49,27 @@ const Messages = props => {
                     }
                 }
             );
-        }
-
-        if (count < 1){
-            interval = setInterval(() => {
-                props.context.getConvo(uname).then(
-                    (convoMsgs) => {
-                        if(!convoMsgs){
-                            throw new Error('There was an error when getting convo');
-                        }else{
-                            setConvo(convoMsgs);
+            props.context.setRecent(uname);
+            if (count < 1){
+                interval = setInterval(() => {
+                    props.context.getConvo(uname).then(
+                        (convoMsgs) => {
+                            if(!convoMsgs){
+                                throw new Error('There was an error when getting convo');
+                            }else{
+                                setConvo(convoMsgs);
+                            }
                         }
-                    }
-                );
-                 
-                setCount(count => count + 1);
-                console.log("run")
-            }, 10000);  
+                    );
+                     
+                    setCount(count => count + 1);
+                    console.log("run")
+                }, 10000);  
+            }
+            return () => clearInterval(interval);
         }
-        return () => clearInterval(interval);
 
-    },[tab,uname, userview]);
+    },[tab,uname, userview, count, props.context]);
     
     const toggleMenu = (e) => {
         e.preventDefault();
