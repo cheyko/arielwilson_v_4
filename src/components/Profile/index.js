@@ -36,7 +36,7 @@ const Profile = props => {
             setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
             setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
         }else{
-            await axios.post('/api/get-main-media',{token}).then(
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/get-main-media`,{token}).then(
                 (response) => {
                     if (response.status === 200){
                         if (response.data.has_cv === true){

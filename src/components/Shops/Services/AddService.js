@@ -195,7 +195,7 @@ const AddService = props => {
             });
             formData.append('mediatypes',mediatypes);
 
-            await axios.post('/api/services',formData, 
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/services`,formData, 
                 {
                 headers: {
                 'Content-Type': 'multipart/form-data'

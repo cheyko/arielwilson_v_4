@@ -52,7 +52,7 @@ const NewConvo = props => {
 
         if( e.target.value !== ""){
 
-            axios.post('/api/search-users',{searchval, user_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/search-users`,{searchval, user_id}).then(
                 (search) => {
                     if (search.status === 200){
                         if (search.data.userlist){

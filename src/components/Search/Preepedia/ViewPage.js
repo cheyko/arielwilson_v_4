@@ -26,7 +26,7 @@ const ViewPage = props => {
     
     useEffect(() => {
         if (!pageview){
-            const result = axios.post('/api/get-page', {page_id}).then(
+            const result = axios.post(`${process.env.REACT_APP_PROXY}/api/get-page`, {page_id}).then(
                 (result) => {
                     if (!result){
                         console.log("there was an error when search for group details");

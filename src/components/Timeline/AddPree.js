@@ -52,7 +52,7 @@ const AddPree = props => {
 
     const makePost = async (e) => {
         e.preventDefault();
-        if (props.context.user){
+        if (props.context.token){
             let type_of;
             let setType = false;
             e.preventDefault();
@@ -61,7 +61,7 @@ const AddPree = props => {
             var theDateTime = getDateTime();
             
             formData.append('theDateTime',theDateTime);
-            formData.append('user_id',props.context.user.id);
+            formData.append('token',props.context.token);
             formData.append('pree_type', props.preetype)
             if (props.preetype === "group") {formData.append('group_id', props.group_id)}
             while(setType === false){   
@@ -105,7 +105,7 @@ const AddPree = props => {
             }
 
             if(type_of !== ""){
-                const result = await axios.post('/api/ypree', formData, {
+                const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/ypree`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },

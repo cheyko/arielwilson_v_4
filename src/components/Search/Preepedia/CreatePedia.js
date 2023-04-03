@@ -266,7 +266,7 @@ const CreatePedia = props => {
         console.log(mediatypes);
         console.log(subtitles);
         console.log(subContent);
-        let temp = subContent.map( (arr, index) => (
+        let temp = subContent.map( (arr) => (
             arr.map( (para, idx) => (
                 idx === arr.length - 1 ? para + "*^&#*@#" : para + "*^&" 
             ))
@@ -319,7 +319,7 @@ const CreatePedia = props => {
                 
                 formData.append('has_media',false);
             }
-            medialist.forEach( (arr,index) => {
+            medialist.forEach( (arr) => {
                 arr.forEach((aFile,index) => {
                     if (aFile[0]){
                         formData.append('medialist',aFile[0]);
@@ -331,7 +331,7 @@ const CreatePedia = props => {
             formData.set('pmcaptionlist',pmcaptionlist);
 
             
-            const result = await axios.post('/api/preepedia',formData, 
+            const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/preepedia`,formData, 
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'

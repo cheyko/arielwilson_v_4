@@ -74,7 +74,7 @@ const ViewUserProfile = props => {
         }
 
         if (isFollower === null){
-            axios.post('/api/is-follower',{token,uname}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/is-follower`,{token,uname}).then(
                 (response) => {
                     if (response.status !== 200){
                         console.log('I need a better error messaging system');
@@ -90,7 +90,7 @@ const ViewUserProfile = props => {
     // have onclick functions for add-follower and unfollow
     
     const follow = () => {
-        axios.post('/api/add-follower',{token,uname}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/add-follower`,{token,uname}).then(
             (dofollow) => {
                 if (dofollow.status !== 200){
                     console.log('User was followed successful.');
@@ -103,7 +103,7 @@ const ViewUserProfile = props => {
     }
 
     const unfollow = () => {
-        axios.put('/api/un-follow',{token,uname}).then(
+        axios.put(`${process.env.REACT_APP_PROXY}/api/un-follow`,{token,uname}).then(
             (unfollow) => {
                 if (unfollow.status !== 200){
                     throw new Error('User was unfollowed succesfully.');

@@ -60,7 +60,7 @@ const Reply = props => {
 
     const likeReply = (e) => {
         if (r_reaction !== true){
-            axios.post("/api/like-reply",{user_id,reply_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/like-reply`,{user_id,reply_id}).then(
                 (addlike) => {
                     if (addlike.status === 200){
                         setRReaction(true);
@@ -72,7 +72,7 @@ const Reply = props => {
                 }
             )
         }else{
-            axios.put("/api/like-reply",{user_id,reply_id}).then(
+            axios.put(`${process.env.REACT_APP_PROXY}/api/like-reply`,{user_id,reply_id}).then(
                 (unlike) => {
                     if (unlike.status === 200){
                         setRReaction(null);
@@ -87,7 +87,7 @@ const Reply = props => {
 
     const dislikeReply = (e) => {
         if (r_reaction !== false){
-            axios.post("/api/dislike-reply",{user_id,reply_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/dislike-reply`,{user_id,reply_id}).then(
                 (dislike) => {
                     if (dislike.status === 200){
                         setRReaction(false);
@@ -99,7 +99,7 @@ const Reply = props => {
                 }
             )
         }else{
-            axios.put("/api/dislike-reply",{user_id,reply_id}).then(
+            axios.put(`${process.env.REACT_APP_PROXY}/api/dislike-reply`,{user_id,reply_id}).then(
                 (undislike) => {
                     if (undislike.status === 200){
                         setRReaction(null);
@@ -114,7 +114,7 @@ const Reply = props => {
 
     const deleteReply = (e) => {
         const comment_id = comment.comment_id;
-        axios.post("/api/delete-reply", {comment_id, reply_id}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/delete-reply`, {comment_id, reply_id}).then(
             (remove) => {
                 if (remove.status === 200){
                     setStatus(false);

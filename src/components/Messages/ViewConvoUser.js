@@ -22,7 +22,7 @@ const ViewConvoUser = props => {
         //const user_id = userview_id;
 
         if (user.has_dp === true){
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + userview_id);
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + userview_id + ".jpeg");
         }else{
             setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
         }

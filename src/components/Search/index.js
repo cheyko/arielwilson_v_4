@@ -32,7 +32,7 @@ const Search = props => {
     const doSearch = async (e) => {
         e.preventDefault();
 
-        const search = await axios.post('/api/do-search',{checkwg, user_id}).catch(
+        const search = await axios.post(`${process.env.REACT_APP_PROXY}/api/do-search`,{checkwg, user_id}).catch(
             (search) => {
                 if (search.status !== 200){ 
                     setFlashMsg("No results from search");

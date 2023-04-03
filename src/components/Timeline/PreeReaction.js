@@ -26,7 +26,7 @@ const PreeReaction = props => {
             
             //PreeReaction onload
             if(user_id !== 0){
-                axios.post("/api/get-reaction",{user_id,pree_id}).then(
+                axios.post(`${process.env.REACT_APP_PROXY}/api/get-reaction`,{user_id,pree_id}).then(
                     (getReaction) => {
                         if (getReaction.status === 200){
                             setReaction(getReaction.data.is_approved);
@@ -46,7 +46,7 @@ const PreeReaction = props => {
             }
            // setReaction(aPree.is_approved);
             if (clickable === "view"){
-                axios.post("/api/get-comments", {pree_id}).then(
+                axios.post(`${process.env.REACT_APP_PROXY}/api/get-comments`, {pree_id}).then(
                 (getComments) => {
                         if (getComments.status === 200){
                             setComments(getComments.data.comments);
@@ -64,7 +64,7 @@ const PreeReaction = props => {
     const likePree = (e, pree_id) => {
         const user_id = props.context.user ? props.context.user.id : 0;
         if (reaction !== true){
-            axios.post("/api/like-pree",{user_id,pree_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/like-pree`,{user_id,pree_id}).then(
                 (addlike) => {
                     if (addlike.status === 200){
                         setReaction(true);
@@ -76,7 +76,7 @@ const PreeReaction = props => {
                 }
             )
         }else{
-            axios.put("/api/like-pree",{user_id,pree_id}).then(
+            axios.put(`${process.env.REACT_APP_PROXY}/api/like-pree`,{user_id,pree_id}).then(
                 (unlike) => {
                     if (unlike.status === 200){
                         setLikes(unlike.data.likedcount);
@@ -92,7 +92,7 @@ const PreeReaction = props => {
     const dislikePree = (e, pree_id) => {
         const user_id = props.context.user ? props.context.user.id : 0;
         if (reaction !== false){
-            axios.post("/api/dislike-pree",{user_id,pree_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/dislike-pree`,{user_id,pree_id}).then(
                 (dislike) => {
                     if (dislike.status === 200){
                         setLikes(dislike.data.likedcount);
@@ -104,7 +104,7 @@ const PreeReaction = props => {
                 }
             )
         }else{
-            axios.put("/api/dislike-pree",{user_id,pree_id}).then(
+            axios.put(`${process.env.REACT_APP_PROXY}/api/dislike-pree`,{user_id,pree_id}).then(
                 (undislike) => {
                     if (undislike.status === 200){
                         setReaction(null);
@@ -120,7 +120,7 @@ const PreeReaction = props => {
     const sendComment = (e) => {
         const user_id = props.context.user ? props.context.user.id : 0;
         const pree_id = aPree.pree_id;
-        axios.post("/api/handle-comments", {user_id, pree_id, comment}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/handle-comments`, {user_id, pree_id, comment}).then(
             (send) => {
                 if (send.status === 200){
                     //console.log(send.data.comment);

@@ -67,7 +67,7 @@ const Messaging = props => {
         const userview_id = id;
 
         console.log(theMsg);
-        axios.post('/api/create-message',{user_id,userview_id,theMsg,theDate}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/create-message`,{user_id,userview_id,theMsg,theDate}).then(
             (createMsg) => {
                 if (createMsg.status !== 200){
                     throw new Error('Message was not sent succesfully.');

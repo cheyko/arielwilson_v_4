@@ -28,7 +28,7 @@ const ViewUserList = props => {
                     setViewList(list);
                     break;
                 case 'followers':
-                    axios.post('/api/get-followers',{user_id}).then(
+                    axios.post(`${process.env.REACT_APP_PROXY}/api/get-followers`,{user_id}).then(
                         (result1) => {
                             if (result1.status !== 200){
                                 console.log('List of Followers were not sent from server.');
@@ -39,7 +39,7 @@ const ViewUserList = props => {
                     )
                     break;
                 case 'figures': //change function to get-figures
-                    axios.post('/api/get-figures',{user_id}).then(
+                    axios.post(`${process.env.REACT_APP_PROXY}/api/get-figures`,{user_id}).then(
                         (result2) => {
                             if (result2.status !== 200){
                                 throw new Error('List of Followings were not sent from server.');
@@ -50,7 +50,7 @@ const ViewUserList = props => {
                     )
                     break;
                 case 'fraternity':
-                    axios.post('/api/get-fraternity',{user_id}).then(
+                    axios.post(`${process.env.REACT_APP_PROXY}/api/get-fraternity`,{user_id}).then(
                         (result3) => {
                             if (result3.status !== 200){
                                 throw new Error('List of Fraternity were not sent from server.');

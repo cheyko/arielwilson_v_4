@@ -24,7 +24,7 @@ const PagesList = props => {
     }, [title, section, pagetype]);
 
     const getAllPages = () => {
-        const result = axios.get('/api/preepedia').then(
+        const result = axios.get(`${process.env.REACT_APP_PROXY}/api/preepedia`).then(
             (result) => {
                 if (result.status !== 200){
                     throw new Error('List of Followings were not sent from server.');

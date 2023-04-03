@@ -24,10 +24,10 @@ def ypree():
     if request.method == 'POST': 
         result = request.form
         type_of = result["type_of"]
-        user_id = result["user_id"]
+        token = result["token"]
+        user_id = confirm_token(token)
         date_added = result["theDateTime"]
         pree_type = result["pree_type"]
-        print(type_of)
         if type_of == 'media':
             is_media = True
         else:

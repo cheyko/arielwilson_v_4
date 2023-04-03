@@ -56,7 +56,7 @@ const Comment = props => {
 
     useEffect( () => {
         if (user_id !== 0){
-            axios.post("/api/get-c-reaction",{user_id,comment_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/get-c-reaction`,{user_id,comment_id}).then(
                 (getCReaction) => {
                     if (getCReaction.status === 200){
                         setCReaction(getCReaction.data.is_c_approved);
@@ -69,7 +69,7 @@ const Comment = props => {
             );
         }
     
-        axios.post("/api/get-replies", {comment_id}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/get-replies`, {comment_id}).then(
            (getReplies) => {
                 if (getReplies.status === 200){
                     setReplies(getReplies.data.replies);
@@ -96,7 +96,7 @@ const Comment = props => {
 
     const likeComment = (e) => {
         if (c_reaction !== true){
-            axios.post("/api/like-comment",{user_id,comment_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/like-comment`,{user_id,comment_id}).then(
                 (likecomment) => {
                     if (likecomment.status === 200){
                         setCReaction(true);
@@ -108,7 +108,7 @@ const Comment = props => {
                 }
             )
         }else{
-            axios.put("/api/like-comment",{user_id,comment_id}).then(
+            axios.put(`${process.env.REACT_APP_PROXY}/api/like-comment`,{user_id,comment_id}).then(
                 (unlikecomment) => {
                     if (unlikecomment.status === 200){
                         setCReaction(null);
@@ -123,7 +123,7 @@ const Comment = props => {
 
     const dislikeComment = (e) => {
         if (c_reaction !== false){
-            axios.post("/api/dislike-comment",{user_id,comment_id}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/dislike-comment`,{user_id,comment_id}).then(
                 (dislike) => {
                     if (dislike.status === 200){
                         setCReaction(false);
@@ -135,7 +135,7 @@ const Comment = props => {
                 }
             )
         }else{
-            axios.put("/api/dislike-comment",{user_id,comment_id}).then(
+            axios.put(`${process.env.REACT_APP_PROXY}/api/dislike-comment`,{user_id,comment_id}).then(
                 (undislike) => {
                     if (undislike.status === 200){
                         setCReaction(null);
@@ -149,7 +149,7 @@ const Comment = props => {
     }
 
     const sendReply = (e) => {
-        axios.post("/api/handle-replies", {user_id, comment_id, reply}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/handle-replies`, {user_id, comment_id, reply}).then(
             (send) => {
                 if (send.status === 200){
                     //update comments list.
@@ -165,7 +165,7 @@ const Comment = props => {
 
     const saveEdit = (e) => {
         const user_id = props.context.user.id;
-        axios.put("/api/handle-comments", {user_id, comment_id, editcomment}).then(
+        axios.put(`${process.env.REACT_APP_PROXY}/api/handle-comments`, {user_id, comment_id, editcomment}).then(
             (save) => {
                 if (save.status === 200){
                     //console.log(send.data.comment);
@@ -183,7 +183,7 @@ const Comment = props => {
 
     const deleteComment = (e) => {
         const pree_id = aPree.pree_id;
-        axios.post("/api/delete-comment", {pree_id,comment_id}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/delete-comment`, {pree_id,comment_id}).then(
             (remove) => {
                 if (remove.status === 200){
                     setStatus(false);

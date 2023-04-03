@@ -179,7 +179,7 @@ const AddVehicle = props => {
             formData.append('photos',photo);
         });
 
-        await axios.post('/api/vehicles',formData, 
+        await axios.post(`${process.env.REACT_APP_PROXY}/api/vehicles`,formData, 
             {
               headers: {
               'Content-Type': 'multipart/form-data'
