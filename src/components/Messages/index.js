@@ -20,7 +20,8 @@ const Messages = props => {
     const [modalIsOpen, setModalOpen] = useState(false);
     const [msgSection, setMsgSection] = useState("");
 
-    const convos = props.context.convos ? props.context.convos : [];
+    const convoslist = props.context.convos ? props.context.convos : [];
+    const [convos, setConvos] = useState(convoslist);
     const [convosMenu, showConvosMenu] = useState(false);
     const [notificationsMenu, showNotificationsMenu] = useState(false);
 
@@ -50,33 +51,41 @@ const Messages = props => {
                 }
             );
             props.context.setRecent(uname);
-            if (count < 1){
-                interval = setInterval(() => {
-                    props.context.getConvo(uname).then(
-                        (convoMsgs) => {
-                            if(!convoMsgs){
-                                throw new Error('There was an error when getting convo');
-                            }else{
-                                setConvo(convoMsgs);
-                            }
-                        }
-                    );
-                     
-                    setCount(count => count + 1);
-                    console.log("run")
-                }, 10000);  
-            }
-            return () => clearInterval(interval);
-        }
 
-    },[tab,uname, userview, count, props.context]);
+        }
+        if(convoslist.length > 0 && convos.length === 0){
+            setConvos(convoslist);
+        }
+        if (count < 1){
+            interval = setInterval(() => {
+                props.context.getConvo(uname).then(
+                    (convoMsgs) => {
+                        if(!convoMsgs){
+                            throw new Error('There was an error when getting convo');
+                        }else{
+                            setConvo(convoMsgs);
+                        }
+                    }
+                );
+
+                props.context.getConvos().then((res) => {
+                    setConvos(res);
+                });
+                
+                setCount(count => count + 1);
+                console.log("run")
+            }, 6000);  
+        }
+        return () => clearInterval(interval);
+
+
+    },[tab,uname, userview, count, props.context, convoslist, convos]);
     
     const toggleMenu = (e) => {
         e.preventDefault();
         $(".navbar-burger").toggleClass("is-active");
         $(".navbar-menu").toggleClass("is-active");
     }
-
     return(
         <div>
             <nav className="navbar" role="navigation" aria-label="main navigation">

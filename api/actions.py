@@ -117,7 +117,7 @@ def see_the_pree():
             results = Pree.query.filter(Pree.is_visible == True).order_by(Pree.pree_id.desc()).all()
             prees = [] #formatPree(results, 0)
             for pree in results:
-                preeObj = formatPree(pree, user_id)
+                preeObj = formatPree(pree, 0)
                 prees.append(preeObj)
         return json.dumps(prees), 200
     return jsonify({"msg":"There was an error somewhere."}), 400

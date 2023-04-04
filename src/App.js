@@ -115,7 +115,7 @@ export default class App extends Component {
     const token = this.state.token;
     user = this.state.token ? JSON.parse(user) : null;
     const prees = token ? await axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{token}) : {"data":null}; //used in av and magazine, retrieve prees differently on the respective pages
-    const convos = token ? await this.getConvos(token) : null;
+    const convos = token ? await this.getConvos() : null;
     this.setState({recent,prees:prees.data, welcome, user, convos});
     window.addEventListener('storage', event => {
       if(event.key){
@@ -324,7 +324,8 @@ export default class App extends Component {
     localStorage.setItem("recent", userview_id);
   }
 
-  getConvos = async (token) => {
+  getConvos = async () => {
+    const token = this.state.token;
     if (token){
       const convos = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-convos`,{token}).catch(
         (convos) => {
@@ -636,7 +637,7 @@ export default class App extends Component {
           listSave : this.listSave,
           ypree: this.ypree,
           setRecent: this.setRecent,
-          getMessages: this.getMessages,
+          getConvos: this.getConvos,
           getConvo: this.getConvo,
           setError: this.setError,
           getPree: this.getPree,
