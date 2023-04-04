@@ -15,10 +15,10 @@ def authenticate_token(t):
         auth = request.headers.get('Authorization', None)
 
         if not auth:
-            resp = Response("Incorrect email or password")
+            """resp = Response("Incorrect email or password")
             resp.headers['Access-Control-Allow-Origin'] = '*'
-            return resp, 401
-            #return jsonify({'error': 'Access Denied : No Token Found'}), 401
+            return resp, 401"""
+            return jsonify({'error': 'Access Denied : No Token Found'}), 401
         else:
             try:
                 result = jwt.decode(auth, app.config['SECRET_KEY'],algorithms=['HS256'])
