@@ -200,9 +200,10 @@ const Timeline = props => {
                     
                 ) : (
                     <div className="container" style={{ padding:"3rem"}}>
-                        <span className="is-size-3" style={{color:"blue"}}>
+                        {/*<span className="is-size-3" style={{color:"blue"}}>
                             Follow Figures, Make Prees and see 'WAH REALLY A GWAAN'
-                        </span>
+                        </span>*/}
+                        <div className="loading"></div>
                     </div>
                 )}
             </div>

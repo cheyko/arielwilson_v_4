@@ -2,6 +2,27 @@ html{
   overflow-y: scroll !important;
 }
 
+.loading{
+  display: flex;
+  justify-content: center;
+}
+
+.loading::after{
+  content: "";
+  width: 50px;
+  height:50px;
+  border: 10px solid lightgrey;
+  border-top-color: royalblue;
+  border-radius: 50%;
+  animation: loading 1s linear infinite;
+}
+
+@keyframes loading{
+  to{
+    transform: rotate(1turn);
+  }
+}
+
 .hide-scroll{
   overflow: hidden !important;
 }
