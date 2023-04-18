@@ -45,7 +45,7 @@ const PreeHeader = props => {
         }
     }
     
-    return(
+    /*return(
         <div className="message-header p-1">
             <div className="columns has-text-centered p-0 m-0 is-mobile is-fullwidth">
                 <div className="column p-0 is-one-quarter">
@@ -62,6 +62,30 @@ const PreeHeader = props => {
                     </Link>
                 </div>
                 <div className="column p-0 is-one-quarter">
+                    <b> {formatTime(aPree.date_added)} </b>
+                </div>
+                
+            </div>
+        </div>
+    )*/
+
+    return(
+        <div className="message-header p-1">
+            <div className="th-divs">
+                <div className="left-col">
+                    <Link to={`/view-user-profile/${aPree.user.user_id}`}>
+                        <span className="image is-64x64">
+                            <img alt="display" className="is-rounded" src={props.imgView} />
+                        </span>
+                    </Link>
+                </div>
+                <div className="center-col">
+                    <Link to={`/view-user-profile/${aPree.user.user_id}`}>
+                        <b> @{aPree.user.username} </b>
+                        <b> Rank </b>
+                    </Link>
+                </div>
+                <div className="right-col">
                     <b> {formatTime(aPree.date_added)} </b>
                 </div>
                 

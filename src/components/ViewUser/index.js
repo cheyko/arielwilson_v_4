@@ -90,7 +90,7 @@ const ViewUser = props => {
                                 </figure>
                             </div>
                             <div className="media-content">
-                                <p className="title is-4">{user.firstname + " " + user.lastname} </p>
+                                <p className="title is-4">{user.displayname} </p>
                                 <p className="subtitle is-6">@{user.username}</p>
                             </div>
                         </div>

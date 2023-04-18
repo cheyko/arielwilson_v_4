@@ -25,7 +25,7 @@ def get_tasks():
         tasks = []
         for task in result:
             #reduce payload
-            done_by = {"user_id":task.User.user_id, "firstname":task.User.firstname, "lastname":task.User.lastname, "username":task.User.username, "tagline":task.Profile.tagline, "location":task.Profile.location, "has_dp":task.Profile.has_dp}
+            done_by = {"user_id":task.User.user_id, "displayname":task.Profile.displayname, "username":task.User.username, "tagline":task.Profile.tagline, "location":task.Profile.location, "has_dp":task.Profile.has_dp}
             taskObj = {"task_id":task.Task.task_id,"lister":task.Task.lister, "for_me":(task.Task.is_for == user_id),"is_for":task.Task.is_for, "done_by":done_by,"title":task.Task.title,"project":task.Task.project,"start_date":str(task.Task.start_date),"end_date":str(task.Task.end_date),"description":task.Task.description,"status":task.Task.status}
             tasks.append(taskObj)
         return json.dumps(tasks)
@@ -205,7 +205,7 @@ def get_polls():
                 didVote = False
             #if(check_following(user_id, poll.lister) or poll.lister == user_id):
             #reduce payload
-            lister = {"user_id":poll.User.user_id, "is_user":(poll.User.user_id == user_id), "firstname":poll.User.firstname, "lastname":poll.User.lastname, "username":poll.User.username, "tagline":poll.Profile.tagline, "has_dp":poll.Profile.has_dp}
+            lister = {"user_id":poll.User.user_id, "is_user":(poll.User.user_id == user_id), "displayname":poll.Profile.displayname, "username":poll.User.username, "tagline":poll.Profile.tagline, "has_dp":poll.Profile.has_dp}
             pollObj = {"poll_id":poll.Poll.poll_id,"lister":lister,"pree_id":poll.Poll.pree_id,"category":poll.Poll.category,"question":poll.Poll.question,"choices":poll.Poll.choices,"results":poll.Poll.results,"votes":poll.Poll.votes,"end_date":str(poll.Poll.end_date),"end_time":str(poll.Poll.end_time), "status" : poll.Poll.status, "did_vote":didVote}
             polls.append(pollObj)
         return json.dumps(polls)

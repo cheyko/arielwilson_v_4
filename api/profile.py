@@ -161,7 +161,7 @@ def check_email():
 @app.route('/api/has-uname', methods=['POST'])
 def has_uname():
     if request.method == 'POST':
-        token = request.json.get('user_id', None)
+        token = request.json.get('token', None)
         user_id = confirm_token(token)
         #print(user_id)
         user_record = User.query.get(user_id)
@@ -177,7 +177,7 @@ def has_uname():
 @app.route('/api/save-uname', methods=['PUT'])
 def save_uname():
     if request.method == 'PUT':
-        token = request.json.get('user_id', None)
+        token = request.json.get('token', None)
         user_id = confirm_token(token)
         uname = request.json.get('uname', None)
         user_record = User.query.get(user_id) 
@@ -258,11 +258,12 @@ def bio():
         user_id = confirm_token(token)
         if(user_id != 0):
             #user_id = request.json.get('user_id', None)
+            dpname = request.json.get('dpname', None)
             dob = request.json.get('dob', None)
             tagline = request.json.get('tagline', None)
             description = request.json.get('description', None)
             location = request.json.get('location', None)
-            newProfile = Profile(user_id=user_id, dob=dob, tagline=tagline, description=description, location=location)
+            newProfile = Profile(user_id=user_id,dpname=dpname, dob=dob, tagline=tagline, description=description, location=location)
             db.session.add(newProfile)
             db.session.commit()
         return jsonify({"msg":"Bio informaiton added."}), 200
@@ -272,6 +273,7 @@ def bio():
         user_id = confirm_token(token)
         if(user_id != 0):
             #user_id = request.json.get('user_id', None)
+            dpname = request.json.get('dpname', None)
             uname = request.json.get('uname', None)
             dob = request.json.get('dob', None)
             tagline = request.json.get('tagline', None)
@@ -284,6 +286,7 @@ def bio():
             else:
                 return {"msg":"Username not available"}, 206
             profile_record = Profile.query.get(user_id) 
+            profile_record.displayname = dpname
             profile_record.dob = dob
             profile_record.tagline = tagline
             profile_record.description = description
@@ -297,7 +300,7 @@ def bio():
 @app.route('/api/get-bio', methods=['POST'])
 def get_bio():
     if request.method == 'POST':
-        token = request.json.get('user_id', None)
+        token = request.json.get('token', None)
         user_id = confirm_token(token)
         #reduce to one query
         user_record = User.query.get(user_id)
@@ -306,6 +309,7 @@ def get_bio():
             print(profile_record)
             return {
                 'uname': user_record.username,
+                'dpname': profile_record.displayname,
                 'dob' : profile_record.dob,
                 'tagline' : profile_record.tagline,
                 'description' : profile_record.description,
@@ -322,7 +326,7 @@ def profile_details():
         #print(user_id)
         if uname != '':
             user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.username == uname).first()  
-            myUserObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "access-type":user_details.User.accessType, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "description":user_details.Profile.description, "location":user_details.Profile.location, "followers":user_details.Profile.followers, "figures":user_details.Profile.figures, "fraternity":user_details.Profile.fraternity,"groups":user_details.Profile.groups, "has_dp":user_details.Profile.has_dp, "has_cv":user_details.Profile.has_cv}
+            myUserObj = {"user_id":user_details.User.user_id, "displayname":user_details.Profile.displayname, "username":user_details.User.username, "access-type":user_details.User.accessType, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "description":user_details.Profile.description, "location":user_details.Profile.location, "followers":user_details.Profile.followers, "figures":user_details.Profile.figures, "fraternity":user_details.Profile.fraternity,"groups":user_details.Profile.groups, "has_dp":user_details.Profile.has_dp, "has_cv":user_details.Profile.has_cv}
             return myUserObj , 200
         else:
             return jsonify({"msg":"User does not have ID of Zero (0)."}), 205

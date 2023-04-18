@@ -33,7 +33,7 @@ const SimilarItem = (props) => {
     const { item } = props;
     //check house listing similarity inside houses.
     //const imageUrls = props.context.imageUrls;
-    const matches  = props.context.items.filter(anItem => anItem !== item);/*? props.context.products.filter( aProduct => (aProduct.make === aProduct.make 
+    const matches  = props.context.items ? props.context.items.filter(anItem => anItem !== item) : [];/*? props.context.products.filter( aProduct => (aProduct.make === aProduct.make 
     && aProduct.vehicle_id !== aProduct.vehicle_id
     && aVehicle.model.replace(/ /g,'').toLowerCase().includes(vehicle.model.replace(/ /g,'').toLowerCase())
     ) 

@@ -74,14 +74,14 @@ def get_convos():
             profileSend = aliased(Profile)
             profileRecv = aliased(Profile)
             stmt = select(func.max(Message.message_id)).where(or_(and_(Message.sender_id == user_id, Message.receiver_id == correspondent[0]), and_(Message.sender_id == correspondent[0], Message.receiver_id == user_id)))
-            message = db.session.query(Message, userSend.firstname, userSend.lastname, userSend.username, profileSend.tagline, profileSend.has_dp, userRecv.firstname, userRecv.lastname, userRecv.username, profileRecv.tagline, profileRecv.has_dp).\
+            message = db.session.query(Message, profileSend.displayname, userSend.username, profileSend.tagline, profileSend.has_dp, profileRecv.displayname, userRecv.username, profileRecv.tagline, profileRecv.has_dp).\
                 join(userSend, userSend.user_id == Message.sender_id).join(profileSend, profileSend.user_id == Message.sender_id).\
                 join(userRecv, userRecv.user_id == Message.receiver_id).join(profileRecv, profileRecv.user_id == Message.receiver_id).\
                 filter(Message.message_id == db.session.execute(stmt).first()[0]).first()
             if (message[0].sender_id == user_id):
-                attachment = {"firstname":message[6], "lastname":message[7], "username":message[8], "tagline":message[9], "has_dp":message[10], "metrics":"sent"}
+                attachment = {"displayname":message[5], "username":message[6], "tagline":message[7], "has_dp":message[8], "metrics":"sent"}
             else:
-                attachment = {"firstname":message[1], "lastname":message[2], "username":message[3], "tagline":message[4], "has_dp":message[5], "metrics":"received"}
+                attachment = {"displayname":message[1], "username":message[2], "tagline":message[3], "has_dp":message[4], "metrics":"received"}
             msgObj = {"message_content":message[0].message_content, "sent_date":message[0].sent_date, "is_seen":message[0].is_seen, "is_visible":message[0].is_visible, "attachment":attachment}
             convos.append(msgObj)
         return {"convos":convos}, 200

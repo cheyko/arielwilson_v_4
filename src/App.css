@@ -111,6 +111,7 @@ html{
 
 .reaction-btn{
   cursor: pointer;
+  color: #5d5d5d;
 }
 
 .media-header{
@@ -449,6 +450,7 @@ ul.list {
 
 .th-divs{
   display: flex;
+  width: 100% !important;
 }
 
 .th-div{
@@ -521,7 +523,6 @@ ul.list {
   .slick-wrapper{
     max-width: 20rem !important;
   }
-
 }
 
 @media screen and (max-width:599px) and (min-width:375px){

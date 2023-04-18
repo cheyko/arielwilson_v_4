@@ -102,7 +102,7 @@ export default class App extends Component {
       }
     });
     console.log(time);
-
+    localStorage.setItem("offset", 0);
     let user = localStorage.getItem("user-context");
     let welcome = localStorage.getItem("aic123");
     let recent = localStorage.getItem("recent");
@@ -112,9 +112,10 @@ export default class App extends Component {
 
     //if User is logged in
     recent = recent ? parseInt(recent) : 0;
-    const token = this.state.token;
+    const token = this.state.token ? this.state.token : 0;
     user = this.state.token ? JSON.parse(user) : null;
-    const prees = token ? await axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{token}) : {"data":null}; //used in av and magazine, retrieve prees differently on the respective pages
+    //const prees = token ? await axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{token}) : {"data":null}; //used in av and magazine, retrieve prees differently on the respective pages
+    const prees = await axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{token});
     const convos = token ? await this.getConvos() : null;
     this.setState({recent,prees:prees.data, welcome, user, convos});
     window.addEventListener('storage', event => {
@@ -242,11 +243,8 @@ export default class App extends Component {
   }
 
   getProduct = async (productID) => {
-    //const { products } = this.state;
-    //return products ? products.find(product => product.product_id.toString() === productID.toString()) : null;
     const { products } = this.state;
     const product = products ? products.find(product => product.product_id.toString() === productID.toString()) : null;
-    //console.log(pree === undefined);
     let result;
     if (product === undefined || product === null){
       const product_id = productID;
@@ -471,26 +469,6 @@ export default class App extends Component {
     prees.push(pree);
     this.setState({ prees }, () => callback && callback());
   }
-
-  getPree = async (pree_id) => {
-    const { prees } = this.state;
-    const pree = prees.find(pree => pree.pree_id.toString() === pree_id.toString());
-    //console.log(pree === undefined);
-    let result;
-    if (pree === undefined){
-      const user_id = this.state.user ? this.state.user.id : 0;
-      const val = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-pree`,{pree_id, user_id}).catch(error => {console.log(error)});
-      if (val.status === 200){
-        result = val.data;
-      }else{
-        result = false;
-      }
-      
-    }else{
-      result = pree;
-    }
-    return result;
-  }
   
   //setError
   setError = (msg) => {
@@ -585,9 +563,10 @@ export default class App extends Component {
         welcome = true;
       }      
       setAuth(token);
+      const prees = await axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{token})
       localStorage.setItem("aic123", JSON.stringify(welcome));
       localStorage.setItem("user-context", JSON.stringify(user));
-      this.setState({token,welcome,toggle, user});
+      this.setState({token, prees:prees.data,welcome,toggle, user});
       return true;
     }else if (res.status === 201){
       return null;
@@ -600,7 +579,7 @@ export default class App extends Component {
   logout = async(e) => {
     const token = this.state.token
     const done = await axios.post(process.env.REACT_APP_PROXY+"/api/logout",{token});
-    this.setState({token : null, welcome: false, recent:0});
+    this.setState({token : null,user:null, welcome: false, recent:0, prees:null});
     removeAuth();
     return done.status === 200;
   }

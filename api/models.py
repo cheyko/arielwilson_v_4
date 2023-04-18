@@ -92,6 +92,7 @@ class Profile(db.Model):
     __tablename__ = 'wg_profiles'
 
     user_id = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False, primary_key=True)
+    displayname = db.Column(db.String(80))
     dob = db.Column(db.Date)
     tagline = db.Column(db.String(80))
     description = db.Column(db.String(255))
@@ -107,8 +108,9 @@ class Profile(db.Model):
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     ranking = db.Column(db.Integer, db.ForeignKey('wg_rankings.ranking_id'), default=1) #, nullable=False)
 
-    def __init__(self, user_id, dob, tagline, description, location):
+    def __init__(self, displayname, user_id, dob, tagline, description, location):
         self.user_id = user_id
+        self.displayname = displayname
         self.dob = dob
         self.tagline = tagline
         self.description = description

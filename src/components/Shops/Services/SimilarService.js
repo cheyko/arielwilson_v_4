@@ -33,7 +33,7 @@ const SimilarService = (props) => {
     const { service } = props;
     //check house listing similarity inside houses.
     //const imageUrls = props.context.imageUrls;
-    const matches  = props.context.services.filter( val => val.service_id !== service.service_id) ;/*? props.context.products.filter( aProduct => (aProduct.make === aProduct.make 
+    const matches  = props.context.services? props.context.services.filter( val => val.service_id !== service.service_id) : [] ;/*? props.context.products.filter( aProduct => (aProduct.make === aProduct.make 
     && aProduct.vehicle_id !== aProduct.vehicle_id
     && aVehicle.model.replace(/ /g,'').toLowerCase().includes(vehicle.model.replace(/ /g,'').toLowerCase())
     ) 

@@ -15,13 +15,13 @@ const MediaFooter = props => {
     const [commentscount, setCommentsCount] = useState(props.commentscount);
     const viewcount = details.views;
     const [gotReaction, setGetReaction] = useState(null);
-
+    const token = props.context.token ? props.context.token : 0;
+    
     useEffect( () => {
-        const user_id = props.context.user ? props.context.user.id : 0;
         const pree_id = details.pree_id;
 
-        if((operation !== "upload" && gotReaction === null) || commentscount !== props.commentscount){
-            axios.post("/api/get-reaction",{user_id,pree_id}).then(
+        if((token !== 0) && ((operation !== "upload" && gotReaction === null) || commentscount !== props.commentscount)){
+            axios.post("/api/get-reaction",{token,pree_id}).then(
                 (getReaction) => {
                     if (getReaction.status === 200){
                         setReaction(getReaction.data.is_approved);
@@ -41,7 +41,7 @@ const MediaFooter = props => {
                 }
             );
         }
-    },[gotReaction, operation,commentscount,details.pree_id, props.commentscount, props.context.user]); //, reaction, props.commentscount]);
+    },[token, gotReaction, operation,commentscount,details.pree_id, props.commentscount, props.context.user]); //, reaction, props.commentscount]);
 
         //PreeReactions Functions
         const likePree = (e, pree_id) => {

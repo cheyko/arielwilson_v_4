@@ -62,9 +62,7 @@ def ypree():
 def get_pree():
     if request.method == 'POST':
         pree_id = request.json.get('pree_id', None)
-        user_id = request.json.get('user_id', None)
-        #users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+checkwg+'%'), User.firstname.ilike('%'+checkwg+'%'), User.lastname.ilike('%'+checkwg+'%') )).all() 
-        #results = db.session.query(Pree, Approvals).join(Approvals, Pree.pree_id == Approvals.pree_id).order_by(Pree.pree_id.desc()).all()
+        token = request.json.get('token', None)
         pree = Pree.query.get(pree_id)
         if pree.is_visible == True:
             theUser = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == pree.user_id).first()
@@ -75,10 +73,6 @@ def get_pree():
             elif pree.is_media and pree.pree_type == 'exclusive':
                 theExclusive = Exclusive.query.filter_by(pree_id = pree.pree_id).first()
                 attachment = {"exclusive_id":theExclusive.exclusive_id,"title":theExclusive.title, "artistname":theExclusive.artistname, "genre":theExclusive.genre, "captionlist":theExclusive.captionlist, "description":theExclusive.description, "playback":theExclusive.playback, "unlock_requirement": theExclusive.unlock_requirement, "is_locked":theExclusive.is_locked, "is_downloadable":theExclusive.is_downloadable, "unlock_fee":theExclusive.unlock_fee, "no_of_media":theExclusive.no_of_media, "mediatypes":theExclusive.mediatypes , "influence":theExclusive.influence,"stereo":theExclusive.stereo, "md" : theExclusive.md,"magazine":theExclusive.magazine, "views":theExclusive.views , "has_cover_art":theExclusive.has_cover_art }
-            #elif pree.is_media and pree.pree_type == 'product':
-            #    product = Product.query.filter_by(pree_id = pree.pree_id).first()
-            #    attachment = {"product_id":product.product_id,"lister":product.lister,"brand":product.brand,"name":product.name,"category":product.category,"condition":product.condition,"typeOf":product.typeOf,"location":product.location,"stock":product.stock,"price":product.price,"currency":product.currency, "year": product.year, "colors": product.colors, "package": product.package, "description": product.description, "numOfPics":product.numOfPics}
-            #elif pree.is_media == False and pree.pree_type == 'individual':
             else:
                 theQuote = Quote.query.get(pree.pree_id)
                 attachment = {"the_quote":theQuote.the_quote}
@@ -89,9 +83,13 @@ def get_pree():
                 groupObj = {"group_id":theGroup.group_id,"group_name":theGroup.name}
             else:
                 groupObj = {}
-            record = Approvals.query.filter_by(user_id=user_id,pree_id=pree.pree_id).first()
-            if record is not None:
-                approvedObj = record.is_approved
+            if(token != 0):
+                user_id = confirm_token(token)
+                record = Approvals.query.filter_by(user_id=user_id,pree_id=pree.pree_id).first()
+                if record is not None:
+                    approvedObj = record.is_approved
+                else:
+                    approvedObj = None
             else:
                 approvedObj = None
             preeObj = {"pree_id":pree.pree_id, "user":userObj, "date_added":str(pree.date_added), "is_media":pree.is_media,"pree_type":pree.pree_type, "approvals":pree.approvals, "disapprovals":pree.disapprovals, "comments":pree.comments, "attachment" : attachment, "group":groupObj,"is_approved": approvedObj}
@@ -160,7 +158,7 @@ def formatPree(pree, user_id):
             didVote = False
         else:
             didVote = True
-        lister = {"user_id":poll.User.user_id, "is_user":(poll.User.user_id == user_id), "firstname":poll.User.firstname, "lastname":poll.User.lastname, "username":poll.User.username, "tagline":poll.Profile.tagline, "location":poll.Profile.location, "has_dp":poll.Profile.has_dp}
+        lister = {"user_id":poll.User.user_id, "is_user":(poll.User.user_id == user_id), "displayname":poll.Profile.displayname, "username":poll.User.username, "tagline":poll.Profile.tagline, "location":poll.Profile.location, "has_dp":poll.Profile.has_dp}
         attachment = {"poll_id":poll.Poll.poll_id,"lister":lister,"pree_id":poll.Poll.pree_id,"category":poll.Poll.category,"question":poll.Poll.question,"choices":poll.Poll.choices,"results":poll.Poll.results,"votes":poll.Poll.votes,"end_date":str(poll.Poll.end_date),"end_time":str(poll.Poll.end_time), "status" : poll.Poll.status, "did_vote":didVote}
         #attachment =  {"poll_id":poll.poll_id,"lister":poll.lister,"pree_id":poll.pree_id,"question":poll.question,"choices":poll.choices,"results":poll.results,"votes":poll.votes,"end_date":str(poll.end_date),"end_time":str(poll.end_time)}
     elif pree.is_media and pree.pree_type == 'event':
@@ -234,11 +232,11 @@ def search_users():
         token = request.json.get('token', None)
         user_id = confirm_token(token)
         if(user_id != 0):
-            users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),User.firstname.ilike('%'+searchval+'%'), User.lastname.ilike('%'+searchval+'%') )).order_by(User.username).limit(5) 
+            users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),Profile.displayname.ilike('%'+searchval+'%') )).order_by(User.username).limit(5) 
             userlist = []
             for user in users:
                 is_follower = check_follower(user.User.user_id, user_id)
-                aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
+                aUserObj = {"user_id":user.User.user_id, "displayname":user.Profile.displayname, "username":user.User.username, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
                 userlist.append(aUserObj)
             result = {"userlist":userlist}
             return result , 200
@@ -251,11 +249,11 @@ def search_frat():
         searchval = request.json.get('searchval', None)
         token = request.json.get('token', None)
         user_id = confirm_token(token)
-        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),User.firstname.ilike('%'+searchval+'%'), User.lastname.ilike('%'+searchval+'%') )).order_by(User.username)
+        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+searchval+'%'),Profile.displayname.ilike('%'+searchval+'%') )).order_by(User.username)
         userlist = []
         for user in users:
             if check_follower(user_id,user.User.user_id) and check_follower(user.User.user_id,user_id):
-                aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp}
+                aUserObj = {"user_id":user.User.user_id, "displayname":user.Profile.displayname, "username":user.User.username, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp}
                 userlist.append(aUserObj)
         result = {"userlist":userlist}
         return result , 200
@@ -268,13 +266,13 @@ def do_search():
         checkwg = request.json.get('checkwg', None)
         user_id = request.json.get('user_id', None)
         #users = User.query.filter(or_( User.firstname.like(checkwg), User.lastname.like(checkwg), User.username.like(checkwg) )).all()
-        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+checkwg+'%'), User.firstname.ilike('%'+checkwg+'%'), User.lastname.ilike('%'+checkwg+'%') )).order_by(User.username).all() 
+        users = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(or_(User.username.ilike('%'+checkwg+'%'), Profile.displayname.ilike('%'+checkwg+'%'))).order_by(User.username).all() 
         userlist = []
         #portfolios
         portfoliolist = [1,2,3,4,5]
         for user in users:
             is_follower = check_follower(user.User.user_id,user_id)
-            aUserObj = {"user_id":user.User.user_id, "firstname":user.User.firstname, "lastname":user.User.lastname, "username":user.User.username, "access-type":user.User.accessType, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
+            aUserObj = {"user_id":user.User.user_id, "displayname":user.Profile.displayname, "username":user.User.username, "access-type":user.User.accessType, "tagline":user.Profile.tagline, "location":user.Profile.location, "has_dp":user.Profile.has_dp, "is_follower":is_follower}
             userlist.append(aUserObj)
         result = {"userlist":userlist,"portfoliolist":portfoliolist}
         return result , 200
@@ -288,7 +286,7 @@ def my_view():
         #print(user_id)
         if user_id != '0':
             user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == user_id).first() #.filter(or_( User.firstname.like(checkwg), User.lastname.like(checkwg), User.username.like(checkwg) )).all()
-            myUserObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "access-type":user_details.User.accessType, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "description":user_details.Profile.description, "location":user_details.Profile.location, "followers":user_details.Profile.followers, "figures":user_details.Profile.figures, "fraternity":user_details.Profile.fraternity,"groups":user_details.Profile.groups, "has_dp":user_details.Profile.has_dp, "has_cv":user_details.Profile.has_cv}
+            myUserObj = {"user_id":user_details.User.user_id, "displayname":user_details.Profile.displayname, "username":user_details.User.username, "access-type":user_details.User.accessType, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "description":user_details.Profile.description, "location":user_details.Profile.location, "followers":user_details.Profile.followers, "figures":user_details.Profile.figures, "fraternity":user_details.Profile.fraternity,"groups":user_details.Profile.groups, "has_dp":user_details.Profile.has_dp, "has_cv":user_details.Profile.has_cv}
             return myUserObj , 200
         else:
             return jsonify({"msg":"User does not have ID of Zero (0)."}), 205
@@ -316,7 +314,7 @@ def users_view():
         users = []
         for userview_id in userlist:
             user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.user_id == userview_id).first() #.filter(or_( User.firstname.like(checkwg), User.lastname.like(checkwg), User.username.like(checkwg) )).all()
-            userObj = {"user_id":user_details.User.user_id, "firstname":user_details.User.firstname, "lastname":user_details.User.lastname, "username":user_details.User.username, "tagline":user_details.Profile.tagline, "has_dp":user_details.Profile.has_dp}
+            userObj = {"user_id":user_details.User.user_id, "displayname":user_details.Profile.displayname, "username":user_details.User.username, "tagline":user_details.Profile.tagline, "has_dp":user_details.Profile.has_dp}
             users.append(userObj)
         return {"users":users}, 200
         """if userview_id != '0':

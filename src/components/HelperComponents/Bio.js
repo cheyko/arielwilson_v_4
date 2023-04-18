@@ -9,11 +9,13 @@ const Bio = props => {
     //const getUname = props.context.user ? props.context.user.username : "";
     const token = props.context.token ? props.context.token : 0;
     const [uname, setUname] = useState("");
+    const [dpname, setDpname] = useState("");
     const [dob, setDOB] = useState("");
     const [tagline, setTagline] = useState("");
     const [description, setDesc] = useState("");
     const [location, setLocs] = useState("");
     const [loaded, setLoaded] = useState(false);
+    const [reload, setReload] = useState(false);
 
     const loadBio = useCallback( async () => {
         props.setResponseMsg("");
@@ -23,7 +25,7 @@ const Bio = props => {
                 if (result.status !== 200){
                     props.setResponseMsg("Bio information was not loaded, please refresh page and try again. Contact us for suppport if problem persist.");
                 }else{
-                    
+                    setDpname(result.data.dpname);
                     setUname(result.data.uname);
                     setDOB(new Date(result.data.dob).toISOString().substr(0, 10));
                     setTagline(result.data.tagline);
@@ -47,6 +49,9 @@ const Bio = props => {
             case 'uname':
                 setUname(e.target.value);
                 break;
+            case 'dpname':
+                setDpname(e.target.value);
+                break;
             case 'dob':
                 setDOB(e.target.value);
                 break;
@@ -67,6 +72,7 @@ const Bio = props => {
 
     const clearFunc = () => {
         setUname("");
+        setDpname("");
         setDOB("");
         setTagline("");
         setDesc("");
@@ -79,7 +85,7 @@ const Bio = props => {
         //const user_id = props.context.user_id ? props.context.user_id : new_id;
         
         if (props.func === 'create'){
-            await axios.post(`${process.env.REACT_APP_PROXY}/api/bio`,{token,dob,tagline,description,location}).then(
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/bio`,{token, dpname, dob,tagline,description,location}).then(
                 (result1) => {
                     if (result1.status === 200){
                         //change some bool to true to display the next button
@@ -95,10 +101,11 @@ const Bio = props => {
                 }
             );
         }else if (props.func === 'edit'){
-            await axios.put(`${process.env.REACT_APP_PROXY}/api/bio`,{token,uname,dob,tagline,description,location}).then(
+            await axios.put(`${process.env.REACT_APP_PROXY}/api/bio`,{token, dpname,uname,dob,tagline,description,location}).then(
                 (result2) => {
                     if (result2.status === 200){                    
                         props.setResponseMsg("Bio information was updated.");
+                        setReload(true);
                         clearFunc();
                     }else{                        
                         props.setResponseMsg(result2.data.msg);
@@ -126,6 +133,16 @@ const Bio = props => {
                         />
                     </div>
                 }
+                <div className="field">
+                    <label className="label"> Enter Display Name </label>
+                    <input 
+                        className="input"
+                        type="text"
+                        name="dpname"
+                        value={dpname}
+                        onChange={e => handleChange(e)}
+                    />
+                </div>
                 <div className="field">
                     <label className="label"> Enter your Date of Birth </label>
                     <input
@@ -173,9 +190,14 @@ const Bio = props => {
                 <span>{props.responseMsg}</span>
                 <br />
                 <div className="field is-clearfix">
-                    <button className="button is-primary is-outlined is-pulled-right" type="submit">
-                        {props.func === 'edit' ? "Update" : "Submit" } 
-                    </button>
+                    {reload ? 
+                        <button onClick={e => window.location.reload()} className="button is-primary is-outlined is-pulled-right" type="button">
+                            Ok
+                        </button>:
+                        <button className="button is-primary is-outlined is-pulled-right" type="submit">
+                            {props.func === 'edit' ? "Update" : "Submit" } 
+                        </button>
+                    }
                 </div>
             </form>
        

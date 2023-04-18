@@ -3,6 +3,7 @@ import withContext from "../../withContext";
 import axios from "axios";
 import Comment from "./Comment";
 import {Link} from "react-router-dom";
+import { formatReaction } from "../../GlobalFunctions";
 
 const PreeReaction = props => {
 
@@ -18,15 +19,16 @@ const PreeReaction = props => {
     const [commentscount, setCommentsCount] = useState(aPree.comments); 
     const [comment, makeComment] = useState("");
     const [comments, setComments] = useState([]);
+    const token = props.context.token ? props.context.token : 0;
 
     useEffect( () => {
         if (load){
-            const user_id = props.context.user ? props.context.user.id : 0;
+            //const user_id = props.context.user ? props.context.user.id : 0;
             const pree_id = aPree.pree_id;
             
             //PreeReaction onload
-            if(user_id !== 0){
-                axios.post(`${process.env.REACT_APP_PROXY}/api/get-reaction`,{user_id,pree_id}).then(
+            if(token !== 0){
+                axios.post(`${process.env.REACT_APP_PROXY}/api/get-reaction`,{token,pree_id}).then(
                     (getReaction) => {
                         if (getReaction.status === 200){
                             setReaction(getReaction.data.is_approved);
@@ -44,9 +46,8 @@ const PreeReaction = props => {
                     }
                 );
             }
-           // setReaction(aPree.is_approved);
             if (clickable === "view"){
-                axios.post(`${process.env.REACT_APP_PROXY}/api/get-comments`, {pree_id}).then(
+                axios.post(`${process.env.REACT_APP_PROXY}/api/get-comments`, {token, pree_id}).then(
                 (getComments) => {
                         if (getComments.status === 200){
                             setComments(getComments.data.comments);
@@ -55,10 +56,9 @@ const PreeReaction = props => {
                         } 
                 });
             }
-            //console.log(comments);
             setLoad(false);
         }
-    },[load, aPree, clickable, props.context.user]);
+    },[token, load, aPree, clickable, props.context.user]);
     
     //PreeReactions Functions
     const likePree = (e, pree_id) => {
@@ -123,8 +123,8 @@ const PreeReaction = props => {
         axios.post(`${process.env.REACT_APP_PROXY}/api/handle-comments`, {user_id, pree_id, comment}).then(
             (send) => {
                 if (send.status === 200){
-                    //console.log(send.data.comment);
-                    setComments([...comments, send.data.comment]);
+                    let temp = [send.data.comment, ...comments];
+                    setComments(new Set(temp));
                     setCommentsCount(send.data.comment_num);
                     makeComment("");
                 }else{
@@ -139,43 +139,43 @@ const PreeReaction = props => {
 
     return (
         <div className="reactions">
-            <div className="columns is-mobile has-text-centered">
-                <div className="column reaction-btn" onClick={(e) => likePree(e,aPree.pree_id) }>
-                    <b className="reaction-btn" style={reaction === true ? {color:"blue"}:{color:"black"}} > <span className="reaction-txt">Like <br /></span>  <i className="fas fa-heart" aria-hidden="true"></i> {likedcount} </b>
+            <div className="th-divs is-mobile has-text-centered">
+                <div className="column reaction-btn px-0" onClick={(e) => likePree(e,aPree.pree_id) }>
+                    <span className="reaction-btn" style={reaction === true ? {color:"blue"}:{color:"#5d5d5d"}} > <span className="reaction-txt">Like <br /></span><i className="fas fa-heart" aria-hidden="true"></i><span className="reaction-num">{formatReaction(likedcount)}</span></span>
                 </div>
-                <div className="column reaction-btn" onClick={(e) => dislikePree(e,aPree.pree_id) }>
-                    <b className="reaction-btn" style={reaction === false ? {color:"blue"}:{color:"black"}}> <span className="reaction-txt">Dis-Like <br /> </span>   <i className="fas fa-heart-broken" aria-hidden="true"></i> {dislikedcount} </b>
+                <div className="column reaction-btn px-0" onClick={(e) => dislikePree(e,aPree.pree_id) }>
+                    <span className="reaction-btn" style={reaction === false ? {color:"blue"}:{color:"#5d5d5d"}}> <span className="reaction-txt">Dis-Like <br /> </span><i className="fas fa-heart-broken" aria-hidden="true"></i><span className="reaction-num">{formatReaction(dislikedcount)}</span></span>
                 </div>
-                <div className="column">
+                <div className="column px-0">
                     {clickable === "expand" ?
                         (
                             <Link to={`/view-pree/${aPree.pree_id}`}>
-                                <b className="reaction-btn" style={{color:"black"}}> <span className="reaction-txt">Comment <br /> </span>  <i className="fas fa-comment"></i> {commentscount} </b>
+                                <span className="reaction-btn" style={{color:"#5d5d5d"}}> <span className="reaction-txt">Comments <br /> </span><i className="fas fa-comment"></i><span className="reaction-num">{formatReaction(commentscount)}</span></span>
                             </Link>
                         ):(
-                            <b className="reaction-btn" style={{color:"black"}}> <span className="reaction-txt">Comment <br /> </span>  <i className="fas fa-comment"></i> {commentscount} </b>
+                            <span className="reaction-btn" style={{color:"#5d5d5d"}}> <span className="reaction-txt">Comments <br /> </span><i className="fas fa-comment"></i><span className="reaction-num">{formatReaction(commentscount)}</span></span>
                         )}
                 </div>
-                <div className="column">
-                    <b className="reaction-btn"> <span className="reaction-txt"> Re-Pree <br /> </span>  <i className="fas fa-sync-alt"></i> # </b>
+                <div className="column px-0">
+                    <span className="reaction-btn"> <span className="reaction-txt"> Re-Pree <br /> </span>  <i className="fas fa-sync-alt"></i><span className="reaction-num">{formatReaction(0)}</span></span>
                 </div>
-                <div className="column">
-                    <b className="reaction-btn"> <span className="reaction-txt">  Share <br />  </span><i className="fas fa-share-alt"></i> # </b>
+                <div className="column px-0">
+                    <span className="reaction-btn"> <span className="reaction-txt">  Share <br />  </span><i className="fas fa-share-alt"></i><span className="reaction-num">{formatReaction(0)}</span></span>
                 </div>
             </div>
             {showComments &&
                 <div className="pree-comments card">
                     <div>
                         <div className="make-comment">
-                            <input className="input" onChange={e => makeComment(e.target.value)} value={comment} type="text" placeholder="Enter Comment"/>
+                            <textarea className="textarea" onChange={e => makeComment(e.target.value)} value={comment} type="text" placeholder="Enter Comment"/>
                         </div>
                         <br />
                         <div className="hero">
                             <div className="comments-control">
-                                <button onClick={e => sendComment(e)} className="button is-success is-pulled-left">
+                                <button onClick={e => sendComment(e)} className="mx-1 button is-success is-pulled-left">
                                     Make &nbsp; <i className="fas fa-share"></i>
                                 </button>
-                                <div className="dropdown is-hoverable is-pulled-right is-right">
+                                <div className="dropdown mx-1 is-hoverable is-pulled-right is-right">
                                     <div className="dropdown-trigger">
                                         <button className="button is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
                                             <span>Filter </span>

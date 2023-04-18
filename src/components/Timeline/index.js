@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import withContext from "../../withContext";
 import AddPree from "./AddPree";
 import PreeItem from "./PreeItem";
@@ -18,15 +18,10 @@ const Timeline = props => {
     const [wanted, setWanted] = useState("");
 
     const handleScroll = e => {
-        //let page = document.getElementById("app-container");
         // Get the make-pree btn
         let makePree = document.getElementById("make-pree");
         // Get the sort-pree btn
         let filterPrees = document.getElementById("filter-prees");
-        
-        //console.log(page.pageYOffset);
-        //console.log(makePree.offsetTop);
-        //console.log(window.pageYOffset);
         
         if (makePree !== null && filterPrees !== null){
 
@@ -50,60 +45,82 @@ const Timeline = props => {
         }
     }
 
-    const filterPrees = (e,order) => {
+    const filterPrees = useCallback((prees) => {
         const newDate = new Date();
         var lastday = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         let val;
-        switch(order){
+        switch(filterText){
             case 'all':
-                setFilterText("all");
-                renderPrees(allPrees.sort((a,b) => { return b.pree_id - a.pree_id; }));
+                renderPrees(prees.sort((a,b) => { return b.pree_id - a.pree_id; }));
                 break;
             case 'today':
                 const today = new Date().toISOString().split("T")[0];
-                setFilterText("today");
-                renderPrees(allPrees.filter((aPree) => today === aPree.date_added.split(" ")[0]));
+                var test = prees.filter((aPree) => today === aPree.date_added.split(" ")[0]);
+                renderPrees(test);
                 break;
             case 'yesterday':
-                val = (newDate.getDate() - 1) > 0 ? new Date(newDate.setDate(newDate.getDate() - 1)) : new Date(newDate.setMonth(newDate.getMonth() - 1)).setDate(lastday[newDate.getMonth() - 1])
+                if ((newDate.getDate() - 1) > 0) {
+                    val = new Date(newDate.setDate(newDate.getDate() - 1));
+                }else{
+                    val = (new Date(newDate.setMonth(newDate.getMonth() - 1)));
+                    val.setDate(lastday[newDate.getMonth()]);
+                }
                 const yesterday = val.toISOString().split("T")[0];
-                setFilterText("yesterday");
-                renderPrees(allPrees.filter((aPree) => yesterday === aPree.date_added.split(" ")[0]));
+                renderPrees(prees.filter((aPree) => yesterday === aPree.date_added.split(" ")[0]));
                 break;
             case 'week':
-                val = (newDate.getDate() - 7) > 0 ? new Date(newDate.setDate(newDate.getDate() - 7)) : new Date(newDate.setMonth(newDate.getMonth() - 1)).setDate((lastday[newDate.getMonth() - 1]) + (newDate.getDate() - 7));
+                if ((newDate.getDate() - 7) > 0) {
+                    val = new Date(newDate.setDate(newDate.getDate() - 7));
+                }else{
+                    val = (new Date(newDate.setMonth(newDate.getMonth() - 1)));
+                    val.setDate(lastday[newDate.getMonth()] - (7 - newDate.getDate()));
+                }
                 const lastweek = val.toISOString().split("T")[0];
-                setFilterText("lastweek");
-                renderPrees(allPrees.filter((aPree) => lastweek < aPree.date_added.split(" ")[0]));
+                renderPrees(prees.filter((aPree) => lastweek < aPree.date_added.split(" ")[0]));
                 break;
             case 'month':
                 val = new Date(newDate.setMonth(newDate.getMonth() - 1));
                 const lastmonth = val.toISOString().split("T")[0];
-                setFilterText("lastmonth");
-                renderPrees(allPrees.filter((aPree) => lastmonth < aPree.date_added.split(" ")[0]));
+                renderPrees(prees.filter((aPree) => lastmonth < aPree.date_added.split(" ")[0]));
                 break;
             default:
                 break;
         }
         setShowDropDown(!showDropDown);
-    }
+    },[filterText,showDropDown]);
 
     const gototop = () => {
         window.scrollTo(0, 0);
     }
 
+    const doFilter = () => {
+        if(!showDropDown){
+            document.getElementById("filter-prees").classList.add("is-active");
+        }else{
+            document.getElementById("filter-prees").classList.remove("is-active");
+        }
+        setShowDropDown(!showDropDown);
+    }
+
     useEffect( () => {
         window.addEventListener('scroll', e => handleScroll(e));
         const token = props.context.token ? props.context.token : 0;
-        if (loadNew){
+        if(loadNew && props.context.prees){
+            filterPrees(props.context.prees);
+            setLoadNew(false);
+        }else if(loadNew && props.context.prees === null){
+            console.log("test here");
             axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{token}).then(
                 result => {
-                    renderPrees(result.data);
+                    //renderPrees(result.data);
+                    filterPrees(result.data);
+                    setLoadNew(false);
                 }
             );
-            setLoadNew(false);
         }
-    },[props.context.token,loadNew]);
+        window.scrollTo(0,localStorage.getItem("offset"));
+
+    },[filterPrees, props.context.prees, loadNew]);
 
     let timeline;
     if(allPrees.length > 0){
@@ -158,9 +175,9 @@ const Timeline = props => {
 
                 <span onLoad={e => {console.log("load")}}> Checkboxes </span>
                 
-                <div id="filter-prees" className={`dropdown is-right is-pulled-right ${showDropDown ? "is-active" : ""}`} >
+                <div id="filter-prees" className={`dropdown is-right is-pulled-right`} >
                     <div className="dropdown-trigger">
-                        <button id="filter-pree-btn"  onClick={ e => setShowDropDown(!showDropDown)} className="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <button id="filter-pree-btn"  onClick={ e => doFilter()} className="button" aria-haspopup="true" aria-controls="dropdown-menu">
                             <span className="large-text"> Filter </span>
                             <span className="icon is-large">
                                 <i className="fas fa-angle-down" aria-hidden="true"></i>
@@ -170,19 +187,19 @@ const Timeline = props => {
                     </div>
                     <div className="dropdown-menu" id="dropdown-menu" role="menu">
                         <div className="dropdown-content">
-                            <span onClick={e => filterPrees(e,'all')} className="dropdown-item large-text">
+                            <span onClick={e => {setFilterText('all');setLoadNew(true);}} className="dropdown-item large-text">
                                 All Prees
                             </span>
-                            <span onClick={e => filterPrees(e,'today')} className="dropdown-item large-text">
+                            <span onClick={e => {setFilterText('today');setLoadNew(true)}} className="dropdown-item large-text">
                                 Today Prees (Most)
                             </span>
-                            <span onClick={e => filterPrees(e,'yesterday')} className="dropdown-item large-text">
+                            <span onClick={e => {setFilterText('yesterday');setLoadNew(true);}} className="dropdown-item large-text">
                                 Yesterday Prees (Most)
                             </span>
-                            <span onClick={e => filterPrees(e,'week')} className="dropdown-item large-text">
+                            <span onClick={e => {setFilterText('week');setLoadNew(true)}} className="dropdown-item large-text">
                                 This Week Prees (Top)
                             </span>
-                            <span onClick={e => filterPrees(e,'month')} className="dropdown-item large-text">
+                            <span onClick={e => {setFilterText('month');setLoadNew(true)}} className="dropdown-item large-text">
                                 This Month Prees (Top)
                             </span>
                         </div>
@@ -193,18 +210,25 @@ const Timeline = props => {
             <div>
                 {allPrees && (allPrees.length > 0) ? (    
                     timeline.map((element, index) => (
-                        <div key={index}>
+                        <div key={index} onClick={ e => localStorage.setItem("offset", window.pageYOffset)}>
                             {element}
                         </div>
                     )) 
                     
                 ) : (
-                    <div className="container" style={{ padding:"3rem"}}>
-                        {/*<span className="is-size-3" style={{color:"blue"}}>
-                            Follow Figures, Make Prees and see 'WAH REALLY A GWAAN'
-                        </span>*/}
-                        <div className="loading"></div>
-                    </div>
+                    <>
+                        {loadNew ?
+                            <div className="container" style={{ padding:"3rem"}}>
+                                <div className="loading"></div>
+                            </div>:
+                            <div className="container" style={{ padding:"3rem"}}>
+                                <span className="is-size-3" style={{color:"blue"}}>
+                                    Follow Figures, Make Prees and see 'WAH REALLY A GWAAN' for 
+                                    {" "}{filterText === 'week' || filterText === 'month' ? 'Last' + filterText : filterText}.
+                                </span>
+                            </div>
+                        }
+                    </>
                 )}
             </div>
             

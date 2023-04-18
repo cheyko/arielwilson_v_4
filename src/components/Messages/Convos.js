@@ -42,7 +42,7 @@ const Convos = props => {
                                         <div className="media-content">
                                             <div className="content">
                                                 <p>
-                                                    <strong>{convo.attachment.firstname} {" "} {convo.attachment.lastname}</strong> <small>@{convo.attachment.username}</small> 
+                                                    <strong>{convo.attachment.displayname}</strong> <small>@{convo.attachment.username}</small> 
                                                     <br />
                                                     <small style={{textDecoration:"underline"}}> #{convo.attachment.tagline} </small> 
                                                     <br />

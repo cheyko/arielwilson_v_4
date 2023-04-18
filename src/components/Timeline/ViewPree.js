@@ -2,26 +2,30 @@ import React, { useEffect, useState } from "react";
 import withContext from "../../withContext";
 import PreeItem from "./PreeItem";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 const ViewPree = props => {
 
     window.scrollTo(0,0);
     
     let navigate = useNavigate();
-
-    //const user_id = props.context.user ? props.context.user.id : 0;
     let {id} = useParams();
     const [aPree, setAPree] = useState(null);
 
     useEffect (() => {
-        if (aPree === null){
-            props.context.getPree(id).then((promise) => {
-                setAPree(promise);
-            });
-        }
-    },[aPree, id, props.context])
+        const token = props.context.token ? props.context.token : 0;
+        const pree_id = id;
+        axios.post(`${process.env.REACT_APP_PROXY}/api/get-pree`,{token,pree_id}).then(
+            (pree) => {
+                if (pree.status === 200){
+                    setAPree(pree.data);
+                }else{
+                    setAPree(false);
+                }
+            }
+        );
+    },[id, props.context.token])
     
-    //console.log(aPree);
     return (
         <div className="hero">
             {aPree ? 
@@ -36,13 +40,19 @@ const ViewPree = props => {
                     </div>
                 </div>
                 :
-                <div className="hero-container">
-                    <div className="hero-body">
-                        <span className="is-size-3" style={{color:"gray"}}>
-                            Pree is not found !
-                        </span>
+                <>
+                {aPree === null ?
+                    <div className="loading"></div>
+                    :
+                    <div className="hero-container">
+                        <div className="hero-body">
+                            <span className="is-size-3" style={{color:"gray"}}>
+                                Pree is not found !
+                            </span>
+                        </div>
                     </div>
-                </div>
+                }
+                </>
             }
         </div>
     );

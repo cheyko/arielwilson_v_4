@@ -143,7 +143,10 @@ def is_follower():
     if request.method == 'POST':
         token = request.json.get('token', None)
         uname = request.json.get('uname', None)
-        user_id = confirm_token(token)
+        if token != 0:
+            user_id = confirm_token(token)
+        else:
+            user_id = 0
         userview_id = User.query.filter_by(username=uname).first().user_id
         #user_id = request.json.get('user_id', None)
         #userview_id = request.json.get('userview_id', None)

@@ -3,6 +3,7 @@ import withContext from "../../withContext";
 import axios from "axios";
 import Reply from "./Reply";
 import Modal from "react-modal";
+import { formatTime, formatReaction } from "../../GlobalFunctions";
 
 Modal.setAppElement('#root');
 
@@ -43,46 +44,17 @@ const Comment = props => {
     const [comment_text, setText] = useState(comment.comment_text);
     const [likedcount, setLikes] = useState(comment.c_approvals);
     const [dislikedcount, setDislikes] = useState(comment.c_disapprovals);
-    const [threadcount, setThreadCount] = useState(comment.replies); 
+    const [threadcount, setThreadCount] = useState(comment.threadcount); 
     const [commentStatus, setStatus] = useState(true);
-    const [c_reaction, setCReaction] = useState(null);
+    const [c_reaction, setCReaction] = useState(comment.is_c_approved);
     const [reply, makeReply] = useState("");
-    const [replies, setReplies] = useState([]);
+    //const [replies, setReplies] = useState(comment.replies);
+    let replies = comment.replies;
     const [showReplyInput, setShowReplyInput] = useState(false);
     const [showReplies, setShowReplies] = useState(false);
     const [editcomment, editComment] = useState(comment.comment_text);
     const [showEditInput, setShowEditInput] = useState(false);
-
-
-    useEffect( () => {
-        if (user_id !== 0){
-            axios.post(`${process.env.REACT_APP_PROXY}/api/get-c-reaction`,{user_id,comment_id}).then(
-                (getCReaction) => {
-                    if (getCReaction.status === 200){
-                        setCReaction(getCReaction.data.is_c_approved);
-                    }else if(getCReaction.status === 201){
-                        setCReaction(null);
-                    }else{
-                        throw new Error("Error while Reacting to Pree");
-                    }
-                }
-            );
-        }
-    
-        axios.post(`${process.env.REACT_APP_PROXY}/api/get-replies`, {comment_id}).then(
-           (getReplies) => {
-                if (getReplies.status === 200){
-                    setReplies(getReplies.data.replies);
-                }else{
-                   throw new Error("No comments available.");
-                } 
-            } 
-        )
-
-    },[comment_id,likedcount,dislikedcount, user_id, threadcount, c_reaction, reply]);
-
     const [modalIsOpen, setModalOpen] = useState(false);
-    
 
     const openModal = e => {
         e.preventDefault();
@@ -171,7 +143,6 @@ const Comment = props => {
                     //console.log(send.data.comment);
                     //setComments([send.data.comment, ...comments]);
                     setText(editcomment);
-                    editComment("");
                     setShowEditInput(!showEditInput);
                 }else{
                     throw new Error("Error while make comments.");
@@ -194,8 +165,125 @@ const Comment = props => {
         )
     }
 
-    //console.log(commentStatus);
     return(
+        <div>
+        {commentStatus ?
+            <div>
+                <article className="media">
+                    <figure className="media-left">
+                        <p className="image is-64x64">
+                        <img className="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" />
+                        </p>
+                    </figure>
+                    <div className="media-content" style={{overflow:"hidden"}}>
+                        <div className="content">
+                        
+                            <strong>{comment.displayname}</strong> <small className="is-pulled-right">{formatTime(comment.date_added)}</small>
+                            <br /> <small>@{comment.username}</small> 
+                            <br />
+                            {showEditInput ? (
+                                <div className="edit-comment">
+                                    <textarea className="textarea" style={{width:"80%"}} onChange={e => editComment(e.target.value)} value={editcomment} type="text" />
+                                    {" "}
+                                    <button onClick={(e) => saveEdit(e)} className="button is-small"> Save </button>
+                                </div>
+                            ):(
+                                <div id="the-comment" className="the-comment">
+                                    {comment_text} 
+                                </div>
+                            )} 
+                        
+                        </div>
+                        <nav className="level is-mobile">
+                            <div className="level-left">
+                                <span className="level-item reaction-btn">
+                                    <span onClick={(e) => setShowReplyInput(!showReplyInput)} className="icon"><i className="fas fa-reply fa-lg"></i></span>
+                                </span>
+                                <span className="level-item reaction-btn" onClick={(e) => likeComment(e) } style={c_reaction === true ? {color:"blue",marginInline:"1rem"}:{color:"#5d5d5d",marginInline:"1rem"}}>
+                                    <span className="icon"><i className="fas fa-heart"></i>{formatReaction(likedcount)}</span>
+                                </span>
+                                <span className="level-item reaction-btn" onClick={(e) => dislikeComment(e) } style={c_reaction === false ? {color:"blue",marginInline:"1rem"}:{color:"#5d5d5d",marginInline:"1rem"}}>
+                                    <span className="icon"><i className="fas fa-heart-broken"></i>{formatReaction(dislikedcount)}</span>
+                                </span>
+                                <span className="level-item reaction-btn" style={{marginInline:"1rem"}}>
+                                    <span className="icon"><i className="fas fa-comment"></i>{formatReaction(threadcount)}</span>
+                                </span>
+                            </div>
+                        </nav>
+                        <nav className="level is-mobile">
+                            <div className="level-left">
+                                {replies && replies.length > 0 && 
+                                    <span onClick={(e) => setShowReplies(!showReplies)} className="level-item is-underlined" style={{cursor:"pointer"}}>
+                                        <b>View Replies </b>
+                                    </span>
+                                }
+                                {user_id === comment.user_id && 
+                                    <div className="th-divs is-pulled-right">
+                                        <span className="th-div mx-1 reaction-btn">
+                                            <span onClick={(e) => setShowEditInput(!showEditInput)} className="icon"><i className="fas fa-edit"></i></span>
+                                        </span>
+                                        <span className="th-div mx-1 reaction-btn">
+                                            <span onClick={(e) => openModal(e)} className="icon"><i className="fas fa-trash"></i></span>
+                                        </span>
+                                    </div>
+                                }
+                            </div>
+                            </nav>
+                    </div>
+                </article>
+                {showReplyInput &&
+                    <div>
+                        <textarea cols="4" className="textarea" onChange={e => makeReply(e.target.value)} value={reply} placeholder="Reply to Comment"/>
+                        {" "}
+                        <button onClick={(e) => sendReply(e)} className="button is-small"> Reply </button>
+                        <br/><br/>
+                    </div>
+                }
+                {showReplies &&
+                    <div className="replies" style={{borderLeft:"3px solid lightgrey"}}>
+                        {replies && replies.length > 0 && 
+                            (
+                                replies.map( (reply, index) => (
+                                    <div key={index}>
+                                        <Reply comment_id={comment_id} reply={reply} index={index} />
+                                    </div>
+                                ))
+                            )
+                        }
+                    </div>
+                }
+            </div>
+            :
+            <div>
+                Comment was deleted.
+            </div>
+        }
+        <Modal 
+            isOpen={modalIsOpen}
+            onRequestClose={ e => closeModal(e)}
+            style={customStyles}>
+                
+            <div className="hero" style={{width:"100%"}}>
+                <br />
+                <span style={{margin:"0 auto"}}>Delete Comment Permanently ?</span>
+                <br />  
+                <ul className="delete-controls">
+                    <li>
+                        <button style={{margin:"0 auto",padding:"1rem"}} className="button is-success is-link is-medium is-rounded" onClick={e => deleteComment(e)}>   
+                            <span>Yes</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button style={{margin:"0 auto",padding:"1rem"}} className="button is-warning is-link is-medium is-rounded" onClick={e => closeModal(e)}>   
+                            <span>No</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </Modal>
+        </div>
+    )
+    /*return(
         <div className="columns is-mobile">
             {commentStatus ? (
                 <>
@@ -323,8 +411,7 @@ const Comment = props => {
                 </div>
             )}
         </div>
-    
-    )
+    )*/
 }
 
 export default withContext(Comment);

@@ -92,7 +92,7 @@ const ProfileBio = props => {
                                 <div className="row">
                                     <div className="bio-details">
                                         <div className="columns is-mobile">
-                                            <span className="column"> <i className="fas fa-user"></i> {user.firstname + " " + user.lastname} </span>
+                                            <span className="column"> <i className="fas fa-user"></i> {user.displayname} </span>
                                             <span className="column"> <i className="fas fa-map-marker-alt"></i> {user.location} </span>
                                             <span className="column"> <i className="fas fa-calendar-alt"></i> {birthday} </span>
                                         </div>

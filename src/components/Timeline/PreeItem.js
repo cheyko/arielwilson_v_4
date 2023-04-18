@@ -7,6 +7,7 @@ import PreeHeader from "./PreeHeader";
 import PreeBody from "./PreeBody";
 import PreeReaction from "./PreeReaction";
 import { useCallback } from 'react';
+import EncourageModal from "../HelperComponents/EncourageModal";
 
 const PreeItem = props => {
 
@@ -16,6 +17,8 @@ const PreeItem = props => {
     const {clickable} = props;
     const [gotMedia, setGetMedia] = useState(false);
     const [imgView, setImgView] = useState(null);
+    const [modalIsOpen, setModalOpen] = useState(false);
+    const [wanted, setWanted] = useState("");
 
     const loadMainMedia = useCallback(async() => {
         //check if cv and dp is available (database check):
@@ -39,6 +42,7 @@ const PreeItem = props => {
     
     return (
         <div className="hero">
+            <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
             <div className="pree-item">
                 <div className='message'>
                     <div className="dropdown is-pulled-right is-right is-hoverable">
@@ -78,7 +82,7 @@ const PreeItem = props => {
                     </div>
                     
                 </article>  
-                <PreeReaction aPree={aPree} showComments={showComments} clickable={clickable}/>
+                <PreeReaction setWanted={setWanted} setModalOpen={setModalOpen} aPree={aPree} showComments={showComments} clickable={clickable}/>
             </div>
             <br/>
         </div>

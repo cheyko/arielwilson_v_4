@@ -40,7 +40,7 @@ const ViewUserCard = props => {
                             </figure>
                         </div>
                         <div className="media-content">
-                            <span className="subtitle is-6"> {user.firstname + " " + user.lastname} </span> <br />
+                            <span className="subtitle is-6"><b>{user.displayname}</b> </span> <br />
                             <span className="subtitle is-6">@{user.username}</span><br />
                         </div>
                     </div>

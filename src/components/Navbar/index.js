@@ -49,6 +49,7 @@ const Navbar = props => {
     },[token]);
 
     const activate = (choice) => {
+        //localStorage.setItem("offset", 0);
         setSelection(choice);
     }
     
@@ -91,7 +92,7 @@ const Navbar = props => {
         if (document.documentElement.classList.contains("hide-scroll") === true){
             document.documentElement.classList.remove("hide-scroll");
         }
-    },[gotMedia, path, location, loadMainMedia]); //, clicked, selection
+    },[gotMedia, path, location, loadMainMedia, props.context.user]); //, clicked, selection
 
     return(
         <div className="custom-nav has-text-centered" id="custom-nav">

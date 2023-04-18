@@ -14,14 +14,13 @@ const TrendyFooter = props => {
     const [commentscount, setCommentsCount] = useState(props.commentscount);
     const viewcount = details.views;
     const [gotReaction, setGetReaction] = useState(null);
+    const token = props.context.token ? props.context.token : 0;
 
     useEffect( () => {
-        const user_id = props.context.user ? props.context.user.id : 0;
         const pree_id = details.pree_id;
-        
         //PreeReaction onload
-        if((operation !== "upload" && gotReaction === null) || commentscount !== props.commentscount){
-            axios.post("/api/get-reaction",{user_id,pree_id}).then(
+        if((token !== 0) && ((operation !== "upload" && gotReaction === null) || commentscount !== props.commentscount)){
+            axios.post("/api/get-reaction",{token,pree_id}).then(
                 (getReaction) => {
                     if (getReaction.status === 200){
                         setReaction(getReaction.data.is_approved);
@@ -44,7 +43,8 @@ const TrendyFooter = props => {
         /*if(commentscount !== props.commentscount){
             setCommentsCount(props.commentscount);
         }*/
-    },[reaction, gotReaction, props.commentscount, commentscount, details.pree_id, operation, props.context.user]);
+    },[token, reaction, gotReaction, props.commentscount, commentscount, details.pree_id, operation, props.context.user]);
+    
 
         //PreeReactions Functions
         const likePree = (e, pree_id) => {

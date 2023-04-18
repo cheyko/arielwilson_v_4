@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import withContext from "../../withContext";
 import axios from "axios";
 import Modal from "react-modal";
+import { formatTime, formatReaction } from "../../GlobalFunctions";
 
 Modal.setAppElement('#root');
 
@@ -36,15 +37,15 @@ const customStyles = {
 const Reply = props => {
 
     const {reply} = props;
-    const {comment} = props;
-    const {index} = props;
+    const {comment_id} = props;
     const user_id = props.context.user ? props.context.user.id : 0;
     const reply_id = reply.reply_id;
+    const [reply_text, setText] = useState(reply.reply_text);
     const [replyStatus, setStatus] = useState(true);
     const [likedcount, setLikes] = useState(reply.r_approvals);
     const [dislikedcount, setDislikes] = useState(reply.r_disapprovals);
-    const [r_reaction, setRReaction] = useState(null);
-    //const [editreply, editReply] = useState("");
+    const [r_reaction, setRReaction] = useState(reply.is_approved);
+    const [editreply, editReply] = useState(reply.reply_text);
     const [showEditReply, setShowEditReply] = useState(false);
     const [modalIsOpen, setModalOpen] = useState(false);
 
@@ -113,7 +114,6 @@ const Reply = props => {
     }
 
     const deleteReply = (e) => {
-        const comment_id = comment.comment_id;
         axios.post(`${process.env.REACT_APP_PROXY}/api/delete-reply`, {comment_id, reply_id}).then(
             (remove) => {
                 if (remove.status === 200){
@@ -125,26 +125,111 @@ const Reply = props => {
         )
     }
 
-    /*const saveEditReply = (e) => {
+    const saveEditReply = (e) => {
         const user_id = props.context.user.id;
-        const save = axios.put("/api/handle-replies", {user_id, comment_id, editcomment}).then(
+        const reply = editreply;
+        axios.put(`${process.env.REACT_APP_PROXY}/api/handle-replies`, {user_id, reply, reply_id}).then(
             (save) => {
                 if (save.status === 200){
-                    //console.log(send.data.comment);
-                    //setComments([send.data.comment, ...comments]);
-                    setText(editcomment);
-                    editComment("");
-                    setShowEditInput(!showEditInput);
+                    setText(editreply);
+                    setShowEditReply(!showEditReply);
                 }else{
                     throw new Error("Error while make comments.");
                 }
             }
         )
-        //e.preventDefault();
-    }*/
+    }
 
 
     return(
+        <div style={{paddingLeft:"1rem"}}>
+            {replyStatus ? 
+            <div>
+                <article className="media">
+                    <figure className="media-left">
+                        <p className="image is-64x64">
+                        <img className="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" />
+                        </p>
+                    </figure>
+                    <div className="media-content">
+                        <div className="content">
+                            <div>
+                                <strong>{reply.displayname}</strong>  <small className="is-pulled-right">{formatTime(reply.date_added)}</small>
+                                <br />
+                                <small>@{reply.username}</small>
+                                <br />
+                                {showEditReply ? (
+                                    <div className="edit-reply">
+                                        <textarea className="textarea" style={{width:"80%"}} onChange={e => editReply(e.target.value)} value={editreply} type="text" />
+                                        {" "}
+                                        <button onClick={(e) => saveEditReply(e)} className="button is-small"> Save </button>
+                                    </div>
+                                ):(
+                                    <span>
+                                        {reply_text} 
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                        <nav className="level is-mobile">
+                            <div className="level-left">
+                                <span className="level-item reaction-btn">
+                                    <span className="icon" style={r_reaction === true ? {color:"blue"}:{color:"#5d5d5d"}} onClick={(e) => likeReply(e) }>
+                                        <i className="fas fa-heart"></i> 
+                                    </span>
+                                    {formatReaction(likedcount)} 
+                                </span>
+                                <span className="level-item reaction-btn">
+                                    <span className="icon" style={r_reaction === false ? {color:"blue"}:{color:"#5d5d5d"}} onClick={(e) => dislikeReply(e) }>
+                                        <i className="fas fa-heart-broken"></i>  
+                                    </span>
+                                    {formatReaction(dislikedcount)} 
+                                </span>
+                                {user_id === reply.user_id &&
+                                    <>
+                                        <span className="level-item reaction-btn">
+                                            <span className="icon" onClick={(e) => {e.preventDefault();setShowEditReply(!showEditReply)}}><i className="fas fa-edit"></i></span>
+                                        </span>
+                                        <span className="level-item reaction-btn">
+                                            <span className="icon" onClick={e => openModal(e)}><i className="fas fa-trash"></i></span>
+                                        </span>
+                                    </>
+                                }
+                            </div>
+                        </nav>
+                    </div>
+                    <Modal 
+                        isOpen={modalIsOpen}
+                        onRequestClose={ e => closeModal(e)}
+                        style={customStyles}>     
+                        <div className="hero" style={{width:"100%"}}>
+                            <br />
+                            <span style={{margin:"0 auto"}}>Delete Reply Permanently ?</span>
+                            <br />  
+                            <ul className="delete-controls">
+                                <li>
+                                    <button style={{margin:"0 auto",padding:"1rem"}} className="button is-success is-link is-medium is-rounded" onClick={e => deleteReply(e,reply.reply_id)}>   
+                                        <span>Yes</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button style={{margin:"0 auto",padding:"1rem"}} className="button is-warning is-link is-medium is-rounded" onClick={e => closeModal(e)}>   
+                                        <span>No</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </Modal>
+                </article>
+            </div>
+            :
+            <div>
+                Reply was deleted.
+            </div>
+        }
+        </div>
+    )
+    /*return(
         <>
             <div key={index} className="reply">
                 {replyStatus ? (
@@ -161,7 +246,7 @@ const Reply = props => {
                                         {/*<input className="input is-small" style={{width:"80%"}} onChange={e => editReply(e.target.value)} value={editReply(reply)} type="text" />
                                         {" "}
                                         <button onClick={(e) => saveEditReply(e)} className="button is-small"> Save </button>
-                                        */}
+                                        //}
                                     </div>
                                 ):(
                                     <div>
@@ -200,7 +285,7 @@ const Reply = props => {
                                                 <div className="dropdown-content">
                                                     {/*<span className="dropdown-item">
                                                     <span onClick={(e) => setShowEditReply(!showEditReply)} className="reaction-btn"><b>Edit</b></span>
-                                                    </span>*/}
+                                                    </span>//}
                                                     <span className="dropdown-item">
                                                         <span onClick={e => openModal(e)} className="reaction-btn"><b>Delete</b></span>
                                                     </span>
@@ -243,7 +328,7 @@ const Reply = props => {
             </div>
             
         </>
-    )
+    )*/
 }
 
 export default withContext(Reply);
