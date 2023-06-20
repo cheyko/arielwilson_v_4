@@ -15,7 +15,7 @@ const LeftContainer = () => {
         <div className="hero">
             <section className="card">
                 <figure className="image is-4by3">
-                    <img src={process.env.PUBLIC_URL + "/images/homepage/first_image.png"} alt="WAH GWAAN" />
+                    <img src={process.env.PUBLIC_URL + "/images/homepage/first_image.jpg"} alt="WAH GWAAN" />
                 </figure>
             </section>
 
@@ -37,7 +37,7 @@ const LeftContainer = () => {
 
             <section className="card">
                 <figure className="image is-4by3" style={{height:"100%"}}>
-                    <img src={process.env.PUBLIC_URL + "/images/homepage/3rd_image.png"} alt="WAH GWAAN has a Spot for You." />
+                    <img src={process.env.PUBLIC_URL + "/images/homepage/3rd_image.jpg"} alt="WAH GWAAN has a Spot for You." />
                 </figure>
             </section>
 
@@ -59,7 +59,7 @@ const LeftContainer = () => {
 
             <section className="card">
                 <figure className="image is-4by3">
-                    <img src={process.env.PUBLIC_URL + "/images/homepage/Everybody.png"} alt="It's For Everybody." />
+                    <img src={process.env.PUBLIC_URL + "/images/homepage/Everybody.jpg"} alt="It's For Everybody." />
                 </figure>
             </section>
         </div>
@@ -72,7 +72,7 @@ const RightContainer = () => {
         <div className="hero">
             <section className="card">
                 <figure className="image is-4by3">
-                    <img src={process.env.PUBLIC_URL + "/images/homepage/2nd_image.png"} alt="Sign-Up Today, Experience it All." />
+                    <img src={process.env.PUBLIC_URL + "/images/homepage/2nd_image.jpg"} alt="Sign-Up Today, Experience it All." />
                 </figure>
             </section>
 
@@ -96,7 +96,7 @@ const RightContainer = () => {
 
             <section className="card">
                 <figure className="image is-4by3" style={{height:"100%"}}>
-                    <img src={process.env.PUBLIC_URL + "/images/homepage/4th_image.png"} alt="Vast MarketPlace" />
+                    <img src={process.env.PUBLIC_URL + "/images/homepage/4th_image.jpg"} alt="Vast MarketPlace" />
                 </figure>
             </section>
 
@@ -119,7 +119,7 @@ const RightContainer = () => {
     
         <section className="card">
             <figure className="image is-4by3">
-                <img src={process.env.PUBLIC_URL + "/images/homepage/Final_image.png"} alt="It's Everything, Literally" />
+                <img src={process.env.PUBLIC_URL + "/images/homepage/Final_image.jpg"} alt="It's Everything, Literally" />
             </figure>
         </section>
     </div>

@@ -16,6 +16,7 @@ const ProfileHeader = props => {
     const [openImage, setOpen] = useState(false);
     const [modalIsOpen, setModalOpen] = useState(false);
     const [wanted, setWanted] = useState("");
+    const [showRemove, setShowRemove] = useState(false);
 
     //const videoUrl = props.vidView;
 
@@ -33,11 +34,11 @@ const ProfileHeader = props => {
             <EncourageModal wanted={wanted}  modalIsOpen={modalIsOpen} setModalOpen={setModalOpen} />
             <div className="top-div">  
                 <div className="main-media-video">
-                    <div className="container has-text-centered">
+                    <div className="container">
                         {action === 'read-write' && props.showEdit &&
                             <div className="video-upload">
                                 <label htmlFor="file-input-video">
-                                    <span className="cv-video-icon is-pulled-right"> <FontAwesomeIcon icon={faVideo} size="2x" /> </span> 
+                                    <span className="cv-video-icon is-pulled-right"> <FontAwesomeIcon icon={faVideo} size="2x" /> <br/> </span> 
                                 </label>
                                 <input id="file-input-video" name="video-upload" single="true" type="file" onChange={e => props.handleUpload(e)}/>
                             </div> 
@@ -117,13 +118,31 @@ const ProfileHeader = props => {
                                 </button>
                             ):(
                                 <div>
-                                    <button onClick={ e => props.cancelUpload(e)} className={`profile-btn button is-link is-pulled-right`}> 
-                                        Cancel
-                                    </button> 
-                                    
                                     <button onClick={ e => props.saveUpload(e)} className={`profile-btn button is-link is-pulled-right`}> 
                                         Save
                                     </button>
+                                    <button onClick={ e => props.cancelUpload(e)} className={`profile-btn button is-link is-pulled-right`}> 
+                                        Cancel
+                                    </button> 
+                                    {(props.has_cv || props.has_dp) && 
+                                    <div className={`dropdown is-right is-pulled-right ${showRemove ? "is-active" : ""}`} >
+                                        <div className="dropdown-trigger">
+                                            <button onClick={ e => setShowRemove(!showRemove)} className="profile-btn button is-link" aria-haspopup="true" aria-controls="dropdown-menu">
+                                                Remove
+                                            </button>
+                                        </div>
+                                        <div className="dropdown-menu" id="dropdown-menu" role="menu">
+                                            {props.has_cv && <span onClick={ e => {props.removeUpload(e,"cover");setShowRemove(false)}} className="button is-link dropdown-item m-1">
+                                                Cover Video <i className="fas fa-trash"></i>
+                                            </span>
+                                            }
+                                            {props.has_dp && <span onClick={ e => {props.removeUpload(e,"display");setShowRemove(false)}} className="button is-link dropdown-item m-1">
+                                                Display Photo <i className="fas fa-trash"></i>
+                                            </span>
+                                            }
+                                        </div>
+                                    </div>
+                                    }
                                 </div>
                             )}
                         </div>
@@ -136,7 +155,7 @@ const ProfileHeader = props => {
                         {action === 'read-write' && props.showEdit &&
                             <div className="image-upload">
                                 <label htmlFor="file-input-image">
-                                    <span className="dp-camera-icon is-pulled-right"> <FontAwesomeIcon icon={faCamera} size="2x" /> </span>
+                                    <span className="dp-camera-icon is-pulled-right"> <FontAwesomeIcon icon={faCamera} size="2x" /> <br /> </span>
                                 </label>
                                 <input id="file-input-image" name="image-upload" single="true" type="file" onChange={e => props.handleUpload(e)}/>
                             </div> 

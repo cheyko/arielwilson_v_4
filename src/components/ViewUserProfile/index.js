@@ -44,9 +44,9 @@ const ViewUserProfile = props => {
                     }
 
                     if (response.data.has_dp === true){
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + response.data.user_id + ".jpeg");
+                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + response.data.user_id + ".jpg");
                     }else{
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpg");
                     }
                     
                 }

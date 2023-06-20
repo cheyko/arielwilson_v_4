@@ -1,6 +1,8 @@
 .tile-item, .tile-item .card img, .img-holder{
     height: 16rem !important;
-    line-height: 16rem !important;
+    line-height: 16rem !important;width: 100%;
+    object-fit: cover;
+
 }
 
 .tiled-audio .card-content{
@@ -20,6 +22,8 @@
 
 .img-holder{
     position: relative;
+    width: 100%;
+    object-fit: cover;
 }
 
 .caption-tag{
@@ -51,6 +55,8 @@
     .tile-item, .tile-item .card img, .img-holder{
         height: 13rem !important;
         line-height: 13rem !important;
+        width: 100%;
+        object-fit: cover;
 
     }
 }
@@ -59,7 +65,8 @@
     .tile-item, .tile-item .card img, .img-holder{
         height: 10rem !important;
         line-height: 10rem !important;
-
+        width: 100%;
+        object-fit: cover;
     }
 }
 
@@ -67,6 +74,8 @@
     .tile-item, .tile-item .card img, .img-holder{
         height: 10rem !important;
         line-height: 10rem !important;
+        width: 100%;
+        object-fit: cover;
 
     }
 }
@@ -75,6 +84,7 @@
     .tile-item, .tile-item .card img, .img-holder{
         height: 8rem !important;
         line-height: 8rem !important;
-
+        width: 100%;
+        object-fit: cover;
     }
 }

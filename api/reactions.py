@@ -111,12 +111,15 @@ def dislike_pree():
 def get_comments():
     if request.method == "POST":
         token = request.json.get('token', None)
-        user_id = confirm_token(token)
+        if(token == 0):
+            user_id = token
+        else:
+            user_id = confirm_token(token)
         pree_id = request.json.get('pree_id', None)
         result = db.session.query(Comments, User, Profile).join(User, User.user_id == Comments.user_id).join(Profile, Profile.user_id == Comments.user_id).filter(Comments.pree_id == pree_id, Comments.is_visible == True).order_by(Comments.comment_id.desc()).all()
         comments = []
         for comment in result:
-            if was_c_clicked(user_id,comment.Comments.comment_id):
+            if (user_id != 0) and was_c_clicked(user_id,comment.Comments.comment_id):
                 is_c_approved = CommentsApprovals.query.filter_by(user_id=user_id,comment_id=comment.Comments.comment_id).first().is_c_approved 
             else:
                 is_c_approved = None
@@ -139,7 +142,7 @@ def handle_comments():
         pree_details.comments = count
         db.session.add(newComment)
         db.session.flush()
-        commentObj = {"comment_id":newComment.comment_id, "pree_id":newComment.pree_id, "user_id":newComment.user_id, "comment_text":newComment.comment_text, "date_added":str(newComment.date_added), "c_approvals":newComment.c_approvals, "c_disapprovals":newComment.c_disapprovals, "replies":newComment.replies}
+        commentObj = {"comment_id":newComment.comment_id, "pree_id":newComment.pree_id, "user_id":newComment.user_id, "comment_text":newComment.comment_text, "date_added":str(newComment.date_added), "c_approvals":newComment.c_approvals, "c_disapprovals":newComment.c_disapprovals, "threadcount":newComment.replies, "is_c_approved":None, "replies": []}
         db.session.commit()
         return jsonify({"msg":"Comment was successful.", "comment_num":count, "comment":commentObj}), 200
     if request.method == "PUT":
@@ -285,7 +288,7 @@ def get_c_replies(comment_id, user_id):
     result = db.session.query(CommentsReplies, User, Profile).join(User, User.user_id == CommentsReplies.user_id).join(Profile, Profile.user_id == CommentsReplies.user_id).filter(CommentsReplies.comment_id == comment_id, CommentsReplies.is_visible == True).all()
     replies = []
     for reply in result:
-        if was_r_clicked(user_id,reply.CommentsReplies.reply_id):
+        if (user_id != 0) and was_r_clicked(user_id,reply.CommentsReplies.reply_id):
             is_approved = RepliesApprovals.query.filter_by(user_id=user_id,reply_id=reply.CommentsReplies.reply_id).first().is_r_approved
         else:
             is_approved = None
@@ -303,12 +306,14 @@ def handle_replies():
         newReply = CommentsReplies(comment_id=comment_id, user_id=user_id, reply_text=reply)
         db.session.add(newReply)
         db.session.flush()
+        count = 0
         if newReply.reply_id > 0:
             comment_details = Comments.query.get(comment_id)
             count = comment_details.replies + 1
             comment_details.replies = count
         db.session.commit()
-        return jsonify({"msg":"Comment was successful","reply_id":newReply.reply_id}), 200
+        replyObj = {"reply_id":newReply.reply_id, "user_id":newReply.user_id, "displayname":"", "username":"", "reply_text":newReply.reply_text, "date_added":str(newReply.date_added), "r_approvals":newReply.r_approvals, "r_disapprovals":newReply.r_disapprovals, "is_approved" : None }
+        return jsonify({"msg":"Comment was successful", "reply_num":count, "reply":replyObj}), 200
     if request.method == "PUT":
         user_id = request.json.get('user_id', None)
         reply_id = request.json.get('reply_id', None)
@@ -401,7 +406,7 @@ def delete_reply():
     if request.method == "POST":
         comment_id = request.json.get('comment_id', None)
         reply_id = request.json.get('reply_id', None)
-        reply_details = CommentsReplies.query.get(comment_id)
+        reply_details = CommentsReplies.query.get(reply_id)
         reply_details.is_visible = False
         comment_details = Comments.query.get(comment_id)
         count = comment_details.replies - 1

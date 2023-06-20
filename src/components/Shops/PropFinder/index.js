@@ -12,36 +12,38 @@ const PropFinder = props => {
     //const [showDropDown, setShowDropDown] = useState(false);
     const {subview} = props;
     const [PFView, setPFView] = useState(subview);
+    const [PFType, setPFType] = useState("all");
 
     useEffect( () => {
         setPFView(subview);
-        //props.setSubView(subview);
+        //localStorage.setItem("PFView", subview);
+        //props.setSubView(PFView);
         //set current to local storage. 
     
     },[subview]);
-    
+
     return(
         <div className="shops-container">
             <div className="prop-finder">                
                 <div className="sub-content"> {/*onClick={e => setShowDropDown(false)}>*/}
                     {PFView === 'PFHome' && 
                         <div className="content">
-                            <PFHome setPFView={setPFView}/>
+                            <PFHome PFView={PFView} setPFView={setPFView} setPFType={setPFType} setSubView={props.setSubView}/>
                         </div>
                     }
                     {PFView === 'PFAll' && 
                         <div className="content">
-                            <PFList PFView={PFView} setPFView={setPFView} setSubView={props.setSubView} />
+                            <PFList PFView={PFView} setPFView={setPFView} PFType={PFType} setSubView={props.setSubView} />
                         </div>
                     }
                     {PFView === 'PFBuy' && 
                         <div className="content">
-                            <PFList PFView={PFView} setPFView={setPFView} setSubView={props.setSubView} />
+                            <PFList PFView={PFView} setPFView={setPFView} PFType={PFType} setSubView={props.setSubView} />
                         </div>
                     }
                     {PFView === 'PFRent' && 
                         <div className="content">
-                            <PFList PFView={PFView} setPFView={setPFView} setSubView={props.setSubView} />
+                            <PFList PFView={PFView} setPFView={setPFView} PFType={PFType} setSubView={props.setSubView} />
                         </div>
                     }
                     {PFView === 'PFSell' && 

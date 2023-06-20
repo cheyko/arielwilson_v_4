@@ -402,7 +402,7 @@ const WOVList = props => {
                         slice.map((vehicle, index) => (
                             <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                 <VehicleItem
-                                    imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/0.jpeg"}
+                                    imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/0.jpg"}
                                     vehicle={vehicle}
                                     key={index}
                                     page={"list"}

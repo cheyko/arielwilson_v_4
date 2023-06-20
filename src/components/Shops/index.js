@@ -284,7 +284,7 @@ const Shops = props => {
                                         <i className="fas fa-door-open" aria-hidden="true">  </i> &nbsp; Rent
                                     </span>
                                     <span className={`navbar-item ${subview === 'PFSell' ? 'is-active' : ''}`} onClick={e => {setSubView('PFSell');setShopView("propfinder");toggleMenu(e);setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFSell");localStorage.setItem("shopView","propfinder")}}>
-                                        <i className="fas fa-money-check-alt" aria-hidden="true">  </i> &nbsp; Sell
+                                        <i className="fas fa-money-check-alt" aria-hidden="true">  </i> &nbsp; Add Listing
                                     </span>
                                     <span className={`navbar-item ${subview === 'PFLodge' ? 'is-active' : ''}`} onClick={e => {setSubView('PFLodge');setShopView("propfinder");toggleMenu(e);setPFMenu(!propfinderMenu);localStorage.setItem("subview","PFLodge");localStorage.setItem("shopView","propfinder")}}>
                                         <i className="fas fa-hotel" aria-hidden="true">  </i> &nbsp; Lodging

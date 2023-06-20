@@ -56,7 +56,7 @@ const TilePreeItem = props => {
                                     <div className="card">
                                         <div className="card-image">
                                             <figure className="img-holder">
-                                                <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post0`} />
+                                                <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post0.jpg`} />
                                                 <small className="tag caption-tag"> 
                                                     <span className="tag date-caption">{formatTime(aPree.date_added)}</span> 
                                                 </small>

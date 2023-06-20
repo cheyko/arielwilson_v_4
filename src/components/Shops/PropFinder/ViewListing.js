@@ -48,11 +48,11 @@ const ViewListing = props => {
     localStorage.setItem("listing", JSON.stringify(listing));
     localStorage.setItem("thePics", JSON.stringify(thePics));*/
 
-    const interior = [ 'Garden Area','Water Tank','Ceiling Fans','Grilled'
+    /*const interior = [ 'Garden Area','Water Tank','Ceiling Fans','Grilled'
     ,'Swimming Pool','Fully Fenced','Cable','Hurricane Shutters','Flooring: Wall to Wall Carpet,Porcelain'];
 
     const exterior = ['Hillside','Private Setting','Quiet Area',
-    'Road - Paved','Road - Gravel','Pets Allowed'];
+    'Road - Paved','Road - Gravel','Pets Allowed'];*/
 
     return (
         <div className="hero">
@@ -70,7 +70,7 @@ const ViewListing = props => {
                             </div>
                             <hr />
                             <div className="content box">
-                                <ListingFeatures listing={listing} interior={interior} exterior={exterior}/>
+                                <ListingFeatures listing={listing}/>
                             </div>
                             <hr />
                             <div className="content box">

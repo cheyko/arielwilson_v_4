@@ -24,26 +24,29 @@ const ListingFeatures = props =>{
                         </div>
                         <br /><br />
                         <div className="columns">
+                            {listing.interior && listing.interior.length > 0 &&
                             <div className="column col-6 col-xs-12">
                                 <b style={{textDecoration:"underline"}}>Interior</b>
                                 <ul style={{textAlign:"left"}}>
-                                    {interior.map(detail => (
+                                    {listing.interior.map(detail => (
                                         <li key={detail}>
                                         <small>{detail}</small>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
+                            }
+                            {listing.exterior && listing.exterior.length > 0 &&
                             <div className="column col-6 col-xs-12">
                                 <b style={{textDecoration:"underline"}}>Exterior</b>
                                 <ul style={{textAlign:"left"}}>
-                                    {exterior.map(detail => (
+                                    {listing.exterior.map(detail => (
                                         <li key={detail}>
                                         <small>{detail}</small>
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            </div>}
                         </div>
                     </div>
 

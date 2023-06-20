@@ -26,6 +26,8 @@ const Profile = props => {
     //actual files that are uploaded
     const [cover, setCover] = useState(null);
     const [display, setDisplay] = useState(null);
+    const [has_dp, setHasDP] = useState(false);
+    const [has_cv, setHasCV] = useState(false);
     const [responseMsg, setResponseMsg] = useState("");
 
     const loadMainMedia = useCallback( async() => {
@@ -34,7 +36,7 @@ const Profile = props => {
         //if false load a placeholder image and placeholder video
         if (token === 0){
             setVidView(process.env.PUBLIC_URL + "/images/bio/cover/default.mp4");
-            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
+            setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpg");
         }else{
             await axios.post(`${process.env.REACT_APP_PROXY}/api/get-main-media`,{token}).then(
                 (response) => {
@@ -46,10 +48,12 @@ const Profile = props => {
                         }
 
                         if (response.data.has_dp === true){
-                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${response.data.user_id}.jpeg`);
+                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${response.data.user_id}.jpg`);
                         }else{
-                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
+                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpg`);
                         }
+                        setHasCV(response.data.has_cv);
+                        setHasDP(response.data.has_dp);
                         
                     }
                 }
@@ -136,7 +140,6 @@ const Profile = props => {
             }).catch( (result => {
                 if (result.status !== 200) { return { status: result.status, message: 'Not successful' } }
             }))
-
             if (result.status === 200){
                 setResponseMsg("");
                 setCover(null);
@@ -144,7 +147,7 @@ const Profile = props => {
                 //setImgView(null);
                 //setVidView(null);
                 //setShowEdit(true);
-                /********* Refresh the Page ********/
+    
             }else{
                 setResponseMsg("Upload did not happen");
                 return false;
@@ -158,11 +161,29 @@ const Profile = props => {
         //return true;
     }
 
+    const removeUpload = async(e,key) => {
+        e.preventDefault();
+        await axios.put(`${process.env.REACT_APP_PROXY}/api/main-media`,{token, key}).then(
+            (response) => {
+                if (response.status === 200){
+                    if (key === 'cover'){
+                        setVidView(`${process.env.PUBLIC_URL}/images/bio/cover/default.mp4`);
+                        setHasCV(false);
+                    }else{
+                        setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpg`);
+                        setHasDP(false);
+                    }
+                }
+            }
+        );
+        setShowEdit(false);        
+    }
+
     return (
         <div className="hero hero-container">
             <div className="card profile-box">
                 
-                <ProfileHeader showEdit={showEdit} setShowEdit={setShowEdit} handleUpload={handleUpload} responseMsg={responseMsg} saveUpload={saveUpload} cancelUpload={cancelUpload} showDropDown={showDropDown} setShowDropDown={setShowDropDown} user={myView} imgView={imgView} vidView={vidView} action="read-write"  />
+                <ProfileHeader showEdit={showEdit} setShowEdit={setShowEdit} handleUpload={handleUpload} responseMsg={responseMsg} saveUpload={saveUpload} has_cv={has_cv} has_dp={has_dp} removeUpload={removeUpload} cancelUpload={cancelUpload} showDropDown={showDropDown} setShowDropDown={setShowDropDown} user={myView} imgView={imgView} vidView={vidView} action="read-write"  />
                 
                 <Tabs>
                     <div className="card has-text-centered has-text-weight-bold">

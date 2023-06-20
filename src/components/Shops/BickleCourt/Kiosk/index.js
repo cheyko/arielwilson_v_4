@@ -291,7 +291,7 @@ const Kiosk = props => {
                             slice.map((item, index) => (
                                 <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                     <Item
-                                        imageUrl={process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/0.jpeg"}
+                                        imageUrl={process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/0.jpg"}
                                         item={item}
                                         key={index}
                                         page={"list"}

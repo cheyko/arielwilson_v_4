@@ -26,9 +26,9 @@ const PreeItem = props => {
         //if false load a placeholder image and placeholder video
         const user_id = aPree.user.user_id;
         if (aPree.user.has_dp === true){
-            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpg`);
         }else{
-            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpg`);
         }
         setGetMedia(true);
         return true;

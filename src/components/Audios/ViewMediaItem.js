@@ -45,9 +45,9 @@ const ViewMediaItem = props => {
     const loadMainMedia = useCallback(() => {
         const user_id = aPree.user.user_id;
         if (aPree.user.has_dp === true){
-            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpg`);
         }else{
-            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpg`);
         }
         setGetMedia(true);
         return true;
@@ -65,12 +65,12 @@ const ViewMediaItem = props => {
                 setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.mp4`);
 
             }else if (aPree.attachment.mediatypes[0] === "image"){
-                setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.jpeg`);
+                setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.jpg`);
             }
             setCommentsCount(aPree.comments);
             setMainmedia(true);
             if (aPree.attachment.has_cover_art === true){
-                setDisplayUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/display_art.jpeg`);
+                setDisplayUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/display_art.jpg`);
             }
 
             if (!gotMedia){

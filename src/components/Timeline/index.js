@@ -16,31 +16,32 @@ const Timeline = props => {
     const [loadNew, setLoadNew] = useState(true);
     const [modalIsOpen, setModalOpen] = useState(false);
     const [wanted, setWanted] = useState("");
+    const [scrolling, setScrolling] = useState(true);
 
     const handleScroll = e => {
         // Get the make-pree btn
-        let makePree = document.getElementById("make-pree");
+        let makePreebtn = document.getElementById("make-pree");
         // Get the sort-pree btn
-        let filterPrees = document.getElementById("filter-prees");
+        let filterPreesbtn = document.getElementById("filter-prees");
         
-        if (makePree !== null && filterPrees !== null){
+        if (makePreebtn !== null && filterPreesbtn !== null){
 
             // Get the offset position of the make-pree btn
-            let mp_sticky = makePree.offsetTop;
+            let mp_sticky = makePreebtn.offsetTop;
 
             // Get the offset position of the sort-prees btn
-            let sp_sticky = filterPrees.offsetTop;
+            let sp_sticky = filterPreesbtn.offsetTop;
         
             if (window.pageYOffset > mp_sticky) {
-                makePree.classList.add("mp-sticky");
+                makePreebtn.classList.add("mp-sticky");
             } else {
-                makePree.classList.remove("mp-sticky");
+                makePreebtn.classList.remove("mp-sticky");
             }
 
             if (window.pageYOffset > sp_sticky) {
-                filterPrees.classList.add("sp-sticky");
+                filterPreesbtn.classList.add("sp-sticky");
             } else {
-                filterPrees.classList.remove("sp-sticky");
+                filterPreesbtn.classList.remove("sp-sticky");
             }
         }
     }
@@ -86,18 +87,19 @@ const Timeline = props => {
             default:
                 break;
         }
-        setShowDropDown(!showDropDown);
-    },[filterText,showDropDown]);
+        setShowDropDown(false);
+    },[filterText]);
 
     const gototop = () => {
         window.scrollTo(0, 0);
     }
 
-    const doFilter = () => {
-        if(!showDropDown){
-            document.getElementById("filter-prees").classList.add("is-active");
-        }else{
+    const doFilter = (e) => {
+        setScrolling(false);
+        if(showDropDown){
             document.getElementById("filter-prees").classList.remove("is-active");
+        }else{
+            document.getElementById("filter-prees").classList.add("is-active");
         }
         setShowDropDown(!showDropDown);
     }
@@ -112,15 +114,16 @@ const Timeline = props => {
             console.log("test here");
             axios.post(`${process.env.REACT_APP_PROXY}/api/see-the-pree`,{token}).then(
                 result => {
-                    //renderPrees(result.data);
                     filterPrees(result.data);
                     setLoadNew(false);
                 }
             );
-        }
-        window.scrollTo(0,localStorage.getItem("offset"));
 
-    },[filterPrees, props.context.prees, loadNew]);
+        }
+        if(scrolling){
+            window.scrollTo(0,localStorage.getItem("offset"));
+        }
+    },[filterPrees, props.context.prees, props.context.token, loadNew, scrolling]);
 
     let timeline;
     if(allPrees.length > 0){
@@ -146,7 +149,7 @@ const Timeline = props => {
                         {[0,1,2,3,4,5,6,7,8,9,10,11].map( (item,index) => (
                             <div key={index} className="column px-0 py-1 mx-1 my-1">
                                 <span className="image is-64x64">
-                                    <img className="is-rounded" alt="display" src={process.env.PUBLIC_URL + "/images/default-dp.jpeg"} />
+                                    <img className="is-rounded" alt="display" src={process.env.PUBLIC_URL + "/images/default-dp.jpg"} />
                                 </span>
                             </div>
                         ))}                             
@@ -160,7 +163,7 @@ const Timeline = props => {
                 </div>
 
                 <div id="make-pree" className="hero">
-                    <button id="make-pree-btn" onClick={gototop} className="button is-pulled-right">
+                    <button id="make-pree-btn" onClick={e => gototop()} className="button is-pulled-right">
                         <span className="large-text"> Y Pree </span>
                         <span className="icon is-large">
                             <i className="fas fa-angle-up" aria-hidden="true"></i>
@@ -177,7 +180,7 @@ const Timeline = props => {
                 
                 <div id="filter-prees" className={`dropdown is-right is-pulled-right`} >
                     <div className="dropdown-trigger">
-                        <button id="filter-pree-btn"  onClick={ e => doFilter()} className="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <button id="filter-pree-btn"  onClick={ e => doFilter(e)} className="button" aria-haspopup="true" aria-controls="dropdown-menu">
                             <span className="large-text"> Filter </span>
                             <span className="icon is-large">
                                 <i className="fas fa-angle-down" aria-hidden="true"></i>

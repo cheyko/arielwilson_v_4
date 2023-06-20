@@ -1,9 +1,8 @@
 import React from 'react';
-import Map from "./Map";
+import Map from "../../HelperComponents/Map";
+import MapModal from '../../HelperComponents/MapModal';
 import ContactModal from "./ContactModal";
 import TourModal from "./TourModal";
-//import { useState } from 'react';
-import MapModal from './MapModal';
 
 const ListingDetail = props =>{
 
@@ -51,7 +50,6 @@ const ListingDetail = props =>{
                         <div className="column has-text-centered">
                             <span>
                                 <ContactModal /> 
-                                 
                             </span>
                         </div>
                         <div className="column has-text-centered">

@@ -33,7 +33,7 @@ const SimilarListing = (props) => {
         matches.slice(0,6).map((match, index) => (
             <div onClick={ e => window.scrollTo(0,0)} key={index}>
                 <PFLItem
-                    imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + match.listing_id + "/0"}
+                    imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + match.listing_id + "/0.jpg"}
                     listing={match}
                     key={index}
                     val={index}

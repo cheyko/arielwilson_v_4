@@ -9,6 +9,7 @@ import "./index.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
+import WelcomeMsg from './WelcomeMsg';
 
 
 const Layout = props => {
@@ -25,6 +26,9 @@ const Layout = props => {
             <Welcome />
         </div>:
         <div className="hero main-container">
+          {props.context.welcomeMsg &&
+            <WelcomeMsg />
+          }
           <div className="columns is-mobile is-multiline no-padding no-margin">
             <div id='nav-column' className="column nav-column is-one-quarter no-padding no-margin"> 
                 <Navbar />

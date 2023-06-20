@@ -70,6 +70,10 @@ import ViewEvent from './components/Activities/Events/ViewEvent';
 import ViewClassified from './components/Activities/Jobs/Classifieds/ViewClassified';
 import ViewVolunteer from './components/Activities/Jobs/Volunteer/ViewVolunteer';
 import NotRoute from './components/NotRoute';
+import ShopCategories from './components/Shops/ShopCategories';
+import AddPF from './components/Shops/PropFinder/AddPF';
+import AddAccomadate from './components/Shops/PropFinder/Accomadate/AddAccomadate';
+import ViewAccomadation from './components/Shops/PropFinder/Accomadate/ViewAccomadation';
 
 const sign = require('jwt-encode');
 const secret = 'some$3cretKey';
@@ -125,12 +129,14 @@ export default class App extends Component {
           alert('New user signed in');
         }else{
           alert("token was tampered with");
-          this.logout(event);
+          this.setState({token : null,user:null, welcome: false, recent:0, prees:null});
+          removeAuth();
           window.location.reload();
         }
       }else{
         if(!localStorage.getItem("token")){
-          this.logout(event);
+          this.setState({token : null,user:null, welcome: false, recent:0, prees:null});
+          removeAuth();
           window.location.reload();
         }
       }
@@ -157,7 +163,7 @@ export default class App extends Component {
         */
        const listing = theElement;
         for (var x=0; x<parseInt(listing.numOfPics); x++){
-          let url = `${process.env.PUBLIC_URL}/images/listings/listing${listing.listing_id}/${x}.jpeg`;
+          let url = `${process.env.PUBLIC_URL}/images/listings/listing${listing.listing_id}/${x}.jpg`;
           targetPhotos.push(url);
         }
         break;
@@ -167,7 +173,7 @@ export default class App extends Component {
         */
        const vehicle = theElement;
         for (var y=0; y<parseInt(vehicle.numOfPics); y++){
-          let url = `${process.env.PUBLIC_URL}/images/vehicles/vehicle${vehicle.vehicle_id}/${y}.jpeg`;
+          let url = `${process.env.PUBLIC_URL}/images/vehicles/vehicle${vehicle.vehicle_id}/${y}.jpg`;
           targetPhotos.push(url);
         }
         break;
@@ -176,7 +182,7 @@ export default class App extends Component {
           //const product = products ? products.find(product => product.product_id.toString() === theID.toString()) : null;
           const product = theElement;
           for (var z=0; z<parseInt(product.numOfPics); z++){
-            let url = `${process.env.PUBLIC_URL}/images/products/product${product.product_id}/${z}.jpeg`;
+            let url = `${process.env.PUBLIC_URL}/images/products/product${product.product_id}/${z}.jpg`;
             targetPhotos.push(url);
           }
           break;
@@ -185,7 +191,7 @@ export default class App extends Component {
         const service = services ? services.find(service => service.service_id.toString() === theID.toString()) : null;*/
         const service = theElement;
         for (var i=0; i<parseInt(service.numOfPics); i++){
-          let url = `${process.env.PUBLIC_URL}/images/services/service${service.service_id}/${i}.jpeg`;
+          let url = `${process.env.PUBLIC_URL}/images/services/service${service.service_id}/${i}.jpg`;
           targetPhotos.push(url);
         }
         break;
@@ -194,7 +200,7 @@ export default class App extends Component {
         const item = items ? items.find(item => item.item_id.toString() === theID.toString()) : null;*/
         const item = theElement;
         for (var j=0; j<parseInt(item.numOfPics); j++){
-          let url = `${process.env.PUBLIC_URL}/images/items/item${item.item_id}/${j}.jpeg`;
+          let url = `${process.env.PUBLIC_URL}/images/items/item${item.item_id}/${j}.jpg`;
           targetPhotos.push(url);
         }
         break;
@@ -463,6 +469,27 @@ export default class App extends Component {
     }
   }
 
+  getPree = async (pree_id) => {
+    const { prees } = this.state;
+    const pree = prees ? prees.find(pree => pree.pree_id.toString() === pree_id.toString()) : undefined;
+    //console.log(pree === undefined);
+    let result;
+    if (pree === undefined){
+      //const user_id = this.state.user ? this.state.user.id : 0;
+      const token = this.state.token ? this.state.token : 0;
+      const val = await axios.post(`${process.env.REACT_APP_PROXY}/api/get-pree`,{pree_id, token}).catch(error => {console.log(error)});
+      if (val.status === 200){
+        result = val.data;
+      }else{
+        result = false;
+      }
+      
+    }else{
+      result = pree;
+    }
+    return result;
+  }
+
   //making post function
   ypree = (pree, callback) => {
     let prees = this.state.prees.slice();
@@ -476,25 +503,41 @@ export default class App extends Component {
   }
 
   //clear password and set application to ready state
-  clearCred = () => {
-    this.setState({email:"", password:"", welcome: false});
+  clearCred = async (uname) => {
+    //this.setState({email:"", password:"", welcome: false});
     //localStorage.setItem("ready", JSON.stringify(this.state.ready));
-    localStorage.setItem("aic123", JSON.stringify(this.state.welcome));
-    localStorage.removeItem("xyz784");
-    localStorage.removeItem("zyx340");
-    localStorage.removeItem("user_id");
+
+    
+    const user_details = await this.getUserView(uname);
+    let user = {
+      "id": user_details.id,
+      "displayname":user_details.displayname,
+      "username":user_details.username,
+      "gender": user_details.gender
+      
+    }
+    localStorage.setItem("aic123", JSON.stringify(false));
+    localStorage.setItem("user-context", JSON.stringify(user));
+    this.setState({welcome:false, user, welcomeMsg:true});
+
+    //localStorage.removeItem("xyz784");
+    //localStorage.removeItem("zyx340");
+    //localStorage.removeItem("user_id");
 
   }
 
+  closeWelcomeMsg = () => {
+    this.setState({welcomeMsg:false});
+  }
   //welcome
   welcomeFunc = (email, password) => {
     const welcome = true;
-    const lkjhg1 = CryptoJS.AES.encrypt(email, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
-    const lkjhg2 = CryptoJS.AES.encrypt(password, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
-    this.setState({lkjhg1,lkjhg2,welcome}); 
+    //const lkjhg1 = CryptoJS.AES.encrypt(email, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    //const lkjhg2 = CryptoJS.AES.encrypt(password, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB});
+    this.setState({welcome}); 
     localStorage.setItem("aic123", JSON.stringify(welcome));
-    localStorage.setItem("xyz784", lkjhg1);
-    localStorage.setItem("zyx340", lkjhg2);
+    //localStorage.setItem("xyz784", lkjhg1);
+    //localStorage.setItem("zyx340", lkjhg2);
   }
 
   //sign-up
@@ -521,7 +564,7 @@ export default class App extends Component {
       const token = res.data.token;
       //localStorage.setItem("user_id", JSON.stringify(user_id));
       setAuth(token);
-      this.setState({token});
+      this.setState({token, prees:null});
       return true;
     }else{
       return false;
@@ -552,12 +595,13 @@ export default class App extends Component {
       let toggle = false;
       let user = {
         "id": res.data.id,
+        "displayname":res.data.displayname,
         "username":res.data.username,
         "gender": res.data.gender
       }
 
       // get access level from database
-      if (res.data.has_profile === true){
+      if ((res.data.has_profile === true) && (res.data.username !== null)){
         welcome = false;
       }else{
         welcome = true;
@@ -609,6 +653,7 @@ export default class App extends Component {
           login: this.login,
           signUp: this.signUp,
           logout: this.logout,
+          closeWelcomeMsg: this.closeWelcomeMsg,
           clearCred: this.clearCred,
           welcomeFunc: this.welcomeFunc,
           getMyView : this.getMyView,
@@ -656,6 +701,7 @@ export default class App extends Component {
                 <Route path="/wallet" element={<Wallet />} />
                 <Route path="/activities" element={<Activities />} />
                 <Route path="/shops" element={<Shops />} />
+                <Route path="/shops/:section/:subsection/categories" element={<ShopCategories />} />
                 <Route path="/wgr" element={<WGR />} />
                 <Route path="/view-pree/:id" element={<ViewPree />} />
                 <Route path="/view-blueberry/:id" element={<ViewMediaItem />} />
@@ -672,6 +718,9 @@ export default class App extends Component {
                 <Route path="/volunteer-view/:id" element={<ViewVolunteer />} />
                 <Route path="/service-add" element={<AddService />} />
                 <Route path="/vehicle-add" element={<AddVehicle />} />
+                <Route path="/listing-add" element={<AddPF />} />
+                <Route path="/accomadate-add" element={<AddAccomadate />} />
+                <Route path="/accomadation/:id" element={<ViewAccomadation />} />
                 <Route path="/item-view/:id" element={<ViewItem />} />
                 <Route path="/preepedia" element={<Preepedia />} />
                 <Route path="/preepedia/view-page/:id/" element={<ViewPage />} />

@@ -238,7 +238,7 @@ const ServicesList = props => {
                             slice.map((service, index) => (
                                 <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                     <ServiceItem
-                                        imageUrl={process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/0.jpeg"}
+                                        imageUrl={process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/0.jpg"}
                                         service={service}
                                         key={index}
                                         page={"list"}

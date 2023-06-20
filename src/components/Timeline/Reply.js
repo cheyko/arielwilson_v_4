@@ -3,6 +3,7 @@ import withContext from "../../withContext";
 import axios from "axios";
 import Modal from "react-modal";
 import { formatTime, formatReaction } from "../../GlobalFunctions";
+import { useEffect } from "react";
 
 Modal.setAppElement('#root');
 
@@ -49,6 +50,13 @@ const Reply = props => {
     const [showEditReply, setShowEditReply] = useState(false);
     const [modalIsOpen, setModalOpen] = useState(false);
 
+    useEffect( () => {
+        if(showEditReply && editreply === ""){
+            document.getElementById("post-edit-reply").setAttribute("disabled", true);
+        }else if(showEditReply && editreply !== ""){
+            document.getElementById("post-edit-reply").removeAttribute("disabled");
+        }
+    },[editreply,showEditReply])
     const openModal = e => {
         e.preventDefault();
         setModalOpen(!modalIsOpen)
@@ -60,56 +68,66 @@ const Reply = props => {
     }
 
     const likeReply = (e) => {
-        if (r_reaction !== true){
-            axios.post(`${process.env.REACT_APP_PROXY}/api/like-reply`,{user_id,reply_id}).then(
-                (addlike) => {
-                    if (addlike.status === 200){
-                        setRReaction(true);
-                        setLikes(addlike.data.likedcount);
-                        setDislikes(addlike.data.dislikedcount);
-                    }else{
-                        throw new Error("Error while Reacting to Reply");
+        if(props.context.token){
+            if (r_reaction !== true){
+                axios.post(`${process.env.REACT_APP_PROXY}/api/like-reply`,{user_id,reply_id}).then(
+                    (addlike) => {
+                        if (addlike.status === 200){
+                            setRReaction(true);
+                            setLikes(addlike.data.likedcount);
+                            setDislikes(addlike.data.dislikedcount);
+                        }else{
+                            throw new Error("Error while Reacting to Reply");
+                        }
                     }
-                }
-            )
+                )
+            }else{
+                axios.put(`${process.env.REACT_APP_PROXY}/api/like-reply`,{user_id,reply_id}).then(
+                    (unlike) => {
+                        if (unlike.status === 200){
+                            setRReaction(null);
+                            setLikes(unlike.data.likedcount);
+                        }else{
+                            throw new Error("Error while Reacting to Pree");
+                        }
+                    }
+                )
+            }
         }else{
-            axios.put(`${process.env.REACT_APP_PROXY}/api/like-reply`,{user_id,reply_id}).then(
-                (unlike) => {
-                    if (unlike.status === 200){
-                        setRReaction(null);
-                        setLikes(unlike.data.likedcount);
-                    }else{
-                        throw new Error("Error while Reacting to Pree");
-                    }
-                }
-            )
+            props.setWanted("like replies on W@@ GW@@N.");
+            props.setModalOpen(true);
         }
     }
 
     const dislikeReply = (e) => {
-        if (r_reaction !== false){
-            axios.post(`${process.env.REACT_APP_PROXY}/api/dislike-reply`,{user_id,reply_id}).then(
-                (dislike) => {
-                    if (dislike.status === 200){
-                        setRReaction(false);
-                        setLikes(dislike.data.likedcount);
-                        setDislikes(dislike.data.dislikedcount);
-                    }else{
-                        throw new Error("Error while Reacting to Pree");
+        if(props.context.token){
+            if (r_reaction !== false){
+                axios.post(`${process.env.REACT_APP_PROXY}/api/dislike-reply`,{user_id,reply_id}).then(
+                    (dislike) => {
+                        if (dislike.status === 200){
+                            setRReaction(false);
+                            setLikes(dislike.data.likedcount);
+                            setDislikes(dislike.data.dislikedcount);
+                        }else{
+                            throw new Error("Error while Reacting to Pree");
+                        }
                     }
-                }
-            )
+                )
+            }else{
+                axios.put(`${process.env.REACT_APP_PROXY}/api/dislike-reply`,{user_id,reply_id}).then(
+                    (undislike) => {
+                        if (undislike.status === 200){
+                            setRReaction(null);
+                            setDislikes(undislike.data.dislikedcount);
+                        }else{
+                            throw new Error("Error while Reacting to Pree");
+                        }
+                    }
+                )
+            }
         }else{
-            axios.put(`${process.env.REACT_APP_PROXY}/api/dislike-reply`,{user_id,reply_id}).then(
-                (undislike) => {
-                    if (undislike.status === 200){
-                        setRReaction(null);
-                        setDislikes(undislike.data.dislikedcount);
-                    }else{
-                        throw new Error("Error while Reacting to Pree");
-                    }
-                }
-            )
+            props.setWanted("dislike replies on W@@ GW@@N.");
+            props.setModalOpen(true);
         }
     }
 
@@ -123,6 +141,7 @@ const Reply = props => {
                 }
             }
         )
+        closeModal(e);
     }
 
     const saveEditReply = (e) => {
@@ -162,7 +181,8 @@ const Reply = props => {
                                     <div className="edit-reply">
                                         <textarea className="textarea" style={{width:"80%"}} onChange={e => editReply(e.target.value)} value={editreply} type="text" />
                                         {" "}
-                                        <button onClick={(e) => saveEditReply(e)} className="button is-small"> Save </button>
+                                        <button id="post-edit-reply" onClick={(e) => saveEditReply(e)} className="button is-primary is-small"> Save </button>{" "}
+                                        <button onClick={(e) => setShowEditReply(false)} className="button is-warning is-small"> Cancel </button>
                                     </div>
                                 ):(
                                     <span>

@@ -18,6 +18,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True  # added just to suppress a 
 #app.config['UPLOAD_FOLDER'] = "../public/images/media/"
 parentpath = pathlib.Path().resolve() 
 #app.config['UPLOAD_FOLDER'] = str(parentpath) + "/build/images/"
+#app.config['UPLOAD_FOLDER'] = "../build/images/"
 app.config['UPLOAD_FOLDER'] = "../public/images/"
 #print(parentpath)
 app.url_map.strict_slashes = False

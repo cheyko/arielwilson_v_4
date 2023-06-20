@@ -44,7 +44,8 @@ const ProfileBio = props => {
     const getBirthday = (param) => {
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var bday = new Date(param);
-        return months[bday.getMonth()] + " " + (bday.getDate() + 1) ;
+        bday.setDate(bday.getDate() + 1);
+        return months[bday.getMonth()] + " " + bday.getDate();
     }
 
     let birthday = props.user ? getBirthday(props.user.dob) : null;

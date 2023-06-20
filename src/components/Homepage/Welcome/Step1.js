@@ -9,25 +9,19 @@ const Step1 = props => {
 
             <h3 className="subtitle"> Enter a preferred username to have a unique space on the gwaan. </h3>
 
-            <span className="give-space error-msg">{props.unameError}</span>
-
-            <br />
-
-            <input className={`give-space input welcome-input ${ props.uname === "" ? 'not-unique' : ''} 
+            <input title="username" placeholder='Enter username' className={`input welcome-input ${ props.uname === "" ? 'not-unique' : ''} 
                 ${ props.uname !== "" &&  props.uname !== null ? 'is-unique' : ''}`} 
                 type="text" name="uname" onChange={ e => props.checkUname(e) } />
 
             <br />
-            {props.uname !== "" && <span className="give-space response-msg">{props.responseMsg +" "+ props.val}</span> }
+            {props.uname !== "" && <span className="give-space response-msg">{props.responseMsg}</span> }
             <br />
             <button id="save-btn" className="button is-medium is-success" onClick={ e => props.saveUname(e) }> Save username </button> 
 
             <hr />
 
             <button id="next-btn" className="button is-medium is-info is-pulled-right" style={{display:"none"}} onClick={e => props.next(e,1)}> Next Step </button> 
-            <br /><br />
             {/*props.showNextBtn || props.val ? <button className="button is-medium is-info is-pulled-right" onClick={props.next()}> Next Step </button> : <></>*/}
-            <hr />
         </div>
     )
 

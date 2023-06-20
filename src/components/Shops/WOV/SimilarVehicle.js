@@ -54,7 +54,7 @@ const SimilarVehicle= (props) => {
         matches.slice(0,6).map((match, index) => (
             <div onClick={ e => window.scrollTo(0,0)} key={index}>
                 <VehicleItem
-                    imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + match.vehicle_id + "/0"}
+                    imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + match.vehicle_id + "/0.jpg"}
                     vehicle={match}
                     key={index}
                     val={index}

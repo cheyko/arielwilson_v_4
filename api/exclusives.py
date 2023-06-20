@@ -20,7 +20,7 @@ def exclusive():
         result = request.form
         playback = result["playback"]
         mediatypes = result["mediatypes"].split(',')
-        newPree = Pree(user_id=result["user_id"],date_added=result["theDateTime"],is_media=True, pree_type=result["pree_type"])
+        newPree = Pree(user_id=result["user_id"],is_media=True, pree_type=result["pree_type"])
         db.session.add(newPree)
         db.session.flush()
         mainmedia = request.files.getlist("mainmedia")
@@ -47,7 +47,7 @@ def exclusive():
         prefix = "exclusive" + str(newExclusive.exclusive_id)
         os.makedirs(upload_folder + prefix)
         for index, file in enumerate(mainmedia):
-            filename = "upload" + str(index) + ".jpeg"
+            filename = "upload" + str(index) + ".jpg"
             file.save(os.path.join(upload_folder + prefix, filename)) 
         cover_art = request.files['display_art']
         if cover_art.filename == '':

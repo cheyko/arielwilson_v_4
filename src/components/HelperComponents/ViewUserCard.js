@@ -12,9 +12,9 @@ const ViewUserCard = props => {
         //if false load a placeholder image and placeholder video
         //const user_id = userview_id;
         if (user.has_dp === true){
-            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user.user_id}.jpeg`);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user.user_id}.jpg`);
         }else{
-            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpg`);
         }
         return true;
     },[user]);

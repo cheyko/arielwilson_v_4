@@ -118,7 +118,7 @@ const WOVHome = props => {
                                         {vehicles.map((vehicle, index) => (
                                             <div className="slick-slide" key={index}>
                                                 <VehicleItem
-                                                    imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/0.jpeg"}
+                                                    imageUrl={process.env.PUBLIC_URL + "/images/vehicles/vehicle" + vehicle.vehicle_id + "/0.jpg"}
                                                     vehicle={vehicle}
                                                     key={index}
                                                     page={"home"}

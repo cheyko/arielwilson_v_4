@@ -6,7 +6,7 @@ import "./index.css";
 import axios from "axios";
 
 const PFList = props => {
-    const {PFView} = props;
+    const {PFView, PFType} = props;
     let fullList = props.context.listings ? props.context.listings : null;
     const [listings, setListings] = useState(fullList);
 
@@ -18,6 +18,13 @@ const PFList = props => {
             }
         });
     }
+    let SelectedPFType;
+    if(localStorage.getItem("PFType")){
+        SelectedPFType = localStorage.getItem("PFType")
+        localStorage.removeItem("PFType");
+    }else{
+        SelectedPFType = PFType;
+    } 
     
     const perPage = 12;
     const pageCount = listings ? Math.ceil(listings.length / perPage) : 0;
@@ -29,7 +36,7 @@ const PFList = props => {
     const [location, setLocation] = useState("");
     const val = PFView === "PFBuy" ? "Sale" : (PFView === "PFRent" ? "Rent" : "all");
     const [market, setMarket] = useState(val);
-    const [typeOf, setTypeOf] = useState("all");
+    const [typeOf, setTypeOf] = useState(SelectedPFType);
     const [beds, setBeds] = useState("Any");
     const [baths, setBaths] = useState("Any");
     const filterCache = localStorage.getItem("showfilter") === "true" ? true : false;
@@ -68,11 +75,9 @@ const PFList = props => {
         }
         if (market && market !== "all"){
             result = result.filter(listing => listing.category === market);
-            console.log(market);
         }
         if (typeOf && typeOf !== "all") {
             result = result.filter(listing => listing.typeOf === typeOf);
-            console.log(typeOf);
         }
         if (beds && beds !== "Any") {
             result = result.filter(listing => listing.beds === Number(beds));
@@ -88,10 +93,8 @@ const PFList = props => {
         }
         if (toVal > 0){
             result = result.filter(listing => convertPrice(listing.price, listing.currency) <= Number(toVal))
-            console.log(toVal);
         }
         if (sortOrder) {
-            console.log(sortOrder);
             if (sortOrder === 'highestfirst') {
               result = result.sort((a, b) => convertPrice(b.price, b.currency) - convertPrice(a.price, a.currency))
             }
@@ -99,7 +102,6 @@ const PFList = props => {
               result = result.sort((a, b) => convertPrice(a.price, a.currency) - convertPrice(b.price, b.currency))
             }
         }
-        console.log(result);
         setListings(result);
         setOffset(0);
         setFilter(false);
@@ -122,11 +124,12 @@ const PFList = props => {
             //props.setPFView(pfview);
             //filterList();
         }
-        if(listings){
+        if(listings && (filter === true || filter === null)){
             filterList();
         }
         //setFilter(false);
-    }, [val, listings, market, filter, props, filterList]);
+        //console.log("scroll");
+    }, [val, market, filter, listings, props, filterList]);
 
     slice = listings ? listings.slice(offset, offset + perPage) : []; 
 
@@ -365,7 +368,7 @@ const PFList = props => {
                         slice.map((listing, index) => (
                             <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                 <PFLItem
-                                    imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0.jpeg"}
+                                    imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0.jpg"}
                                     listing={listing}
                                     key={index}
                                     page={"list"}

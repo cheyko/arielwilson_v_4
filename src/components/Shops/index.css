@@ -213,8 +213,8 @@
 
 .customSlide {
     height: 20rem !important;
-    /*width: 100% !important;*/
-    width: auto !important;
+    width: 100% !important;
+    /*width: auto !important;*/
     margin: 0 auto !important;
 }
 

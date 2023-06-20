@@ -31,15 +31,15 @@ const Navbar = props => {
         //if false load a placeholder image and placeholder video
         //const user_id = props.context.user ? props.context.user.id : 0;
         if (token === 0){
-            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpg`);
         }else{
             await axios.post(`${process.env.REACT_APP_PROXY}/api/get-main-media`,{token}).then(
                 (response) => {
                     if (response.status === 200){
                         if (response.data.has_dp === true){
-                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${response.data.user_id}.jpeg`);
+                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${response.data.user_id}.jpg`);
                         }else{
-                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
+                            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpg`);
                         }
                     }
                 }
@@ -164,10 +164,9 @@ const Navbar = props => {
                                 <img alt="display" className="display-image-large" onClick={e => setOpen(true)} src={imgView} />
                                 {openImage && (
                                 <Lightbox
-                                    imageTitle={`${props.context.user.username}`}
+                                    imageTitle={`${uname}`}
                                     mainSrc={imgView}
-                                    onCloseRequest={() => setOpen(false)}
-                                    
+                                    onCloseRequest={() => setOpen(false)}  
                                 />
                             )}
                             </figure>   

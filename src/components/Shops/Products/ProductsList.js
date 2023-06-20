@@ -361,7 +361,7 @@ const ProductsList = props => {
                                 slice.map((product, index) => (
                                     <div key={index} className="column is-one-third-desktop is-half-tablet is-full-mobile has-text-centered">
                                         <ProductItem
-                                            imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0.jpeg"}
+                                            imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0.jpg"}
                                             product={product}
                                             key={index}
                                             page={"list"}

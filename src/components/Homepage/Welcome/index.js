@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import withContext from "../../../withContext";
 import axios from 'axios';
-import CryptoJS from 'crypto-js';
 import { useNavigate } from "react-router-dom";
 
 import '../index.css';
@@ -66,9 +65,7 @@ const Welcome = props => {
             setShowStep1(false);
             setShowStep2(true);
             return true;
-        }else{
-            setResponseMsg("User does not have a username as yet.")
-        }  
+        } 
         //setUname(response.data.uname);
         return false;
     }, [token] );
@@ -80,7 +77,7 @@ const Welcome = props => {
         let userInput = e.target.value;
 
         if (userInput !== ""){
-            await axios.post('/api/check-uname',{userInput}).then(
+            await axios.post(`${process.env.REACT_APP_PROXY}/api/check-uname`,{userInput}).then(
                 (response) => {
                     if (response.status === 200){
                         setUname(userInput);
@@ -105,12 +102,12 @@ const Welcome = props => {
         //allow user to save username to database
         //do axios put request to update the username of the user
         //const user_id = props.context.user_id ? props.context.user_id : new_id;
-        await axios.put('/api/save-uname',{token,uname}).then(
+        await axios.put(`${process.env.REACT_APP_PROXY}/api/save-uname`,{token,uname}).then(
             (response) => {
                 if (response.status === 200){
                     //change some bool to true to display the next button
                     //setBtnShow(true);
-                    setResponseMsg("Username was added successfully and your new username is : ");  
+                    setResponseMsg("Username was added successfully and your new username is : " + uname);  
                     setVal(uname);
                     document.getElementById("next-btn").style.display = "block";
                     //clear input box and display success message
@@ -131,7 +128,7 @@ const Welcome = props => {
         //if false load a placeholder image and placeholder video
         //const user_id = props.context.user_id ? props.context.user_id : new_id;
         //console.log(user_id);
-        await axios.post('/api/get-main-media',{token}).then(
+        await axios.post(`${process.env.REACT_APP_PROXY}/api/get-main-media`,{token}).then(
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_cv === true){
@@ -141,7 +138,7 @@ const Welcome = props => {
                     }
 
                     if (response.data.has_dp === true){
-                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + response.data.user_id);
+                        setImgView(process.env.PUBLIC_URL + "/images/bio/display/" + response.data.user_id + ".jpeg");
                     }else{
                         setImgView(process.env.PUBLIC_URL + "/images/bio/display/default.jpeg");
                     }
@@ -178,8 +175,8 @@ const Welcome = props => {
     }
 
     const saveUpload = async (e) => {
-        e.preventDefault();
         //const user_id = props.context.user_id ? props.context.user_id : new_id;
+        e.preventDefault();
         const formData = new FormData();
         formData.append('token', token);
         formData.set('has_cover',false);
@@ -196,7 +193,7 @@ const Welcome = props => {
         
         if (cover || display){
 
-            const result = await axios.post('/api/main-media', formData, {
+            const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/main-media`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
@@ -206,48 +203,33 @@ const Welcome = props => {
                 if (result.status !== 200) { 
                     return { status: result.status, message: 'Not successful' } 
                 }
-            }))
+            }));
 
             if (result.status === 200){
                 setResponseMsg("Media Saved.");
-                setCover(null);
-                setDisplay(null);
+                //setCover(null);
+                //setDisplay(null);
                 setUploaded(true);
                 return false;
             }else{
                 setResponseMsg("Upload did not happen");
+                return false;
             }
-            setShowStep1(false);
-            setShowStep2(false);
-            setShowStep3(true);
+            //setShowStep1(false);
+            //setShowStep2(false);
+            //setShowStep3(true);
             //this is a test
-            loadMainMedia();
-            return false;
+            //loadMainMedia();
         }
         if (!cover || !display){
-            setResponseMsg("No media to upload");
+            setResponseMsg("No new media to upload");
             return false;
         }
-
+        console.log("test4");
     }
 
-    //call login funtion and place in onclick on last btn
     const endWelcome = () => {
-        const email = props.context.email ? CryptoJS.AES.decrypt(props.context.lkjhg1, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB}).toString(CryptoJS.enc.Utf8) : CryptoJS.AES.decrypt(localStorage.getItem("xyz784"),CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB}).toString(CryptoJS.enc.Utf8);
-        const password = props.context.password ? CryptoJS.AES.decrypt(props.context.lkjhg2, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB}).toString(CryptoJS.enc.Utf8) : CryptoJS.AES.decrypt(localStorage.getItem("zyx340"), CryptoJS.enc.Utf8.parse(process.env.REACT_APP_AES_KEY), {mode: CryptoJS.mode.ECB}).toString(CryptoJS.enc.Utf8);
-        props.context.clearCred();
-        props.context.login(email,password).then(
-            (loggedIn) => {
-            if (!loggedIn) {
-                console.log("There was some error.");
-                //create a flash message for when user does not signs in, it displays an error message
-            }else{
-                console.log("Welcome to W@H GW@@N.");
-                //window.location.reload();
-                //create a flash message for when user signs in, it displays a welcome message
-            }
-        });
-        //navigate("/");       
+        props.context.clearCred(uname);  
     }
 
     const next = (e,num) => {
@@ -289,17 +271,18 @@ const Welcome = props => {
 
     const logout = e => {
         props.context.clearCred();
-        props.context.logout(e);
-        navigate("/home");
+        props.context.logout(e).then((res) => {
+            if (res === true){
+                navigate("/home");
+            }
+        });
     }
 
     useEffect( () => {
-        //console.log(val);
-        if (val === ""){
-            //console.log("hasuname");
+        if ((val === "") && (uname === "")){
+            document.getElementById("save-btn").disabled = true;
             hasUname();
-            //const user_id = props.context.user_id ? props.context.user_id : new_id;
-            axios.post('/api/get-bio',{token}).then(
+            axios.post(`${process.env.REACT_APP_PROXY}/api/get-bio`,{token}).then(
                 (response) => {
                     if (response.status === 200){
                         setShowStep2(false);
@@ -313,29 +296,21 @@ const Welcome = props => {
         if (!gotMedia && showStep3){
             loadMainMedia();
         }
-        //setResponseMsg(responseMsg);
-    },[val, showStep3, token, gotMedia, hasUname, loadMainMedia]);
+    },[val, uname, showStep3, token, gotMedia, hasUname, loadMainMedia]);
 
     return (
-        <div className="hero">
-            <div className="hero-contain">
-                <div className="page-header">
-                    <div className="box logout">
-                        <button className="button is-dark" onClick={e => logout(e)}>Logout</button>
-                    </div>
-                    <h1 className="title"> Welcome to W@H GW@@N </h1>
-                    <h3 className="subtitle"> You can now experience all the world has to offer. </h3>
-                    <br />
+        <div className="hero-contain">
+                <div className="box logout">
+                    <button className="button is-dark" onClick={e => logout(e)}>Logout</button>
                 </div>
-                <div className="page-body">
+                <h1 className="title"> Welcome to W@H GW@@N </h1>
+                <h3 className="subtitle"> You can now experience all the world has to offer. </h3>
 
-                    {showStep1 && <Step1 next={next} uname={uname} checkUname={checkUname} saveUname={saveUname} responseMsg={responseMsg} val={val}/> }
-                    
-                    {showStep2 && <Step2 prev={prev} next={next} setTagline={setTagline} responseMsg={responseMsg} setResponseMsg={setResponseMsg} /> }
-                    
-                    {showStep3 && <Step3 uploaded={uploaded} prev={prev} uname={uname} tagline={tagline} saveUpload={saveUpload} endWelcome={endWelcome} handleUpload={handleUpload} imgView={imgView} vidView={vidView} responseMsg={responseMsg} /> }
-                </div>
-            </div>
+                {showStep1 && <Step1 next={next} uname={uname} checkUname={checkUname} saveUname={saveUname} responseMsg={responseMsg} val={val}/> }
+                
+                {showStep2 && <Step2 prev={prev} next={next} setTagline={setTagline} responseMsg={responseMsg} setResponseMsg={setResponseMsg} /> }
+                
+                {showStep3 && <Step3 uploaded={uploaded} prev={prev} uname={uname} tagline={tagline} saveUpload={saveUpload} endWelcome={endWelcome} handleUpload={handleUpload} imgView={imgView} vidView={vidView} responseMsg={responseMsg} /> }
         </div>
     );
 }

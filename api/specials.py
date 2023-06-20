@@ -4,6 +4,69 @@ from api.sqlal_mutable_array import MutableList
 from sqlalchemy.dialects.postgresql import ARRAY
 from datetime import datetime
 
+class Accomadation(db.Model):
+    __tablename__ = 'wg_accomadations'
+
+    accomadate_id = db.Column(db.Integer, db.Sequence('wg_accomadations_accomadate_id_seq'), primary_key=True)
+    lister = db.Column(db.Integer, db.ForeignKey('wg_users.user_id'), nullable=False)
+    pree_id = db.Column(db.Integer, db.ForeignKey('wg_prees.pree_id'), nullable=False)
+    title = db.Column(db.String(255))
+    typeOf = db.Column(db.String(80))
+    address = db.Column(db.String(255))
+    pets = db.Column(db.Boolean)
+    description = db.Column(db.String(1026))
+    amenities = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    additional = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    cuisine = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    minors = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    cooperate = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    facilities = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    attraction = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    transit = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    establishment = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    languages = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    overview = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    requirements = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    fees = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    children = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    others = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    parking = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    roomslist = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
+    subtopics = db.Column(MutableList.as_mutable(ARRAY(db.PickleType)))
+    dateAdded = db.Column(db.DateTime, default=datetime.utcnow)
+    is_available = db.Column(db.Boolean, default=True)
+    is_visible = db.Column(db.Boolean, default=True)
+    numOfPics = db.Column(db.Integer)
+
+    def __init__(self,lister,pree_id,title,typeOf,address,description,pets,amenities,additional,cuisine,minors,cooperate,facilities,attraction,transit,establishment,languages,overview,requirements,fees,children,others,parking,roomslist,subtopics,numOfPics):
+        self.lister = lister
+        self.pree_id = pree_id
+        self.title = title
+        self.typeOf = typeOf
+        self.address = address 
+        self.description = description
+        self.pets = pets
+        self.amenities = amenities
+        self.additional = additional
+        self.cuisine = cuisine
+        self.minors = minors
+        self.cooperate = cooperate
+        self.facilities = facilities
+        self.attraction = attraction
+        self.transit = transit
+        self.establishment = establishment
+        self.languages = languages 
+        self.overview = overview
+        self.requirements = requirements
+        self.fees = fees
+        self.children = children
+        self.others = others
+        self.parking = parking
+        self.roomslist = roomslist
+        self.subtopics = subtopics
+        self.numOfPics = numOfPics
+
+
 class Listing(db.Model):
     __tablename__ = 'wg_listings'
 
@@ -21,13 +84,15 @@ class Listing(db.Model):
     insideSqft = db.Column(db.Integer)
     lotSqft = db.Column(db.Integer)
     parking = db.Column(MutableList.as_mutable(ARRAY(db.String(100)))) #reduce string size
+    interior = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
+    exterior = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
     description = db.Column(db.String(255))
     numOfPics = db.Column(db.Integer)
     dateAdded = db.Column(db.DateTime, default=datetime.utcnow)
     is_available = db.Column(db.Boolean, default=True)
     is_visible = db.Column(db.Boolean, default=True)
 
-    def __init__(self, pree_id, lister, title, category, typeOf, address, price, currency, beds, baths, insideSqft, lotSqft, parking, description, numOfPics):
+    def __init__(self, pree_id, lister, title, category, typeOf, address, price, currency, beds, baths, insideSqft, lotSqft, parking, description, numOfPics, interior, exterior):
         self.pree_id = pree_id
         self.lister = lister
         self.title = title
@@ -43,6 +108,8 @@ class Listing(db.Model):
         self.parking = parking
         self.description = description
         self.numOfPics = numOfPics
+        self.interior = interior
+        self.exterior = exterior
 
     def __repr__(self):
         return '<Listing %r>' %  self.title

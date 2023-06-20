@@ -18,8 +18,8 @@ const MediaControls = props => {
     useEffect( () => {
         if(operation === "view"){
             const pree_id = details.pree_id;
-
-            axios.post("/api/get-comments", {pree_id}).then(
+            const token = props.context.token ? props.context.token : 0;
+            axios.post(`${process.env.REACT_APP_PROXY}/api/get-comments`, {pree_id, token}).then(
                 (getComments) => {
                     if (getComments.status === 200){
                         setComments(getComments.data.comments);
@@ -30,17 +30,18 @@ const MediaControls = props => {
             );
         }
 
-    },[details, operation,comment]);
+    },[details, operation, comment]);
 
 
     const sendComment = (e) => {
         const user_id = props.context.user.id;
         const pree_id = details.pree_id;
-        axios.post("/api/handle-comments", {user_id, pree_id, comment}).then(
+        axios.post(`${process.env.REACT_APP_PROXY}/api/handle-comments`, {user_id, pree_id, comment}).then(
             (send) => {
                 if (send.status === 200){
-                    //console.log(send.data.comment);
-                    setComments([...comments, send.data.comment]);
+                    let new_comment = {...send.data.comment, "username":props.context.user.username, "displayname":props.context.user.displayname};
+                    let temp = [new_comment, ...comments];
+                    setComments([...temp]);
                     props.setCommentsCount(send.data.comment_num);
                     makeComment("");
                 }else{
@@ -112,8 +113,8 @@ const MediaControls = props => {
                                                     <hr />
                                                     <div className="list-comments is-centered">
                                                         {comments && comments.length > 0 ?
-                                                            comments.map((aComment, index) => (
-                                                                <div key={index} className="box comment-box">
+                                                            comments.map((aComment) => (
+                                                                <div key={aComment.comment_id} className="box comment-box">
                                                                     <Comment aPree={details} comment={aComment} />
                                                                 </div>
                                                                 )   

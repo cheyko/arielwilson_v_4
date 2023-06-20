@@ -116,7 +116,7 @@ const BCHome = props => {
                                         {items.map((item, index) => (
                                             <div className="slick-slide" key={index}>
                                                 <Item
-                                                    imageUrl={process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/0.jpeg"}
+                                                    imageUrl={process.env.PUBLIC_URL + "/images/items/item" + item.item_id + "/0.jpg"}
                                                     item={item}
                                                     key={index}
                                                 />

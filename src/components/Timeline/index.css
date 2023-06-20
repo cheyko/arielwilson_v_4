@@ -128,7 +128,7 @@ h1 {
 .mp-sticky {
 position: fixed !important;
 top: 10% !important;
-z-index: 6 !important;
+z-index: 4 !important;
 }
 
 /* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) */
@@ -141,7 +141,7 @@ padding-top: 60px !important;
 position: fixed !important;
 top: 10% !important; 
 right: 0% !important;
-z-index: 6 !important;
+z-index: 4 !important;
 }
 
 /* Add some top padding to the page content to prevent sudden quick movement (as the div gets a new position at the top of the page (position:fixed and top:0) */
@@ -211,10 +211,6 @@ padding-top: 60px !important;
     font-size: large !important;
 }
 
-.reactions{
-    padding-block: 0.5rem !important;
-}
-
 .reaction-btn .fas{
     font-size: 1.5rem;
 }
@@ -238,7 +234,7 @@ padding-top: 60px !important;
         /*font-size: 30px !important;*/
     }
     .center-col{
-        width: 25rem;
+        width: 100%;
     }
     /*.timeline-container{
         width: auto !important;

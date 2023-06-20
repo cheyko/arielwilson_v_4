@@ -54,7 +54,7 @@ const SimilarEvents = (props) => {
         matches.slice(0,6).map((match, index) => (
             <div onClick={ e => window.scrollTo(0,0)} key={index}>
                 <EventItem 
-                    event={event}
+                    event={match}
                     key={index}
                 />
             </div>

@@ -27,6 +27,7 @@ import { faLaptopHouse } from '@fortawesome/free-solid-svg-icons'
 import { faInfo} from '@fortawesome/free-solid-svg-icons'
 import { faCity } from '@fortawesome/free-solid-svg-icons'
 import { faPeopleCarry } from '@fortawesome/free-solid-svg-icons'
+import { Link } from "react-router-dom";
 
 const PFHome = props => {
 
@@ -79,7 +80,7 @@ const PFHome = props => {
           }
         ]
     };
-    
+    let types = ["house","apartment","townhouse","residential","commercial","office","building","villa"];
     const [searchval, setSearch] = useState("");
     //const imageUrls = []; //props.context;
     const listings = props.context.listings ? (props.context.listings.length > 5 ? (props.context.listings.slice(0,6)) : props.context.listings ) : null ;
@@ -119,7 +120,7 @@ const PFHome = props => {
                                             {listings.map((listing, index) => (
                                                 <div className="slick-slide" key={index}>
                                                     <PFLItem
-                                                        imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0.jpeg"}
+                                                        imageUrl={process.env.PUBLIC_URL + "/images/listings/listing" + listing.listing_id + "/0.jpg"}
                                                         listing={listing}
                                                         key={index}
                                                         page={"home"}
@@ -131,7 +132,9 @@ const PFHome = props => {
                                             <button 
                                                 className="button is-link"
                                                 onClick={e => {
-                                                    props.setPFView('All');
+                                                    props.setPFView('PFAll');
+                                                    props.setSubView('PFAll');
+                                                    localStorage.setItem("subview","PFAll");
                                                 }}
                                             > 
                                                 Explore More Real Estate 
@@ -158,13 +161,55 @@ const PFHome = props => {
                                 <Slider {...settingsThumbs}>
                                     {placeholders.map((aSpot, index) => (
                                         <div key={index} className="slick-slide">
-                                            <h3> {aSpot.text} </h3>
+                                            {/*<h3> {aSpot.text} </h3>*/}
+                                            <div className="card mx-1">
+                                                <div className="card-image">
+                                                    <figure className="image is-4by3">
+                                                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder" />
+                                                    </figure>
+                                                </div>
+                                            </div>
                                         </div>
                                     ))}
                                 </Slider>
                             </div>
                             <div className="control">
                         <button className="button is-link"> Explore More Accomadations </button> 
+                    </div>
+                    </div>
+                    
+                </div>
+
+                <div className="item-box box">
+                    <div className="accomadations content"> 
+                        <h1> Real Estate Categories </h1>
+                        
+                            <div className="slick-wrapper has-text-centered">
+                                <Slider {...settingsThumbs}>
+                                    {types.map((aType, index) => (
+                                        <div key={index} className="slick-slide">
+                                            <div className="card mx-1" style={{cursor:"pointer"}} 
+                                                onClick={e => {
+                                                    props.setPFType(aType);
+                                                    props.setPFView('PFAll');
+                                                    props.setSubView('PFAll');
+                                                    localStorage.setItem("subview","PFAll");
+                                                }}>
+                                                <div className="card-image">
+                                                    <figure className="image is-4by3">
+                                                        <img src={`${process.env.PUBLIC_URL}/images/defaults/prop-finder/${aType}.jpg`} alt="Placeholder" />
+                                                        <h1 className="tag caption-tag"> 
+                                                            <span className="tag is-large is-capitalized date-caption">{aType}</span> 
+                                                        </h1>
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </Slider>
+                            </div>
+                            <div className="control">
+                        <Link to="/shops/PropFinder/realestate/categories"><button className="button is-link"> See all Categories </button> </Link>
                     </div>
                     </div>
                     

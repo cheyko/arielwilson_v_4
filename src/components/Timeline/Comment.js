@@ -39,6 +39,7 @@ const Comment = props => {
 
     const {comment} = props;
     const {aPree} = props;
+    const {key} = props;
     const user_id = props.context.user ? props.context.user.id : 0;
     const comment_id = comment.comment_id;
     const [comment_text, setText] = useState(comment.comment_text);
@@ -48,8 +49,8 @@ const Comment = props => {
     const [commentStatus, setStatus] = useState(true);
     const [c_reaction, setCReaction] = useState(comment.is_c_approved);
     const [reply, makeReply] = useState("");
-    //const [replies, setReplies] = useState(comment.replies);
-    let replies = comment.replies;
+    const [replies, setReplies] = useState(comment.replies);
+    //let replies = comment.replies;
     const [showReplyInput, setShowReplyInput] = useState(false);
     const [showReplies, setShowReplies] = useState(false);
     const [editcomment, editComment] = useState(comment.comment_text);
@@ -66,72 +67,107 @@ const Comment = props => {
         setModalOpen(false);
     }
 
+    useEffect( () => {
+        if(showReplyInput && reply === ""){
+            document.getElementById("post-reply").setAttribute("disabled", true);
+        }else if(showReplyInput && reply !== ""){
+            document.getElementById("post-reply").removeAttribute("disabled");
+        }
+        if(showEditInput && editcomment === ""){
+            document.getElementById("post-edit").setAttribute("disabled", true);
+        }else if(showEditInput && editcomment !== ""){
+            document.getElementById("post-edit").removeAttribute("disabled");
+        }
+        
+    },[reply, showReplyInput, editcomment, showEditInput, props.comment])
+
     const likeComment = (e) => {
-        if (c_reaction !== true){
-            axios.post(`${process.env.REACT_APP_PROXY}/api/like-comment`,{user_id,comment_id}).then(
-                (likecomment) => {
-                    if (likecomment.status === 200){
-                        setCReaction(true);
-                        setLikes(likecomment.data.likedcount);
-                        setDislikes(likecomment.data.dislikedcount);
-                    }else{
-                        throw new Error("Error while Reacting to Comment");
+        if(props.context.token){
+            if (c_reaction !== true){
+                axios.post(`${process.env.REACT_APP_PROXY}/api/like-comment`,{user_id,comment_id}).then(
+                    (likecomment) => {
+                        if (likecomment.status === 200){
+                            setCReaction(true);
+                            setLikes(likecomment.data.likedcount);
+                            setDislikes(likecomment.data.dislikedcount);
+                        }else{
+                            throw new Error("Error while Reacting to Comment");
+                        }
                     }
-                }
-            )
+                )
+            }else{
+                axios.put(`${process.env.REACT_APP_PROXY}/api/like-comment`,{user_id,comment_id}).then(
+                    (unlikecomment) => {
+                        if (unlikecomment.status === 200){
+                            setCReaction(null);
+                            setLikes(unlikecomment.data.likedcount);
+                        }else{
+                            throw new Error("Error while Reacting to Pree");
+                        }
+                    }
+                )
+            }
         }else{
-            axios.put(`${process.env.REACT_APP_PROXY}/api/like-comment`,{user_id,comment_id}).then(
-                (unlikecomment) => {
-                    if (unlikecomment.status === 200){
-                        setCReaction(null);
-                        setLikes(unlikecomment.data.likedcount);
-                    }else{
-                        throw new Error("Error while Reacting to Pree");
-                    }
-                }
-            )
+            props.setWanted("like comments on W@@ GW@@N.");
+            props.setModalOpen(true);
         }
     }
 
     const dislikeComment = (e) => {
-        if (c_reaction !== false){
-            axios.post(`${process.env.REACT_APP_PROXY}/api/dislike-comment`,{user_id,comment_id}).then(
-                (dislike) => {
-                    if (dislike.status === 200){
-                        setCReaction(false);
-                        setLikes(dislike.data.likedcount);
-                        setDislikes(dislike.data.dislikedcount);
-                    }else{
-                        throw new Error("Error while Reacting to Comment");
+        if(props.context.token){
+            if (c_reaction !== false){
+                axios.post(`${process.env.REACT_APP_PROXY}/api/dislike-comment`,{user_id,comment_id}).then(
+                    (dislike) => {
+                        if (dislike.status === 200){
+                            setCReaction(false);
+                            setLikes(dislike.data.likedcount);
+                            setDislikes(dislike.data.dislikedcount);
+                        }else{
+                            throw new Error("Error while Reacting to Comment");
+                        }
                     }
-                }
-            )
+                )
+            }else{
+                axios.put(`${process.env.REACT_APP_PROXY}/api/dislike-comment`,{user_id,comment_id}).then(
+                    (undislike) => {
+                        if (undislike.status === 200){
+                            setCReaction(null);
+                            setDislikes(undislike.data.dislikedcount);
+                        }else{
+                            throw new Error("Error while Reacting to Pree");
+                        }
+                    }
+                )
+            }
         }else{
-            axios.put(`${process.env.REACT_APP_PROXY}/api/dislike-comment`,{user_id,comment_id}).then(
-                (undislike) => {
-                    if (undislike.status === 200){
-                        setCReaction(null);
-                        setDislikes(undislike.data.dislikedcount);
-                    }else{
-                        throw new Error("Error while Reacting to Pree");
-                    }
-                }
-            )
+            props.setWanted("dislike comments on W@@ GW@@N.");
+            props.setModalOpen(true);
         }
     }
 
     const sendReply = (e) => {
-        axios.post(`${process.env.REACT_APP_PROXY}/api/handle-replies`, {user_id, comment_id, reply}).then(
-            (send) => {
-                if (send.status === 200){
-                    //update comments list.
-                    console.log(send.data.reply_id);
-                    makeReply("");
-                }else{
-                    throw new Error("Error while make comments.");
+        if(props.context.token && (reply.length > 0)){
+            axios.post(`${process.env.REACT_APP_PROXY}/api/handle-replies`, {user_id, comment_id, reply}).then(
+                (send) => {
+                    if (send.status === 200){
+                        //update comments list.
+                        let new_reply = {...send.data.reply, "username":props.context.user.username, "displayname":props.context.user.displayname}
+                        let temp = [new_reply, ...replies];
+                        setReplies([...temp]);
+                        setThreadCount(send.data.reply_num);
+                        makeReply("");
+                        setShowReplyInput(false);
+                        setShowReplies(true);
+                        
+                    }else{
+                        throw new Error("Error while make comments.");
+                    }
                 }
-            }
-        )
+            )
+        }else{
+            props.setWanted("reply to comments on W@@ GW@@N.");
+            props.setModalOpen(true);
+        }
         e.preventDefault();
     }
 
@@ -163,10 +199,11 @@ const Comment = props => {
                 }
             }
         )
+        closeModal(e);
     }
 
     return(
-        <div>
+        <div key={key}>
         {commentStatus ?
             <div>
                 <article className="media">
@@ -185,7 +222,9 @@ const Comment = props => {
                                 <div className="edit-comment">
                                     <textarea className="textarea" style={{width:"80%"}} onChange={e => editComment(e.target.value)} value={editcomment} type="text" />
                                     {" "}
-                                    <button onClick={(e) => saveEdit(e)} className="button is-small"> Save </button>
+                                    <button id="post-edit" onClick={(e) => saveEdit(e)} className="button is-primary is-small"> Save </button>{" "}
+                                    <button onClick={(e) => setShowEditInput(false)} className="button is-warning is-small"> Cancel </button>
+
                                 </div>
                             ):(
                                 <div id="the-comment" className="the-comment">
@@ -199,14 +238,14 @@ const Comment = props => {
                                 <span className="level-item reaction-btn">
                                     <span onClick={(e) => setShowReplyInput(!showReplyInput)} className="icon"><i className="fas fa-reply fa-lg"></i></span>
                                 </span>
-                                <span className="level-item reaction-btn" onClick={(e) => likeComment(e) } style={c_reaction === true ? {color:"blue",marginInline:"1rem"}:{color:"#5d5d5d",marginInline:"1rem"}}>
+                                <span className="level-item reaction-btn" onClick={(e) => likeComment(e) } style={c_reaction === true ? {color:"blue",marginInline:"1.1rem"}:{color:"#5d5d5d",marginInline:"1.1rem"}}>
                                     <span className="icon"><i className="fas fa-heart"></i>{formatReaction(likedcount)}</span>
                                 </span>
-                                <span className="level-item reaction-btn" onClick={(e) => dislikeComment(e) } style={c_reaction === false ? {color:"blue",marginInline:"1rem"}:{color:"#5d5d5d",marginInline:"1rem"}}>
+                                <span className="level-item reaction-btn" onClick={(e) => dislikeComment(e) } style={c_reaction === false ? {color:"blue",marginInline:"1.1rem"}:{color:"#5d5d5d",marginInline:"1.1rem"}}>
                                     <span className="icon"><i className="fas fa-heart-broken"></i>{formatReaction(dislikedcount)}</span>
                                 </span>
-                                <span className="level-item reaction-btn" style={{marginInline:"1rem"}}>
-                                    <span className="icon"><i className="fas fa-comment"></i>{formatReaction(threadcount)}</span>
+                                <span className="level-item reaction-btn" style={{marginInline:"1.1rem"}}>
+                                    <span className="icon"><i className="fas fa-comment"></i> {formatReaction(threadcount)}</span>
                                 </span>
                             </div>
                         </nav>
@@ -235,7 +274,7 @@ const Comment = props => {
                     <div>
                         <textarea cols="4" className="textarea" onChange={e => makeReply(e.target.value)} value={reply} placeholder="Reply to Comment"/>
                         {" "}
-                        <button onClick={(e) => sendReply(e)} className="button is-small"> Reply </button>
+                        <button id="post-reply" onClick={(e) => sendReply(e)} className="button is-primary is-small"> Reply </button>
                         <br/><br/>
                     </div>
                 }
@@ -244,8 +283,8 @@ const Comment = props => {
                         {replies && replies.length > 0 && 
                             (
                                 replies.map( (reply, index) => (
-                                    <div key={index}>
-                                        <Reply comment_id={comment_id} reply={reply} index={index} />
+                                    <div key={reply.reply_id}>
+                                        <Reply setWanted={props.setWanted} setModalOpen={props.setModalOpen} comment_id={comment_id} reply={reply} index={index} />
                                     </div>
                                 ))
                             )

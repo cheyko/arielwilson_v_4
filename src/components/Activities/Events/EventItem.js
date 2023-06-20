@@ -32,7 +32,7 @@ const EventItem = props => {
                 <div className="card">
                     <div className="card-image">
                         <figure className="image is-4by3">
-                            <img alt="Of Event" src={`${process.env.PUBLIC_URL}/images/events/event${event.event_id}/0.jpeg`} />
+                            <img alt="Of Event" src={`${process.env.PUBLIC_URL}/images/events/event${event.event_id}/0.jpg`} />
                         </figure>
                     </div>
                     <header className="card-header">

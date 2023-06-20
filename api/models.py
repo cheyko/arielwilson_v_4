@@ -181,9 +181,8 @@ class Pree(db.Model):
     is_visible = db.Column(db.Boolean, default=True)
     #is_exclusive = db.Column(db.Boolean, default=False) #remove
 
-    def __init__(self, user_id, date_added, is_media, pree_type):
+    def __init__(self, user_id, is_media, pree_type):
         self.user_id = user_id
-        self.date_added = date_added
         self.is_media = is_media
         self.pree_type = pree_type
 

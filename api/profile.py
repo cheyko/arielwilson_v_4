@@ -65,7 +65,7 @@ def signup():
         #welcomeEmail = MIMEText(welcomeEmailTemp.format(firstname), "html")
         #subject = "Welcome Message from thaKKB.com"
         #sendEmail(email,subject,welcomeEmail)
-    return jsonify({"msg": "New User added","token":token}), 200
+    return jsonify({"msg": "New User added","token":(token['token_alpha']+""+token['token_omega'])}), 200
 
 #api method for Login
 #@cross_origin()
@@ -90,14 +90,17 @@ def login():
             profile_record = Profile.query.get(user.user_id)
             if profile_record is None:
                 has_profile = False
+                displayname = ""
                 location = ""
             else:
                 has_profile = True
                 location = profile_record.location
+                displayname = profile_record.displayname
                 update_stats(user.user_id)
             return {
                 'id':user.user_id,
                 'username' : user.username,
+                'displayname' : displayname,
                 'access_token' : tokens['token_alpha']+""+tokens['token_omega'], 
                 'has_profile' : has_profile,
                 'gender': user.gender,
@@ -217,7 +220,7 @@ def get_user_media():
     return jsonify({"msg":"Request not accepted."}), 400
 
 #api method to save cover-videos and display photos
-@app.route('/api/main-media', methods=['POST'])
+@app.route('/api/main-media', methods=['POST','PUT'])
 def main_media():
     if request.method == 'POST':
         result = request.form
@@ -236,17 +239,28 @@ def main_media():
             display_folder = app.config['UPLOAD_FOLDER'] + "bio/display"
             #display_folder = "../public/images/bio/display"
             image_upload = request.files['display']
-            file_name = user_id + ".jpeg"
+            file_name = str(user_id) + ".jpg"
             image_upload.save(os.path.join(display_folder, file_name)) 
         if has_cover == 'true':
             profile_record.has_cv = True
             cover_folder = app.config['UPLOAD_FOLDER'] + "bio/cover"
             #cover_folder = "../build/images/bio/cover"
             video_upload = request.files['cover']
-            file_name = user_id + ".mp4"
+            file_name = str(user_id) + ".mp4"
             video_upload.save(os.path.join(cover_folder, file_name)) 
         db.session.commit()
         return jsonify({"msg":"Main media of user updated."}), 200
+    elif request.method == 'PUT':
+        token = request.json.get('token', None)
+        key = request.json.get('key', None)
+        user_id = confirm_token(token)
+        profile_record = Profile.query.get(user_id) 
+        if key == 'cover':
+            profile_record.has_cv = False
+        else:
+            profile_record.has_dp = False
+        db.session.commit()
+        return jsonify({"msg": key + " was removed successfully."}), 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
 #api method to save profile bio
@@ -263,7 +277,7 @@ def bio():
             tagline = request.json.get('tagline', None)
             description = request.json.get('description', None)
             location = request.json.get('location', None)
-            newProfile = Profile(user_id=user_id,dpname=dpname, dob=dob, tagline=tagline, description=description, location=location)
+            newProfile = Profile(user_id=user_id,displayname=dpname, dob=dob, tagline=tagline, description=description, location=location)
             db.session.add(newProfile)
             db.session.commit()
         return jsonify({"msg":"Bio informaiton added."}), 200
@@ -326,7 +340,7 @@ def profile_details():
         #print(user_id)
         if uname != '':
             user_details = db.session.query(User, Profile).join(Profile, Profile.user_id == User.user_id).filter(User.username == uname).first()  
-            myUserObj = {"user_id":user_details.User.user_id, "displayname":user_details.Profile.displayname, "username":user_details.User.username, "access-type":user_details.User.accessType, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "description":user_details.Profile.description, "location":user_details.Profile.location, "followers":user_details.Profile.followers, "figures":user_details.Profile.figures, "fraternity":user_details.Profile.fraternity,"groups":user_details.Profile.groups, "has_dp":user_details.Profile.has_dp, "has_cv":user_details.Profile.has_cv}
+            myUserObj = {"user_id":user_details.User.user_id, "displayname":user_details.Profile.displayname, "username":user_details.User.username, "gender":user_details.User.gender, "access-type":user_details.User.accessType, "dob": user_details.Profile.dob , "tagline":user_details.Profile.tagline, "description":user_details.Profile.description, "location":user_details.Profile.location, "followers":user_details.Profile.followers, "figures":user_details.Profile.figures, "fraternity":user_details.Profile.fraternity,"groups":user_details.Profile.groups, "has_dp":user_details.Profile.has_dp, "has_cv":user_details.Profile.has_cv}
             return myUserObj , 200
         else:
             return jsonify({"msg":"User does not have ID of Zero (0)."}), 205

@@ -42,9 +42,9 @@ const ViewTrend = props => {
     const loadMainMedia = useCallback( () => {
         const user_id = aPree.user.user_id;
         if (aPree.user.has_dp === true){
-            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpeg`);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/${user_id}.jpg`);
         }else{
-            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpeg`);
+            setImgView(`${process.env.PUBLIC_URL}/images/bio/display/default.jpg`);
         }
         setGetMedia(true);
         return true;
@@ -55,7 +55,7 @@ const ViewTrend = props => {
         window.scroll(0,0);
         if (aPree){
             setCommentsCount(aPree.comments);
-            setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.jpeg`);
+            setUrl(`${process.env.PUBLIC_URL}/images/exclusives/exclusive${aPree.attachment.exclusive_id}/upload0.jpg`);
 
             if (!gotMedia){
                 loadMainMedia();

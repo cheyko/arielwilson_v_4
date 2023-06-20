@@ -183,10 +183,6 @@ const HostEvent = props => {
         }
     }
 
-    /*const loadEvent = async(e) => {
-
-    }*/
-
     const convertTime = (aTime) => {
         var meridian = parseInt(aTime.split(":")[0]) >= 12 ? 'pm' : 'am';
         var hour = parseInt(aTime.split(":")[0]) % 12 || 12;

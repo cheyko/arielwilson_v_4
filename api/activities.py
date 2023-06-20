@@ -231,7 +231,7 @@ def polls():
         if user_id != 0:
             choices = result.getlist("choices")
             zeros = list(map(lambda x: 0, choices))
-            newPree = Pree(user_id=user_id,date_added=result["theDateTime"],is_media=False, pree_type="poll")
+            newPree = Pree(user_id=user_id,is_media=False, pree_type="poll")
             db.session.add(newPree)
             db.session.flush()
             newPoll = Poll(lister=user_id,pree_id=newPree.pree_id,category=result["category"],question=result["poll"],date_added=result["theDateTime"],choices=choices,results=zeros, end_date=result["end_date"], end_time=result["end_time"], status="Open")
@@ -285,7 +285,7 @@ def events():
         attractions = result.getlist("attractions")
         token = result["token"]
         user_id = confirm_token(token)
-        newPree = Pree(user_id=user_id,date_added=result["theDateTime"],is_media=True, pree_type="event")
+        newPree = Pree(user_id=user_id,is_media=True, pree_type="event")
         db.session.add(newPree)
         db.session.flush()
         newEvent = Event(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"], host=result["host"],description=result["description"],category=result["category"],typeOf=result["typeOf"],metrics=result["metrics"],venue=result["venue"],where=result["where"],status=result["status"],dates=dates,start_times=start_times,end_times=end_times,tickets=tickets,costs=costs, currencies=currencies,personnel_ids=personnel_ids,personnel=personnel,attractions=attractions, numOfPics=numOfPics)
@@ -295,7 +295,7 @@ def events():
         event_folder = app.config['UPLOAD_FOLDER'] + "events/"
         os.makedirs(event_folder + prefix)   
         for index, pic in enumerate(photos):
-            filename = prefix + "/" + str(index) + ".jpeg"
+            filename = prefix + "/" + str(index) + ".jpg"
             #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
             pic.save(os.path.join(event_folder , filename))
         db.session.commit()
@@ -384,7 +384,7 @@ def classifieds():
             subcontent.append(z)
         token = result["token"]
         user_id = confirm_token(token)
-        newPree = Pree(user_id=user_id,date_added=result["theDateTime"],is_media=True, pree_type="classified")
+        newPree = Pree(user_id=user_id,is_media=True, pree_type="classified")
         db.session.add(newPree)
         db.session.flush()
         newJob = Classified(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"],description=description,category=result["category"],typeOf=result["typeOf"],metrics=result["metrics"],location=result["location"],salary=result["salary"],company=result["company"],subtopics=subtopics,contents=contents,subcontent=subcontent,qualifications=qualifications,benefits=benefits,skills=skills,questions=questions,responses=responses,end_date=str(result["end_date"]))
@@ -422,7 +422,7 @@ def volunteer():
         contributions = result.getlist("contributions")
         token = result["token"]
         user_id = confirm_token(token)
-        newPree = Pree(user_id=user_id,date_added=result["theDateTime"],is_media=True, pree_type="volunteer")
+        newPree = Pree(user_id=user_id,is_media=True, pree_type="volunteer")
         db.session.add(newPree)
         db.session.flush()
         newVolunteer = Volunteer(lister=result["user_id"],pree_id=newPree.pree_id,title=result["title"],description=result["description"],category=result["category"],venue=result["venue"],location=result["location"],start_date=result["start_date"],end_date=result["end_date"],start_time=result["start_time"],end_time=result["end_time"],contributions=contributions,metrics=result["metrics"],numOfPics=numOfPics)
@@ -432,7 +432,7 @@ def volunteer():
         event_folder = app.config['UPLOAD_FOLDER'] + "volunteers/"
         os.makedirs(event_folder + prefix)   
         for index, pic in enumerate(photos):
-            filename = prefix + "/" + str(index) + ".jpeg"
+            filename = prefix + "/" + str(index) + ".jpg"
             #s3.Bucket(AWS_BUCKET).put_object(Key=key, Body=pic)
             pic.save(os.path.join(event_folder , filename))
         db.session.commit()

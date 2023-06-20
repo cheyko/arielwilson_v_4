@@ -18,7 +18,7 @@ const ViewEvent = props => {
     const getTargetPhotos = (event) => {
         const targetPhotos = [];
         for (var i=0; i<parseInt(event.numOfPics); i++){
-            let url = process.env.PUBLIC_URL + "/images/events/event" + event.event_id + "/" + i + ".jpeg";
+            let url = process.env.PUBLIC_URL + "/images/events/event" + event.event_id + "/" + i + ".jpg";
             targetPhotos.push(url);
         }
         return targetPhotos;

@@ -103,7 +103,7 @@ const ServicesHome = props => {
                                         {services.map((service, index) => (
                                             <div className="slick-slide" key={index}>
                                                 <ServiceItem
-                                                    imageUrl={process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/0.jpeg"}
+                                                    imageUrl={process.env.PUBLIC_URL + "/images/services/service" + service.service_id + "/0.jpg"}
                                                     service={service}
                                                     key={index}
                                                     page={"home"}

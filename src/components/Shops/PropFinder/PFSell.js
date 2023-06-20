@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import withContext from "../../../withContext";
-import PFAdd from "./PFAdd";
+//import PFAdd from "./PFAdd";
 
 const PFSell = props => {
+    let navigate = useNavigate();
 
     return (
         <div className="hero sub-container">
@@ -15,7 +17,9 @@ const PFSell = props => {
                         <p className="subtitle"> Sell or Rent Property </p>
                     </div>
                     <div className="content has-text-centered">
-                        <PFAdd />
+                        {/*<PFAdd />*/}
+                        <button onClick={e => navigate("/listing-add")} className="button is-link is-large"> Add Real Estate </button>
+            
                     </div>
                 </div>
             </div>
@@ -31,7 +35,7 @@ const PFSell = props => {
                         <p className="subtitle"> List Property for Bookings </p>
                     </div>
                     <div className="content has-text-centered">
-                        <button className="button is-large is-link"> Add Lodging </button>
+                        <button onClick={e => navigate("/accomadate-add")} className="button is-large is-link"> Add Lodging </button>
                     </div>
                 </div>
             </div>

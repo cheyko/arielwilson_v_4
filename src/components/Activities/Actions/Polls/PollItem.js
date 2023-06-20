@@ -134,7 +134,7 @@ const PollItem = props => {
                                             <span id={"result"+index} className="results-box">
                                                 <span style={{width:calWidth(results[index])}} className="progress-span"></span> 
                                                 <small className="poll-text"><strong>{choice}</strong></small> 
-                                                <span style={{zIndex:"3", position:"relative"}} className="is-pulled-right">{calPercentage(results[index]) + "%"}</span>
+                                                <span style={{zIndex:"1", position:"relative"}} className="is-pulled-right">{calPercentage(results[index]) + "%"}</span>
                                              </span>   
                                         </div>
                                     )}

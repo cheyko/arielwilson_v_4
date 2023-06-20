@@ -108,7 +108,7 @@ const ProductsHome = props => {
                                             {products.map((product, index) => (
                                                 <div className="slick-slide" key={index}>
                                                     <ProductItem
-                                                        imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0.jpeg"}
+                                                        imageUrl={process.env.PUBLIC_URL + "/images/products/product" + product.product_id + "/0.jpg"}
                                                         product={product}
                                                         key={index}
                                                         page={"home"}

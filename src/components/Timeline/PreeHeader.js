@@ -85,8 +85,8 @@ const PreeHeader = props => {
                         <b> Rank </b>
                     </Link>
                 </div>
-                <div className="right-col">
-                    <b> {formatTime(aPree.date_added)} </b>
+                <div className="right-col" style={{textAlign:"right"}}>
+                    <b>{formatTime(aPree.date_added)}</b>
                 </div>
                 
             </div>

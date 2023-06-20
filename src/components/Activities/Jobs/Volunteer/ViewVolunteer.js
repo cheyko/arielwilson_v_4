@@ -19,7 +19,7 @@ const ViewVolunteer = props => {
         const targetPhotos = [];
         if(activity.numOfPics > 0){
             for (var i=0; i<parseInt(activity.numOfPics); i++){
-                let url = process.env.PUBLIC_URL + "/images/volunteers/volunteer" + activity.volunteer_id + "/" + i + ".jpeg";
+                let url = process.env.PUBLIC_URL + "/images/volunteers/volunteer" + activity.volunteer_id + "/" + i + ".jpg";
                 targetPhotos.push(url);
             }
         }else{

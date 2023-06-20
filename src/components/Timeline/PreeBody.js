@@ -55,7 +55,7 @@ const PreeBody = props => {
                                                             <div className="image-container">
                                                                 <figure key={index} className="image is-1by1">
                                                                     {/*<img src={aUrl} alt="upload" />*/}
-                                                                    <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}.jpeg`} />
+                                                                    <img className="is-normal" alt="media" src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}.jpg`} />
                                                                 </figure>
                                                             </div>
                                                         )}
@@ -119,12 +119,12 @@ const PreeBody = props => {
                                                             <div className="image-container">
                                                                 <figure key={index} className="image is-1by1">
                                                                     {/*<img src={aUrl} alt="upload" />*/}
-                                                                    <img className="reaction-btn is-normal" alt="media" onClick={e => {setOpen(true);setVal(index)}} src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}`} />
+                                                                    <img className="reaction-btn is-normal" alt="media" onClick={e => {setOpen(true);setVal(index)}} src={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${index}.jpg`} />
                                                                     {openImage && (
                                                                     <Lightbox
                                                                         key={index}
                                                                         imageTitle={aPree.attachment.caption}
-                                                                        mainSrc={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${val}.jpeg`}
+                                                                        mainSrc={`${process.env.PUBLIC_URL}/images/media/pree${aPree.pree_id}/post${val}.jpg`}
                                                                         onCloseRequest={() => setOpen(false)}
                                                                         
                                                                     />)}

@@ -2,8 +2,11 @@ import React from 'react';
 import withContext from '../../../withContext';
 import ProductItem from "./ProductItem";
 import Slider from "react-slick";
+import axios from "axios";
+import { useState, useEffect } from 'react';
 
 const SimilarProduct = (props) => {
+    const [matches, setMatches] = useState([]);
     const settingsSlider = {
         mobileFirst: true,
         speed:1000,
@@ -31,9 +34,12 @@ const SimilarProduct = (props) => {
     }*/
 
     const { product } = props;
+    
     //check house listing similarity inside houses.
     //const imageUrls = props.context.imageUrls;
-    const matches  = props.context.products ? props.context.products.filter( aProduct => aProduct !== product) : [] ;/*? props.context.products.filter( aProduct => (aProduct.make === aProduct.make 
+    //const matches  = props.context.products ? props.context.products.filter( aProduct => aProduct !== product) : getProducts();
+    //console.log(matches);
+    /*? props.context.products.filter( aProduct => (aProduct.make === aProduct.make 
     && aProduct.vehicle_id !== aProduct.vehicle_id
     && aVehicle.model.replace(/ /g,'').toLowerCase().includes(vehicle.model.replace(/ /g,'').toLowerCase())
     ) 
@@ -50,11 +56,23 @@ const SimilarProduct = (props) => {
     && Math.abs(Number(convertPrice(aVehicle.price, aVehicle.currency)) - Number(convertPrice(vehicle.price, vehicle.currency))) < 5000000)
 ) : [];*/
     
+    useEffect(() => {
+        if(props.context.products){
+            setMatches(props.context.products.filter( aProduct => aProduct !== product));
+        }else{
+            axios.get(`${process.env.REACT_APP_PROXY}/api/products`).then(
+                result => {
+                    setMatches(result.data.filter( aProduct => aProduct.product_id !== product.product_id));
+                }
+            );
+        }
+    },[]);
+
     const carousel = matches && matches.length ?
         matches.slice(0,6).map((match, index) => (
             <div onClick={ e => window.scrollTo(0,0)} key={index}>
                 <ProductItem
-                    imageUrl={process.env.PUBLIC_URL + "/images/products/product" + match.product_id + "/0"}
+                    imageUrl={process.env.PUBLIC_URL + "/images/products/product" + match.product_id + "/0.jpg"}
                     product={match}
                     key={index}
                     val={index}
@@ -89,7 +107,6 @@ const SimilarProduct = (props) => {
                         <button className="button is-link"> View Other Similar Products</button>
                     </div>
                 }
-                
             </div>
         </div>
     );

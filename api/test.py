@@ -89,43 +89,6 @@ def test_func2():
         return {"msg":"procedures sent","classified":jobObj}, 200
     return jsonify({"msg":"There was an error somewhere."}), 400
 
-@app.route('/api/test-func', methods=['GET'])
-def test_function():
-    if request.method == 'GET':
-        #print(set([1,2,1]) == set([1,2]))
-        a={1:9,2:8,3:4, 4:6, 5:6}
-        print(a.get(6))
-        return {"msg":"procedures sent","classified":1}, 200
-    return jsonify({"msg":"There was an error somewhere."}), 400
-
-@app.route('/api/test-func2', methods=['GET'])
-def isAlmostPalidrome():
-    word = 'abccba'
-    count = 0
-    for x in range(0,len(word)//2):
-        if(word[x] != word[(-x-1)]): 
-            count += 1
-    if count < 2: print(True)
-    else: print(False)
-    return {"msg":"procedures sent","classified":1}, 200
-
-@app.route('/api/test-func3', methods=['GET'])
-def MostPopularNumber():
-    arr = [34,31,34,77,82]
-    val = 5
-    count = 0
-    answer = arr[0]
-    for i in arr:
-        frequency = arr.count(i)
-        if(frequency > count):
-            count = frequency
-            answer = i
-        elif (frequency == count) and (i < answer):
-            count = frequency
-            answer = i
-    print(answer)
-    return {"msg":"procedures sent","classified":1}, 200
-
 @app.route('/api/test-function3', methods=['POST','GET'])
 def test_func3():
     if request.method == 'GET':

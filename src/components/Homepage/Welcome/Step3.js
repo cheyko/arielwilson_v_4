@@ -16,8 +16,8 @@ const Step3 = props => {
 
             <p className="subtitle"> <b> Step 3 of 3 </b> Add Display Photo and Cover Video</p>
 
-            <div className="main-media-video" style={{margin:"0 auto",height:"360px",width:"640px"}}>
-                <div style={{height:"10rem"}}>
+            <div className="main-media-video">
+                <div>
                     <div className="video-upload">
                         <label htmlFor="file-input-video">
                             <span className="cv-video-icon is-pulled-right"> <FontAwesomeIcon icon={faVideo} size="2x" /> </span> 
@@ -35,6 +35,7 @@ const Step3 = props => {
                     }
                 </div>
             </div>
+            <br />
             <div className="main-media-image has-text-centered">       
                 <figure className="display-figure">
                     <div className="image-upload">
@@ -43,7 +44,7 @@ const Step3 = props => {
                         </label>
                         <input id="file-input-image" name="image-upload" single="true" type="file" onChange={e => props.handleUpload(e)}/>
                     </div> 
-                    {props.imgView ? <img alt="display" className="display-image-large" src={props.imgView} /> : <img alt="display" className="display-image-large" src="/images/bio/display/default.jpeg" />}  
+                    {props.imgView ? <img alt="display" className="display-image-large" src={props.imgView} /> : <img alt="display" className="display-image-large" src="/images/bio/display/default.jpg" />}  
                 </figure>
                 <div className="username">
                     {props.uname} 
@@ -53,7 +54,7 @@ const Step3 = props => {
                 </div>
             </div>
             <div>
-                <button onClick={e => props.saveUpload(e)} className="button is-medium is-info"> Save Changes to Main Media </button> 
+                <button type="button" onClick={e => props.saveUpload(e)} className="button is-medium is-info"> Save Changes to Main Media </button> 
                 <hr/>
                 <p>{props.responseMsg}</p> 
                 <button onClick={props.endWelcome} className="button is-medium is-success"> {props.uploaded === true ? "Pree W@H GW@@N" : "Skip Upload 'N' Pree W@H GW@@N"} </button> 
