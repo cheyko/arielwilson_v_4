@@ -122,7 +122,7 @@ const Navbar = props => {
                                     <div className={selection === "message" ? "is-active" : "is-not-active"}> 
                                         <FontAwesomeIcon icon={faPaperPlane} size="1x" /> 
                                             {" "}<span className="badge-length">0</span><br/>
-                                        <b> W@H <br/> GW@@N</b> 
+                                        <b> World <br/> Delicates</b> 
 
                                     </div>
                                         
@@ -151,7 +151,7 @@ const Navbar = props => {
                         <span> <UserCog /> </span>&nbsp;
                     </div>:
                     <div className='card p-1'>
-                        <p>Login to do more on W@H GW@@N</p>
+                        <p>Login to do more on World Delicates</p>
                         <button onClick={e => navigate("/home")} className='button is-link'>Login / Signup</button>
                     </div>
                     }

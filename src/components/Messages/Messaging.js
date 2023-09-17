@@ -151,12 +151,12 @@ const Messaging = props => {
                                     <div className="msg-ad-container">
                                         <article className="message is-info">
                                             <div className="message-header">
-                                                <p>W@H GW@@N M-A</p>
+                                                <p>WAAPP M-A</p>
                                                 <button className="info" aria-label="info"></button>
                                             </div>
                                             <div className="message-body">
                                                 <h1 className="title">
-                                                    Welcome to W@H GW@@N Messaging App
+                                                    Welcome to WAAPP Messaging App
                                                 </h1>
                                                 <p className="info">
                                                     No Conversation selected.

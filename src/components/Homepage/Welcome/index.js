@@ -303,7 +303,7 @@ const Welcome = props => {
                 <div className="box logout">
                     <button className="button is-dark" onClick={e => logout(e)}>Logout</button>
                 </div>
-                <h1 className="title"> Welcome to W@H GW@@N </h1>
+                <h1 className="title"> Welcome to WAAPP </h1>
                 <h3 className="subtitle"> You can now experience all the world has to offer. </h3>
 
                 {showStep1 && <Step1 next={next} uname={uname} checkUname={checkUname} saveUname={saveUname} responseMsg={responseMsg} val={val}/> }

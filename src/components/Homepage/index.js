@@ -15,7 +15,7 @@ const LeftContainer = () => {
         <div className="hero">
             <section className="card">
                 <figure className="image is-4by3">
-                    <img src={process.env.PUBLIC_URL + "/images/homepage/first_image.jpg"} alt="WAH GWAAN" />
+                    <img src={process.env.PUBLIC_URL + "/images/homepage/first_image.jpg"} alt="WAAPP" />
                 </figure>
             </section>
 
@@ -79,7 +79,7 @@ const RightContainer = () => {
             <section className="section content">
                 <ul className="cloud-text">
                     <li>
-                        Search W@H GW@@N for People, Places, Things, Information, Data, Reports, Statistics, etc.
+                        Search WAAPP for People, Places, Things, Information, Data, Reports, Statistics, etc.
                     </li>
                     <br />
                     <li>
@@ -145,7 +145,7 @@ const Homepage = props => {
                     <div className="intro-div column no-padding is-one-third">
 
                         <div className="box section no-margin top-section">
-                            <h1 className="title"> W@H GW@@N </h1>
+                            <h1 className="title"> WAAPP </h1>
                             <h3 className="subtitle"> It’s <b>Absolute</b>, <b>Limitless</b>, made with <b>Love</b>. It’s Everything, it’s <b>A-L-L</b> you need in a Single Platform.  </h3>
                         </div>
 
@@ -163,13 +163,13 @@ const Homepage = props => {
                             <footer className="homepage-footer">
                                 <small> - What do we call an <b className="special-text">Attaché</b> ?</small> <br />
                                 <small> - View our <b className="special-text">Terms and Agreement</b>.</small> <br />
-                                <small> - Some profit proceeds of W@H GW@@N will go to the <b className="special-text">U.W.I.A Fund</b>.</small> <br />
+                                <small> - Some profit proceeds of WAAPP will go to the <b className="special-text">U.W.I.A Fund</b>.</small> <br />
                             </footer>
                         </div>
                     </div>
                     <div className="features-snippet-div column no-padding is-one-third">
                         <div className="box section no-margin top-section">
-                            <h3 className="subtitle"> Never miss a Beat, The Best Marketplace, Great Social Environment and, an Unlimited Experience. <b style={{color:"royalblue"}}>It's W@H GW@@N</b>.</h3>
+                            <h3 className="subtitle"> Never miss a Beat, The Best Marketplace, Great Social Environment and, an Unlimited Experience. <b style={{color:"royalblue"}}>It's WAAPP</b>.</h3>
                         </div>
                         <div className="left-container-copy">
                             <LeftContainer />

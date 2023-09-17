@@ -7,7 +7,7 @@ const Step1 = props => {
         <div>
             <h3 className="subtitle has-text-weight-bold"> Step 1 of 3 </h3>
 
-            <h3 className="subtitle"> Enter a preferred username to have a unique space on the gwaan. </h3>
+            <h3 className="subtitle"> Enter a preferred username to have a unique space on WAAPP. </h3>
 
             <input title="username" placeholder='Enter username' className={`input welcome-input ${ props.uname === "" ? 'not-unique' : ''} 
                 ${ props.uname !== "" &&  props.uname !== null ? 'is-unique' : ''}`} 
