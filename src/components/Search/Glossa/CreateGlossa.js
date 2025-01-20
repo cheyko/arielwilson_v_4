@@ -3,9 +3,10 @@ import withContext from "../../../withContext";
 import axios from "axios";
 import {Navigate} from "react-router-dom";
 import Slider from "react-slick";
+import { Link } from "react-router-dom";
 
 
-const CreatePedia = props => {
+const CreateGlossa = props => {
 
     var settings = {
         dots: false,
@@ -48,6 +49,7 @@ const CreatePedia = props => {
     const [medialist, setMedialist] = useState([]);
     const [temp_MediaUrls, setMediaUrls] = useState([]);
     const [mediatypes , setMediaTypes] = useState([]);
+    const [page_id, setPageID] = useState(null);
 
     useEffect( () => {
         checkRadio();
@@ -121,8 +123,6 @@ const CreatePedia = props => {
     }
 
     const addParagraph = () => {
-        console.log(temp1);
-        console.log(temp2);
         let temp = subContent;
         let t1 = medialist;
         let t2 = temp_MediaUrls;
@@ -132,7 +132,6 @@ const CreatePedia = props => {
             setSubTitles([...subtitles, "---"]);
         }
         setParagraphs([...paragraphs, aParagraph]);
-        console.log(subContent);
         if(subContent.length === 0 || medialist.length === 0){
             temp[0] = [...temp, aParagraph];
             t1[0] = [...t1, temp1]
@@ -256,22 +255,14 @@ const CreatePedia = props => {
         console.log(formData);
     }*/
 
-    const savePage = async (e) => {
+    const savePage = async (e, state) => {
         e.preventDefault();
         setResponseMsg("");
-        console.log(mainmedia);
-        console.log(captionlist);
-        console.log(medialist);
-        console.log(pmcaptionlist);
-        console.log(mediatypes);
-        console.log(subtitles);
-        console.log(subContent);
         let temp = subContent.map( (arr) => (
             arr.map( (para, idx) => (
                 idx === arr.length - 1 ? para + "*^&#*@#" : para + "*^&" 
             ))
         ))
-        console.log(temp);
         const user_id = props.context.user.id;
         if(intro || subContent.length > 0){
             const formData = new FormData();
@@ -293,6 +284,7 @@ const CreatePedia = props => {
             formData.set('has_image',false);
             formData.set('has_audio',false);
             formData.set('has_video',false);
+            formData.set('state',state);
 
             if (mainmedia){ 
                 formData.append('has_media',true);
@@ -331,7 +323,7 @@ const CreatePedia = props => {
             formData.set('pmcaptionlist',pmcaptionlist);
 
             
-            const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/preepedia`,formData, 
+            const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/glossa`,formData, 
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -342,10 +334,10 @@ const CreatePedia = props => {
                 (result) => {
                     if (result.status === 200){
                         setResponseMsg("Page was saved.");
-                        const page_id = result.data.page_id;
+                        setPageID(result.data.page_id);
                         //add listing to context 
                         //clearFunc();
-                        return <Navigate to={`/view-page/${page_id}`} />
+                        //return <Navigate to={`/view-page/${page_id}`} />
                     }else{
                         setResponseMsg("Page was not saved, please try again. Contact us for suppport if problem persist.");
                     }
@@ -391,10 +383,44 @@ const CreatePedia = props => {
         setPMCaptionList(temp.filter(t => {return t }));
     }
 
+    const [selected, setSelected] = useState(null);
+
+    const picked = (index) => {
+        if(selected === index){
+            setSelected(null);
+        }else{
+            setSelected(index);
+        }
+    }
+    
+    const moveUp = () => {
+        if(selected > 0){
+            let templist = mainmedia;
+            let x = mainmedia[selected];
+            let y = mainmedia[selected - 1];
+            templist[selected - 1] = x;
+            templist[selected] = y;
+            setMainMedia([...templist]);
+            setSelected(selected - 1);
+        }
+    }
+
+    const moveDown = () => {
+        if(selected < (mainmedia.length - 1)){
+            let templist = mainmedia;
+            let x = mainmedia[selected];
+            let y = mainmedia[selected + 1];
+            templist[selected + 1] = x;
+            templist[selected] = y;
+            setMainMedia([...templist]);
+            setSelected(selected + 1);
+        }
+    }
+
     return(
         <div className="box create-page">
             <div className="heading has-text-centered">
-                <h1>Create PreePedia Page</h1>
+                <h1>Create Glossa Page</h1>
             </div>
 
             <div className="body">
@@ -421,83 +447,49 @@ const CreatePedia = props => {
                                 {pagetype === "mini-biography" && 
                                     <span>
                                         <b className="subtitle">{bioname}</b>{""}
-                                        <p className='columns'>
+                                        <div className='columns'>
                                             <span className="column">Date of Birth : <small>{dob}</small></span> 
                                             <span className="column">Gender : <small>{gender}</small></span> 
-                                        </p>
+                                        </div>
                                         {bioInfo && <i className="fas fa-edit reaction-btn" onClick={e => { setShowBioInfo(false);e.preventDefault();}}>bio-info</i> }
                                     </span>
                                 }
                             </div>
                             <div className="mainmedia">
+                                <div className="columns is-multiline">
+                                    {mainmedia && mainmedia.map((photo,index) => 
+                                        <div className="column" key={index}>
+                                            <span> {index + 1} </span>
+                                            <br />
+                                            <img onClick={e => picked(index)} style={selected === index ? {border:"solid 3px blue"}:{border:"none"}} alt={`${index} of Event Uploads`} className="is-256x256" src={URL.createObjectURL(photo)} />
+                                            {selected === index &&
+                                                <div className="controls">
+                                                    <button onClick={e => moveUp()} type="button" className="mx-1 button is-info"><i className="fas fa-arrow-up"></i></button>
+                                                    <button onClick={e => moveDown()} type="button" className="mx-1 button is-info"><i className="fas fa-arrow-down"></i></button>
+                                                </div>
+                                            }
+                                        </div>
+                                    )}
+                                </div>
                                 <div className="upload-wrapper has-text-centered">
-                                    {mainmedia ? 
-                                        (
-                                        <>
-                                            <Slider {...settings}>
-                                                {mainmedia.map((aFile, index) => (
-                                                    <div key={index} className="slick-slide slide--has-caption">
-                                                        {aFile.type.split('/')[0] === "image" && 
-                                                        (
-                                                            <figure key={index} className="image">
-                                                                <p> <img className="slick-slide-image" src={temp_urls[index]} alt="upload" /></p>
-                                                                <figcaption className="figcaption">
-                                                                    {captionlist[index]}
-                                                                </figcaption>
-                                                            </figure>
-                                                            
-                                                        )}
-                                                        {aFile.type.split('/')[0] === "audio" && (
-                                                            <audio key={index} controls>
-                                                                <source src={temp_urls[index]} type={aFile.type}/>
-                                                                <figcaption className="figcaption">
-                                                                    {captionlist[index]}
-                                                                </figcaption>
-                                                            </audio>
-                                                        )}
-                                                        {aFile.type.split('/')[0] === "video" && (
-                                                            <video key={index} width="320" height="240" controls>
-                                                                <source src={temp_urls[index]} type={aFile.type}/>
-                                                                <figcaption className="figcaption">
-                                                                    {captionlist[index]}
-                                                                </figcaption>
-                                                            </video>
-                                                        )}
-                                                        {!addMainMedia &&
-                                                            <div className="input-box">
-                                                                <input onChange={e => handleCaption(e,index)} className="input" placeholder="Enter Caption for this media file" type="text" name="caption" />
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                    
-                                                ))}
-                                            </Slider>
-
-                                        </>
-                                        ):(
-                                            <span>{""}</span>
-                                        )
-                                    }
                                     {addMainMedia && <i className="fas fa-image reaction-btn" onClick={e => { setAddMainMedia(false);e.preventDefault();}}> Change Media and Caption</i> }
-                                    
                                 </div>
                             </div>
                             <div className="body">
-                                {intro !== "" && <p>{intro}{" "} {addIntro &&<i className="fas fa-edit reaction-btn" onClick={e => setAddIntro(false)}>introduction</i> }</p> }
+                                {intro !== "" && <div>{intro}{" "} {addIntro &&<i className="fas fa-edit reaction-btn" onClick={e => setAddIntro(false)}>introduction</i> }</div> }
                                 {(subtitles.length > 0 || subContent.length > 0 ) &&
                                     subtitles.map((aSub, index) => {
-                                        console.log(medialist);
                                         return(
-                                            <p key={index}>
-                                                <p className="field has-addons">
+                                            <div key={index}>
+                                                <div className="field has-addons">
                                                     <b className="article-subtitle">{aSub}</b>
                                                     {" "}&nbsp;&nbsp;<i className="fas fa-edit reaction-btn" onClick={e => { e.preventDefault();editSubtitle(e,index);}}> Edit {index+1}</i>
                                                     {" "}&nbsp;&nbsp;<i className="fas fa-times reaction-btn" onClick={e => {removeSubtitle(index);}}> Remove {index+1}</i>
-                                                </p>
-                                                <p className="article-subcontent">
+                                                </div>
+                                                <div className="article-subcontent">
                                                     {subContent.length > 0 ?
                                                     subContent[index].map((paragraph,idx) => (
-                                                        <p key={idx} className="article-paragraph columns">
+                                                        <div key={idx} className="article-paragraph columns">
                                                             <span className="column">
                                                             {paragraph}{" "}
                                                             <i className="fas fa-edit reaction-btn" onClick={e => {e.preventDefault();editParagraph(e,index,idx);}}>Edit P {idx+1}</i>
@@ -507,7 +499,7 @@ const CreatePedia = props => {
                                                                 {medialist[index] && medialist[index].length > 0 &&
                                                                 <Slider {...settings}>
                                                                     {medialist[index][idx].map((aFile, i) => (
-                                                                        <p key={i} className="slick-slide">
+                                                                        <div key={i} className="slick-slide">
                                                                             {aFile.type.split('/')[0] === "image" && 
                                                                             (
                                                                                 <figure key={i} className="image is-1by1">
@@ -538,19 +530,19 @@ const CreatePedia = props => {
                                                                                 <input onChange={e => handlePMCaption(e,index,idx)} className="input" placeholder="Enter Caption for this media file" type="text" name="pmcaption" />
                                                                             </span>
                                                                             
-                                                                        </p>
+                                                                        </div>
                                                                         
                                                                     ))}
                                                                 </Slider>
                                                                 }
                                                             </span>
-                                                        </p>
+                                                        </div>
                                                     )):(
                                                         <span></span>
                                                     )
                                                     }
-                                                </p>
-                                            </p> 
+                                                </div>
+                                            </div> 
                                         )
                                     })
                                 }
@@ -558,14 +550,29 @@ const CreatePedia = props => {
                         </div>
                     </div>
                 </article>
-                <form onSubmit={e => savePage(e)}>
+                <div>
+                    {page_id && 
+                        <Link className="preepedia-item" to={`/glossa/view-page/${page_id}`}>
+                            <div className="button is-info"> Visit Page</div>
+                        </Link>
+                    }
+                    <br/>
+                    <span>{responseMsg}</span>
+                </div>
+                <form onSubmit={e => savePage(e, "draft")}>
+                    <div className="field">
+                        <div className="control">
+                            <button type="submit" className="button is-link is-fullwidth">Draft Page</button>
+                        </div>
+                    </div>
+                </form>
+                <form onSubmit={e => savePage(e, "save")}>
                     <div className="field">
                         <div className="control">
                             <button type="submit" className="button is-primary is-fullwidth">Submit Page</button>
                         </div>
                     </div>
-                    <span>{responseMsg}</span>
-                    <br />
+                    
                     {addPT === false &&
                     <div className="field">
                         <div className="control">
@@ -827,7 +834,7 @@ const CreatePedia = props => {
                                             <small>Select Paragraph Media</small> {pmedia ? (<i style={{color:"green"}} className="fas fa-check-circle"></i>) : ("")}
                                             <br /> { !pmedia && <small> No files selected </small>}
                                         </label>
-                                        <input onChange={e => handleParagraphMedia(e)} name="temp1" single id="temp1" type="file" />           
+                                        <input onChange={e => handleParagraphMedia(e)} name="temp1" single="true" id="temp1" type="file" />           
                                     </div>
                                 </div>
                             </div>
@@ -839,4 +846,4 @@ const CreatePedia = props => {
         </div>
     )
 }
-export default withContext(CreatePedia);
+export default withContext(CreateGlossa);

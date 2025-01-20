@@ -341,8 +341,34 @@ def testing():
         return jsonify({"msg":"Testing"}), 200
     return jsonify({"msg":"There was an error somewhere."}), 404
 
-@app.route('/api/preepedia', methods=['POST', 'GET'])
-def preepedia():
+@app.route('/api/myglossa', methods=['POST'])
+def myglossa():
+    if request.method == 'POST':
+        user_id = request.json.get('user_id', None)
+        results = Preepedia.query.filter(Preepedia.drafter == user_id)
+        pages = []
+        upload_folder = app.config['UPLOAD_FOLDER'] + "glossa/"
+        for page in results:
+            prefix = "page" + str(page.page_id)
+            f = open(upload_folder + prefix + "/content.txt", "r")
+            if f.mode == "r":
+                contents = f.readlines()
+            if(contents[0].strip() == "*^&Intro*^&"):
+                intro = contents[2].strip()
+            else:
+                intro = ""
+            if page.pagetype == "mini-biography":
+                bioinfo = Biography.query.filter_by(page_id=page.page_id).first()
+                additional = {"bioname":bioinfo.bioname,"gender":bioinfo.gender,"dob":bioinfo.dob}
+            else:
+                additional = {}
+            pageObj = {"page_id":page.page_id,"drafter":page.drafter,"pagetype":page.pagetype,"section":page.section,"title":page.title,"intro":intro,"subtitles":page.subtitles,"additional":additional}
+            pages.append(pageObj)
+        return {"pages":pages}, 200
+    return jsonify({"msg":"There was an error somewhere."}), 400
+
+@app.route('/api/glossa', methods=['POST', 'GET'])
+def glossa():
     if request.method == 'POST':
         result = request.form
         if result["pagetype"] == "mini-biography":
@@ -357,20 +383,21 @@ def preepedia():
             pmcaptionlist = request.form["pmcaptionlist"].split(',')
         subtitles = request.form["subtitles"].split(',')
         subcontent = request.form["subContent"].split("#*@#")
+        
         #print(subcontent)
         subcontent.pop((len(subcontent) - 1))
         mainmedia = request.files.getlist("mainmedia")
         no_of_media = (len(mainmedia))
         mediatypes = request.form["mediatypes"].split(',')
         print(no_of_media)
-        newPage = Preepedia(drafter=result["user_id"],pagetype=result["pagetype"],section=result["section"],title=title, intro="this is a test", subtitles=subtitles, subcontent=subtitles, has_mainmedia=has_mainmedia, no_of_media=no_of_media,mediatypes=mediatypes, captionlist=captionlist, has_medialist=has_medialist, pmcaptionlist=pmcaptionlist)
+        newPage = Preepedia(drafter=result["user_id"],pagetype=result["pagetype"],section=result["section"],title=title, intro="", subtitles=subtitles, subcontent=subtitles, has_mainmedia=has_mainmedia, no_of_media=no_of_media,mediatypes=mediatypes, captionlist=captionlist, has_medialist=has_medialist, pmcaptionlist=pmcaptionlist,state=result["state"])
         db.session.add(newPage)
         db.session.flush()
         if result["pagetype"] == "mini-biography":
             newBio = Biography(page_id=newPage.page_id,bioname=result["bioname"],dob=result["dob"],gender=result["gender"])
             db.session.add(newBio)
         #upload_folder = "/images/preepedia/"
-        upload_folder = app.config['UPLOAD_FOLDER']
+        upload_folder = app.config['UPLOAD_FOLDER'] + "glossa/"
         prefix = "page" + str(newPage.page_id)
         os.makedirs(upload_folder + prefix)
         if result["has_media"] == "true":
@@ -408,16 +435,16 @@ def preepedia():
         db.session.commit()
         return jsonify({"msg": "page added successfully", "page_id":newPage.page_id, "numOfPics":1}), 200
     elif request.method == 'GET':
-        results = Preepedia.query.all()
+        results = Preepedia.query.filter(Preepedia.state == "save")
         pages = []
-        upload_folder = app.config['UPLOAD_FOLDER'] + "preepedia/"
+        upload_folder = app.config['UPLOAD_FOLDER'] + "glossa/"
         for page in results:
             prefix = "page" + str(page.page_id)
             f = open(upload_folder + prefix + "/content.txt", "r")
             if f.mode == "r":
                 contents = f.readlines()
             if(contents[0].strip() == "*^&Intro*^&"):
-                intro = contents[1].strip()
+                intro = contents[2].strip()
             else:
                 intro = ""
             if page.pagetype == "mini-biography":
@@ -442,24 +469,22 @@ def get_page():
                 additional = {"bioname":bioinfo.bioname,"gender":bioinfo.gender,"dob":bioinfo.dob}
             else:
                 additional = {}
-            upload_folder = "/images/preepedia/"
+            upload_folder = app.config['UPLOAD_FOLDER'] + "glossa/"
             prefix = "page" + str(page_id)
             paragraphs = []
             f = open(upload_folder + prefix + "/content.txt", "r")
             if f.mode == "r":
                 contents = f.readlines()
-            if(contents[0].strip() == "*^&Intro*^&"):
-                intro = contents[1].strip()
-            else:
-                intro = ""
             count = 0
+            intro = ''
             for line in contents:
+                if line.strip() != "*^&SUBCONTENT*^&" and line.strip() != "*^&Intro*^&" and line.strip() != "" and count == 0:
+                    intro = intro + " " + (line.strip())
                 if line.strip() == "*^&SUBCONTENT*^&":
                     count += 1
                     paragraphs.append([])
-                if line.strip() != "*^&SUBCONTENT*^&" and line.strip() != "*^&Intro*^&" and count > 0:
+                if line.strip() != "*^&SUBCONTENT*^&" and line.strip() != "*^&Intro*^&" and line.strip() != "" and count > 0:
                     paragraphs[count - 1].append(line.strip())
-            print(len(paragraphs))
             pageObj = {"page_id":page_details.page_id,"drafter":page_details.drafter,"pagetype":page_details.pagetype,"section":page_details.section,"title":page_details.title,"intro":intro,"subtitles":page_details.subtitles,"subcontent":paragraphs,"has_mainmedia":page_details.has_mainmedia,"no_of_media":page_details.no_of_media, "mediatypes":page_details.mediatypes,"captionlist":page_details.captionlist,"additional":additional}
             return {"page":pageObj} , 200
         else:

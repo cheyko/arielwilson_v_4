@@ -252,8 +252,9 @@ class Preepedia(db.Model):
     has_medialist = db.Column(db.Boolean)
     pmcaptionlist = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
     views = db.Column(db.Integer, default=0)
+    state = db.Column(db.String(255))
 
-    def __init__(self, drafter, pagetype, section, title, intro, subtitles, subcontent, has_mainmedia, no_of_media, mediatypes, captionlist, has_medialist, pmcaptionlist):
+    def __init__(self, drafter, pagetype, section, title, intro, subtitles, subcontent, has_mainmedia, no_of_media, mediatypes, captionlist, has_medialist, pmcaptionlist, state):
         self.drafter = drafter
         self.pagetype = pagetype
         self.section = section
@@ -267,6 +268,7 @@ class Preepedia(db.Model):
         self.captionlist = captionlist
         self.has_medialist = has_medialist
         self.pmcaptionlist = pmcaptionlist
+        self.state = state
     
     def __repr__(self):
         return '<Preepedia %d>' % (self.page_id)

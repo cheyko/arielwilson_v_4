@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import withContext from "../../../withContext";
 import {useNavigate, Link} from "react-router-dom";
 import Slider from "react-slick";
+import { useParams } from "react-router-dom";
 
 const ViewPage = props => {
 
@@ -17,7 +18,8 @@ const ViewPage = props => {
 
     let navigate = useNavigate();
 
-    const page_id = props.match.params.id;
+    let {id} = useParams();
+    const page_id = id;
     const [pageview, setPageView] = useState(null);
     const [mainmedia, setMainmedia] = useState([]);
     const [captionlist, setCaptionlist] = useState([]);
@@ -47,11 +49,6 @@ const ViewPage = props => {
         document.getElementById(e.target.id).style.display = "none";
     }
 
-    console.log(pageview);
-    console.log(mainmedia);
-    console.log(captionlist);
-    console.log(mediatypes);
-
     return (
         <div className="hero">
             <div className="hero-body">
@@ -72,13 +69,13 @@ const ViewPage = props => {
                                     <div className="dropdown-menu" id="dropdown-menu3" role="menu">
                                         <div className="dropdown-content" style={{padding:0}}>
                                             <span className="button dropdown-item">
-                                                Edit This Page   
+                                                <Link to={`/glossa/edit-page/${page_id}`}> Edit This Page  </Link>
                                             </span>
                                             <span className="button dropdown-item">
-                                                Contribute This Page
+                                                Contribute To This Page
                                             </span>
                                             <span className="button dropdown-item">
-                                                Dispute This Page
+                                                Query Information
                                             </span>
                                             <span className="button dropdown-item">
                                                 Report This Page
@@ -93,7 +90,7 @@ const ViewPage = props => {
                             
                             <div className="media is-fullwidth">
                                 <div className="content is-fullwidth">
-                                    <Link to="/preepedia"><b className="title reaction-btn subpage-title"> <i className="fas fa-book"></i> Preepedia </b></Link>
+                                    <Link to="/glossa"><b className="title reaction-btn subpage-title"> <i className="fas fa-book"></i> GLOSSA </b></Link>
                                 </div>
                             </div>
                         </div>
@@ -138,7 +135,7 @@ const ViewPage = props => {
                                         }
                                     </div>
                                     <div className="mainmedia">
-                                        <div className="upload-wrapper has-text-centered">
+                                        <div className="slick-wrapper has-text-centered">
                                             {pageview.has_mainmedia ? 
                                                 (
                                                 <>
@@ -148,7 +145,7 @@ const ViewPage = props => {
                                                                 {mediatypes[index] === "image" && 
                                                                 (
                                                                     <figure key={index} className="image is-1by1">
-                                                                        <p> <img className="slick-slide-image" alt="media" src={`${process.env.PUBLIC_URL}/preepedia/page${pageview.page_id}/main${index}`} /></p>
+                                                                        <p> <img className="slick-slide-image" alt="media" src={`${process.env.PUBLIC_URL}/images/glossa/page${pageview.page_id}/main${index}`} /></p>
                                                                         <figcaption className="figcaption">
                                                                             {captionlist[index]}
                                                                         </figcaption>
@@ -157,7 +154,7 @@ const ViewPage = props => {
                                                                 )}
                                                                 {mediatypes[index] === "audio" && (
                                                                     <audio key={index} controls>
-                                                                        <source src={`${process.env.PUBLIC_URL}/preepedia/page${pageview.page_id}/main${index}`} type="audio/mp3"/>
+                                                                        <source src={`${process.env.PUBLIC_URL}/images/glossa/page${pageview.page_id}/main${index}`} type="audio/mp3"/>
                                                                         <figcaption className="figcaption">
                                                                             {captionlist[index]}
                                                                         </figcaption>
@@ -165,7 +162,7 @@ const ViewPage = props => {
                                                                 )}
                                                                 {mediatypes[index] === "video" && (
                                                                     <video key={index} width="320" height="240" controls>
-                                                                        <source src={`${process.env.PUBLIC_URL}/preepedia/page${pageview.page_id}/main${index}`} type="video/mp4"/>
+                                                                        <source src={`${process.env.PUBLIC_URL}/images/glossa/page${pageview.page_id}/main${index}`} type="video/mp4"/>
                                                                         <figcaption className="figcaption">
                                                                             {captionlist[index]}
                                                                         </figcaption>
@@ -211,8 +208,7 @@ const ViewPage = props => {
                                                         <div className="article-subcontent">
                                                             {pageview.subcontent.length > 0 ?
                                                                 pageview.subcontent[index].map((paragraph,idx) => {
-                                                                    count += 1;
-                                                                    const url = `${process.env.PUBLIC_URL}/preepedia/page${pageview.page_id}/paragraph${count - 1}`
+                                                                    const url = `${process.env.PUBLIC_URL}/images/glossa/page${pageview.page_id}/paragraph${index}`
                                                                 return(
                                                                     <div key={idx} className="article-paragraph columns">
                                                                         <span className="column">

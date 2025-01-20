@@ -49,7 +49,7 @@ import ViewItem from './components/Shops/BickleCourt/ViewItem';
 import ViewService from './components/Shops/Services/ViewService';
 import Groups from './components/Groups';
 import ViewGroup from './components/Groups/ViewGroup';
-import Preepedia from './components/Search/Glossa';
+import Glossa from './components/Search/Glossa';
 import ViewPage from './components/Search/Glossa/ViewPage';
 import ViewMediaItem from './components/Audios/ViewMediaItem';
 import ViewTrend from './components/Images/ViewTrend';
@@ -74,6 +74,7 @@ import ShopCategories from './components/Shops/ShopCategories';
 import AddPF from './components/Shops/PropFinder/AddPF';
 import AddAccomadate from './components/Shops/PropFinder/Accomadate/AddAccomadate';
 import ViewAccomadation from './components/Shops/PropFinder/Accomadate/ViewAccomadation';
+import EditPage from './components/Search/Glossa/EditPage';
 
 const sign = require('jwt-encode');
 const secret = 'some$3cretKey';
@@ -378,8 +379,8 @@ export default class App extends Component {
         case 'portfolios':
           this.setState({"portfolios":alist});
           break;
-        case 'preepedia':
-          this.setState({"preepedia":alist});
+        case 'glossa':
+          this.setState({"glossa":alist});
           break;
         case 'crawllist':
           this.setState({"crawllist":alist});
@@ -722,9 +723,11 @@ export default class App extends Component {
                 <Route path="/accomadate-add" element={<AddAccomadate />} />
                 <Route path="/accomadation/:id" element={<ViewAccomadation />} />
                 <Route path="/item-view/:id" element={<ViewItem />} />
-                <Route path="/preepedia" element={<Preepedia />} />
-                <Route path="/preepedia/view-page/:id/" element={<ViewPage />} />
+                <Route path="/glossa" element={<Glossa />} />
+                <Route path="/glossa/view-page/:id/" element={<ViewPage />} />
+                <Route path="/glossa/edit-page/:id/" element={<EditPage />} />
                 <Route path="/specials" element={<Specials />} />
+                {/*<Route path="/casino" element={<Casino />} />*/}
                 <Route path="/talkie" element={<Talkie />} />
                 <Route path="/live" element={<Live />} />
                 <Route path="/add-event" element={<HostEvent />} />

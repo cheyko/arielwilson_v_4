@@ -73,10 +73,45 @@ const Specials = props => {
                         {view === "menu" &&
                             <Menu view={view} setView={setView} handleChange={handleChange} doSearch={doSearch} />
                         }
+                        {view === "syllabus" &&
+                            <div className="hero-body">
+                                <br/>
+                                <h1>Study Time</h1>
+                                {flashMsg}
+                            </div>
+                        }
+                        {view === "gamheart" &&
+                            <div className="hero-body">
+                                <br/>
+                                <h1>GamHeart</h1>
+                                {flashMsg}
+                            </div>
+                        }
+                        {view === "fortune1" &&
+                            <div className="hero-body">
+                                <br/>
+                                <h1>U.F.O's Fortune-1</h1>
+                                {flashMsg}
+                            </div>
+                        }
                         {view === "sentiments" &&
                             <div className="hero-body">
                                 <br/>
                                 <h1>Sentiments</h1>
+                                {flashMsg}
+                            </div>
+                        }
+                        {view === "befitting" &&
+                            <div className="hero-body">
+                                <br/>
+                                <h1>BeFitting</h1>
+                                {flashMsg}
+                            </div>
+                        }
+                        {view === "pill" &&
+                            <div className="hero-body">
+                                <br/>
+                                <h1>Peace.In.Living.Life</h1>
                                 {flashMsg}
                             </div>
                         }

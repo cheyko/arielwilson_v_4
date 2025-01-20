@@ -122,7 +122,7 @@ const Navbar = props => {
                                     <div className={selection === "message" ? "is-active" : "is-not-active"}> 
                                         <FontAwesomeIcon icon={faPaperPlane} size="1x" /> 
                                             {" "}<span className="badge-length">0</span><br/>
-                                        <b> World <br/> Delicates</b> 
+                                        <b> W@@PP</b> 
 
                                     </div>
                                         

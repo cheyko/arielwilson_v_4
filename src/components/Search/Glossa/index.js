@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import withContext from "../../../withContext";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
-import CreatePedia from "./CreateGlossa";
+import CreateGlossa from "./CreateGlossa";
 import PagesList from "./PagesList";
+import MyPages from "./MyPages";
 
-const Preepedia = props => {
+const Glossa = props => {
 
     const [view, setView] = useState("home")
     var placeholders = [
@@ -54,6 +55,9 @@ const Preepedia = props => {
                                             <span className="button dropdown-item" onClick={e => setView("create")}>
                                                 Create Page
                                             </span>
+                                            <span className="button dropdown-item" onClick={e => setView("mypages")}>
+                                                My Glossa
+                                            </span>
                                             <span className="button dropdown-item" onClick={e => setView("resource")}>
                                                 Add Resource 
                                             </span>
@@ -74,7 +78,7 @@ const Preepedia = props => {
                             {view === "home" && 
                                 <div>
                                     <span>
-                                        Browse a vast set of information; Read Preepedia Pages to aquire
+                                        Browse a vast set of information; Read Glossa Pages to aquire
                                         knowledge in various fields of life.
                                     </span>
                                     <div className="card-image">
@@ -92,7 +96,7 @@ const Preepedia = props => {
                                     <div className="box">
                                         <div className="field has-addons">
                                             <div className="control has-icons-right is-fullwidth">
-                                                <input className="input" placeholder="Search Preepedia" type="text" name="checkprp" />
+                                                <input className="input" placeholder="Search Glossa" type="text" name="checkprp" />
                                                 <span className="icon is-medium is-right">
                                                     <i className="fas fa-search"></i>
                                                 </span>
@@ -122,7 +126,13 @@ const Preepedia = props => {
                         {view === "create" &&
                             <div className="container">
                                 <br />
-                                <CreatePedia />
+                                <CreateGlossa />
+                            </div>
+                        }
+                        {view === "mypages" &&
+                            <div className="container">
+                                <br />
+                                <MyPages />
                             </div>
                         }
                         {view === "pageslist" &&
@@ -136,4 +146,4 @@ const Preepedia = props => {
         </div>
     )
 }
-export default withContext(Preepedia);
+export default withContext(Glossa);

@@ -30,7 +30,7 @@ const PageItem = props => {
             (response) => {
                 if (response.status === 200){
                     if (response.data.has_mainmedia === true){
-                        setImgView(process.env.PUBLIC_URL + "/preepedia/page" + page_id + "/main0");
+                        setImgView(process.env.PUBLIC_URL + "images/glossa/page" + page_id + "/main0");
                     }else{
                         setImgView(process.env.PUBLIC_URL + "/group/display/default.jpeg");
                     }
@@ -48,7 +48,7 @@ const PageItem = props => {
         <>
             <div className="box">
                 <div className="content" style={{padding:"0.5rem"}}>
-                    <Link className="preepedia-item" to={`/preepedia/view-page/${page.page_id}`}>
+                    <Link className="preepedia-item" to={`/glossa/view-page/${page.page_id}`}>
                         <div className="media">
                             <div className="media-left">
                                 <figure className="display-pic-small image is-64x64">

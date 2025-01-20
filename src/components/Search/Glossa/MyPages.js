@@ -3,7 +3,7 @@ import withContext from "../../../withContext";
 import axios from "axios";
 import PageItem from "./PageItem";
 
-const PagesList = props => {
+const MyPages = props => {
 
     const [loadlist, setLoadList] = useState(null);
     const [viewlist, setViewList] = useState(null);
@@ -17,13 +17,13 @@ const PagesList = props => {
     useEffect(() => {
         window.scrollTo(0, 0);
         if (viewlist === null){
-            getAllPages();
+            getMyPages();
         }
         filterList();
 
     }, [title, section, pagetype]);
 
-    const getAllPages = () => {
+    /*const getAllPages = () => {
         const result = axios.get(`${process.env.REACT_APP_PROXY}/api/glossa`).then(
             (result) => {
                 if (result.status !== 200){
@@ -34,6 +34,20 @@ const PagesList = props => {
                 }
             }
         )
+    }*/
+
+    const getMyPages = () => {
+        const user_id = props.context.user.id;
+        const result = axios.post(`${process.env.REACT_APP_PROXY}/api/myglossa`,{user_id}).then(
+            (result) => {
+                if (result.status !== 200){
+                    throw new Error('List of Followings were not sent from server.');
+                }else{
+                    setLoadList(result.data.pages);
+                    setViewList(result.data.pages);
+                }
+            }
+        );
     }
 
     const filterList = () => {
@@ -52,7 +66,7 @@ const PagesList = props => {
         setFilter(false);
     }
 
-    return (
+    return(
         <div className="hero">
             <div className="has-text-centered">
                 <br />
@@ -165,4 +179,4 @@ const PagesList = props => {
         </div>
     )
 }
-export default withContext(PagesList);
+export default withContext(MyPages);

@@ -59,7 +59,7 @@ const Menu = props => {
                 </div>
                
                     <div className="column is-full-mobile is-half-tablet is-one-third-desktop">
-                        <div className="box">
+                        <div className="box reaction-btn" onClick={e => props.setView("gameheart")}>
                             <div className="card-image">
                                 <figure className="image is-5by3">
                                     <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder"/>
@@ -80,26 +80,26 @@ const Menu = props => {
 
                     </div>
                     <div className="column is-full-mobile is-half-tablet is-one-third-desktop">
-                        <Link to="/casino">
-                            <div className="box reaction-btn">
-                                <div className="card-image">
-                                    <figure className="image is-5by3">
-                                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder"/>
-                                    </figure>
-                                </div>
-                                <div className="card-content">
-                                    <div className="content">
-                                        <b>
-                                            <i className="fas fa-slot-machine"></i> Fortune-1
-                                        </b>
-                                        <p>
-                                            Your spot for Online winnings.
-                                        </p>
-                                    </div>
-                                </div>
-
+                        
+                        <div className="box reaction-btn" onClick={e => props.setView("fortune1")}>
+                            <div className="card-image">
+                                <figure className="image is-5by3">
+                                    <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder"/>
+                                </figure>
                             </div>
-                        </Link>
+                            <div className="card-content">
+                                <div className="content">
+                                    <b>
+                                        <i className="fas fa-slot-machine"></i> Fortune-1
+                                    </b>
+                                    <p>
+                                        Your spot for Online winnings.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        
 
                     </div>
                     <div className="column is-full-mobile is-half-tablet is-one-third-desktop">

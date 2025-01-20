@@ -32,7 +32,7 @@ const Menu = props => {
 
                     </div>
                     <div className="column is-full-mobile is-half-tablet is-one-third-desktop">
-                        <Link to="/preepedia">
+                        <Link to="/glossa">
                             <div className="box reaction-btn">
                                 <div className="card-image">
                                     <figure className="image is-5by3">

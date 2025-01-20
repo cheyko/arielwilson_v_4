@@ -34,6 +34,8 @@ h1 {
     cursor: pointer;
 }
 
+
+/** Review role of this code **/
 .upload-wrapper{
     width: max-content !important;
     margin: 0 auto;
