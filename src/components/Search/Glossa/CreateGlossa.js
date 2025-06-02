@@ -4,7 +4,11 @@ import axios from "axios";
 import {Navigate} from "react-router-dom";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
-
+ /* Glossa is an online encyclopedia that allows users to upload information on evertything that has a meaning, purpose or simple existence. 
+ Glossa Pages can have several contributors with the main being the drafter (uploader). Pages also has disputors; users that challenge certain facts 
+ posted on respective pages. Glossa uses a file storage mechanism for Media files, a text file for content on respective topics along with database storage for the
+ main information being portrayed about different topics. How is this differenet ? For starters, Glossa is an open book, integrity is evident with zero anonymity in that 
+ everyone can see who is saying what about what. Challenge information by making a _ _ _ _ and this will start a process which involves a counter _ _ _ _*/
 
 const CreateGlossa = props => {
 
@@ -15,33 +19,36 @@ const CreateGlossa = props => {
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: true,
-    };
+    }; // Settings used to control modal
 
-    const [responseMsg, setResponseMsg] = useState("");
-    const [pagetype, setPageType] = useState("normal");
-    const [addPT, setAddPT] = useState(false);
-    const [section, setSection] = useState("");
-    const [addSection, setAddSection] = useState(false);
-    const [title, setTitle] = useState("");
-    const [addTitle, setAddTitle] = useState(false);
-    const [intro, setIntro] = useState("");
-    const [addIntro, setAddIntro] = useState(false);
-    const [aSubtitle, setOneSubTitle] = useState("");
-    const [aParagraph, setOneParagraph] = useState("");
-    const [subtitles, setSubTitles] = useState([]);
-    const [paragraphs, setParagraphs] = useState([]);
-    const [subContent, setSubContent] = useState([]);
-    const [chosen, setChosen] = useState(null)
-    const [showSaveST, setShowSaveST] = useState(false);
-    const [showSaveP, setShowSaveP] = useState(false);
-    const [bioname, setBioName] = useState("");
-    const [dob, setDOB] = useState("");
-    const [gender, setGender] = useState("");
-    const [bioInfo, setShowBioInfo] = useState(false);
-    const [mainmedia, setMainMedia] = useState(null);
-    const [addMainMedia, setAddMainMedia] = useState(false);
-    const [captionlist, setCaptionList] = useState([]);
-    const [pmcaptionlist, setPMCaptionList] = useState([]);
+    const [responseMsg, setResponseMsg] = useState(""); // Message used to give users feedback on their attempts to upload glossa pages
+    const [pagetype, setPageType] = useState("normal"); // type of glossa page
+    const [section, setSection] = useState(""); // section which glossa page falls under
+    const [title, setTitle] = useState(""); //title of the current glossa page
+    const [intro, setIntro] = useState(""); //introduction to the information being presented on the glossa page ; introductions will have other purposes such as ....... t
+    const [aSubtitle, setOneSubTitle] = useState(""); //subtitles that are used in the glossa page
+    const [aParagraph, setOneParagraph] = useState(""); //matching paragraphs to the respective glossa pages 
+    const [subtitles, setSubTitles] = useState([]); //list of subtitles that are sent to the api for storage in the text file
+    const [paragraphs, setParagraphs] = useState([]); //list of paragraphs that are sent to the api for storage in the text file
+    const [subContent, setSubContent] = useState([]); //??
+    const [chosen, setChosen] = useState(null) //??
+
+    const [addPT, setAddPT] = useState(false); //button press to re-add the page type; this button is really used to return page type option to display
+    const [addSection, setAddSection] = useState(false); //button pressed to re-add the section radio buttons to display for a possible change in choice 
+    const [addTitle, setAddTitle] = useState(false); //button pressed to remove the title input from display
+    const [addIntro, setAddIntro] = useState(false); //button pressed to remove the intro input textarea from display
+
+    const [showSaveST, setShowSaveST] = useState(false); //
+    const [showSaveP, setShowSaveP] = useState(false); //
+    const [bioname, setBioName] = useState(""); // this option is used for the biography glossa pages; essentially glossa pages about people.
+    const [dob, setDOB] = useState(""); // this option is used for the biography glossa pages; essentially glossa pages about people.
+    const [gender, setGender] = useState(""); // this option is used for the biography glossa pages; essentially glossa pages about people.
+    const [bioInfo, setShowBioInfo] = useState(false); // this option is used for the biography glossa pages; essentially glossa pages about people.
+    
+    const [mainmedia, setMainMedia] = useState(null); //this is the main media option for glossa pages; these are sent to file storage
+    const [addMainMedia, setAddMainMedia] = useState(false); //button pressed to remove the main media upload input from display; essentially just moving it out of the way
+    const [captionlist, setCaptionList] = useState([]); //the is the list of captions sent to the api for upload to the text file for storage 
+    const [pmcaptionlist, setPMCaptionList] = useState([]); 
     const [temp_urls, setUrls] = useState([]);
     const [pmedia, setPMedia] = useState(false);
     const [temp1, setTemp1] = useState([]);
@@ -70,7 +77,8 @@ const CreateGlossa = props => {
                 break;
             }
         }
-    }
+    }  //function used to select page type.
+
     const checkNextRadio = () => {
         var radios = document.getElementsByName("section");
         for (var j = 0; j < radios.length; j++) {
@@ -79,9 +87,10 @@ const CreateGlossa = props => {
                 break;
             }
         }
-    }
+    } //function used to select section type.
 
     const addSubtitle = () => {
+        
         if (aSubtitle !== ""){
             setSubTitles([...subtitles, aSubtitle]);
             setOneSubTitle("");
@@ -91,14 +100,14 @@ const CreateGlossa = props => {
             setPMCaptionList([...pmcaptionlist,[]]);
         }
 
-    }
+    } // function used to add a subtitle
 
     const editSubtitle = (e,index) => {
         setOneSubTitle(subtitles[index]);
         setChosen(index);
         setShowSaveST(true);
         e.preventDefault();
-    }
+    } //function used to edit a subtitle
 
     const saveSubtitle = (index) => {
         let temp = subtitles;
@@ -106,7 +115,7 @@ const CreateGlossa = props => {
         setSubTitles(temp);
         setOneSubTitle("");
         setShowSaveST(false);
-    }
+    } //function used to add a subtitle to the list of subtitles
 
     const removeSubtitle = (index) => {
         let temp = subtitles;
@@ -120,7 +129,7 @@ const CreateGlossa = props => {
         }
         setSubContent(tempContent);
         setSubTitles(temp.filter((a)=> {return a}));
-    }
+    } //function used to remove a subtitle
 
     const addParagraph = () => {
         let temp = subContent;
@@ -138,10 +147,10 @@ const CreateGlossa = props => {
             t2[0] = [...t2, temp2]
             t3[0] = [...t3,[]]
         }else{
-            console.log(temp);
-            console.log(t1);
-            console.log(t2);
-            console.log(medialist);
+            //console.log(temp);
+            //console.log(t1);
+            //console.log(t2);
+            //console.log(medialist);
             temp[subContent.length - 1] = [...temp[subContent.length - 1], aParagraph];
             t1[medialist.length - 1] = [...t1[medialist.length - 1], temp1];
             t2[temp_MediaUrls.length - 1] = [...t2[temp_MediaUrls.length - 1], temp2];
@@ -158,28 +167,28 @@ const CreateGlossa = props => {
         setTemp1([]);
         setTemp2([]);
 
-    }
+    } //function used to add a paragraph
 
     const editParagraph = (e,x,y) => {
         setOneParagraph(subContent[x][y])
         setChosen([x,y]);
         setShowSaveP(true);
         e.preventDefault();
-    }
+    } //function used to edit a paragraph
 
     const saveParagraph = (chosen) => {
         var x = chosen[0];
         var y = chosen[1];
         setOneParagraph("");
         setShowSaveP(false);
-    }
+    } //function used to save a paragraph
 
     const removeParagraph = (index,idx) => {
         let temp = subContent;
         let tempContent = subContent[index].filter((aSub,i) => {return i !== idx});
         temp[index] = tempContent;
         setSubContent(temp.filter((aSub,i)=> {return aSub}));
-    }
+    } //function used to remove a paragraph
 
     const handleChange = (e) => {
         switch(e.target.name){
@@ -208,7 +217,7 @@ const CreateGlossa = props => {
                 break;
         }
         return true;
-    }
+    } // function used to handle the change for different input options.
 
     /*const testing = async(e) => {
         e.preventDefault();
@@ -258,13 +267,109 @@ const CreateGlossa = props => {
     const savePage = async (e, state) => {
         e.preventDefault();
         setResponseMsg("");
+        
+        if (subtitles.length !== subContent.length || subContent.some(content => content.length === 0)) {
+            setResponseMsg("Each subtitle requires a matching subcontent.");
+            return false;
+        }
+        
+        let temp = subContent.map(arr => (
+            arr.map((para, idx) => (
+                idx === arr.length - 1 ? para + "*^&#*@#" : para + "*^&"
+            ))
+        ));
+        
+        const user_id = props.context.user.id;
+        const formData = new FormData();
+        formData.append('user_id', user_id);
+        formData.append('pagetype', pagetype);
+        formData.append('section', section);
+        
+        if (pagetype === "mini-biography") {
+            formData.append('bioname', bioname);
+            formData.append('dob', dob);
+            formData.append('gender', gender);
+        } else {
+            formData.append('title', title);
+        }
+        
+        formData.append('intro', intro);
+        formData.append('subtitles', subtitles.join(","));
+        formData.append('subContent', temp.join("#*@#"));
+        
+        formData.set('has_image', false);
+        formData.set('has_audio', false);
+        formData.set('has_video', false);
+        formData.set('state', state);
+        
+        if (mainmedia) { 
+            formData.append('has_media', true);
+            formData.append('captionlist', captionlist);
+            formData.append('mediatypes', mediatypes);
+            mainmedia.forEach((aFile, index) => {
+                formData.append('mainmedia', aFile);
+                switch(aFile.type.split('/')[0]) {
+                    case 'image':
+                        formData.set('has_image', true);
+                        break;
+                    case 'audio':
+                        formData.set('has_audio', true);
+                        break;
+                    case 'video':
+                        formData.set('has_video', true);
+                        break;
+                    default:
+                        break;
+                }
+            });
+        } else {
+            formData.append('has_media', false);
+        }
+        
+        medialist.forEach(arr => {
+            arr.forEach((aFile, index) => {
+                formData.append('medialist', aFile[0] ? aFile[0] : new File(["empty"], "empty", {type: "text/plain"}));
+            });
+        });
+        
+        formData.set('pmcaptionlist', pmcaptionlist);
+        
+        try {
+            const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/glossa`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+                maxContentLength: 100000000,
+                maxBodyLength: 1000000000
+            });
+            
+            if (result.status === 200) {
+                setResponseMsg("Page was saved.");
+                setPageID(result.data.page_id);
+            } else {
+                setResponseMsg("Page was not saved, please try again. Contact us for support if the problem persists.");
+            }
+        } catch (error) {
+            setResponseMsg("Error saving the page.");
+        }
+        return true;
+    };
+
+    /*
+    const savePage = async (e, state) => {
+        e.preventDefault();
+        setResponseMsg("");
         let temp = subContent.map( (arr) => (
             arr.map( (para, idx) => (
                 idx === arr.length - 1 ? para + "*^&#*@#" : para + "*^&" 
             ))
         ))
         const user_id = props.context.user.id;
-        if(intro || subContent.length > 0){
+        console.log("This is the sub content = " + subContent);
+        console.log("This is the sub title = " + subtitles);
+        if(subContent.length !== subtitles.length){ // temporary fix for now
+            setResponseMsg("Each subtitle requires matching subcontent for upload.");
+            return false;
+        }
+        else if(intro || subContent.length > 0){
             const formData = new FormData();
             formData.append('user_id',user_id);
             formData.append('pagetype',pagetype);
@@ -322,7 +427,6 @@ const CreateGlossa = props => {
             });
             formData.set('pmcaptionlist',pmcaptionlist);
 
-            
             const result = await axios.post(`${process.env.REACT_APP_PROXY}/api/glossa`,formData, 
                 {
                     headers: {
@@ -349,8 +453,8 @@ const CreateGlossa = props => {
             setResponseMsg("Not enough information on this page.");
             return false;
         }
-    }
-
+    } // function used to send page info to the api for storing the respective page options.
+    */
     const handleMainMedia = e => {
         setUrls(Array.from(e.target.files).map(f => URL.createObjectURL(f) ));
         setMainMedia(Array.from(e.target.files));
@@ -359,7 +463,7 @@ const CreateGlossa = props => {
             temp = [...temp, file.type.split('/')[0]]
         });
         setMediaTypes(temp);
-    }
+    } // function used to handle main media saving.
 
     const handleParagraphMedia = e => {
         let urls = Array.from(e.target.files).map(f => URL.createObjectURL(f));
@@ -368,14 +472,14 @@ const CreateGlossa = props => {
         setTemp2(urls);
         setPMedia(true);
 
-    }
+    } // function used to save the respective paragraph media(s)
 
     const handleCaption = (e,index) => {
         let temp = captionlist;
         temp[index] = e.target.value;
         setCaptionList(temp.filter(t => {return t }));
         console.log(captionlist);
-    }
+    } // function used to save the respective captions for the respective paragraph media(s)
 
     const handlePMCaption = (e,index,idx) => {
         let temp = pmcaptionlist;
@@ -403,7 +507,7 @@ const CreateGlossa = props => {
             setMainMedia([...templist]);
             setSelected(selected - 1);
         }
-    }
+    } // function used to shuffle the uploaded main media content 
 
     const moveDown = () => {
         if(selected < (mainmedia.length - 1)){
@@ -415,7 +519,7 @@ const CreateGlossa = props => {
             setMainMedia([...templist]);
             setSelected(selected + 1);
         }
-    }
+    } // function used to shuffle the uploaded main media content 
 
     return(
         <div className="box create-page">

@@ -13,6 +13,7 @@ const PagesList = props => {
     const [title, setTitle] = useState("");
     const [section, setSection] = useState("");
     const [pagetype, setPageType] = useState("");
+    const {searchval} = props;
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -37,10 +38,15 @@ const PagesList = props => {
     }
 
     const filterList = () => {
+        
         let result = loadlist;
         if (title && title !== ""){
             result = result.filter(page => page.title.replace(/ /g,'').toLowerCase().includes(title.replace(/ /g,'').toLowerCase()));         
         }
+        if (searchval && searchval !== ""){
+            result = result.filter(page => page.title.replace(/ /g,'').toLowerCase().includes(searchval.replace(/ /g,'').toLowerCase()));                 
+        }
+
         if (section && section !== "all"){
             result = result.filter(page => page.section === section);
         }    
@@ -50,6 +56,7 @@ const PagesList = props => {
         setViewList(result); 
         //setOffset(0);
         setFilter(false);
+        setTitle(searchval);    
     }
 
     return (
@@ -70,6 +77,7 @@ const PagesList = props => {
                                         <input
                                             className="input form-input"
                                             type="text"
+                                            id="title"
                                             name="title"
                                             value={title}
                                             onChange={event => {

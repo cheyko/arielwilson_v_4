@@ -253,6 +253,7 @@ class Preepedia(db.Model):
     pmcaptionlist = db.Column(MutableList.as_mutable(ARRAY(db.String(255))))
     views = db.Column(db.Integer, default=0)
     state = db.Column(db.String(255))
+    medianum = db.Column(MutableList.as_mutable(ARRAY(db.String(80))))
 
     def __init__(self, drafter, pagetype, section, title, intro, subtitles, subcontent, has_mainmedia, no_of_media, mediatypes, captionlist, has_medialist, pmcaptionlist, state):
         self.drafter = drafter

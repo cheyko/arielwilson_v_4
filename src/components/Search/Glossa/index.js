@@ -9,6 +9,8 @@ import MyPages from "./MyPages";
 const Glossa = props => {
 
     const [view, setView] = useState("home")
+    const [searchval, setSearchVal] = useState("");
+
     var placeholders = [
         {id : 0 , text : "test 0"},
         {id : 1 , text : "test 1"},
@@ -96,13 +98,13 @@ const Glossa = props => {
                                     <div className="box">
                                         <div className="field has-addons">
                                             <div className="control has-icons-right is-fullwidth">
-                                                <input className="input" placeholder="Search Glossa" type="text" name="checkprp" />
+                                                <input id="searchval" onChange={e => setSearchVal(e.target.value)} className="input" placeholder="Search Glossa" type="text" name="checkprp" />
                                                 <span className="icon is-medium is-right">
                                                     <i className="fas fa-search"></i>
                                                 </span>
                                                 
                                             </div>
-                                            <div className="control">
+                                            <div className="control"  onClick={e => setView("pageslist")}>
                                                 <button type="submit" className="button is-link is-rounded is-focused"> Search </button>
                                             </div>
                                         </div>
@@ -137,7 +139,7 @@ const Glossa = props => {
                         }
                         {view === "pageslist" &&
                             <div className="container">
-                                <PagesList />
+                                <PagesList searchval={searchval}/>
                             </div>
                         }
                     </div>

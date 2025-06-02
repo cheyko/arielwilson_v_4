@@ -1,3 +1,7 @@
 .preepedia-list .column .box{
     height: 100% !important;
 }
+
+.glossa-edit .reaction-btn{
+    color: blue !important;
+}

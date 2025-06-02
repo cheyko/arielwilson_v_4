@@ -1,0 +1,18 @@
+*^&Intro*^&
+
+This is an introduction to the plastic bottle. 
+
+*^&SUBCONTENT*^&
+
+paragraph 1
+
+*^&SUBCONTENT*^&
+
+paragraph 2
+
+*^&SUBCONTENT*^&
+
+paragraph 3
+
+paragraph 4
+

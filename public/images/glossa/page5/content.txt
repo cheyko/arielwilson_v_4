@@ -1,0 +1,6 @@
+*^&Intro*^&
+My name is XYZ. I live in a place. This is a test. This is a test.
+*^&SUBCONTENT*^&
+This is the first paragraph that will give the best indication on how to solve the issue at hand.
+*^&SUBCONTENT*^&
+This is the second paragraph that will give the best indication on what to do when the time is right. I will achieve all the is possible. the is a test. Testing.

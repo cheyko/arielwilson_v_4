@@ -1,0 +1,18 @@
+*^&Intro*^&
+
+This is the introduction to the page.
+
+*^&SUBCONTENT*^&
+
+Paragraph 1
+
+*^&SUBCONTENT*^&
+
+Paragraph 2
+
+*^&SUBCONTENT*^&
+
+paragraph 3
+
+paragraph 4
+

@@ -1,0 +1,9 @@
+*^&Intro*^&
+This is the test introduction
+*^&SUBCONTENT*^&
+First paragraph in subtitle
+This is the second pargraph in the first subtitle
+*^&SUBCONTENT*^&
+First paragraph of subtitle.
+this is the next paragraph in the second subtitle
+This is the next subtitle paragraph

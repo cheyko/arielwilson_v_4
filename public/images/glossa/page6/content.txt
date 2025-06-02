@@ -1,0 +1,4 @@
+*^&Intro*^&
+New test for this introduction.
+*^&SUBCONTENT*^&
+This is a new paragraph and the paragraph is very important.

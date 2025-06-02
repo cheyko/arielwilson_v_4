@@ -1,0 +1,9 @@
+*^&Intro*^&
+Bashment club introduction is a test introduction that will show whether or not this is working
+*^&SUBCONTENT*^&
+Paragraph 1 for subtitle 1
+Paragraph 2 for subtitle 1
+Paragraph 3 for subtitle 1
+*^&SUBCONTENT*^&
+This is the first paragraph of second sub topic
+This is the 2nd paragraph of second sub topic
